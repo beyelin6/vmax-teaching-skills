@@ -2,91 +2,90 @@
 
 ## 定位
 
-成語教學為 LKB 的可選模組，但只要教材或教師手冊已提供生字延伸成語，預設應啟用。
+成語教學為 LKB 的可選模組。只要課本、教師手冊、習作或出版社資源已明確提供成語，預設應啟用；若來源教材沒有成語資料，本模組不得自行補充。
 
-## 來源分類
+## 唯一允許來源
 
-成語分為三類：
+成語只接受以下官方來源：
 
-1. `official_idiom`：課本、教師手冊、習作或出版社資源明示。
-2. `teacher_selected_idiom`：教師指定加入。
-3. `system_extension_idiom`：系統依生字、課文語境或主題補充，必須明確標記。
+1. 課本
+2. 教師手冊
+3. 習作
+4. 出版社配套資源
 
-官方成語不得被系統成語取代。
+不得依生字、主題、課文語境或一般知識自動新增成語。教師另行指定的成語必須放在獨立的 `teacher_added` 區，不得混入官方成語清單。
 
-## 每則成語知識節點
+## 教材忠實原則
 
-至少包含：
+- 成語名稱、詞義、教材例句、對應生字與教材教學說明必須忠實保留。
+- 不得改寫教材詞義後當成原文。
+- 不得用系統例句取代教材例句。
+- 教材沒有提供的欄位標示「來源未提供」。
+- 同一成語若在多個官方來源重複出現，整合為一個知識節點，保留全部來源位置。
+- 官方成語不得被刪減、替換或依主觀重要性篩選。
+
+## 每則官方成語知識節點
+
+依來源可用內容建立：
 
 - 成語
-- 類型與來源
-- 對應生字或課文語境
-- 詞義
-- 教材例句（有則完整保留）
-- 語境化解釋
-- 正確使用情境
-- 易誤用提醒
-- 教學例句
-- 圖像情境建議
-- 練習題
-- 教師答案
+- 來源檔案與頁碼
+- 對應生字
+- 教材詞義
+- 教材例句
+- 教材教學提示
+- 來源驗證狀態
 
-## 教學層級
+只有在輸出需要教學支援時，才可另外加入：
 
-### 基礎辨識
+- 插圖情境需求
+- 簡報版面映射
+- 練習呈現方式
+- 教師講解提示
 
-- 讀懂字面與整體詞義
-- 找出對應生字
-- 判斷適合或不適合的情境
-
-### 語境理解
-
-- 以課文情境解釋成語
-- 比較近義詞或相反情境
-- 判斷例句是否使用正確
-
-### 運用表達
-
-- 依生活情境選用成語
-- 口頭造句
-- 書面造句
-- 修改誤用句
-
-### 深度遷移
-
-- 比較兩個相關成語
-- 將成語運用於短文或故事
-- 連結人物行為、事件或價值判斷
+上述項目必須標記為 `teaching_support`，不可冒充教材原文。
 
 ## 圖像規則
 
-成語頁不得只放裝飾圖。插圖必須呈現能推斷成語意義的具體情境。
+- 插圖必須依教材詞義或教材例句設計。
+- 不得只依成語字面拆字作畫。
+- 不得加入與教材例句矛盾的情境。
+- 若教材同時提供詞義與例句，優先以例句建立具體情境，再以詞義校正畫面。
 
-例如「束手無策」應呈現人物面對問題、嘗試多種方法仍無法解決的場景，而不是只畫被繩子綁住雙手。
+## 練習規則
+
+- 預設不新增教材未提供的知識內容。
+- 可將教材既有詞義與例句轉換成配對、選擇、情境判斷或口頭說明等練習形式。
+- 新產生的練習必須標記為 `teaching_support`。
+- 學生版不得出現答案；教師答案放入教師專用輸出或講者備註。
 
 ## 輸出控制
 
 ```yaml
 idiom_teaching:
   enabled: true
-  include_official: true
-  include_teacher_selected: true
+  source_scope: official_only
+  include_textbook: true
+  include_teacher_guide: true
+  include_workbook: true
+  include_publisher_resources: true
+  include_teacher_added: false
   include_system_extensions: false
-  extension_limit: 0
-  teaching_depth: standard
-  include_context_explanation: true
-  include_misuse_warning: true
-  include_illustration_prompt: true
-  include_practice: true
+  preserve_original_definition: true
+  preserve_original_examples: true
+  preserve_original_teaching_notes: true
+  generate_visual_prompt: true
+  generate_slide_mapping: true
+  generate_practice_format: true
   answers_location: teacher_only
 ```
 
-`teaching_depth` 可選：
+## 驗證條件
 
-- `brief`：詞義、例句、對應生字。
-- `standard`：再加入語境解釋、情境插圖與練習。
-- `deep`：再加入易誤用、比較辨析、生活遷移與短文應用。
+輸出前確認：
 
-## 學生與教師分流
-
-學生版不得顯示答案與內部來源標籤；教師版保留來源、教學提示、答案與誤用診斷。
+- 所有成語都能追溯到本課來源教材。
+- 沒有依生字自動擴充其他成語。
+- 教材詞義與例句未被改寫或替換。
+- 教材列出的全部成語都已收錄。
+- 教學支援內容與教材原文有清楚區隔。
