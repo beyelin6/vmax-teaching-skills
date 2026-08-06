@@ -1,190 +1,147 @@
 ---
 name: chinese-lesson-knowledge-builder
-description: 讀取已確認的出版社教材知識與教師補充，建立 Lesson Knowledge Book（LKB，教材知識書）。LKB 是 V-MAX 的唯一課程知識來源，包含官方知識、教師知識、系統延伸知識與教學設計；Curated Briefing、NotebookLM 來源檔、簡報、學習單與評量都必須由 LKB 派生。不得在官方知識未確認前執行。
+description: 讀取已核准的 Official Knowledge、Teacher Knowledge 與來源索引，將分散教材內容去重、建立知識節點與來源關聯，組裝成 Lesson Knowledge Book（LKB）。本技能負責整合與建立關聯，不重新逐頁轉錄教材，也不自行產生 Learning Modules、Teaching Strategy、角色、風格或最終輸出。
 ---
 
 # Chinese Lesson Knowledge Builder
 
-版本：0.2.0
+版本：0.3.0
 
 ## 核心定位
 
-本技能的主要成果不是 Curated Briefing，而是：
+本技能是「教材知識整合器」。
 
-`output/{課次}_{課名}_lesson-knowledge-book.md`
+Transcriber 負責忠實擷取；本技能負責將已核准的官方知識與教師知識進行去重、關聯、節點化與版本管理，建立本課唯一可信的 Lesson Knowledge Book。
 
-Lesson Knowledge Book（LKB）是本課唯一可信且可版本控管的知識主檔。Curated Briefing 只是由 LKB 產生的相容輸出之一。
+主要成果：
+
+`lkb/{課次}_{課名}_lesson-knowledge-book.md`
 
 ## 前置條件
 
-必須存在並讀取：
+必須存在：
 
-- `working/01_official-knowledge.md`
-- `working/official-knowledge-validation.md`
-- `working/source-map.md`
+- `knowledge/01_official-knowledge.md`
+- `knowledge/source-map.md`
+- `knowledge/official-knowledge-validation.md`
 
-且官方知識狀態必須為 `approved`。未經教師確認不得執行。
+且狀態必須為：
 
-## 知識分層
+`approved_official_knowledge`
 
-### A. Official Knowledge｜官方教材知識
+可選讀取：
 
-來源包含：
+- `knowledge/02_teacher-knowledge.md`
 
-- 課本
-- 教師手冊
-- 習作
-- 出版社教學資源
+未核准官方知識時不得執行。
 
-官方教材已明示的內容均屬此層，包括：
+## 本技能只負責
 
-- 課文、生字、認讀字、全部核心詞語
-- 文體、主旨、課文大意、課文賞析與結構圖
-- 寫作特色、修辭、句型、短語與語句練習
-- 字形字音辨析、生字延伸成語
-- 語文焦點、閱讀理解、教材答案與教學引導
-- 學習內容、學習表現、跨領域與議題連結
+1. 合併同一知識在課本、教師手冊、習作與出版社資源中的重複出現。
+2. 建立唯一知識節點 ID。
+3. 保留每個節點的所有來源與頁碼。
+4. 區分 Official Knowledge 與 Teacher Knowledge。
+5. 記錄來源差異、衝突與教師採用決策。
+6. 建立課文、字詞、成語、修辭、句型、寫作特色、活動與題目之間的關聯。
+7. 組裝 LKB 主書與驗證報告。
+8. 為後續 Learning Modules、Teaching Strategy 與 Presentation 建立可引用的節點。
 
-不得因內容帶有分析或教學性質，就誤標為系統分析。
+## 本技能不得負責
 
-### B. Teacher Knowledge｜教師知識
+- 重新逐頁轉錄或補抄教材
+- 擅自改寫官方詞義、例句、答案或教學說明
+- 新增教材未提供的成語、修辭或句型
+- 產生易誤用、近義辨析、情境練習等學習延伸
+- 產生 DOK、課堂活動、差異化策略或評量
+- 推薦角色、風格或版型
+- 直接生成 Curated Briefing、NotebookLM、簡報或學習單
 
-由使用者或授課教師新增、修正或指定，包括：
+若發現官方知識漏列，應退回 Transcriber 階段，不得在 LKB Builder 中靜默補抄。
 
-- 教師補充說明
-- 班級實況與學生迷思
-- 教學取捨
-- 自訂提問與活動
-- 對出版社內容的修正或優先採用決策
+## 正式知識層名稱
 
-教師知識必須保留作者與日期，不得冒充出版社內容。
+### 1. Official Knowledge｜官方教材知識
 
-### C. Extended Knowledge｜系統延伸知識
+來源：課本、教師手冊、習作、出版社資源。
 
-只有原始來源未提供，而系統依課文與官方知識補充的內容才放入此層，例如：
+### 2. Teacher Knowledge｜教師知識
 
-- 額外修辭或句型分析
-- 跨段寫作策略
-- 延伸成語與詞語關聯
-- 補充背景知識
-- 系統建議的意義段或知識關聯
+來源：使用者或授課教師的補充、修正、班級資訊與教學決策。
 
-每項必須標記 `[系統延伸]`，並附支持依據或對應原句。
+### 3. Learning Expansion｜學習延伸
 
-### D. Teaching Design｜教學設計
+由 Learning Module Builder 產生。本技能只預留掛載位置，不建立內容。
 
-包含為實際教學新增的內容，例如：
+### 4. Teaching Strategy｜教學策略
 
-- DOK 1–4 提問
-- 差異化教學
-- 迷思概念與診斷問題
-- 教學活動與延伸任務
-- 評量規畫
-- 課堂節奏與模組選擇
+由 Teaching Strategy Builder 產生。本技能只保存引用關聯。
 
-出版社已提供的閱讀理解題、答案與教學引導仍屬 Official Knowledge，不得移到本層。
+### 5. Presentation Mapping｜呈現映射
 
-### E. Presentation Mapping｜呈現映射
+由 Presentation Engine 與角色／風格／版型流程建立。本技能只預留節點引用欄位。
 
-只記錄後續輸出如何引用 LKB，不直接在本技能中產生完整簡報，例如：
+舊名稱 `Fact Layer`、`Analysis Layer`、`Extended Knowledge`、`Teaching Design` 不再作為正式檔名或主要層名。
 
-- 哪些知識適合投影片
-- 哪些答案只進講者備註
-- 哪些內容適合學習單或評量
-- 哪些內容需插圖或圖表
+## 標準檔案架構
 
-角色、配色、版型與圖像 Prompt 由 Slide Architect 決定。
+```text
+knowledge/
+├── 01_official-knowledge.md
+├── 02_teacher-knowledge.md
+├── 03_learning-expansion.md
+├── 04_teaching-strategy.md
+├── 05_presentation-mapping.md
+├── source-map.md
+└── official-knowledge-validation.md
+
+lkb/
+├── {課次}_{課名}_lesson-knowledge-book.md
+└── lkb-validation-report.md
+```
+
+其中第 3～5 檔由後續技能建立；LKB Builder 不得提前填入未核准內容。
 
 ## LKB 標準章節
 
-0. 文件控制與來源索引
-1. 基本資訊與教材定位
-2. 課文原文
-3. 官方教材知識
-   - 字詞基礎工程
-   - 全部核心詞語與成語
-   - 字形字音辨析
-   - 文體、主旨、大意、賞析與結構
-   - 官方寫作特色、修辭與句型
-   - 語文焦點、習作、閱讀理解與教學引導
-   - 學習重點與議題連結
-4. 教師知識與教學決策
-5. 系統延伸知識
-6. 意義段知識單元
-7. 教學設計
-8. 呈現與輸出映射
-9. 驗證、差異與待確認事項
+0. 文件控制、版本與來源索引
+1. 課程基本資訊與教材定位
+2. 課文標準文本
+3. 字詞與成語知識
+4. 語文知識：文體、結構、修辭、句型、寫作特色
+5. 官方教學資源：語文焦點、閱讀理解、習作、答案與引導
+6. 教師知識與教學決策
+7. 學習延伸掛載索引
+8. 教學策略掛載索引
+9. 呈現與輸出映射索引
+10. 驗證、差異與待確認事項
 
-章節固定，但子項依每課教材動態增減；不得為了湊格式捏造內容。
+章節固定，子項依每課內容動態增減。
 
-## 意義段知識單元
+## 去重與關聯規則
 
-每個意義段將同一位置的資料放在一起，但必須保留來源標籤：
+同一知識重複出現在不同來源時：
 
-- 官方段落大意
-- 對應課文原句
-- 官方修辭、句型或寫作特色
-- 教師補充
-- 系統延伸分析
-- 官方閱讀理解題與答案
-- 系統新增 DOK 提問
-- 可用於簡報、學習單與評量的映射
+- 建立一個主要節點
+- 保留所有來源證據
+- 官方原文不被混合改寫
+- 若不同來源措辭不同，分別保存
+- 教師決定採用版本時，記錄決策，不刪除原始差異
 
-## 派生輸出
+例如同一修辭在課文側欄與教師手冊重複出現，LKB 建立單一修辭節點，但保留兩筆來源。
 
-LKB 核准後，才可產生：
+## 狀態
 
-- `output/{課次}_{課名}_curated-briefing.md`
-- `output/{課次}_{課名}_notebooklm-source.md`
-- 教師版或學生版簡報腳本
-- 預習單、學習單、仿作單與評量
+- 缺少核准輸入：`blocked_by_official_knowledge`
+- LKB 組裝完成：`ready_for_lkb_review`
+- 教師核准後：`approved_lkb`
 
-所有派生輸出都必須記錄：
+## 完成條件
 
-- `source_lkb`
-- `source_lkb_version`
-- `generated_at`
-- 使用的章節或知識節點
-
-## Curated Briefing 相容輸出
-
-為維持既有 NotebookLM 工作流，可由 LKB 轉出八大區塊：
-
-0. 基本資訊
-1. 課文原文
-2. 字詞基礎工程
-3. 課文核心詞語與生字成語
-4. 字形字音深度辨析
-5. 綜合語文活動
-6. 本課主旨與結構心智圖
-7. 意義段全息深度解析
-8. 執行終點自檢
-
-但 Curated Briefing 不得成為新的唯一事實來源；修正必須先回寫 LKB，再重新生成。
-
-## 來源優先與衝突處理
-
-1. 使用者當次明確決策
-2. 已確認的教師知識
-3. 教師手冊
-4. 課本
-5. 習作
-6. 其他出版社資源
-7. 系統延伸
-
-此順序用於教學決策，不代表可以默默改寫原始資料。來源衝突時，LKB 必須同時保留原說法、差異與最後採用決策。
-
-## 驗證規則
-
-完成前確認：
-
-- 官方教材知識未被改寫或漏列
-- 修辭、句型與寫作特色已正確區分「官方明示」與「系統延伸」
-- 全部核心詞語與認讀字完整
-- 教師補充具有來源與日期
-- 每項系統延伸都有明確標籤與依據
-- 教材題目與系統新增題目未混淆
-- 派生輸出均可追溯到 LKB 版本
+- 所有官方知識節點可追溯到來源
+- 官方內容沒有被改寫或漏列
+- 重複知識已整合但原始差異仍保留
+- Teacher Knowledge 與 Official Knowledge 清楚分流
+- 尚未核准的 Learning Expansion、Teaching Strategy 或 Presentation Mapping 未被提前生成
 - 未混入其他課次內容
 
-完成後狀態設為 `ready_for_teacher_review`，等待教師核准。核准後才能成為 `approved_lkb`。
+完成後必須停止等待教師確認。
