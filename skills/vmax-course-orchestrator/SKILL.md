@@ -1,0 +1,122 @@
+---
+name: vmax-course-orchestrator
+description: 管理 V-MAX 單課教材專案的完整工作流、狀態、必要檔案、教師核准關卡與下一個可執行技能。適用於建立新課程專案、判斷目前階段、阻止跨關卡生成、安排 Transcriber、LKB Builder、Learning Module Builder、Teaching Strategy Builder、Role Recommender、Style Recommender 與 Presentation Engine。不得代替各專業技能產生內容。
+---
+
+# V-MAX Course Orchestrator
+
+版本：0.1.0
+
+## 使命
+
+作為單課專案的流程總控，確保每個技能只在前置條件完成且教師核准後執行。
+
+Orchestrator 不產生教材內容；它只負責：
+
+- 建立課程專案骨架
+- 讀取與更新專案狀態
+- 檢查必要輸入與核准紀錄
+- 指定下一個可執行技能
+- 阻止跳過教師確認
+- 記錄版本、錯誤、退回與重新生成
+
+## 唯一狀態檔
+
+每課必須有：
+
+`project/project-status.md`
+
+所有技能執行前先讀取此檔，完成後回寫自身階段結果。不得只依聊天記憶判斷進度。
+
+## 標準工作流
+
+1. `project_initialized`
+2. `sources_registered`
+3. `official_knowledge_in_progress`
+4. `ready_for_official_knowledge_review`
+5. `approved_official_knowledge`
+6. `lkb_in_progress`
+7. `ready_for_lkb_review`
+8. `approved_lkb`
+9. `learning_modules_in_progress`
+10. `ready_for_learning_modules_review`
+11. `approved_learning_modules`
+12. `teaching_strategy_in_progress`
+13. `ready_for_teaching_strategy_review`
+14. `approved_teaching_strategy`
+15. `role_recommendation_in_progress`
+16. `ready_for_role_review`
+17. `approved_role`
+18. `style_recommendation_in_progress`
+19. `ready_for_style_review`
+20. `approved_style`
+21. `output_selection_pending`
+22. `approved_output_profile`
+23. `presentation_generation_in_progress`
+24. `ready_for_final_review`
+25. `completed`
+
+## 技能路由
+
+| 當前狀態 | 下一技能 |
+|---|---|
+| `sources_registered` | `chinese-textbook-transcriber` |
+| `approved_official_knowledge` | `chinese-lesson-knowledge-builder` |
+| `approved_lkb` | `learning-module-builder` |
+| `approved_learning_modules` | `teaching-strategy-builder` |
+| `approved_teaching_strategy` | `role-recommender` |
+| `approved_role` | `style-recommender` |
+| `approved_style` | 請教師選擇輸出格式 |
+| `approved_output_profile` | `presentation-engine` |
+
+## 核准關卡
+
+以下關卡不得自動跳過：
+
+- Official Knowledge Review
+- LKB Review
+- Learning Modules Review
+- Teaching Strategy Review
+- Role Review
+- Style Review
+- Output Profile Review
+- Final Review
+
+教師未明確核准時，Orchestrator 必須停止，不得啟動下一技能。
+
+## 退回規則
+
+教師修正某一層後，下游成果視情況標記為 stale：
+
+- 修改 Official Knowledge：LKB 及所有下游成果全部 stale。
+- 修改 LKB：Learning Modules 及所有下游成果 stale。
+- 修改 Learning Modules：Teaching Strategy 與 Presentation stale。
+- 修改 Teaching Strategy：Role、Style 與 Presentation 需重新檢查。
+- 修改 Role：Style 與 Presentation stale。
+- 修改 Style：Presentation stale。
+- 只修改 Output Profile：不影響上游知識與策略。
+
+不得直接修改派生輸出來取代上游修正。
+
+## 錯誤處理
+
+遇到以下情況時，狀態改為 `blocked` 並記錄原因：
+
+- 必要檔案不存在
+- 前置階段未核准
+- 使用舊檔名而未完成遷移
+- 發現跨課內容污染
+- 官方內容被未標示改寫
+- 學生版出現教師答案
+- 角色或風格尚未核准即開始生成
+
+## 完成條件
+
+只有當：
+
+- 所有核准關卡完成
+- 最終輸出通過驗證
+- Output Manifest 可追溯所有來源版本
+- 教師完成 Final Review
+
+狀態才能設為 `completed`。
