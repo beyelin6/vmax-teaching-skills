@@ -1,4 +1,4 @@
-# V-MAX Character System 2.0
+# V-MAX Character System 2.1
 
 ## 定位
 
@@ -7,6 +7,8 @@ Character System 定義引導角色、課文人物與教學角色在簡報中的
 核心原則：
 
 > 角色不是裝飾，也不是每頁必須出現的吉祥物；只有當角色能改變學生的注意、理解、策略、情緒或轉場時才出場。
+
+> 每一課先決定「需要幾個角色、各自承擔什麼功能」，再決定角色是誰；不預設所有課都使用同一組角色。
 
 ---
 
@@ -35,7 +37,69 @@ Character System 定義引導角色、課文人物與教學角色在簡報中的
 
 ---
 
-## B. Guide Character 功能
+## B. Character Topology｜每課角色拓撲
+
+角色組合不是全系統固定值，而是 Lesson DNA 的一部分。
+
+每課先選擇最小必要角色拓撲：
+
+### `NO_GUIDE`
+課文本身、真實人物、文本角色或畫面證據已足以承擔教學。
+
+### `SINGLE_GUIDE`
+一位引導角色即可完成開場、提示、策略與回望。
+
+適合：概念清楚、角色對話不是核心學習機制的課。
+
+### `GUIDE_PLUS_PROXY`
+一位引導者 + 一位學生代理角色。
+
+典型功能分工：
+- Guide：追問、提示、點醒、轉場
+- Proxy：經歷、觀察、猜想、說出學生可能的發現
+
+適合：需要「老師 × 學生視角」對話來呈現發現歷程的課。
+
+### `DUAL_PROTAGONIST`
+兩位共同主角彼此對照、合作或持不同觀點。
+
+適合：比較、雙視角、對話型文本、兩條敘事線。
+
+### `TEXT_CHARACTER_LED`
+以課文人物為主，Guide 降到最低或關閉。
+
+適合：人物性格、歷史文化、敘事情緒是學習中心的課。
+
+### `ENSEMBLE`
+三位以上角色只在文本本身或教學任務確實需要多人關係時使用。
+
+不得為了熱鬧建立角色群。
+
+### 拓撲選擇原則
+
+1. `Teacher Intent > Text Needs > Director Recommendation > Existing Character Assets`。
+2. 優先選最少角色即可完成理解任務的方案。
+3. 角色數量可以跨課改變，同一課內應維持穩定。
+4. 既有角色可以重用，但不得因已有 DNA 就強迫每課沿用。
+5. 若教師已指定單主角／雙主角／特定關係，系統不得自行改寫。
+6. 角色拓撲確認應發生在大量視覺生成之前。
+
+建議欄位：
+
+```yaml
+character_topology:
+  mode: NO_GUIDE | SINGLE_GUIDE | GUIDE_PLUS_PROXY | DUAL_PROTAGONIST | TEXT_CHARACTER_LED | ENSEMBLE
+  rationale:
+  primary_character:
+  secondary_character:
+  relationship:
+  dialogue_mode: NONE | LIGHT | DISCOVERY_DIALOGUE | ROLE_DIALOGUE
+  teacher_confirmed: false
+```
+
+---
+
+## C. Guide Character 功能
 
 Guide Character 只允許以下具教學功能的出場模式：
 
@@ -52,7 +116,7 @@ Guide Character 只允許以下具教學功能的出場模式：
 
 ---
 
-## C. 出場政策
+## D. 出場政策
 
 預設：`KEY_MOMENTS_ONLY`。
 
@@ -84,7 +148,7 @@ Guide Character 只允許以下具教學功能的出場模式：
 
 ---
 
-## D. Character DNA｜身份一致性
+## E. Character DNA｜身份一致性
 
 角色 DNA 用來維持跨頁、跨 Renderer 的身份一致，不綁定某一個圖像平台。
 
@@ -132,7 +196,7 @@ DNA 的目的不是讓角色像貼紙一樣永遠同姿勢，而是保持「同�
 
 ---
 
-## E. 角色與 Style Recipe 的關係
+## F. 角色與 Style Recipe 的關係
 
 角色身份與美術風格分離。
 
@@ -154,7 +218,7 @@ Art Style
 
 ---
 
-## F. 角色與 World / Theme 的關係
+## G. 角色與 World / Theme 的關係
 
 Guide Character 可以融入課程世界，但不能蓋過課文。
 
@@ -165,7 +229,7 @@ Guide Character 可以融入課程世界，但不能蓋過課文。
 
 ---
 
-## G. 角色與 Director Engine 的關係
+## H. 角色與 Director Engine 的關係
 
 Director Engine 先決定角色是否需要出場，再由 Character System 決定如何出場。
 
@@ -188,7 +252,7 @@ character_direction:
 
 ---
 
-## H. 角色畫面比例
+## I. 角色畫面比例
 
 角色畫面占比依功能決定，不採固定尺寸：
 
@@ -203,7 +267,7 @@ character_direction:
 
 ---
 
-## I. 對話與文字規則
+## J. 對話與文字規則
 
 角色說話不是必需元素。
 
@@ -214,11 +278,13 @@ character_direction:
 - 不替學生回答推論題
 - 不用幼稚化語氣取代清楚教學
 
+`GUIDE_PLUS_PROXY` 的對話應優先採「發現式對話」：Proxy 先觀察／疑問，Guide 追問／點醒，不直接講解答案。
+
 允許無台詞出場，例如指向、觀察、轉場、表情反應。
 
 ---
 
-## J. 課文人物的視覺倫理
+## K. 課文人物的視覺倫理
 
 課文人物的視覺設定必須以來源文本為準。
 
@@ -228,28 +294,33 @@ character_direction:
 
 ---
 
-## K. Character Selection Workflow
+## L. Character Selection Workflow
 
 生成新課簡報時：
 
-1. 先判斷課文是否需要 Guide Character。
-2. 若需要，優先沿用既有固定引導角色；不預設每課重新創角。
-3. 若教師希望換角色／新建角色，再提供候選。
-4. 建立或載入 Character DNA。
-5. Director Engine 逐幕判斷出場功能。
-6. Renderer 只負責把角色依 DNA 與場景渲染，不得自行改身份。
+1. 先分析 Text DNA、Teacher Intent 與 Director Intent。
+2. 判斷最小必要角色拓撲：無引導／單主角／引導者＋代理主角／雙主角／課文人物主導／多人。
+3. 向教師提出 1–3 個最合適的角色拓撲建議，並停在確認點；若教師已明確指定，直接採用。
+4. 再決定角色是沿用既有角色、使用課文人物，或建立新角色。
+5. 建立或載入各角色 Character DNA，定義角色關係與對話模式。
+6. Director Engine 逐幕判斷角色是否出場及其功能。
+7. Renderer 只負責依 DNA 與場景渲染，不得自行新增角色、改角色身份或改變角色拓撲。
+
+角色拓撲是**每課變數**，不是全域常數。
 
 ---
 
-## L. Quality Gate
+## M. Quality Gate
 
 每次角色出場前檢查：
 
+- 這一課的角色拓撲是否經教師確認？
 - 這個角色為什麼現在需要出場？
 - 拿掉角色，學生理解會變差嗎？
 - 角色是否搶了課文主體？
 - 角色是否在替學生回答？
 - 角色身份是否與前頁一致？
+- 雙角色頁的功能是否互補，而非兩個人說同一件事？
 - 角色是否真的融入場景，而非貼圖感？
 - 這頁是否其實留白更好？
 
@@ -257,7 +328,7 @@ character_direction:
 
 ---
 
-## M. 淘汰的舊規則
+## N. 淘汰的舊規則
 
 以下不再視為 V-MAX 核心規則：
 
@@ -265,6 +336,7 @@ character_direction:
 - 每頁都要 guideTalk
 - 固定 6 位候選人才能開始
 - 一定要有故事主角 + 引導者雙角色
+- 所有課都沿用 Bee 老師或任何固定角色
 - 角色服裝必須只為了和主角高對比
 - 角色為了填版面而出現
 
@@ -274,9 +346,12 @@ character_direction:
 - 顏色與服裝描述要具體
 - 角色需要清楚功能
 - 引導角色與課文角色要有視覺區隔
+- 適合的雙角色對話可以成為學生發現課文的觀看路徑
 
 ---
 
 ## 核心金句
 
 > 引導者不是吉祥物，而是學生的學習夥伴；當他沒有真正幫助理解時，最好的出場方式就是不出場。
+
+> 不是先決定角色，再把角色塞進課文；而是先理解這一課需要什麼關係，再決定由誰陪學生走進去。
