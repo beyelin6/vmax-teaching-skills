@@ -1,256 +1,203 @@
 # Director Designer
 
-版本：0.1.0
+版本：2.0.0
 
 ## 目的
 
-Director Designer 將課文的閱讀結構、作者觀看方式、敘事節奏與教師教學意圖，轉譯成可執行的 `Director Intent`，再交給 Visual Grammar、Visual Sequence、Layout、Theme 與 Renderer。
+Director Designer 是 V-MAX 的導演技能。它把 Text DNA、Knowledge Network、Lesson Intent、Learning Profile 與 Teacher Intent 轉譯成可執行的 `Director Map` 與 `Shot Map`。
 
-核心問題不是「這頁要畫什麼」，而是：
+完整規則以：
 
-> 孩子應該怎麼看這一段內容，才最容易理解作者的安排與語文重點？
+- `core/director/director-engine.md`
+- `core/visual/visual-grammar.md`
+- `core/visual/visual-sequence.md`
+- `core/visual/style-recipe-families.md`
+
+為準。
+
+核心問題：
+
+> 孩子應該怎麼一路看懂這一課？
+
+而不是：
+
+> 這一頁要畫什麼？
 
 ---
 
-## 輸入
+## 必讀輸入
 
-至少讀取：
+- Text DNA：文體、段落功能、作者觀看／敘事順序
+- Knowledge Network：字詞、句型、修辭、成語、概念關係
+- Lesson Intent：本課學習目標
+- Teacher Intent：教師指定焦點、節奏、保留／刪除項目
+- Learning Profile：班級目前需要的支架程度
+- Bee Visual Language / Style Recipe：若已選定
 
-- Text DNA：文體、內容類型、段落功能、作者觀察／敘事順序
-- Lesson Flow：當前教學目標與活動位置
-- Learning Profile：學生閱讀、識字、推論與視覺支援需求
-- Teacher Intent：教師指定的焦點、情緒、節奏、留白或比較方式
-- Guide Character Profile：Bee 老師或該課引導角色是否需要出場
-- Visual Theme：既定世界觀與 Visual DNA
+選配：
 
-可選讀取：
-
-- Visual Sequence Library
-- Visual Metaphor Library
 - 既有課堂版本與 Patch
+- Bee Quality Benchmark
 - 公開課／平板 Classroom Variant
 
 ---
 
 ## 決策順序
 
-1. 先判斷「理解結構」：時間、空間、人物、因果、比較、觀點、意象、說明分類等。
-2. 再判斷「觀看路徑」：學生先看什麼、接著看哪裡、最後停在哪裡。
-3. 再判斷「節奏」：快、慢、停格、揭曉、重複、留白、轉折。
-4. 再判斷是否需要序列式圖像：單張、雙圖、三步、四格、六格、時間軸、分鏡。
-5. 再指定 Visual Grammar：遠近、俯仰、移步換景、動靜、真假雙軌、五感、特寫等。
-6. 最後才交給 Layout / Theme / Renderer。
+1. 先判斷整課的理解旅程與真正轉折。
+2. 生成 3–7 個 Learning Acts；不先算投影片頁數。
+3. 每幕只設定一個主要 `act_goal`。
+4. 為每幕決定 ENTER / NOTICE / DISCOVER / PAUSE / REVEAL / TRANSFER 等節奏動作。
+5. 決定 Reveal Policy：open / guided / delayed / progressive / hold。
+6. 依認知關係呼叫完整 14 種 Visual Grammar；不得從固定 Layout 反推。
+7. 判斷是否需要 Visual Sequence。
+8. 安排 Bee／引導角色；預設關鍵頁才出場。
+9. 最後才生成 Shot Map、估算頁數，交給 Layout / Style / Renderer。
 
-不得先從「喜歡哪種畫風」反推教學畫面。
+不得先從「喜歡哪種畫風」或「NotebookLM 一次能做幾頁」反推課程。
 
 ---
 
-## Director Intent 標準輸出
+## 三個尺度
+
+### Lesson Arc
+整課觀看與理解弧線。
+
+### Act
+一段完整的理解任務，不綁固定頁數。
+
+### Shot
+單頁／單畫面注意單位；每頁必須說得出學生多懂了什麼。
+
+---
+
+## Director Map 必備欄位
 
 ```yaml
-director_intent:
-  target:
-    lesson_id:
-    section_id:
-    learning_focus:
+director_map:
+  lesson_id:
+  central_learning_journey:
+  opening_hook:
+  final_takeaway:
 
-  reading_structure:
-    type:
-    evidence:
+  acts:
+    - act_id:
+      title:
+      act_goal:
+      text_evidence: []
+      entry_mode:
+      primary_pacing:
+      reveal_policy:
+      primary_visual_grammar:
+      secondary_visual_grammar: []
+      sequence_mode:
+      guide_role:
+      emotional_target:
+      closure:
+      handoff:
 
-  viewpoint:
-    first_focus:
-    movement:
-    final_focus:
-
-  camera:
-    framing:
-    angle:
-    depth:
-
-  pacing:
-    mode:
-    pause_points: []
-    reveal_points: []
-
-  emotion:
-    target_feeling:
-    intensity:
-
-  sequence:
-    recommended_mode:
-    panel_count:
-    reason:
-
-  visual_grammar:
-    - id:
-      purpose:
-
-  guide_character:
-    mode: HOST | COACH | INTERVIEW | TRANSITION | REFLECT | OFF
-    purpose:
-
-  renderer_notes:
-    must_preserve: []
-    avoid: []
+  rhythm_curve: []
+  protected_moments: []
+  do_not_do: []
 ```
 
 ---
 
-## 文體與內容的導演基準
+## Shot Map 必備欄位
 
-### 寫景文
+```yaml
+shot:
+  id:
+  act_id:
+  function:
+  learning_gain:
+  first_focus:
+  attention_path: []
+  text_evidence:
+  reveal_policy:
+  pacing:
+  visual_grammar:
+    primary:
+    secondary: []
+  sequence:
+    mode:
+    panel_count:
+  character:
+    role:
+    purpose:
+  layout_intent:
+  renderer_must_preserve: []
+```
 
-優先辨識：
+---
 
-- 遠景 → 中景 → 近景
-- 由高而低／由低而高
-- 由外而內／由內而外
-- 移步換景
-- 時間推移
-- 動靜對照
-- 五感焦點
+## Knowledge Chunk 原則
 
-若作者採遠近推進，不得將所有景物平行排成同層卡片。
+不得把「一個教材項目」機械地當成「一頁」。
 
-### 人物文
+一個 Chunk = 一個學生需要建立的認知關係。
 
-優先辨識：
+- 形近字：同一比較關係優先同場。
+- 多音字：讀音 × 語意 × 情境對照。
+- 成語：先判斷是否需要事件序列；不一律漫畫化。
+- 句型／修辭：先從原句發現，再命名。
+- 主旨／結構：若需推論，先累積證據，再 Reveal。
 
-- 行動 → 表情 → 心理
-- 外在行為 → 人物特質
-- 前後改變
-- 關鍵物件特寫
-- 第一人稱／旁觀者視角
+---
 
-人物理解需要證據時，可用「動作特寫＋課文證據＋特質推論」。
+## 角色規則
 
-### 故事／記敘文
+預設 `OFF`，只有角色能改變注意、理解、策略或情緒時才出場。
 
-優先辨識：
+合法功能：
 
-- 事件鏈
-- 衝突與轉折
-- 高潮停格
-- 資訊延後揭曉
-- 結果回溯
+- HOST
+- NOTICE
+- COACH
+- INTERVIEW
+- TRANSITION
+- REFLECT
+- OFF
 
-若事件具有清楚因果或轉折，優先考慮 Visual Sequence，而不是單一總結圖。
+禁止每頁固定 guideTalk，禁止角色代替學生說出應自行發現的答案。
+
+---
+
+## 文體提示
 
 ### 童詩
+保留節奏、意象與留白；優先感官進場、意象變形、重複節奏、內在情緒、語言工具與仿作。不得硬拆成逐段摘要。
 
-優先辨識：
+### 故事／記敘文
+保留因果、轉折、高潮與資訊揭露順序。
 
-- 意象出場順序
-- 重複與節奏
-- 跳接
-- 留白
-- 真實畫面 ↔ 想像畫面
-- 音韻帶動的畫面變化
-
-不得把童詩硬套成事件流程圖。
+### 寫景文
+保留遠近、上下、移步換景、時間推移等觀看路徑。
 
 ### 說明文
+先建結構模型，再進細節；圖解與關係優先於氣氛圖。
 
-優先辨識：
-
-- 總覽 → 分類 → 局部
-- 構造 → 功能
-- 原因 → 結果
-- 比較
-- 流程
-
-需要理解結構時，優先用圖解、剖面、比較與步驟，而不是裝飾情境圖。
-
-### 成語／語文知識
-
-若概念本身有事件、轉折、誤用或前後差異，優先評估：
-
-- 四格漫畫
-- Before / After
-- 真實畫面＋語意畫面
-- 易誤用對照
-
-成語頁面先讓學生「看見意思」，再進入正式解釋。
+### 人物文
+從行動／語言／事件證據推論人物特質，不先公布標籤。
 
 ---
 
-## Visual Sequence 觸發規則
+## Regression Gate
 
-符合任一條件時，優先呼叫 Visual Sequence：
+若出現任一情況，必須重排：
 
-- 單張圖無法呈現因果
-- 有明確時間變化
-- 有前後改變
-- 有事件轉折
-- 有動作程序
-- 有觀點切換
-- 有真實與想像雙層畫面
-- 需要學生透過畫面順序自行推理
-
-若單張圖已能清楚支持理解，不應為了好看強行漫畫化。
+- 為平台批次限制改變課程弧線
+- 所有段落使用相同頁型
+- 過早揭露學生應自行發現的結論
+- 角色高頻但沒有教學功能
+- 整課沒有節奏差異
+- 語文知識被抽離文本脈絡
+- 新版理解路徑比舊版更碎
 
 ---
 
-## Bee 老師與導演層的關係
+## Teacher Sovereignty
 
-角色出場必須服從 Director Intent。
+AI 可以推薦、補充、提醒；不能擅自改變教師的教學意圖。
 
-例如：
-
-- 高潮停格頁可 `OFF`，保留情緒與留白。
-- 成語四格漫畫可由 Bee 老師只在最後一格 `COACH` 提示。
-- 人物訪談頁可用 `INTERVIEW`，但不得遮住課文人物本身。
-- 課末回顧可用 `REFLECT`。
-
-不得要求角色每頁出現。
-
----
-
-## 品質檢查
-
-每個 Director Intent 至少檢查：
-
-- 是否真的來自課文結構，而非任意電影化
-- 是否有明確第一視線與最後焦點
-- 視覺順序是否和作者觀察／敘事順序一致
-- 是否過度分鏡造成認知負荷
-- 是否為了視覺效果扭曲教材內容
-- Visual Sequence 是否真的比單張更好懂
-- Theme 是否只負責美感，不覆蓋閱讀結構
-- Renderer 是否收到足夠具體的視覺意圖
-
----
-
-## 與其他模組的關係
-
-```text
-Text DNA
-↓
-Lesson Designer
-↓
-Director Designer
-↓
-Visual Grammar
-↓
-Visual Sequence（需要時）
-↓
-Layout / Theme / Character DNA
-↓
-Renderer Adapter
-```
-
-Director Designer 不直接產出最終圖片，也不綁定 NotebookLM、ChatGPT、Gemini 或 Canva。
-
----
-
-## 最小使用方式
-
-教師只需提供大方向，例如：
-
-- 「這篇寫景文我想讓學生真的感受到遠景慢慢拉近。」
-- 「這個成語用四格漫畫帶意思。」
-- 「這段不要先揭曉答案，停在轉折點讓學生猜。」
-- 「這首童詩要有留白，不要塞滿畫面。」
-
-Director Designer 負責把自然語言轉成完整 Director Intent，再交給後續模組執行。
+教師明確指定的核心焦點、保留內容、課堂策略與評量需求，優先於 Director Engine 的自動建議。
