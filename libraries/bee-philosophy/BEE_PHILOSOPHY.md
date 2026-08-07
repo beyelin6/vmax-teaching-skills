@@ -258,9 +258,61 @@
 
 ---
 
+## BP-020｜AI 長出枝葉，教師提供樹根
+
+**金句**
+> AI 幫你長出枝葉，但樹根本來就是你的。
+
+**主題**：AI Collaboration／Teacher Agency
+
+**核心意義**：AI 能協助展開、重組與加速，但教學判斷、課堂經驗與真正的設計方向仍來自教師。
+
+**適用**：V-MAX 願景、跨平台協作說明、教師分享。
+
+---
+
+## BP-021｜把腦中的學習畫面變成教學現場
+
+**金句**
+> AI 真正有價值的，不只是把文字變成圖片，而是把老師腦中的學習畫面變成可以實行的教學現場。
+
+**主題**：Visual Thinking／AI Rendering
+
+**核心意義**：AI 視覺化的價值在於忠實轉譯教師的教學意圖、閱讀路徑與理解焦點，而不是單純生成漂亮圖片。
+
+**適用**：Visual Designer、Renderer Adapter、圖片式簡報、教師分享。
+
+---
+
+## BP-022｜閱讀歷程的視覺導演
+
+**金句**
+> 你不是把課文講完，而是在替學生設計觀看課文的路徑。
+
+**主題**：Director Thinking／Reading Experience
+
+**核心意義**：教學視覺必須回應作者的觀看方式與閱讀節奏，決定學生先看什麼、視線如何移動、何處停格、比較與留白。
+
+**適用**：Director Intent、Visual Grammar、寫景文、人物文、故事文與童詩簡報。
+
+---
+
+## BP-023｜把作者的觀看方式交到孩子眼前
+
+**金句**
+> 好的簡報，不只是把知識放進投影片，而是把作者的觀看方式，交到孩子眼前。
+
+**主題**：Visual Grammar／Director Thinking
+
+**核心意義**：簡報應呈現文章的視角、景深、移動、節奏與焦點，使視覺形式與文本結構共同支持閱讀理解。
+
+**適用**：Visual Grammar、Director Designer、簡報審核準則。
+
+---
+
 # 建議標籤
 
-`#教材演化` `#美感` `#AI協作` `#引導角色` `#發現式學習` `#圖像理解` `#適性教學` `#數位學習` `#教師決策` `#創作` `#LearningExperience` `#PlatformNeutral` `#SystemEvolution`
+`#教材演化` `#美感` `#AI協作` `#引導角色` `#發現式學習` `#圖像理解` `#適性教學` `#數位學習` `#教師決策` `#創作` `#LearningExperience` `#PlatformNeutral` `#SystemEvolution` `#VisualThinking` `#DirectorThinking`
 
 # 後續新增格式
 
