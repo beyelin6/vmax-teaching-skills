@@ -1,6 +1,6 @@
 # NotebookLM Output Contract
 
-版本：0.1.0（開學可用版）
+版本：0.2.0（開學可用版）
 
 ## 定位
 
@@ -12,6 +12,47 @@ NotebookLM 是 V-MAX 的渲染器之一，主要負責：
 - 寫作教練音訊
 
 NotebookLM 不作為唯一知識來源，也不得自行改變已核准的教材內容、Lesson Flow、角色功能與教學順序。
+
+## 歷史脈絡與設計原因
+
+V-MAX 早期曾直接由 AI 生成簡報，但當時常出現：
+
+- 版面過度文字化
+- 圖像與文字割裂
+- 視覺風格不一致
+- 新增頁面後整體美感下降
+- 可編輯 PPT 雖方便修改，但難以穩定維持整套視覺品質
+
+因此，Bee 老師把「教材內容與教學設計」和「最終視覺渲染」分開：先由 V-MAX 決定內容、結構、角色、版型與圖片意圖，再交給 NotebookLM 產生高一致性的圖片式簡報。
+
+此設計不是對 NotebookLM 的永久綁定，而是 V-MAX 的 Renderer-Agnostic 原則：
+
+> 先保證教學內容與視覺規格正確，再交給當下最擅長呈現的渲染器。
+
+NotebookLM 是目前偏好的圖片式簡報與 Podcast Renderer，但未來可被其他具備更佳視覺一致性、排版、美感或音訊能力的平台替換。
+
+## Renderer-Agnostic Pipeline
+
+```text
+Lesson Knowledge / Lesson DNA
+        ↓
+Teaching Flow / Structure / Layout
+        ↓
+Theme / Visual DNA / Character DNA
+        ↓
+Slide Script / Visual Intent
+        ↓
+Renderer Adapter
+        ├─ NotebookLM
+        ├─ ChatGPT
+        ├─ Gemini
+        ├─ Canva
+        └─ Future Renderer
+        ↓
+Rendered Presentation / Audio
+```
+
+Core 層不得依賴 NotebookLM 專屬語法。NotebookLM 特有操作、限制與提示規則只存在本 Adapter。
 
 ## 必要輸入
 
@@ -132,3 +173,19 @@ Podcast 不逐字朗讀整份簡報，而應補充聽覺理解、想像、口語
 - 頁面是否過度文字化
 - 是否出現重複 `slides` 節點
 - 是否仍符合核准 Teaching Flow
+
+## Renderer 選擇原則
+
+當未來有多個可用 Renderer 時，優先比較：
+
+1. 視覺一致性
+2. 圖文整合能力
+3. 中文文字正確率
+4. 角色一致性
+5. 長簡報整套一致性
+6. 圖片式簡報品質
+7. 音訊／Podcast 品質
+8. 局部重生成能力
+9. 成本與處理時間
+
+Renderer 可更換；Lesson DNA、Visual DNA 與 Bee Teaching DNA 不隨平台更換而重寫。
