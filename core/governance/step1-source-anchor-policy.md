@@ -1,4 +1,4 @@
-# V-MAX STEP 1 Source Anchor Policy 1.0
+# V-MAX STEP 1 Source Anchor Policy 1.1
 
 ## 定位
 
@@ -7,6 +7,10 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 核心原則：
 
 > STEP 1 只回答「教材裡有什麼」，不提前回答「要怎麼演、怎麼畫、怎麼分頁」。
+
+來源取得另遵循：
+
+- `core/governance/source-library-policy.md`
 
 ---
 
@@ -84,6 +88,14 @@ STEP 1｜教材定錨
 
 STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、舊腳本或模型記憶取代來源真值。
 
+若教師已指定固定 Google Drive Source Library，預設先依 `core/governance/source-library-policy.md` 自動尋找冊別與課次：
+
+`Drive Source Library → 找冊別／原始手冊 → 定位課次 → STEP 1 教材定錨`
+
+只有來源庫找不到、版本衝突、檔案權限阻擋或資料不足時，才要求教師重新上傳或補充來源。
+
+不得明明來源庫已有完整原始手冊，仍要求教師每課重新上傳相同 PDF。
+
 舊成果只能作為後續教學設計參考，不得倒灌成 source truth。
 
 ---
@@ -105,6 +117,8 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 - source_data_complete_or_gaps_named: true
 - teacher_readable_card_rendered: true
 - machine_payload_not_primary_ui: true
+- source_library_checked_if_configured: true
+- no_unnecessary_reupload_request: true
 - no_scenario_lock: true
 - no_character_lock: true
 - no_style_lock: true
@@ -119,3 +133,5 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 > 先把教材讀對，再談怎麼教。
 
 > STEP 1 是教材定錨，不是視覺提案會議。
+
+> 原始教材放一次；之後 V-MAX 自己去來源庫找。
