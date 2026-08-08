@@ -1,483 +1,241 @@
-# V-MAX Knowledge Lab Ordering Policy 1.8
+# V-MAX Knowledge Lab Ordering Policy 1.9
 
 ## 定位
 
-本政策定義閱讀課中獨立 Knowledge Lab 與 `STEP 2.5 語文輻射` 的排序、分組、教師確認、AI 教學價值判讀，以及「課前預習單語文選擇」原則。
-
-Knowledge Lab 不是附錄，也不是把所有字詞逐項講完；它只處理需要獨立建立辨識、比較、語意或遷移關係的內容。
-
-核心原則：
-
-> 先忠實讀取教材已提供的知識項目，再完成形近字／多音字的語文分析，再由 AI 做「教學價值判讀」，最後由教師篩選、替換與補充深教範圍。
-
-> STEP 2.5 不只決定正式教學內容，也要同步決定哪些形近字／多音字值得先進入預習單。
-
-> 預習單可以精選，正式教學不能被預習單的容量上限反向裁切。
-
-> 教材原有 ≠ 一定深教；AI 推薦 ≠ 已決定。
-
-> STEP 2.5 首要輸出是「教師可讀、可快速決策的分析推薦卡」，機器 JSON 只屬資料層，不得取代教師介面。
-
----
-
-## A. 預設內容範圍
-
-Knowledge Lab 原則上處理：
-
-- 生字
-- 形近字／字群
-- 多音字
-- 成語
-- **認讀字（僅當來源狀態為 PRESENT）**
-
-語詞不列為固定 Knowledge Lab 項目。語詞跟著課文處理，而且只教教師選定或確認的重點語詞。
-
-正式教學層可整理為：
-
-- `CORE`：配合課文理解／生字辨析正式處理
-- `FLEX`：可短處理、可依班級時間調整
-- `BONUS`：學生自選挑戰／延伸，不要求全部完成
-- `LOW_PRIORITY`：教學價值較低或疑似雞肋，可由教師刪除
-
-這些層級屬 AI 判讀與教學調度，不是教材來源標籤。
-
-### A1. 生字完整性
-
-- 教材正式生字必須全部保留在本課資料層與正式教學規劃中。
-- 不因預習單容量、頁數、Renderer 或「3–5 組」規則刪減教材生字。
-- 並非每個生字都需要做完整形近字深究，但每個教材生字都必須有其應有的識寫／形音義教學位置。
-- 形近字深教數量由實際教學價值決定，不設固定 `3–5 組` 上限。
-- 多音字若屬教材正式學習內容，亦不受預習單 `3–5 組` 限制。
-
-### A2. 三、四年級生字深教聚焦
-
-以三、四年級教材為預設時，生字教學不採「每個字平均深教」。
-
-正式規則：
-
-1. **完整生字仍全部保留**：來源主檔、基本識寫、形音義與課文語境不能消失。
-2. **深教優先聚焦形近字**：挑選真正有字形混淆風險、部件辨析價值或高頻錯誤可能的字群。
-3. **深教優先聚焦多音字**：使用「讀音 × 語意 × 語境」建立辨義，不只背音表。
-4. 其他生字依教材與課文需求做基本處理，不預設每字都要獨立投影片、完整字源、形近字群或額外遊戲。
-5. 若某個非形近／非多音生字有特殊構形、語義、評量或課文理解價值，AI 可提出例外深教建議並說明理由。
-6. 不得因「聚焦形近字／多音字」而把其他教材正式生字從資料層或基礎識寫教學中刪除。
+本政策定義 `STEP 2.5 語文輻射` 與後段 Knowledge Lab 的分析、推薦、教師選擇與排序邏輯。
 
 核心：
 
-> 三、四年級的生字教學要有重心：完整保留，深教聚焦；形近字看辨析，多音字看語境。
+> 教材告訴我們「有什麼」；AI 分析哪些形近字／多音字值得教；老師保留單字詳解的最後決定權。
 
-> 「3–5 組」是預習單的精選容量，不是簡報的教學上限。
-
-### A3. 認讀字條件式處理
-
-認讀字依 `core/governance/recognition-only-character-policy.md` 處理。
-
-- `PRESENT`：Knowledge Lab 才建立認讀字內容。
-- `N/A_SOURCE_NOT_PRESENT`：明確記錄 N/A，不生成認讀字教學頁或活動。
-- `UNCERTAIN_SOURCE_LABEL`：維持待確認，不自行升級為正式認讀字。
-
-認讀字預設重點：
-- 字音辨識
-- 基本字義／語境
-- 必要的字形辨認線索
-- 與課文閱讀直接相關的識讀
-
-認讀字不因身分自動要求完整書寫、筆順或每字獨立深教。若有高價值形近／多音關係，可另以 AI_SUGGESTION 升級，但必須有理由。
-
-不得把偏旁識字活動誤判為認讀字清單。
+> 預習單可以精選，正式教學不能被預習單容量反向裁切。
 
 ---
 
-## B. 教材優先與教師篩選流程
+## A. 資料完整性
 
-生成 Knowledge Lab 前，系統先從教材／結構化轉錄來源完整讀取：
+生成 STEP 2.5 前必須完整讀取：
+- 本課正式生字
+- 認讀字 status（若 PRESENT）
+- 教材已列形近字／字形辨析
+- 教材已列多音字
+- 教材成語
+- 同冊預習單已確認的字群／多音字覆蓋紀錄
 
-- 本課完整正式生字清單
-- 認讀字 presence status 與清單（若 PRESENT）
-- 教材已列出的形近字／字形辨析
-- 本課多音字
-- 教材已列出的成語
-- 同冊前課已確認的預習單形近字／多音字覆蓋紀錄
-
-接著必須將四個層次分開呈現：
-
-### B1. 教材原有
-忠實列出來源，不因 AI 判斷而靜默刪除。正式生字與認讀字必須分欄保存。
-
-### B2. 形近字／多音字語文分析
-先整理可供教師判斷與後續教材生成的語文資料，不得直接跳到推薦結論。
-
-### B3. AI 教學價值判讀
-對每一個「形近字群／多音字／成語／認讀字（若 PRESENT）／其他語文活動」提供必要的教學價值判讀。
-
-形近字／多音字／成語至少提供：
-- `recommendation_index`：1–5
-- `recommendation_level`
-- `reason`：具體理由
-- `suggested_action`：深教／短辨析／Bonus／低優先
-
-三、四年級預設：形近字／多音字優先進入深教候選；一般生字不因完整性而自動升級為深教。
-
-認讀字則先遵守來源身分與識讀目的，不自動套用正式生字的書寫深教規格。
-
-### B4. 預習單選擇判讀
-只對需要進預習單容量判斷的形近字群與多音字額外提供：
-
-- `prestudy_recommendation`
-- `volume_duplication_status`
-- `volume_history`
-- `prestudy_reason`
-
-AI 必須主動判斷「值不值得先放進預習單」以及「同一冊是否已正式出現過」，不把查重工作交給教師。
+正式生字必須完整保留在資料層與基礎識寫層，不因深教選擇而消失。
 
 ---
 
-## C. 形近字分析整理｜Shape-near Analysis
+## B. 三、四年級生字深教邊界
 
-形近字分析是 STEP 2.5 的必經資料層與教師可見資訊，不得因為新增推薦指數、快速決策代號或預習單判讀而消失。
+AI 主動深教只有兩類：
 
-### C1. 每一組至少包含
+1. `SHAPE_NEAR`｜形近字／易混淆字群
+2. `POLYPHONIC`｜多音字
 
-- `target_character`：本課目標生字
-- `target_zhuyin`
-- `target_radical`
-- `comparison_characters`：比較字群
-- 每個比較字的 `zhuyin`
-- 每個比較字的 `radical`
-- `common_words`：常用詞／教材可理解詞語
-- `core_meaning`：學生可理解的核心字義
-- `component_analysis`：共同部件與差異部件
-- `confusion_point`：學生容易混淆的位置
-- `discrimination_cue`：如何辨認
-- `mnemonic`：可用則提供簡短記憶提示；不可硬湊
+其他正式生字預設：
 
-### C2. 顯示原則
+`BASIC_LITERACY_ONLY`
 
-教師端不需要看到冗長字典式資料，但必須能看出「為什麼這些字值得放在一起比較」。
+可在課文、造詞、基本形音義或識寫活動自然處理，但不預設獨立成頁。
 
-建議格式：
+### 單一生字詳解
 
-```text
-01｜泳／永／詠
+只有教師明確指定，才可建立：
 
-分析整理：
-- 泳 ㄩㄥˇ｜水部｜游泳、泳池｜在水中游動。
-- 永 ㄩㄥˇ｜水部｜永遠、永久｜長久、持續。
-- 詠 ㄩㄥˇ｜言部｜歌詠、吟詠｜用詩文或聲音吟唱。
+`TEACHER_ADDED_SINGLE_CHARACTER`
 
-構形辨析：三字共享「永」的字形核心；「泳」加水部連結水中活動，「詠」加言部連結吟唱。
-易混淆點：三字同音且外形接近，學生容易只憑右半部認字。
-辨認提示：先看部首，再連到字義。
-記憶提示：水中游泳，言語歌詠。
+教師指定後可依需要處理字義、部件、字源、易錯點、造詞、書寫提醒等。
 
-★★★★★ 5/5｜強烈推薦
-理由：本課生字直接相關，同音形近，部首與語意又能形成清楚辨析。
-教學建議：A 深教｜CORE
-預習單：P1 預習核心
-冊內紀錄：本冊尚未出現
-```
+AI 若覺得某單字值得補充，只能提出：
 
-### C3. 禁止
+`AI_SUGGESTION_SINGLE_CHARACTER`
 
-- 只列 `泳／永／詠｜5/5｜A` 而省略分析。
-- 只列部首與例詞，卻沒有說明共同部件、差異部件與混淆點。
-- 為了縮短 Teacher Selection Card，把分析全部藏進 machine JSON。
-- 用不可靠的自造字源／牽強聯想取代真正的構形辨析。
-- 把記憶提示當作正式字源解釋。
+不得自動升級、不得自動獨立成頁。
+
+以下皆不是 AI 自動建立第三類深教入口的合法理由：
+- 容易寫錯
+- 字形複雜
+- 字源有趣
+- 評量重要
+- 語義特殊
+- 課文理解可能相關
+
+權威邊界另見：`core/director/character-deep-teaching-focus-policy.md`。
 
 ---
 
-## D. 多音字分析｜Polyphonic Analysis
+## C. 形近字分析｜Shape-near
 
-多音字在三、四年級不得只做「列讀音」或「背詞表」。每一個深教多音字至少包含：
+每組至少包含：
+- target_character
+- target_zhuyin
+- target_radical
+- comparison_characters
+- 各比較字注音／常用詞／核心字義
+- component_analysis
+- confusion_point
+- discrimination_cue
+- mnemonic（可用才給，不硬湊）
+- recommendation_index 1–5
+- reason
+- suggested_action A–E
+- prestudy recommendation P1/P2/P3/PX/PE
 
+教師端必須看得到「為什麼值得放在一起比較」，不能只剩字群＋分數。
+
+學生可見頁型遵循：`skills/character-group-visual-comparison/SKILL.md`。
+
+---
+
+## D. 多音字分析｜Polyphonic
+
+多音字不得只列讀音表。
+
+每個深教多音字至少包含：
 - 各讀音
 - 各讀音對應核心語意
-- 教材／課文中的實際用法
-- 四年級可理解的生活語境
-- 容易誤讀或誤解的位置
-- 可用的語境判斷提示
-- 推薦指數、理由與教學層級
+- 課文中的實際用法
+- 生活語境
+- 易誤讀位置
+- 語境判斷提示
+- recommendation_index 1–5
+- reason
+- suggested_action
 
 核心：
 
 > 多音字不是兩個音，而是兩組「讀音 × 意思 × 情境」。
 
----
+### 多音字來源 Gate
 
-## E. 推薦指數｜Recommendation Index
+必須先遵循 `core/director/polyphonic-source-policy.md`。
 
-`STEP 2.5 語文輻射` 中，推薦指數為必填欄位，不得省略。
+合法來源只有：
+1. `TEXTBOOK_POLYPHONIC`
+2. `AI_RECOMMENDED_POLYPHONIC`：AI 只能從本課正式生字推薦
+3. `TEACHER_ADDED_POLYPHONIC`：教師依班級困難指定
 
-### 量尺
+形近補充字、比較字、認讀字、AI 補充字、課文一般字，不因本身具有多音而由 AI 自動建立多音字單元。
 
-- `5｜強烈推薦`：與本課課文、學生高混淆點、考評或高遷移價值高度相關，值得正式深教。
-- `4｜推薦`：有明確辨析／理解價值，適合核心或短辨析。
-- `3｜可選`：有學習價值，但非本課必要，可依班級／時間處理。
-- `2｜低優先`：來源雖有，但教學增益有限，適合 Bonus 或簡短帶過。
-- `1｜疑似雞肋`：與本課理解、常見錯誤或遷移關聯弱，AI 應主動提醒教師可刪除。
-
-### 指數判斷至少考慮
-
-```yaml
-recommendation_dimensions:
-  text_relevance: 0-2
-  confusion_risk: 0-2
-  transfer_value: 0-2
-  assessment_value: 0-1
-  cognitive_cost: 0 to -2
-  redundancy_penalty: 0 to -1
-```
-
-最終不需要把計分細節全部展示給教師；教師端需看到 `1–5 + 具體理由`。
-
-### 禁止
-
-- 因教材有列就全部給 4–5。
-- 因被分到 `CORE` 就不顯示推薦指數。
-- 因被分到 `BONUS` 就不做價值判讀。
-- 用推薦指數取代 Teacher Decision。
+若教師明確指定，才依 `TEACHER_ADDED_POLYPHONIC` 處理。
 
 ---
 
-## F. 快速教師決策代號｜Decision Codes
+## E. 認讀字條件式處理
 
-### 教學決策
+認讀字依 `core/governance/recognition-only-character-policy.md`。
 
-- `A｜深教`
-- `B｜短辨析`
-- `C｜Bonus`
-- `D｜刪除`
-- `E｜調整`
+- `PRESENT`：保留識讀層，重點是字音、基本字義／語境、必要辨認線索。
+- `N/A_SOURCE_NOT_PRESENT`：明確 N/A，不生成認讀字模組。
+- `UNCERTAIN_SOURCE_LABEL / SOURCE_CONFLICT`：維持待確認，不自行改判。
 
-### 預習單決策
+認讀字不因身分自動進：
+- 完整書寫深教
+- 形近字深教
+- 多音字深教
 
-- `P1｜預習核心`
-- `P2｜預習短看`
-- `P3｜本課不放`
-- `PX｜冊內已出現`
-- `PE｜調整`
-
-### 快速回覆
-
-若 AI 推薦都可接受：
-
-```text
-R
-```
-
-若只微調例外：
-
-```text
-R 2C/P2 5PE：補「坨」
-```
-
-注意：`P3/PX` 只代表預習單不放，不等於正式教學 `D 刪除`。
+若教師要額外處理，走教師指定入口；AI 不得因「認讀字本身是多音」自行升級。
 
 ---
 
-## G. 預習單 3–5 組規則
+## F. 成語推薦
 
-完整細則以 `core/worksheet/prestudy-language-selection-policy.md` 為準。
+STEP 2.5 先決定：
+- recommendation_index 1–5
+- reason
+- CORE / FLEX / BONUS / LOW_PRIORITY
+- teacher decision
 
-### 核心規則
+保留的成語再交給 STEP 2.6 決定：
+- student_friendly_meaning
+- life_example
+- understanding_goal
+- visual_expression
+- independent_page_recommendation
 
-1. `3–5 組` 只適用於預習單形近字／多音字主要練習區。
-2. 正式簡報／Knowledge Lab 不設 3–5 組上限。
-3. 教材生字完整保留；需要教的字仍需有正式教學位置。
-4. 形近字是否深教看教學價值，不看預習單還有沒有空位。
-5. 預習單可以只挑 3–5 組最值得「先看」的內容，其餘標 `P3`，但仍可在簡報 A/B/C 層教學。
-6. 同冊去重只限制預習單正式占位，不禁止簡報必要複習或再教。
-7. 若本課真正值得預習的只有 2 組，不硬湊 3 組；若教師指定或特殊課次需要超過 5 組，可例外調整。
-
----
-
-## H. 同冊去重｜Volume-level Deduplication
-
-1. 同一字群在同一冊原則上只在預習單正式出現一次。
-2. 字群比對採正規化，不因順序不同而視為不同群。
-3. 後課若只是前課完整字群的子集合，視為已覆蓋，除非新增了重要比較關係。
-4. 多音字以「字 + 讀音／語意對比」查重，不只看單一字。
-5. `PX` 不等於永不再教；可在簡報、口頭、考前整理中快速喚回。
-6. 只有教師確認的 `P1/P2` 才寫入本冊正式覆蓋紀錄。
+不得在 STEP 2.5 直接鎖漫畫格數或 Style Recipe。
 
 ---
 
-## I. STEP 2.5 教師端顯示格式
+## G. 預習單精選與同冊去重
 
-### I1. 教師決策卡是第一輸出
+`3–5 組` 只適用於預習單主要形近字／多音字練習區，不是正式簡報上限。
 
-當狀態為 `WAITING_CONFIRMATION` 時，AI 必須先輸出人類可讀的 Teacher Selection Card，不得只回 JSON、YAML、資料陣列或 `vocabulary[]`。
+代號：
+- `P1` 預習核心
+- `P2` 預習短看
+- `P3` 本課不放
+- `PX` 冊內已覆蓋
+- `PE` 調整
 
-對形近字，每一項的順序固定為：
-
-```text
-編號＋字群
-→ 分析整理
-→ 構形辨析／混淆點／辨認提示
-→ 推薦指數＋詳細理由
-→ 教學建議 A–E
-→ 預習單建議 P1/P2/P3/PX
-→ 冊內紀錄
-```
-
-若需要保留機器資料，可在教師決策卡之後附上 machine-readable payload；但該資料層不能取代分析推薦卡。
-
-### I2. 多音字分析也不得只剩結論
-
-每個多音字至少顯示：
-- 各讀音
-- 對應詞語
-- 詞義／使用情境
-- 課文使用
-- 易混淆點
-- 推薦指數與理由
-- 教學建議
-- 預習單建議與冊內查重
-
-### I3. 成語也必須先做推薦判讀
-
-成語在 STEP 2.5 不應只輸出 `definition / context / relatives / example`。每個成語必須先顯示：
-
-```text
-09｜躍躍欲試　★★★★★ 5/5｜強烈推薦
-理由：與本課運動、挑戰與想嘗試的情境高度相連，生活與寫作遷移價值高。
-教學建議：A 深教｜CORE
-理解需求：動作＋心理狀態；適合生活例句與句意插圖。
-```
-
-其 `definition / context / relatives / example` 屬後續內容資料，不是教師確認介面的替代品。
-
-成語若被保留，後續必須交給 `core/director/idiom-expression-visualization-policy.md` 的 STEP 2.6 進一步決定生活例句與視覺表達方式。
-
-### I4. 生字完整清單、認讀字與深教焦點分開
-
-`生字檢查數` 只能做 audit，不代表生字教學已完成。STEP 2.5 必須能證明：
-
-- 教材正式生字完整清單仍在資料層與正式教學規劃中。
-- 認讀字若來源 PRESENT，另列識讀層；若 N/A，不生成。
-- 三、四年級深教預設聚焦形近字與多音字。
-- 形近字推薦只是「哪些生字值得額外做字群辨析」。
-- 未被選入形近字群或多音字深教的教材生字不得因此消失。
-- 一般生字可回到課文語境、識寫或基礎形音義處理，不必機械做同規格深教頁。
+同冊多音字查重採「字＋讀音／語意對比」，形近字群採正規化群組比對。
 
 ---
 
-## J. STEP 2.5 必填資料格式
+## H. STEP 2.5 教師可見卡
+
+第一輸出必須是教師可讀卡，不得以 raw JSON/YAML 取代。
+
+形近字順序：
+`字群 → 分析 → 混淆點／辨認提示 → 推薦指數＋理由 → A–E → P1/P2/P3/PX`
+
+多音字順序：
+`字 → 合法來源 → 各讀音／語意／語境 → 課文用法 → 易混淆點 → 推薦指數＋理由 → 教學／預習單建議`
+
+單字詳解候選若為 AI 提示，只能顯示 `AI_SUGGESTION_SINGLE_CHARACTER`，等待教師指定，不得混進已確認深教清單。
+
+---
+
+## I. 必填資料骨架
 
 ```yaml
 step_2_5_language_radiation:
   status: WAITING_CONFIRMATION
-  volume_id:
-
-  teaching_scope:
-    source_characters_complete: true
-    recognition_only_status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL
-    formal_teaching_group_cap: NONE
-    grade_3_4_character_deep_focus:
-      - SHAPE_NEAR
-      - POLYPHONIC
-
-  prestudy_scope:
-    preferred_group_range: 3-5
-    hard_cap: false
-
-  teacher_selection_card:
-    required: true
-    rendered_before_machine_payload: true
-    shape_near_analysis_required: true
-    polyphonic_context_analysis_required: true
-
+  source_characters_complete: true
+  recognition_only_status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL | SOURCE_CONFLICT
+  ai_active_deep_teaching_categories:
+    - SHAPE_NEAR
+    - POLYPHONIC
+  single_character_rule: TEACHER_ONLY
   items:
     - id:
       category: CHARACTER | RECOGNITION_ONLY | SHAPE_NEAR | POLYPHONIC | IDIOM | OTHER
-      item:
       provenance:
       analysis:
-        target_character:
-        target_zhuyin:
-        target_radical:
-        comparison_characters: []
-        common_words: []
-        core_meanings: []
-        component_analysis:
-        confusion_point:
-        discrimination_cue:
-        mnemonic:
       recommendation_index:
-      recommendation_level:
-      ai_suggested_decision:
       reason:
+      ai_suggested_decision:
       teacher_decision: PENDING
       prestudy:
-        applicable: true | false
-        ai_recommendation: P1 | P2 | P3 | PX
-        volume_duplication_status: NEW | COVERED | PARTIAL_OVERLAP | NEW_RELATION
-        volume_history: []
-        reason:
-        teacher_decision: PENDING
+        ai_recommendation:
+        volume_duplication_status:
 ```
 
-若資料層沒有完整教材生字，或系統用 `3–5 組` 規則刪掉正式教學內容，STEP 2.5 視為 `INCOMPLETE`。
-
-若來源 `recognition_only_status = N/A_SOURCE_NOT_PRESENT` 卻仍生成認讀字內容，STEP 2.5 視為 `INCOMPLETE`。
-
-若 `WAITING_CONFIRMATION` 只輸出 raw JSON / YAML 而沒有教師分析推薦卡，STEP 2.5 同樣視為 `INCOMPLETE`，不得進入下一個 HOLD。
-
-若形近字只顯示字群＋推薦結果，卻沒有分析整理／構形辨析／混淆點，STEP 2.5 亦視為 `INCOMPLETE`。
-
 ---
 
-## K. AI 的責任
+## J. Failures
 
-AI 必須同時做到：
+以下視為 `INCOMPLETE / FAIL`：
+- 正式生字不完整
+- 每個生字平均深教
+- AI 以易錯／字源／評量理由自行建立單字詳解頁
+- 形近補充字因本身多音而被 AI 拉進多音字單元
+- 認讀字因本身多音而被 AI 自動升級
+- 多音字只有音表
+- 形近字只有字群＋推薦結果、沒有辨析分析
+- 預習單 3–5 組反向刪掉正式教學
+- WAITING_CONFIRMATION 只輸出 machine payload
 
-- 保留完整教材正式生字
-- 先讀取 STEP 1 的認讀字 presence status，不以年級猜測
-- 認讀字有才處理、沒有就 N/A，不自行補造
-- 對三、四年級先完成形近字／多音字深教候選分析
-- 判斷哪些一般生字只需基本識寫／形音義，哪些值得例外深教
-- 先完成形近字／多音字分析整理，再做推薦
-- 對正式教學內容給完整推薦，不受預習單容量限制
-- 再從中精選適合預習單先看的 3–5 組左右高價值項目
-- 比較本冊前課已確認的字群／多音字紀錄
-- 判斷重複、部分重疊或新關係
-- 說明為什麼某項「要教但不放預習單」
-- 在等待教師確認時先呈現完整分析、推薦理由與快速決策代號，不把結構化資料直接丟給教師自己判讀
-
-教師主要看分析與推薦後微調例外，不需要自己重做形近字判讀。
-
----
-
-## L. Director Engine 接軌
-
-1. 讀取完整教材正式生字、認讀字 status、形近字、多音字、成語資料。
-2. 若 recognition-only = PRESENT，建立識讀層；若 N/A，明確跳過且不生成模組。
-3. 三、四年級先建立「完整生字基礎層」與「形近字／多音字深教候選層」。
-4. **先完成形近字與多音字語文分析整理。**
-5. 再完成正式教學價值判讀，不設 3–5 組上限。
-6. 再讀取同冊 `Volume Language Coverage`。
-7. 從正式候選中精選預習單約 3–5 組形近字／多音字。
-8. **先輸出 Teacher Selection Card：完整分析、推薦指數、理由、A–E、P1/P2/P3/PX。**
-9. 若有 machine payload，再於教師卡後輸出；不得反過來。
-10. 教師主要採 `R` 沿用，僅微調例外。
-11. 成語保留結果交給 STEP 2.6 決定例句與視覺表達。
-12. AI 依確認內容分 Knowledge Chunk，並同步輸出預習單語文項目。
-13. 教師確認的 P1/P2 寫回本冊 Coverage Registry。
-14. 才進入預習單版面與完整 Slide Architecture。
+失敗分類：
+`CHARACTER_SCOPE_EXPANSION / SINGLE_CHARACTER_AUTO_DEEPENING / POLYPHONIC_SOURCE_LEAK / CHARACTER_DEPTH_FLATTENING / POLYPHONIC_CONTEXT_FAIL / SHAPE_NEAR_ANALYSIS_DROPPED`
 
 ---
 
 ## 核心金句
 
-> 教材告訴我們「有什麼」，分析告訴老師「這些字之間到底有什麼關係」，AI 再告訴老師「該教到什麼深度」。
+> 生字表 ≠ 生字教學清單。
 
-> 認讀字看來源，不看年級猜；有才教，沒有就明確 N/A。
+> AI 主動教形近字與多音字；單一生字詳解由老師指定。
 
-> 三、四年級生字：完整保留，深教聚焦形近字與多音字。
-
-> 推薦不能取代分析；代號不能取代語文判斷。
-
-> 預習單要精選；正式教學要完整。
-
-> 結構化資料是給系統讀的；STEP 2.5 的確認畫面是給老師做決策的。
+> 多音字先看來源身分，再談讀音教學。
