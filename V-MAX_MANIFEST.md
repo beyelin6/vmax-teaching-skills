@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.5
+# V-MAX Manifest 1.6
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.5
+vmax_manifest_version: 1.6
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -25,12 +25,17 @@ executor:
   path: skills/vmax-golden-path-executor/SKILL.md
   current_version: 1.1
 source_library_policy: core/governance/source-library-policy.md
-step1_source_anchor: core/governance/step1-source-anchor-policy.md
+step1_source_anchor:
+  path: core/governance/step1-source-anchor-policy.md
+  current_version: 1.2
+recognition_only_character_policy:
+  path: core/governance/recognition-only-character-policy.md
+  current_version: 1.0
 hold_policy: core/governance/hold-teacher-interface-policy.md
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
-  current_version: 1.7
+  current_version: 1.8
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
   current_version: 1.0
@@ -111,6 +116,23 @@ SOURCE 0
 
 ---
 
+## Recognition-only Character Resolution
+
+認讀字／只認不寫／無方格字採 **Source-driven Presence Detection**：
+
+- `PRESENT`：來源有列，完整保留，與正式生字分開。
+- `N/A_SOURCE_NOT_PRESENT`：來源沒有，明確留下 N/A，不生成認讀字模組。
+- `UNCERTAIN_SOURCE_LABEL`：來源標示不清，保留原標籤進 HOLD 1，不自行改判。
+
+重要邊界：
+- 不以「一二三年級常見、四上目前未見」直接寫成永久年級規則。
+- 年級經驗只能提醒 AI 注意檢查，不能取代來源真值。
+- 偏旁識字活動不得誤判成認讀字。
+
+權威規則：`core/governance/recognition-only-character-policy.md`。
+
+---
+
 ## Grade 3–4 Character Teaching Resolution
 
 以三、四年級教材為預設時：
@@ -119,6 +141,7 @@ SOURCE 0
 - 深教預設聚焦 `SHAPE_NEAR` 與 `POLYPHONIC`。
 - 一般生字維持基本識寫／形音義，不預設每字同規格深教。
 - 非形近／非多音字若有特殊構形、語義、評量或文本理解價值，可由 AI 提出例外深教建議。
+- 認讀字若來源 PRESENT，屬識讀層，不因身分自動套用正式生字書寫深教規格。
 
 權威規則：`core/director/knowledge-lab-ordering-policy.md`。
 
@@ -203,6 +226,8 @@ Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、
 > Manifest 決定現在誰是權威；模型不靠記憶猜版本。
 
 > GitHub 管系統，Drive 管每一課；兩者職責不要混在一起。
+
+> 認讀字看來源，不看年級猜；有才保留，沒有也要留下 N/A。
 
 > 三、四年級生字完整保留、深教聚焦；成語先決定教不教，再決定怎麼看懂。
 
