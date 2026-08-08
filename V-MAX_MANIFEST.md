@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.0
+# V-MAX Manifest 2.1
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.0
+vmax_manifest_version: 2.1
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -38,12 +38,15 @@ knowledge_lab_ordering:
   current_version: 1.8
 character_deep_teaching_focus:
   path: core/director/character-deep-teaching-focus-policy.md
-  current_version: 1.0
+  current_version: 1.1
 polyphonic_source_policy:
   path: core/director/polyphonic-source-policy.md
   current_version: 1.0
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
+  current_version: 1.0
+character_teaching_regression:
+  path: tests/character-teaching-regression-cases.md
   current_version: 1.0
 lesson_visual_map:
   path: core/visual/lesson-visual-map.md
@@ -136,15 +139,11 @@ SOURCE 0
 
 ## Recognition-only Character Resolution
 
-認讀字／只認不寫／無方格字採 **Source-driven Presence Detection**：
+認讀字／只認不寫／無方格字採 Source-driven Presence Detection：
 
 - `PRESENT`：來源有列，完整保留，與正式生字分開。
 - `N/A_SOURCE_NOT_PRESENT`：來源沒有，明確留下 N/A，不生成認讀字模組。
 - `UNCERTAIN_SOURCE_LABEL`：來源標示不清，保留原標籤進 HOLD 1，不自行改判。
-
-重要邊界：
-- 不以年級慣例取代來源真值。
-- 偏旁識字活動不得誤判成認讀字。
 
 權威規則：`core/governance/recognition-only-character-policy.md`。
 
@@ -155,27 +154,27 @@ SOURCE 0
 以三、四年級教材為預設時：
 
 - 教材正式生字全部完整保留。
-- 深教只採三類入口：`SHAPE_NEAR`、`POLYPHONIC`、`ERROR_PRONE_WRITING`。
-- 形近字重點是辨析；多音字重點是讀音 × 語意 × 語境；易錯字重點是具體書寫錯誤風險。
-- 其他一般生字標記為 `BASIC_LITERACY_ONLY`，不預設獨立成頁。
-- 非標準一般生字深教只能標 `AI_SUGGESTION_NONSTANDARD`，需教師明確確認。
+- **AI 主動深教只有兩類入口：`SHAPE_NEAR`、`POLYPHONIC`。**
+- 一般生字標記為 `BASIC_LITERACY_ONLY`，不預設獨立成頁。
+- **單一生字詳解只有教師明確指定才可建立**，標記 `TEACHER_ADDED_SINGLE_CHARACTER`。
+- 容易寫錯、字形複雜、字源有趣、評量重要或語義特殊，都不是 AI 自動建立單字深教頁的合法理由。
+- AI 可提醒某字可能需要額外處理，但只能標 `AI_SUGGESTION_SINGLE_CHARACTER`；教師確認後才可升級。
 
 權威規則：
-- `core/director/character-deep-teaching-focus-policy.md`
-- `core/director/knowledge-lab-ordering-policy.md`
+- `core/director/character-deep-teaching-focus-policy.md` v1.1
+- `tests/character-teaching-regression-cases.md`
+
+若 `knowledge-lab-ordering-policy.md` 或舊文件仍含「AI 可因特殊構形／語義／易錯而自行例外深教單字」的舊表述，視為 **deprecated conflict**，以本節與 `character-deep-teaching-focus-policy.md` v1.1 的較窄規則為準。
 
 ### Polyphonic Source Resolution
 
 多音字合法來源只有三種：
 
 1. `TEXTBOOK_POLYPHONIC`：教材明列，必須保留。
-2. `AI_RECOMMENDED_POLYPHONIC`：教材未明列時，AI 只能從「本課正式生字」中推薦，且必須有明確教學價值。
+2. `AI_RECOMMENDED_POLYPHONIC`：教材未明列時，AI 只能從本課正式生字中推薦，且必須有明確教學價值。
 3. `TEACHER_ADDED_POLYPHONIC`：教師可因班級反覆誤讀、語境判斷困難或影響課文理解而指定加入，即使該字不是本課正式生字。
 
-重要邊界：
-- 形近補充字、比較字、AI 補充字，不因本身具有多音而自動升級。
-- 課文中非正式生字的字，AI 不得自行建立多音字單元。
-- 教師指定一經確認，後段不得因「不是正式生字」而刪除，必須納入 Teacher Intent Lock / locked decisions。
+形近補充字、比較字、AI 補充字，不因本身具有多音而自動升級。
 
 權威規則：`core/director/polyphonic-source-policy.md`。
 
@@ -264,18 +263,14 @@ SOURCE 0
 
 Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Character Deep Teaching scope、Polyphonic Source identity、Lesson Visual Map invariant、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
 
-若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
-
 ---
 
 ## 核心金句
 
-> Manifest 決定現在誰是權威；模型不靠記憶猜版本。
+> 生字表 ≠ 生字教學清單。
 
-> GitHub 管系統，Drive 管每一課；兩者職責不要混在一起。
+> AI 主動教形近字與多音字；單一生字詳解由老師指定。
 
 > 多音字先看身分，再看讀音：教材明列保留；AI 只從正式生字推薦；老師可以因班級真實困難指定加入。
-
-> 形近字看辨析，多音字看語境，易錯字看書寫；其他生字完整保留，但不平均深教。
 
 > 語詞隨文理解；句型回到原句；修辭從文本發現。
