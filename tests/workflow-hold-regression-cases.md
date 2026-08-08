@@ -1,146 +1,40 @@
-# V-MAX Workflow HOLD Regression Cases 1.5
+# V-MAX Workflow HOLD Regression Cases 1.6
 
 ## 用途
 
-本檔用真實工作流失敗案例檢查 V-MAX 在新對話／重跑時是否仍遵守 Teacher UI、STEP 1 邊界、STEP 2 / 2.5 / 2.6 推薦深度、三四年級生字聚焦、認讀字來源判定、自然教學節奏、單階段前進與頁數延後原則。
+本檔用真實失敗案例檢查 V-MAX 在重跑時是否仍遵守：Teacher UI、STEP 1 邊界、認讀字雙來源核對、STEP 2 / 2.5 / 2.6、三四年級生字聚焦、多音字來源 Gate、文本嵌入、Lesson Visual Map 保留、單階段前進與頁數延後。
 
 ---
 
-## CASE W-01｜STEP 1 不得提前進視覺／情境
+## W-01｜STEP 1 不得提前進視覺／情境
+PASS：教材真值、課文結構、完整正式生字、認讀字 status、教材詞語／成語／語文活動、來源與待確認處、HOLD 1。
+BLOCKER：Scenario / Character / Style / 頁數先決定。
 
-### PASS 必須包含
-- 教師可讀 `STEP 1｜教材定錨` 卡
-- 課名／作者／年級冊別／文體
-- 課文結構或詩節
-- 完整教材正式生字
-- 認讀字 presence check
-- 認讀字完成「課文頁下方小字 × 課後獨立生字表」雙來源核對
-- 教材詞語
-- 教材成語
-- 教材語文活動
-- 來源或待確認處
-- `HOLD 1`
+## W-02｜STEP 2.5 必須先分析，再推薦
+形近字 PASS：注音、部件、詞義、共同／差異、混淆點、辨認提示、推薦指數與理由。
+多音字 PASS：合法來源、各讀音、語意、課文／生活語境、易混淆點、推薦理由。
+成語 PASS：推薦指數、理由、教學層級；不提前鎖最終頁型。
 
-### BLOCKER
-- raw JSON 作為主要確認畫面
-- Scenario / Character / Style 已選定
-- 頁數／版型已決定
-- 已決定所有段落使用相同教學迴圈
+## W-03｜預習單 3–5 組不得裁切正式教學
+PASS：正式生字完整、Knowledge Lab 無 3–5 組硬上限、P3/PX 不等於刪除。
 
----
+## W-04｜HOLD 教師介面優先
+PASS：Teacher Confirmation Card → 明確 HOLD → 最少決策方式 → 唯一下一步。machine payload 不得當主要 UI。
 
-## CASE W-02｜STEP 2.5 必須先分析，再推薦
+## W-05｜STEP 2.5、2.6、Knowledge Lab 不可合併
+PASS：2.5 做語文分析與保留；2.6 做成語例句／理解／視覺關係；Knowledge Lab 後段才分 Chunk。
 
-### PASS｜形近字
-每一組至少包含：目標字／比較字、注音、部首、常用詞、核心字義、共同／差異部件、易混淆點、辨認提示、推薦指數、詳細理由、A–E 教學建議、P1/P2/P3/PX 預習單建議。
+## W-06｜AI 教學推薦不可被跳過
+PASS：頁數／逐頁腳本之前必須先看見有理由的推薦、可縮短與 Bonus，並停 HOLD 2。
 
-### PASS｜多音字
-- 各讀音
-- 語意
-- 教材／生活情境
-- 課文使用
-- 易混淆點
-- 推薦指數與理由
-- 教學建議
+## W-07｜文本單位不得機械套固定模板
+PASS：每段／詩節依自己的理解任務決定頁數與教法。
+BLOCKER：每段固定步驟、固定頁數、固定問題數。
 
-### PASS｜成語
-- 推薦指數與理由
-- 教學層級
-- 理解需求
-- STEP 2.5 不鎖死漫畫格數或最終頁型
+## W-08｜頁數只能在 Slide Architecture 後估算
+PASS：Teacher Intent、Lesson Map、Session Map、Knowledge Lab、Visual Grammar / Slide Architecture 已成立。
 
-### PASS｜認讀字
-- 只在 STEP 1 雙來源核對後狀態為 PRESENT 時進入處理
-- 與正式生字分開
-- 預設以識讀、字音、基本字義／語境為主
-- N/A_SOURCE_NOT_PRESENT 時不得生成內容
-- SOURCE_CONFLICT / UNCERTAIN_SOURCE_LABEL 時不得逕自生成正式認讀字教學
-
-### BLOCKER
-- 形近字只有字群＋推薦，沒有分析
-- 多音字只有讀音表
-- 成語只有 definition/context/example，沒有推薦
-- 來源無認讀字卻自行補造
-- 直接進 Slide Architecture
-
----
-
-## CASE W-03｜預習單 3–5 組不得裁切正式教學
-
-### PASS
-- 正式教材生字完整保留
-- 正式 Knowledge Lab 無 3–5 組硬上限
-- 預習單只精選高價值形近字／多音字
-- P3/PX 不等於正式教學刪除
-
----
-
-## CASE W-04｜所有 HOLD 教師介面優先
-
-### PASS
-1. Teacher Confirmation Card
-2. 明確 HOLD
-3. 簡短決策方式
-4. 清楚標示「確認後唯一下一步」
-5. machine payload 預設隱藏
-
----
-
-## CASE W-05｜STEP 2.5、2.6 與 Knowledge Lab 不可合併
-
-### PASS
-- STEP 2.5：語文分析、推薦、保留範圍、預習單選擇
-- STEP 2.6：保留成語的例句、理解重點、視覺表達關係
-- Knowledge Lab：後段才分 Chunk、決定位置與頁面結構
-
-### BLOCKER
-- STEP 2.5 直接決定漫畫格／Layout
-- STEP 2.6 直接鎖 Style Recipe／色碼／最終構圖
-- Knowledge Lab 靜默改掉 2.5／2.6 已確認內容
-
----
-
-## CASE W-06｜AI 教學推薦層不可被跳過
-
-### PASS
-在任何頁數／逐頁腳本之前，教師必須看見：值得深教的亮點、理由、可縮短項目、Bonus／低優先、保留發現空間的位置，並停在 `HOLD 2`。
-
-### BLOCKER
-- STEP 1 確認後直接頁數帳本
-- 只有 CORE/FLEX/BONUS 沒有理由
-- STEP 2 結尾不出 HOLD 2
-
----
-
-## CASE W-07｜文本單位不得機械套固定教學模板
-
-### PASS
-- 每個自然段／詩節先判斷自己最重要的理解任務。
-- 有的段落可一頁完成，有的可多頁深入。
-- 朗讀、語詞、修辭、證據推論只在真正有價值時成為獨立 Shot。
-
-### BLOCKER
-- 每段固定相同步驟
-- 每段固定相同頁數
-- 為形式完整硬塞低價值內容
-
----
-
-## CASE W-08｜頁數只能在 Slide Architecture 後估算
-
-### PASS
-頁數估算前至少完成 Teacher Intent、Lesson Map、Session Map、Scenario/Character（可 OFF）、Knowledge Lab、Visual Grammar / Slide Architecture。
-
-### BLOCKER
-- 前段固定總頁數
-- 為守頁數而填塞／壓縮內容
-
----
-
-## CASE W-09｜一次確認不得讓流程飛站
-
-### 正式 PASS 鏈條
-
+## W-09｜一次確認不得飛站
 ```text
 HOLD 1 → STEP 2 → HOLD 2
 HOLD 2 → STEP 2.5 → HOLD 2.5
@@ -148,153 +42,87 @@ HOLD 2.5 → STEP 2.6 → HOLD 2.6
 HOLD 2.6 → Teacher Intent Lock
 ```
 
-### BLOCKER
-- 一個確認後連跑兩個以上決策層
-- 教師需要主動叫 AI 停下來
+## W-10｜HOLD 下一步指向必須正確
+禁止 HOLD 2 指向頁數／角色／風格；禁止 HOLD 2.5 直接跳 Teacher Intent；禁止 HOLD 2.6 跳逐頁腳本。
 
----
+## W-11｜成語不能只留下名稱
+PASS：每個保留成語仍可追溯 student_friendly_meaning、life_example、understanding_goal、visual_expression、independent_page_recommendation。
+FAIL：只有名稱／定義、沒有生活例句、所有成語固定同一漫畫格數。
 
-## CASE W-10｜HOLD 的下一步指向必須正確
-
-### PASS
-- HOLD 1 → STEP 2
-- HOLD 2 → STEP 2.5
-- HOLD 2.5 → STEP 2.6
-- HOLD 2.6 → Teacher Intent Lock
-
-### BLOCKER
-- HOLD 2 指向頁數／簡報模組
-- HOLD 2.5 直接指向 Teacher Intent / Renderer / Style
-- HOLD 2.6 指向逐頁腳本而跳過 Teacher Intent
-
----
-
-## CASE W-11｜成語不能只留下名稱
-
+## W-12｜三、四年級生字：AI 只主動形近字＋多音字
 ### 真實失敗模式
-STEP 2.5 保留了成語，但進視覺規劃後只剩成語名稱；先前期待的生活例句、單圖或漫畫表達全部消失。
+系統把「易錯字／字形複雜／字源有趣／評量重要」變成第三個 AI 自動深教入口，或每個生字平均做獨立頁。
 
 ### PASS
-對每個保留成語，STEP 2.6 至少包含：
-- student_friendly_meaning
-- life_example
-- example_provenance
-- understanding_goal
-- visual_expression
-- visual_reason
-- independent_page_recommendation
-
-Visual Grammar / Slide Architecture 後仍可追溯上述資訊。
+- 教材正式生字全部留在 Source / 基礎識寫層。
+- AI 主動深教只有 `SHAPE_NEAR`、`POLYPHONIC`。
+- 一般單字為 `BASIC_LITERACY_ONLY`，不自動獨立成頁。
+- AI 想提醒單字，只能標 `AI_SUGGESTION_SINGLE_CHARACTER`。
+- 只有教師明確指定，才升級 `TEACHER_ADDED_SINGLE_CHARACTER`。
 
 ### BLOCKER
-- 成語只剩名稱／定義
-- 沒有生活例句
-- 沒有判斷單圖／前後對照／漫畫／同框比較／文字優先
-- 所有成語固定同一漫畫格數
-- 圖像只畫典故，和實際例句句意無關
+- `ERROR_PRONE_WRITING` 成為 AI 自動第三入口。
+- 「特殊構形／語義／評量價值」直接讓 AI 建單字頁。
+- 每字固定同規格頁面。
 
-### 預期分類
-`IDIOM_EXPRESSION_DROPPED / IDIOM_VISUAL_DRIFT / IDIOM_TEMPLATE_DRIFT`
+分類：`SINGLE_CHARACTER_AUTO_DEEPENING / CHARACTER_SCOPE_EXPANSION / CHARACTER_DEPTH_FLATTENING`
+
+## W-13｜認讀字必須雙來源核對
+PASS：同時檢查課文頁下方小字與課後獨立生字表／生字教學頁。
+- 無方格只作線索，不單獨判定。
+- 兩處不一致 → `SOURCE_CONFLICT`。
+- 來源無認讀字 → `N/A_SOURCE_NOT_PRESENT`。
+BLOCKER：只看一處、把形近補充字當認讀字、無方格直接等於認讀字。
+
+## W-14｜多音字來源不得滲漏
+PASS 合法來源只有：
+1. `TEXTBOOK_POLYPHONIC`
+2. `AI_RECOMMENDED_POLYPHONIC`（AI 只從本課正式生字推薦）
+3. `TEACHER_ADDED_POLYPHONIC`
+
+BLOCKER：
+- 形近補充字因本身多音被 AI 拉進多音字單元。
+- 認讀字／比較字／課文一般字被 AI 自動升級多音字。
+
+分類：`POLYPHONIC_SOURCE_LEAK`
+
+## W-15｜語詞、句型、修辭不得脫離原文
+PASS：
+- 語詞：原文片段＋語詞＋學生易懂意義。
+- 句型：課文原句＋結構＋仿用。
+- 修辭：原文 → 發現效果 → 命名。
+FAIL：語詞只有定義、句型只有公式、修辭只有名稱。
+
+## W-16｜已選整課圖像心智地圖不得消失
+PASS：若教師已選 Lesson Visual Map，簡報大綱、Slide Architecture、頁數估算、Renderer 都明確保留。
+FAIL：只藏在策略欄、簡報大綱找不到、後段靜默刪除。
+分類：`LVM_OUTLINE_DROPPED`
+
+## W-17｜Drive 歸檔不得回到舊五類結構
+PASS：每課版本固定六類：
+`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`。
+完整重做依 Drive 現況建立 `_01 / _02...`，上傳後再 list/search 驗證。
+FAIL：使用舊 `01_來源主檔 / 02_生成腳本 / 03_角色與視覺資產 / 04_簡報成品 / 05_學習單` 結構。
 
 ---
 
-## CASE W-12｜三、四年級生字不得平均深教
-
-### 真實失敗模式
-為了「生字完整」，每個生字都生成同規格獨立教學頁，造成簡報膨脹、重複與教學重心消失。
-
-### PASS
-- 教材正式生字全部保留在 Source / 基礎識寫層。
-- AI 主動深教只聚焦形近字與多音字。
-- 形近字有真正辨析價值才深教。
-- 多音字以讀音 × 語意 × 語境處理。
-- 一般生字不自動獨頁。
-- 單一生字詳解只有教師明確指定才可建立。
-
-### BLOCKER
-- 每字固定同規格頁面
-- 因未列入形近字／多音字就讓教材生字消失
-- 多音字只有音表沒有語境
-- 為湊數加入低價值形近字
-- AI 以易錯／複雜／有趣為由自行建立單字詳解頁
-
-### 預期分類
-`CHARACTER_DEPTH_FLATTENING / SHAPE_NEAR_VALUE_FAIL / POLYPHONIC_CONTEXT_FAIL / SINGLE_CHARACTER_AUTO_EXPANSION`
-
----
-
-## CASE W-13｜認讀字必須依教材生字系統雙來源判定
-
-### 真實失敗模式 A｜只看課後生字表
-教材在課文頁下方小字有生字提示，但 AI 只抓課後獨立生字表，造成認讀字或生字身分遺漏。
-
-### 真實失敗模式 B｜只看課文頁底
-AI 只讀課文頁下方小字，沒有回頭核對課後獨立生字表，因此無法確認哪些是正式書寫生字、哪些是認讀字。
-
-### 真實失敗模式 C｜把無方格當定義
-AI 看到某字沒有書寫方格，就直接判定為認讀字。
-
-### PASS
-STEP 1 必須同時檢查：
-
-```text
-課文頁下方小字
-＋
-課後獨立生字表／生字教學頁
-→ 交叉核對
-```
-
-並留下：
-
-```yaml
-recognition_only_characters:
-  status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL | SOURCE_CONFLICT
-  textbook_footer_evidence: []
-  posttext_character_table_evidence: []
-  cross_check_status: MATCH | PARTIAL_MATCH | CONFLICT | NOT_APPLICABLE
-```
-
-正式定義：
-- 認讀字是教材在本課生字系統中明確列為「需識讀、但非正式書寫生字」的字。
-- 無方格、字小、位於頁底只能作為辨識線索，不能單獨作為判定依據。
-
-### BLOCKER
-- 只讀其中一個教材位置
-- 沒有完成雙來源交叉核對
-- 把無方格直接當認讀字定義
-- 課文中一般字被誤標為認讀字
-- 形近補充字／比較字被誤標為認讀字
-- 來源有認讀字但 STEP 1 完全沒列
-- 來源無認讀字卻由 AI 自行補造
-- 兩處來源有差異卻靜默合併
-- SOURCE_CONFLICT 還直接進 Knowledge Lab
-- N/A 後仍生成認讀字頁
-
-### 預期分類
-`RECOGNITION_CHAR_DROPPED / RECOGNITION_CHAR_HALLUCINATED / RECOGNITION_CHAR_MISCLASSIFIED / RECOGNITION_SOURCE_CROSSCHECK_MISSING / RECOGNITION_SOURCE_CONFLICT_IGNORED`
-
----
-
-## 整體 PASS 條件
+## 整體 PASS
 
 ```yaml
 workflow_hold_regression:
-  step1_teacher_ui: PASS
-  recognition_footer_checked: PASS
-  recognition_posttext_table_checked: PASS
-  recognition_source_crosscheck: PASS
-  recognition_only_source_detection: PASS
-  no_recognition_only_hallucination: PASS
-  step2_recommendation_not_skipped: PASS
-  step2_5_analysis_preserved: PASS
-  grade_3_4_character_focus: PASS
-  idiom_expression_stage_present: PASS
-  idiom_expression_preserved_downstream: PASS
-  prestudy_scope_separated: PASS
+  source_anchor: PASS
+  recognition_dual_source: PASS
+  step2_recommendation: PASS
+  step2_5_analysis: PASS
+  teacher_only_single_character: PASS
+  polyphonic_source_gate: PASS
+  idiom_expression_preserved: PASS
+  text_embedded_language: PASS
+  lesson_visual_map_preserved: PASS
+  drive_archive_structure: PASS
   no_template_drift: PASS
   no_premature_page_lock: PASS
   single_stage_advance: PASS
-  next_stage_pointer_correct: PASS
 ```
 
-只要其中一項 FAIL，不應宣告「工作流回歸測試完成」。
+任一 FAIL，不得宣告工作流回歸測試完成。
