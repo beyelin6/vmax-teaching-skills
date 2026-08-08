@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.3
+# V-MAX Manifest 1.4
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.3
+vmax_manifest_version: 1.4
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -20,13 +20,20 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 1.8
+  current_version: 1.9
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
+  current_version: 1.1
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor: core/governance/step1-source-anchor-policy.md
 hold_policy: core/governance/hold-teacher-interface-policy.md
 workflow_test_freeze: core/governance/workflow-test-freeze.md
+knowledge_lab_ordering:
+  path: core/director/knowledge-lab-ordering-policy.md
+  current_version: 1.7
+idiom_expression_visualization:
+  path: core/director/idiom-expression-visualization-policy.md
+  current_version: 1.0
 lesson_package_delivery: skills/lesson-package-delivery/SKILL.md
 renderer_contract: core/renderer/image-first-hybrid-renderer.md
 adapters:
@@ -53,8 +60,6 @@ runtime/lesson-state.md
 
 不得用 GitHub 範例狀態、模型記憶或舊對話取代 Drive 中該課最新 State。
 
-若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`。
-
 ---
 
 ## Canonical Golden Path
@@ -67,6 +72,8 @@ SOURCE 0
 → HOLD 2
 → STEP 2.5
 → HOLD 2.5
+→ STEP 2.6 Idiom Expression & Visualization
+→ HOLD 2.6
 → Teacher Intent Lock
 → Lesson Map
 → Supplement / Framework Decision
@@ -86,19 +93,45 @@ SOURCE 0
 → Google Drive Archive Verification
 ```
 
-任何與上列不同的舊版 STEP 編號不得自行插回。
+若本課無需處理成語，STEP 2.6 必須明確記錄 `N/A_NO_IDIOM`，不得默默跳過。
+
+---
+
+## Grade 3–4 Character Teaching Resolution
+
+以三、四年級教材為預設時：
+
+- 教材正式生字完整保留。
+- 深教預設聚焦 `SHAPE_NEAR` 與 `POLYPHONIC`。
+- 一般生字維持基本識寫／形音義，不預設每字同規格深教。
+- 非形近／非多音字若有特殊構形、語義、評量或文本理解價值，可由 AI 提出例外深教建議。
+
+權威規則：`core/director/knowledge-lab-ordering-policy.md`。
+
+---
+
+## Idiom Expression Resolution
+
+成語的「是否教」與「怎麼讓學生看懂」分成兩層：
+
+- STEP 2.5：教學價值、保留範圍、CORE/FLEX/BONUS。
+- STEP 2.6：生活例句、理解重點、單圖／前後對照／漫畫／同框比較／文字優先、是否獨立成頁。
+
+權威規則：`core/director/idiom-expression-visualization-policy.md`。
+
+不得進入視覺風格階段後只剩成語名稱而遺失例句與表達意圖。
 
 ---
 
 ## Deprecated / Legacy Flow Aliases
 
-下列名稱若出現在舊檔、舊對話或模型記憶中，只可作歷史參考，不可作為合法 runtime stage：
+下列名稱只可作歷史參考：
 
 - `STEP 3｜教學細節與教材配置確認`
 - `STEP 3｜課程結構與簡報模組配置`
 - `STEP 4｜引導角色 × 視覺風格選擇`
 - 任何 `STEP 2 → STEP 3 → STEP 4` 的舊版直線流程
-- 任何在 `STEP 2.5 / Teacher Intent / Lesson Map / Session Map` 前進入角色、風格、頁數、逐頁腳本的流程
+- 任何省略 STEP 2.5 / STEP 2.6 / Teacher Intent / Lesson Map / Session Map 後直接進角色、風格、頁數、逐頁腳本的流程
 
 遇到上述內容標記：`LEGACY_FLOW_ALIAS`。
 
@@ -106,65 +139,20 @@ SOURCE 0
 
 ## Version Resolution
 
-若某 module 文件內版本與本 Manifest 不一致：
+若 module 文件內版本與本 Manifest 不一致：
 
 1. 先重新 fetch 該檔最新內容。
 2. 若 Repository 最新檔案已升版但 Manifest 尚未更新，標記 `MANIFEST_STALE`。
 3. 不得以舊 Manifest 覆蓋已明確更新的 canonical file；需先修正 Manifest。
-4. 若無法確認，停止高風險流程並請求維護，不自行猜測。
-
----
-
-## Adapter Resolution
-
-執行器辨識自己所在平台後，只載入對應 Adapter：
-
-- ChatGPT → `adapters/chatgpt.md`
-- Codex → `adapters/codex.md`
-- Gemini → `adapters/gemini.md`
-- NotebookLM → `adapters/notebooklm.md`
-- Canva / 視覺 Renderer → `adapters/canva.md`
-
-Adapter 的責任是回答「這個平台怎麼執行／承接 V-MAX」，不是另立一套流程。
-
-若平台沒有對應 Adapter：
-
-1. 仍以 Bootstrap / Manifest / Runtime Contract / Core 為權威。
-2. 標記 `ADAPTER_MISSING`。
-3. 可依平台能力建立新的薄 Adapter，但不得複製或改寫一套新的 Golden Path。
+4. 若無法確認，停止高風險流程，不自行猜測。
 
 ---
 
 ## Adapter Boundary
 
-Adapter 只能描述：
-- 如何讀取 GitHub / Drive
-- 如何傳遞檔案
-- 如何轉成平台可接受格式
-- 如何讀取與回寫 Google Drive Runtime State
-- 平台能力／限制
-- 如何驗證實際 handoff / render 是否真的完成
-
-Adapter 不得改寫：
-- Source Truth
-- Teacher Intent
-- Golden Path
-- Lesson Map
-- Session Map
-- Knowledge selection
-- Visual Grammar 的認知目的
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection 或 Visual Grammar 的認知目的。
 
 若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
-
----
-
-## Renderer Contract
-
-所有 NotebookLM / Canva / 未來視覺 Renderer 共同遵循：
-
-`core/renderer/image-first-hybrid-renderer.md`
-
-Renderer 只負責呈現與輸出，不得因平台能力限制反向刪改已 LOCKED 教學設計。
 
 ---
 
@@ -173,3 +161,5 @@ Renderer 只負責呈現與輸出，不得因平台能力限制反向刪改已 L
 > Manifest 決定現在誰是權威；模型不靠記憶猜版本。
 
 > GitHub 管系統，Drive 管每一課；兩者職責不要混在一起。
+
+> 三、四年級生字完整保留、深教聚焦；成語先決定教不教，再決定怎麼看懂。
