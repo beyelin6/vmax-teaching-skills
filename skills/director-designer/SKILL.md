@@ -1,6 +1,6 @@
 # Director Designer
 
-版本：2.1.0
+版本：2.2.0
 
 ## 目的
 
@@ -15,6 +15,8 @@ Director Designer 是 V-MAX 的導演技能。它把 Text DNA、Knowledge Networ
 - `core/visual/scenario-wrapper-family-model.md`
 - `core/visual/scenario-wrapper-language-arts-selector.md`
 - `core/visual/scenario-wrapper-archaeology-index.md`
+- `core/character/character-registry.md`
+- `core/character/scenario-character-bridge.md`
 
 為準。
 
@@ -36,6 +38,7 @@ Director Designer 是 V-MAX 的導演技能。它把 Text DNA、Knowledge Networ
 - Teacher Intent：教師指定焦點、節奏、保留／刪除項目
 - Learning Profile：班級目前需要的支架程度
 - Scenario Wrapper Registry / Family Model：若本課需要情境包裝
+- Character Registry：若本課需要引導角色或學習代理
 - Bee Visual Language / Style Recipe：若已選定
 
 選配：
@@ -57,12 +60,13 @@ Director Designer 是 V-MAX 的導演技能。它把 Text DNA、Knowledge Networ
    - 若包裝不能改變學生的學習行動，只是變漂亮，預設 `OFF`。
    - 若需要，先選 Wrapper Family，再選 Variant；不得從舊 76 種風格直接挑皮。
    - 只向教師提出最多 1–3 個候選，包含「不包裝」方案；不得把整個資料庫丟給教師選。
-7. 依認知關係呼叫完整 Visual Grammar；不得從固定 Layout 或 Wrapper 反推。
-8. 判斷是否需要 Visual Sequence。
-9. 依已確認的文本需求與 Wrapper 判斷 Character Topology；角色不是 Wrapper 的固定配件。
-10. 最後才生成 Shot Map、估算頁數，交給 Layout / Style / Renderer。
+7. 依已確認的文本需求與 Wrapper 決定 `Character Topology`，先定角色功能與關係，再查 Character Registry；不得從現成角色反推 Wrapper。
+8. 從 Character Registry／課文人物／本課新角色／Fallback 中提出最多 1–3 個真正不同的卡司候選，並附 `why_fit / role / risk / recent_use`。
+9. 依認知關係呼叫完整 Visual Grammar；不得從固定 Layout、Wrapper 或角色反推。
+10. 判斷是否需要 Visual Sequence。
+11. 最後才生成 Shot Map、估算頁數，交給 Layout / Style / Renderer。
 
-不得先從「喜歡哪種畫風」、「今天想玩哪個節目」或「NotebookLM 一次能做幾頁」反推課程。
+不得先從「喜歡哪種畫風」、「今天想玩哪個節目」、「哪個角色已經畫好了」或「NotebookLM 一次能做幾頁」反推課程。
 
 ---
 
@@ -81,6 +85,7 @@ Text DNA / Teacher Intent
 → Learning Task / Director Intent
 → Scenario Wrapper（可 OFF）
 → Character Topology
+→ Character Registry Retrieval
 → Visual Grammar
 → Style Recipe
 → Renderer
@@ -136,6 +141,50 @@ scenario_wrapper_candidates:
 
 ---
 
+## Scenario Wrapper × Character｜情境與角色橋接
+
+### 核心原則
+
+> 情境先決定「需要什麼角色功能」，角色庫再回答「誰最適合來演」。
+
+Wrapper 不綁固定角色，角色也不綁固定 Wrapper。
+
+### 選角順序
+
+1. 先判斷是否需要角色；若不需要，`NO_GUIDE / OFF` 合法。
+2. 先決定 Character Topology，不先決定角色名字。
+3. 再根據 Wrapper Variant 找角色功能需求，例如：
+   - `WF-01 現場報導`：HOST / INTERVIEW / NOTICE / REFLECT
+   - `WF-02 偵探調查`：NOTICE / COACH / REFLECT
+   - `WF-05 導演拍片`：NOTICE / COACH / TRANSITION / REFLECT
+   - `WF-10 節目主持`：HOST / INTERVIEW / TRANSITION
+4. 候選來源依序：課文人物 → 高匹配 Registry 角色 → 本課新角色 → FALLBACK_GUIDE。
+5. Bee 老師屬 `FALLBACK_GUIDE`，只有缺乏更自然方案且教師型引導確有價值時才進候選。
+6. 角色最近使用懲罰高於 Family；同一角色連續出現需有充分理由。
+7. 不允許「同一角色換衣服」冒充多個候選。
+
+### 卡司候選輸出
+
+```yaml
+character_cast_candidates:
+  wrapper_family:
+  wrapper_variant:
+  topology:
+  candidates:
+    - character_id:
+      source: TEXT | REGISTRY | NEW | FALLBACK
+      proposed_role:
+      why_fit:
+      past_success:
+      novelty_note:
+      risk:
+  recommendation:
+```
+
+最多 1–3 個真正有差異的方案。
+
+---
+
 ## 三個尺度
 
 ### Lesson Arc
@@ -165,6 +214,12 @@ director_map:
     rationale:
     secondary_accent:
     secondary_scope:
+
+  character_cast:
+    topology:
+    selected_characters: []
+    rationale:
+    reveal_strategy:
 
   acts:
     - act_id:
@@ -209,8 +264,10 @@ shot:
     mode:
     panel_count:
   character:
+    id:
     role:
     purpose:
+    presence: OFF | KEY_MOMENT | ACTIVE
   scenario_wrapper_use:
     mode: OFF | WORLD | ACCENT
     purpose:
@@ -294,6 +351,8 @@ Scenario Wrapper 不得自動綁定固定角色；先決定這課需要什麼角
 - 因為包裝很有趣而改變教材重點
 - Wrapper 只是 UI 換皮，學生行動沒有改變
 - 同一課同時存在多個互相競爭的節目世界
+- 因角色現成或受歡迎，反向硬套 Wrapper
+- 同一角色無理由連續多課高頻出場
 
 ---
 
