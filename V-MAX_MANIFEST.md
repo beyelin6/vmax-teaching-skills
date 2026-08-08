@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.9
+# V-MAX Manifest 2.0
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.9
+vmax_manifest_version: 2.0
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -39,9 +39,15 @@ knowledge_lab_ordering:
 character_deep_teaching_focus:
   path: core/director/character-deep-teaching-focus-policy.md
   current_version: 1.0
+polyphonic_source_policy:
+  path: core/director/polyphonic-source-policy.md
+  current_version: 1.0
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
   current_version: 1.0
+lesson_visual_map:
+  path: core/visual/lesson-visual-map.md
+  current_version: 1.1
 text_embedded_language_policy:
   path: core/pedagogy/text-embedded-language-teaching-policy.md
   current_version: 1.0
@@ -137,8 +143,7 @@ SOURCE 0
 - `UNCERTAIN_SOURCE_LABEL`：來源標示不清，保留原標籤進 HOLD 1，不自行改判。
 
 重要邊界：
-- 不以「一二三年級常見、四上目前未見」直接寫成永久年級規則。
-- 年級經驗只能提醒 AI 注意檢查，不能取代來源真值。
+- 不以年級慣例取代來源真值。
 - 偏旁識字活動不得誤判成認讀字。
 
 權威規則：`core/governance/recognition-only-character-policy.md`。
@@ -152,15 +157,27 @@ SOURCE 0
 - 教材正式生字全部完整保留。
 - 深教只採三類入口：`SHAPE_NEAR`、`POLYPHONIC`、`ERROR_PRONE_WRITING`。
 - 形近字重點是辨析；多音字重點是讀音 × 語意 × 語境；易錯字重點是具體書寫錯誤風險。
-- 其他一般生字標記為 `BASIC_LITERACY_ONLY`，在課文、造詞、基礎形音義或識寫中自然處理，不預設獨立成頁。
-- AI 不得再以「特殊構形、語義、評量或文本理解價值」自行把一般生字升級成獨立深教頁；若提出非標準建議，只能標 `AI_SUGGESTION_NONSTANDARD`，需教師明確確認。
-- 認讀字若來源 PRESENT，仍依來源識讀規則處理，不因身分套用正式生字書寫深教。
+- 其他一般生字標記為 `BASIC_LITERACY_ONLY`，不預設獨立成頁。
+- 非標準一般生字深教只能標 `AI_SUGGESTION_NONSTANDARD`，需教師明確確認。
 
 權威規則：
 - `core/director/character-deep-teaching-focus-policy.md`
 - `core/director/knowledge-lab-ordering-policy.md`
 
-若兩者對三、四年級一般生字深教範圍出現衝突，以 `character-deep-teaching-focus-policy.md` 的較窄規則為準。
+### Polyphonic Source Resolution
+
+多音字合法來源只有三種：
+
+1. `TEXTBOOK_POLYPHONIC`：教材明列，必須保留。
+2. `AI_RECOMMENDED_POLYPHONIC`：教材未明列時，AI 只能從「本課正式生字」中推薦，且必須有明確教學價值。
+3. `TEACHER_ADDED_POLYPHONIC`：教師可因班級反覆誤讀、語境判斷困難或影響課文理解而指定加入，即使該字不是本課正式生字。
+
+重要邊界：
+- 形近補充字、比較字、AI 補充字，不因本身具有多音而自動升級。
+- 課文中非正式生字的字，AI 不得自行建立多音字單元。
+- 教師指定一經確認，後段不得因「不是正式生字」而刪除，必須納入 Teacher Intent Lock / locked decisions。
+
+權威規則：`core/director/polyphonic-source-policy.md`。
 
 ### Character Group Visual Resolution
 
@@ -169,11 +186,16 @@ SOURCE 0
 `skills/character-group-visual-comparison/SKILL.md`
 
 核心呈現：
-- 形近字／字群：**大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示**。
-- 多音字：**同一大字＋不同讀音＋不同語意／情境＋例詞／例句＋回到課文判斷**。
-- 圖像必須服務字義與辨析，不得只做裝飾。
-- 正式中文字、注音與例詞優先用 Native Text；圖片模型不負責改寫正式文字。
-- 形近字不得誤標為認讀字；多音字不得退化成只背音表。
+- 形近字／字群：大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示。
+- 多音字：同一大字＋不同讀音＋不同語意／情境＋例詞／例句＋回到課文判斷。
+
+---
+
+## Lesson Visual Map Resolution
+
+權威規則：`core/visual/lesson-visual-map.md`
+
+若教師已選定整課圖像心智地圖，該項成為 downstream invariant；簡報大綱、Slide Architecture、頁數估算與 Renderer 不得靜默刪除。
 
 ---
 
@@ -184,52 +206,29 @@ SOURCE 0
 執行摘要：`skills/text-embedded-language-teaching/SKILL.md`
 
 核心規則：
-- **語詞隨段落**：學生可見頁保留原文片段、重點語詞與學生易懂的語意。
-- **句型帶原文**：先有課文原句，再找結構、看懂作用、進行仿說／仿寫。
-- **修辭從文本發現**：先讀原文、觀察特點與效果，最後才命名。
-- 原文是語文教學的共同證據層，不得因 Knowledge Lab、Slide Architecture、Style Recipe 或 Renderer 而消失。
-
-禁止：
-- 語詞只有詞語＋定義，沒有原文。
-- 句型只有公式，沒有課文原句。
-- 修辭只有名稱／定義，沒有文本發現歷程。
+- 語詞隨段落：保留原文片段、重點語詞與學生易懂的語意。
+- 句型帶原文：先有課文原句，再找結構、看懂作用、進行仿說／仿寫。
+- 修辭從文本發現：先讀原文、觀察特點與效果，最後才命名。
+- 原文是語文教學的共同證據層，不得在後段消失。
 
 ---
 
 ## Idiom Expression Resolution
 
 - STEP 2.5：教學價值、保留範圍、CORE/FLEX/BONUS。
-- STEP 2.6：生活例句、理解重點、單圖／前後對照／漫畫／同框比較／文字優先、是否獨立成頁。
+- STEP 2.6：生活例句、理解重點、視覺表達方式與是否獨立成頁。
 
 權威規則：`core/director/idiom-expression-visualization-policy.md`。
-
-不得進入視覺風格階段後只剩成語名稱而遺失例句與表達意圖。
 
 ---
 
 ## Worksheet Resolution
 
 ### Pre-study Worksheet
-
 權威技能：`skills/prestudy-worksheet/SKILL.md`
 
-固定精神：
-- A4 橫式任務探索單。
-- 課前探索＋學後複習雙用途。
-- 三、四年級語文預習聚焦高價值形近字／多音字。
-- 左／上短任務、右側較大閱讀理解區、下方開放思考區為預設 Layout Grammar；不得機械套版。
-- 學生版無答案。
-
 ### Post-lesson Short Writing Worksheet
-
 權威技能：`skills/postlesson-short-writing-worksheet/SKILL.md`
-
-固定精神：
-- A4 橫式圖像化寫作任務單。
-- 素材／畫面啟動 → Bonus 工具箱 → 正式創作。
-- Bonus 語詞、四字語詞／成語、句型、修辭皆為可選，不要求全部使用。
-- 正式創作區為最大面積。
-- 可依本課 Teacher Intent 寫短文、童詩或彈性創作。
 
 預習單與短文單可共享同一課的視覺家族，但任務功能不得混同。
 
@@ -244,7 +243,6 @@ SOURCE 0
 - `STEP 3｜教學細節與教材配置確認`
 - `STEP 3｜課程結構與簡報模組配置`
 - `STEP 4｜引導角色 × 視覺風格選擇`
-- 任何 `STEP 2 → STEP 3 → STEP 4` 的舊版直線流程
 - 任何省略 STEP 2.5 / STEP 2.6 / Teacher Intent / Lesson Map / Session Map 後直接進角色、風格、頁數、逐頁腳本的流程
 
 遇到上述內容標記：`LEGACY_FLOW_ALIAS`。
@@ -264,7 +262,7 @@ SOURCE 0
 
 ## Adapter Boundary
 
-Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function、Character Deep Teaching scope、Character Group comparison purpose、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Character Deep Teaching scope、Polyphonic Source identity、Lesson Visual Map invariant、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
 
 若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
 
@@ -276,12 +274,8 @@ Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、
 
 > GitHub 管系統，Drive 管每一課；兩者職責不要混在一起。
 
-> 認讀字看來源，不看年級猜；有才保留，沒有也要留下 N/A。
+> 多音字先看身分，再看讀音：教材明列保留；AI 只從正式生字推薦；老師可以因班級真實困難指定加入。
 
 > 形近字看辨析，多音字看語境，易錯字看書寫；其他生字完整保留，但不平均深教。
 
-> 生字總覽負責完整，深教頁只處理真正需要被看懂或寫對的難點。
-
 > 語詞隨文理解；句型回到原句；修辭從文本發現。
-
-> 預習單先帶孩子進文本；短文單再把本課語文工具變成孩子自己的作品。
