@@ -1,6 +1,6 @@
 # V-MAX Lesson Package Delivery
 
-版本：1.0
+版本：1.1
 
 ## 目的
 
@@ -25,7 +25,7 @@
 5. `Image-first Slide PDF`｜圖片式簡報 PDF
 6. `Teaching Slides PPTX`｜可編輯教學簡報 PPTX
 7. `Pre-study Worksheet`｜課前預習單
-8. `Post-lesson Short Writing Worksheet`｜課後短文學習單
+8. `Post-lesson Short Writing Worksheet`｜課後短文／童詩 Bonus 寫作單
 
 若某課因 Teacher Intent 明確不需要角色或某延伸教材，可標記 `N/A_BY_TEACHER`；不得由 AI 靜默省略。
 
@@ -129,28 +129,31 @@
 - Session / CORE / FLEX / BONUS 可辨識與調整
 
 ### B7. Pre-study Worksheet
-需：
-- A4 橫式為預設
-- 課前認識＋學後複習雙用途
-- 閱讀導航／關鍵線索
-- 精選語詞
-- 經 STEP 2.5 確認的高價值形近字／多音字
+權威技能：`skills/prestudy-worksheet/SKILL.md`
+
+最低要求：
+- A4 橫式
+- 課前探索＋學後複習雙用途
+- 任務式分區，不是縮小版講義
+- 三、四年級主要語文預習聚焦高價值形近字／多音字
 - 同冊去重
-- 理解題／書寫空間
-- 本課特色任務
-- 不變成縮小版講義或答案卷
+- 閱讀理解大區與足夠書寫空間
+- 至少一個開放式聯想／預測／畫面任務
+- 學生版無答案
 
 ### B8. Post-lesson Short Writing Worksheet
-需：
-- 明確寫作情境
-- 本課可選用重要語詞
-- 可選四字語詞／成語
-- 可選句型／修辭
-- 構思鷹架
-- 正式書寫區
-- Bonus 挑戰
-- 自我檢查
-- 教師評量重點
+權威技能：`skills/postlesson-short-writing-worksheet/SKILL.md`
+
+最低要求：
+- A4 橫式
+- 素材／畫面啟動區
+- 語文 Bonus 工具箱
+- 正式創作區為最大面積
+- 語詞／四字語詞或成語／句型／修辭皆為可選工具
+- Bonus 不要求全部使用
+- 可依 Teacher Intent 寫短文、童詩或彈性創作
+- 成語使用需承接 STEP 2.6 已確認語意
+- 學生版不放完整示範答案
 
 核心：語文工具是選用，不要求學生全部使用。
 
@@ -158,9 +161,7 @@
 
 ## C. Google Drive 歸檔
 
-正式根目錄預設：
-
-`V-MAX 教材庫`
+正式根目錄預設：`V-MAX 教材庫`
 
 若教師已指定既有資料夾，優先使用該資料夾，不重複建立同名根目錄。
 
@@ -189,10 +190,6 @@ V-MAX 教材庫/
 
 ## D. Delivery Gate
 
-一課不得只因 PPTX 或 PDF 已完成就宣告完整交付。
-
-正式完成前需檢查：
-
 ```yaml
 lesson_package_delivery:
   source_master_md: PASS | N/A_BY_TEACHER
@@ -203,6 +200,7 @@ lesson_package_delivery:
   teaching_pptx: PASS | N/A_BY_TEACHER
   prestudy_worksheet: PASS | N/A_BY_TEACHER
   postlesson_short_writing_worksheet: PASS | N/A_BY_TEACHER
+  worksheet_regression: PASS
   google_drive_archive: PASS | BLOCKED | NOT_REQUESTED
 ```
 
@@ -216,6 +214,9 @@ lesson_package_delivery:
 - 根目錄存在
 - 課次資料夾位置正確
 - 8 項交付物沒有漏件或被放錯層
+- 預習單符合 `skills/prestudy-worksheet/SKILL.md`
+- 短文／Bonus 寫作單符合 `skills/postlesson-short-writing-worksheet/SKILL.md`
+- `tests/worksheet-regression-cases.md` 通過
 - 檔名可辨識
 - 上傳完成後能由 Drive 搜尋／列出
 
