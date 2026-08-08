@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.6
+# V-MAX Manifest 1.7
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.6
+vmax_manifest_version: 1.7
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -36,6 +36,9 @@ workflow_test_freeze: core/governance/workflow-test-freeze.md
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.8
+character_group_visual_comparison:
+  path: skills/character-group-visual-comparison/SKILL.md
+  current_version: 1.0
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
   current_version: 1.0
@@ -145,6 +148,19 @@ SOURCE 0
 
 權威規則：`core/director/knowledge-lab-ordering-policy.md`。
 
+### Character Group Visual Resolution
+
+當形近字／字群或多音字已被確認值得深教時，學生可見頁面遵循：
+
+`skills/character-group-visual-comparison/SKILL.md`
+
+核心呈現：
+- 形近字／字群：**大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示**。
+- 多音字：**同一大字＋不同讀音＋不同語意／情境＋例詞／例句＋回到課文判斷**。
+- 圖像必須服務字義與辨析，不得只做裝飾。
+- 正式中文字、注音與例詞優先用 Native Text；圖片模型不負責改寫正式文字。
+- 形近字不得誤標為認讀字；多音字不得退化成只背音表。
+
 ---
 
 ## Idiom Expression Resolution
@@ -204,7 +220,7 @@ SOURCE 0
 
 ## Version Resolution
 
-若 module 文件內版本與本 Manifest 不一致：
+若某 module 文件內版本與本 Manifest 不一致：
 
 1. 先重新 fetch 該檔最新內容。
 2. 若 Repository 最新檔案已升版但 Manifest 尚未更新，標記 `MANIFEST_STALE`。
@@ -215,7 +231,7 @@ SOURCE 0
 
 ## Adapter Boundary
 
-Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function 或 Visual Grammar 的認知目的。
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function、Character Group comparison purpose 或 Visual Grammar 的認知目的。
 
 若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
 
@@ -229,6 +245,8 @@ Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、
 
 > 認讀字看來源，不看年級猜；有才保留，沒有也要留下 N/A。
 
-> 三、四年級生字完整保留、深教聚焦；成語先決定教不教，再決定怎麼看懂。
+> 三、四年級生字完整保留、深教聚焦；形近字看差異，多音字看語境。
+
+> 生字總覽負責完整，字群深教負責看懂差異。
 
 > 預習單先帶孩子進文本；短文單再把本課語文工具變成孩子自己的作品。
