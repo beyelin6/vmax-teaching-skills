@@ -1,8 +1,8 @@
-# V-MAX Learning Framework Overlay 1.0
+# V-MAX Learning Framework Overlay 1.1
 
 ## 定位
 
-Learning Framework Overlay 是 V-MAX 的「可掛載學習框架層」。它用來承接 SEL、閱讀理解、語文理解、數位學習、PBL、四學、合作學習、探究學習、跨領域、媒體素養、教育政策方案等會持續增加或變動的教學框架。
+Learning Framework Overlay 是 V-MAX 的「可掛載學習框架層」。它用來承接 SEL、閱讀理解、語文理解、數位學習、PBL、四學、合作學習、探究學習、跨領域、媒體素養、教育政策方案，以及各式討論法、提問法與閱讀分類系統。
 
 核心原則：
 
@@ -64,6 +64,45 @@ Activity / Interaction / Assessment
 
 規則：不得把「閱讀策略名稱」當成教學成果。學生真正要做的是理解、推論、比較、監控與表達。
 
+#### 1A. Reading Taxonomy｜閱讀分類子層
+
+閱讀分類不是單一固定表，而是一個可掛載的分類槽，用來回答：
+
+> 這一個閱讀任務，學生究竟在做哪一種理解工作？
+
+可容納：
+- 擷取明示訊息
+- 直接理解
+- 推論訊息
+- 統整與解釋
+- 評估與批判
+- 比較文本／觀點
+- 監控理解
+- 應用／遷移
+
+亦可掛載教師指定或官方／研究框架，例如：
+- PIRLS 類閱讀歷程分類
+- QAR 類問題來源分類
+- 教材或縣市採用的閱讀理解分類
+- 學校自訂閱讀層次
+
+規則：
+- 分類用來幫助設計題目與檢查覆蓋，不得反過來硬逼每課湊滿所有類別。
+- 同一題可有主要分類與次要分類，但需指定主要認知動作。
+- 若某分類名稱屬政策／版本化框架，使用前應依需要查證其現行定義。
+- V-MAX 內部可保留平台中立的核心動作，例如 `retrieve / infer / integrate / evaluate / transfer`，外部再映射到各框架名稱。
+
+建議欄位：
+
+```yaml
+reading_task:
+  primary_move: RETRIEVE | INFER | INTEGRATE | EVALUATE | MONITOR | TRANSFER
+  framework_mapping: []
+  text_evidence:
+  expected_student_action:
+  evidence_of_understanding:
+```
+
 ### 2. SEL｜社會情緒學習
 
 僅在課文情節、人物、情緒、選擇、關係或真實生活連結自然支持時啟用。
@@ -107,6 +146,46 @@ Activity / Interaction / Assessment
 - 共編／共創
 
 四學可視為此家族中的一種可選結構，不強迫四階段每次完整出現。
+
+#### 4A. Discussion Protocol｜討論／提問流程子層
+
+Discussion Protocol 用來定義「討論怎麼走」，而不是定義「學生最後要學會什麼」。
+
+可掛載：
+- ORID 焦點討論法
+- Think-Pair-Share
+- Socratic questioning
+- 六何法
+- 教師自訂提問階梯
+- 其他結構化討論流程
+
+##### ORID 焦點討論法
+
+ORID 可作為一種可選討論流程：
+
+- `O｜Objective`：先看見／回想具體事實、訊息、現象
+- `R｜Reflective`：說出感受、直覺、聯想、印象
+- `I｜Interpretive`：解釋意義、關係、原因、觀點
+- `D｜Decisional`：形成選擇、行動、判斷、遷移
+
+使用原則：
+- 不要求每一課、每一次討論都完整跑 O→R→I→D。
+- 可依文本與課堂任務取其中部分步驟。
+- O 不等於低階、D 也不必然等於高階；仍須看實際提問內容。
+- ORID 只是一條討論路徑，不能取代文本證據、閱讀理解層次與語文學習目標。
+- 若套用 ORID 會讓原本自然的對話變得僵化，預設不用。
+
+建議欄位：
+
+```yaml
+discussion_protocol:
+  protocol: ORID | TPS | SOCRATIC | SIX_WH | CUSTOM
+  selected_moves: []
+  purpose:
+  anchor_text_or_evidence:
+  expected_student_talk:
+  teacher_moves:
+```
 
 ### 5. Digital Learning｜數位／平板學習
 
@@ -253,6 +332,8 @@ framework_registry:
 - 是否擠壓核心語文理解？
 - 是否造成工具負擔大於學習增益？
 - 是否可與其他框架共用同一高品質活動？
+- 討論流程是否僵化了原本自然的閱讀對話？
+- 閱讀分類是否只是為了湊類別，而沒有真實認知需求？
 
 若無法說明明確增益，預設 `OFF`。
 
@@ -263,3 +344,5 @@ framework_registry:
 > 框架可以很多，學生的學習路徑不能因此變亂。
 
 > V-MAX 不收藏教育名詞；V-MAX 收藏真正有效的學習行動。
+
+> 討論法決定怎麼談，閱讀分類決定在做哪一種理解；兩者都不能取代真正的文本學習。
