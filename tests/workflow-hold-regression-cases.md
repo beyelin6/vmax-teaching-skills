@@ -1,8 +1,8 @@
-# V-MAX Workflow HOLD Regression Cases 1.1
+# V-MAX Workflow HOLD Regression Cases 1.2
 
 ## 用途
 
-本檔用真實工作流失敗案例檢查 V-MAX 在新對話／重跑時是否仍遵守 Teacher UI、STEP 1 邊界、STEP 2 / 2.5 推薦深度、自然教學節奏與頁數延後原則。
+本檔用真實工作流失敗案例檢查 V-MAX 在新對話／重跑時是否仍遵守 Teacher UI、STEP 1 邊界、STEP 2 / 2.5 推薦深度、自然教學節奏、單階段前進與頁數延後原則。
 
 ---
 
@@ -30,16 +30,18 @@
 - Character 已選定
 - Style Recipe 已選定
 - 頁數／版型已決定
+- 已決定六段都使用相同教學迴圈
+- 已宣告朗讀／某語文項目正式升級為模組，而尚未進 STEP 2
 
 ### 預期分類
-出現上述任一項：`PREMATURE_DESIGN_DECISION` 或 `MISSING_INTERFACE`
+`PREMATURE_DESIGN_DECISION / MISSING_INTERFACE`
 
 ---
 
 ## CASE W-02｜STEP 2.5 必須先做形近字分析，再推薦
 
 ### 輸入情境
-HOLD 1 已確認，進入 `STEP 2.5 語文輻射`。
+HOLD 2 已確認，進入 `STEP 2.5 語文輻射`。
 
 ### PASS｜形近字
 每一組教師可見資訊至少包含：
@@ -107,12 +109,14 @@ HOLD 1 已確認，進入 `STEP 2.5 語文輻射`。
 1. Teacher Confirmation Card
 2. 明確 HOLD
 3. 簡短決策方式
-4. machine payload 預設隱藏
+4. 清楚標示「確認後唯一下一步」
+5. machine payload 預設隱藏
 
 ### BLOCKER
 - JSON/YAML 先於教師卡
 - 只有 machine payload
 - 要教師自己讀 schema 才能決定
+- 下一步同時列出兩個以上需教師決策的階段
 
 ---
 
@@ -142,23 +146,29 @@ HOLD 1 已確認，進入 `STEP 2.5 語文輻射`。
 - 需要保留發現空間的位置
 - 朗讀／推論／聯想／比較／遷移中真正高價值的段落
 - 教師可以用「大致接受，只改例外」完成決策
+- 完成後停在 `HOLD 2`
 
 ### BLOCKER
 - STEP 1 確認後直接產出 43／47／52 頁帳本
 - 只說「建議 CORE/FLEX/BONUS」而沒有理由
 - AI 已經替教師完成所有取捨，再叫教師確認
+- STEP 2 結尾不出 HOLD 2
 
 ### 預期分類
-`SKIPPED_DECISION_LAYER / TEACHER_EFFORT_FAIL`
+`SKIPPED_DECISION_LAYER / TEACHER_EFFORT_FAIL / SKIPPED_HOLD`
 
 ---
 
 ## CASE W-07｜文本單位不得機械套固定教學模板
 
 ### 真實失敗模式
-六個詩節雖然口頭宣稱「不是硬模板」，實際卻全部配置為：
+六個詩節被預設為同一套：
 
-`讀詩 → 語詞 → 文意 → 寫法 → 朗讀` 五頁。
+`讀詩 → 找畫面 → 找關鍵詞 → 說感受 → 發現寫法 → 有節奏地朗讀`
+
+或後續全部配置成：
+
+`讀詩 → 語詞 → 文意 → 寫法 → 朗讀`
 
 ### PASS
 - 每個自然段／詩節先判斷自己最重要的理解任務。
@@ -167,8 +177,8 @@ HOLD 1 已確認，進入 `STEP 2.5 語文輻射`。
 - 能說明為什麼這一段需要與其他段不同的節奏。
 
 ### BLOCKER
+- 每段固定相同步驟
 - 每段固定相同頁數
-- 每段固定相同五步
 - 為追求形式完整硬塞低價值句型／修辭／題目
 - 先定頁數再平均分配內容
 
@@ -204,6 +214,56 @@ Teacher Intent / Lesson Map / Session Map 尚未完成，就先宣告「52 頁�
 
 ---
 
+## CASE W-09｜一次確認不得讓流程飛站
+
+### 真實失敗模式
+教師在 HOLD 1 回覆「確認」後，AI 一次完成大量教學設計，並準備直接進「課程結構與簡報模組配置」。
+
+### 正式 PASS 鏈條
+
+```text
+HOLD 1 確認
+→ STEP 2
+→ HOLD 2
+
+HOLD 2 確認
+→ STEP 2.5
+→ HOLD 2.5
+```
+
+### BLOCKER
+- 一個確認後連跑 STEP 2 + STEP 2.5
+- 一個確認後連跑 STEP 2 + Lesson Map / Session Map
+- 在該輪沒有出現應有 HOLD
+- 教師需要主動叫 AI「慢一點／停下來」
+
+### 預期分類
+`RUNAWAY_WORKFLOW / SKIPPED_HOLD / STAGE_LEAP`
+
+---
+
+## CASE W-10｜HOLD 的下一步指向必須正確
+
+### 真實失敗模式
+STEP 2 內容做完後，AI 告訴教師：「確認後下一步進課程結構與簡報模組配置。」
+
+但正式流程下一步其實是 STEP 2.5。
+
+### PASS
+- HOLD 1 → 下一步 `STEP 2`
+- HOLD 2 → 下一步 `STEP 2.5`
+- HOLD 2.5 → 下一步 `Teacher Intent Lock`
+
+### BLOCKER
+- HOLD 2 指向「頁數／簡報模組／逐頁腳本」
+- HOLD 2.5 指向 Renderer / Style
+- 下一步名稱模糊到會跨過正式決策層
+
+### 預期分類
+`WRONG_NEXT_STAGE_POINTER / STAGE_LEAP`
+
+---
+
 ## 整體 PASS 條件
 
 ```yaml
@@ -211,6 +271,7 @@ workflow_hold_regression:
   step1_teacher_ui: PASS
   no_premature_visual_decision: PASS
   step2_recommendation_not_skipped: PASS
+  hold2_present: PASS
   step2_5_analysis_preserved: PASS
   step2_5_recommendation_interface: PASS
   prestudy_scope_separated: PASS
@@ -218,6 +279,8 @@ workflow_hold_regression:
   selection_vs_orchestration_separated: PASS
   no_template_drift: PASS
   no_premature_page_lock: PASS
+  single_stage_advance: PASS
+  next_stage_pointer_correct: PASS
 ```
 
 只要其中一項 FAIL，不應宣告「工作流回歸測試完成」。
