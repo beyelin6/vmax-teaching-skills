@@ -1,4 +1,4 @@
-# V-MAX Knowledge Lab Ordering Policy 1.4
+# V-MAX Knowledge Lab Ordering Policy 1.5
 
 ## 定位
 
@@ -15,6 +15,8 @@ Knowledge Lab 不是附錄，也不是把所有字詞逐項講完；它只處理
 > 預習單可以精選，正式教學不能被預習單的容量上限反向裁切。
 
 > 教材原有 ≠ 一定深教；AI 推薦 ≠ 已決定。
+
+> STEP 2.5 首要輸出是「教師可讀、可快速決策的推薦卡」，機器 JSON 只屬資料層，不得取代教師介面。
 
 ---
 
@@ -187,29 +189,42 @@ R 2C/P2 5PE：補「坨」
 
 ## G. STEP 2.5 教師端顯示格式
 
+### G1. 教師決策卡是第一輸出
+
+當狀態為 `WAITING_CONFIRMATION` 時，AI 必須先輸出人類可讀的 Teacher Selection Card，不得只回 JSON、YAML、資料陣列或 `vocabulary[]`。
+
+每一項至少顯示：
+
 ```text
 01｜泳／永／詠　★★★★★ 5/5｜強烈推薦
 理由：本課生字直接相關，三字形近，且字義差異清楚。
 教學建議：A 深教｜CORE
 預習單：P1 預習核心
 冊內紀錄：本冊尚未出現
-
-02｜般／搬／船　★★☆☆☆ 2/5｜低優先
-理由：教材雖有列，但本課實際混淆與遷移價值較低。
-教學建議：D 刪除；若仍想保留，可改 C Bonus
-預習單：P3 本課不放
-冊內紀錄：—
 ```
 
-如果某項正式教學要保留但預習單空間不足，應明確顯示：
+若需要保留機器資料，可在教師決策卡之後附上 machine-readable payload；但該資料層不能取代推薦卡。
+
+### G2. 成語也必須先做推薦判讀
+
+成語在 STEP 2.5 不應只輸出 `definition / context / relatives / example`。每個成語必須先顯示：
 
 ```text
-06｜螺／騾／累　★★★★☆ 4/5｜推薦
-理由：字形與部件關係具有辨析價值，適合正式教學。
-教學建議：B 短辨析
-預習單：P3 本課不放
-原因：本課預習單已優先選入更高混淆的 4 組；P3 不影響正式教學。
+09｜躍躍欲試　★★★★★ 5/5｜強烈推薦
+理由：與本課運動、挑戰與想嘗試的情境高度相連，生活與寫作遷移價值高。
+教學建議：A 深教｜CORE
+理解需求：動作＋心理狀態；適合生活例句與句意插圖。
 ```
+
+其 `definition / context / relatives / example` 屬後續內容資料，不是教師確認介面的替代品。
+
+### G3. 生字完整清單與形近字深究分開
+
+`生字檢查數` 只能做 audit，不代表生字教學已完成。STEP 2.5 必須能證明：
+
+- 教材生字完整清單仍在資料層與正式教學規劃中。
+- 形近字推薦只是「哪些生字值得額外做字群辨析」。
+- 未被選入形近字群的教材生字不得因此消失。
 
 ---
 
@@ -227,6 +242,10 @@ step_2_5_language_radiation:
   prestudy_scope:
     preferred_group_range: 3-5
     hard_cap: false
+
+  teacher_selection_card:
+    required: true
+    rendered_before_machine_payload: true
 
   items:
     - id:
@@ -249,6 +268,8 @@ step_2_5_language_radiation:
 
 若資料層沒有完整教材生字，或系統用 `3–5 組` 規則刪掉正式教學內容，STEP 2.5 視為 `INCOMPLETE`。
 
+若 `WAITING_CONFIRMATION` 只輸出 raw JSON / YAML 而沒有教師推薦卡，STEP 2.5 同樣視為 `INCOMPLETE`，不得進入下一個 HOLD。
+
 ---
 
 ## I. AI 的責任
@@ -262,6 +283,7 @@ AI 必須同時做到：
 - 比較本冊前課已確認的字群／多音字紀錄
 - 判斷重複、部分重疊或新關係
 - 說明為什麼某項「要教但不放預習單」
+- 在等待教師確認時先呈現完整推薦理由與快速決策代號，不把結構化資料直接丟給教師自己判讀
 
 教師主要看推薦後微調例外，不需要自己補回被預習單容量誤刪的正式教學內容。
 
@@ -273,11 +295,12 @@ AI 必須同時做到：
 2. 先完成正式教學價值判讀，不設 3–5 組上限。
 3. 再讀取同冊 `Volume Language Coverage`。
 4. 從正式候選中精選預習單約 3–5 組形近字／多音字。
-5. 輸出 STEP 2.5 Teacher Selection Card：完整教學推薦 + 預習單推薦。
-6. 教師主要採 `R` 沿用，僅微調例外。
-7. AI 依確認內容分 Knowledge Chunk，並同步輸出預習單語文項目。
-8. 教師確認的 P1/P2 寫回本冊 Coverage Registry。
-9. 才進入預習單版面與完整 Slide Architecture。
+5. **先輸出 Teacher Selection Card：完整推薦指數、理由、A–E、P1/P2/P3/PX。**
+6. 若有 machine payload，再於教師卡後輸出；不得反過來。
+7. 教師主要採 `R` 沿用，僅微調例外。
+8. AI 依確認內容分 Knowledge Chunk，並同步輸出預習單語文項目。
+9. 教師確認的 P1/P2 寫回本冊 Coverage Registry。
+10. 才進入預習單版面與完整 Slide Architecture。
 
 ---
 
@@ -286,3 +309,5 @@ AI 必須同時做到：
 > 教材告訴我們「有什麼」，AI 要告訴老師「該教到什麼深度」，預習單再從中挑出最值得先看的少量內容。
 
 > 預習單要精選；正式教學要完整。
+
+> 結構化資料是給系統讀的；STEP 2.5 的確認畫面是給老師做決策的。
