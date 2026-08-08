@@ -1,4 +1,4 @@
-# V-MAX Lesson Learning 1.0
+# V-MAX Lesson Learning 1.1
 
 ## 定位
 
@@ -26,6 +26,7 @@ lesson_learning:
 應至少檢查：
 - Teacher Intent 是否被完整保留
 - Session Map 是否自然
+- Lesson Visual Map 是否真的幫助學生快速建立整課理解
 - Scenario Wrapper 是否真的增進理解
 - Character 是否有功能且不搶戲
 - Reading Strategy / Learning Framework 是否有效
@@ -35,9 +36,33 @@ lesson_learning:
 - 學生投入訊號與理解證據
 - 教師實際調整了什麼
 
+## Lesson Visual Map Learning
+
+若本課啟用 Lesson Visual Map，課後需分開檢查開課版與收束版：
+
+```yaml
+lesson_visual_map_learning:
+  mode: OPEN | CLOSE | BOTH
+  map_structure:
+  quick_grasp_signal:
+  helped_students_see_whole:
+  helped_recall:
+  spoiler_or_over_reveal_signal:
+  overload_signal:
+  visual_text_balance:
+  teacher_adjustments: []
+  reuse_recommendation: KEEP | MODIFY | LIMIT | RETIRE
+```
+
+判讀原則：
+- 「學生喜歡看」與「學生因此更懂整課」分開記錄。
+- OPEN 若太早暴露主旨、人物特質或答案，記為 `spoiler_or_over_reveal_signal`，不得升成成功模式。
+- CLOSE 若變成密集文字表，記為 `overload_signal`。
+- 某種 Visual Map 結構即使在本課有效，也只能先成為候選，不直接綁定某文體。
+
 ## 升級權
 
-任何全域規則、Reusable Wrapper、Reusable Character、Class Preference 都不得由 AI 自動升級。
+任何全域規則、Reusable Wrapper、Reusable Character、Class Preference、Reusable Visual Map Pattern 都不得由 AI 自動升級。
 
 ```yaml
 promotion:
