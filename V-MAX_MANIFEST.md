@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.8
+# V-MAX Manifest 1.9
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.8
+vmax_manifest_version: 1.9
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -36,6 +36,9 @@ workflow_test_freeze: core/governance/workflow-test-freeze.md
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.8
+character_deep_teaching_focus:
+  path: core/director/character-deep-teaching-focus-policy.md
+  current_version: 1.0
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
   current_version: 1.0
@@ -146,13 +149,18 @@ SOURCE 0
 
 以三、四年級教材為預設時：
 
-- 教材正式生字完整保留。
-- 深教預設聚焦 `SHAPE_NEAR` 與 `POLYPHONIC`。
-- 一般生字維持基本識寫／形音義，不預設每字同規格深教。
-- 非形近／非多音字若有特殊構形、語義、評量或文本理解價值，可由 AI 提出例外深教建議。
-- 認讀字若來源 PRESENT，屬識讀層，不因身分自動套用正式生字書寫深教規格。
+- 教材正式生字全部完整保留。
+- 深教只採三類入口：`SHAPE_NEAR`、`POLYPHONIC`、`ERROR_PRONE_WRITING`。
+- 形近字重點是辨析；多音字重點是讀音 × 語意 × 語境；易錯字重點是具體書寫錯誤風險。
+- 其他一般生字標記為 `BASIC_LITERACY_ONLY`，在課文、造詞、基礎形音義或識寫中自然處理，不預設獨立成頁。
+- AI 不得再以「特殊構形、語義、評量或文本理解價值」自行把一般生字升級成獨立深教頁；若提出非標準建議，只能標 `AI_SUGGESTION_NONSTANDARD`，需教師明確確認。
+- 認讀字若來源 PRESENT，仍依來源識讀規則處理，不因身分套用正式生字書寫深教。
 
-權威規則：`core/director/knowledge-lab-ordering-policy.md`。
+權威規則：
+- `core/director/character-deep-teaching-focus-policy.md`
+- `core/director/knowledge-lab-ordering-policy.md`
+
+若兩者對三、四年級一般生字深教範圍出現衝突，以 `character-deep-teaching-focus-policy.md` 的較窄規則為準。
 
 ### Character Group Visual Resolution
 
@@ -256,7 +264,7 @@ SOURCE 0
 
 ## Adapter Boundary
 
-Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function、Character Group comparison purpose、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function、Character Deep Teaching scope、Character Group comparison purpose、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
 
 若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
 
@@ -270,9 +278,9 @@ Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、
 
 > 認讀字看來源，不看年級猜；有才保留，沒有也要留下 N/A。
 
-> 三、四年級生字完整保留、深教聚焦；形近字看差異，多音字看語境。
+> 形近字看辨析，多音字看語境，易錯字看書寫；其他生字完整保留，但不平均深教。
 
-> 生字總覽負責完整，字群深教負責看懂差異。
+> 生字總覽負責完整，深教頁只處理真正需要被看懂或寫對的難點。
 
 > 語詞隨文理解；句型回到原句；修辭從文本發現。
 
