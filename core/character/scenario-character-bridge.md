@@ -1,4 +1,4 @@
-# V-MAX Scenario Wrapper × Character Registry Bridge 1.0
+# V-MAX Scenario Wrapper × Character Registry Bridge 1.1
 
 ## 定位
 
@@ -12,14 +12,29 @@
 
 ---
 
+## 0. Teacher-confirmed Governance Lock｜教師確認規則
+
+以下規則已由教師正式確認：
+
+1. Scenario Wrapper 必須先由教師確認／鎖定，再進 Character Topology。
+2. 角色驚喜保留為 optional：教師端先知道，學生端可延後揭曉，但不要求每課都猜角色。
+3. 角色可以累積課後證據，但只有教師能批准升級為 `REUSABLE_CONFIRMED`。
+4. AI 可以推薦 `KEEP / LIMIT / RETIRE / PROMOTE`，但不得自行改變角色 Registry 的長期狀態。
+
+---
+
 ## A. 決策順序
 
 ```text
 Text DNA + Teacher Intent + Learning Task
         ↓
+Lesson Map
+        ↓
 Scenario Wrapper Selector
         ↓
 Wrapper Family / Variant（可 OFF）
+        ↓
+Teacher Confirm / Lock
         ↓
 Character Topology
         ↓
@@ -40,6 +55,7 @@ Director per-shot presence
 - 先看到某個現成角色，再反過來硬選 Wrapper。
 - 選到某 Wrapper 就固定出現同一角色。
 - 為了角色宇宙而改變課文理解路徑。
+- 在 Wrapper 尚未確認前偷偷預設角色卡司。
 
 ---
 
@@ -155,13 +171,24 @@ character_cast_candidates:
 
 ---
 
-## G. 驚喜感與重用
+## G. 驚喜感與揭曉策略
+
+角色重用應建立熟悉感，但學生端揭曉機制是 optional，不是固定儀式。
+
+```yaml
+character_reveal:
+  enabled: true|false
+  teacher_knows_beforehand: true
+  reveal_moment: PREVIEW_EASTER_EGG | OPENING | FORMAL_REVEAL | IMMEDIATE | NONE
+  pedagogical_reason:
+```
 
 - Family 可以重用。
 - Variant 不宜過密重複。
 - 同一角色的 recent-use penalty 應高於 Family。
 - 若某角色在特定 Family 多次成功，可提高該 Family 的 retrieval prior，但永遠不升格為自動卡司。
 - 新角色若高度貼合文本，可優先於知名舊角色。
+- 若揭曉本身沒有教學或投入價值，就直接 `NONE / IMMEDIATE`，不強迫做彩蛋。
 
 核心句：
 
@@ -169,7 +196,7 @@ character_cast_candidates:
 
 ---
 
-## H. Lesson Learning 回寫
+## H. Lesson Learning 回寫與升級權
 
 一課完成後，Wrapper 與角色要分開學習：
 
@@ -183,19 +210,29 @@ scenario_character_learning:
   wrapper_helped_understanding:
   character_helped_understanding:
   student_engagement_signal:
+  student_visual_feedback:
   overuse_signal:
-  teacher_decision:
+  ai_recommendation:
     wrapper: KEEP | LIMIT | RETIRE | PROMOTE
     character: KEEP | LIMIT | RETIRE | PROMOTE
+  teacher_decision:
+    wrapper:
+    character:
 ```
 
-避免因「孩子很喜歡角色」就誤判 Wrapper 一定有效，也避免因 Wrapper 成功就認為角色必須沿用。
+治理規則：
+- AI 可以提出 `PROMOTE`，但只是建議。
+- `LESSON_ONLY → REUSABLE_CANDIDATE` 可由 AI 提案，需教師接受。
+- `REUSABLE_CANDIDATE → REUSABLE_CONFIRMED` 必須由教師明確批准。
+- 不得以單次「學生很喜歡」直接升級。
+- 不得把 Wrapper 成功等同於角色成功，也不得反過來推論。
 
 ---
 
 ## I. Quality Gate
 
 出場前檢查：
+- Wrapper 是否已經過教師確認？
 - 拿掉角色後，Wrapper 是否仍成立？
 - 角色是否真的改變學生的注意、理解、策略或情緒？
 - 課文人物是否比外加角色更自然？
@@ -203,6 +240,7 @@ scenario_character_learning:
 - 是否最近出場過密？
 - 是否把學生應自行發現的答案提前說出？
 - 是否能在關鍵頁出場、其餘頁 OFF？
+- 若使用延後揭曉，揭曉是否真的有價值？
 
 若增益不足，選 `NO_GUIDE` 或 `OFF`。
 
@@ -213,3 +251,5 @@ scenario_character_learning:
 > 先選「這齣戲需要什麼角色功能」，再選「誰來演」。
 
 > 情境包裝決定舞台；Character Registry 提供演員；Teacher Intent 決定最後卡司。
+
+> AI 可以推薦誰值得再登場，但只有教師能把他升格成 V-MAX 的固定可重用資產。
