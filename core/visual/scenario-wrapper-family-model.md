@@ -1,4 +1,4 @@
-# V-MAX Scenario Wrapper Family Model 1.1
+# V-MAX Scenario Wrapper Family Model 1.2
 
 ## 定位
 
@@ -14,6 +14,43 @@ Scenario Wrapper 不應無限制增加成數十個互不相干的小包裝。若
 
 ---
 
+## 0. Teacher-confirmed Governance Lock｜教師確認規則
+
+以下規則已由教師正式確認，視為 V-MAX 核心治理規則：
+
+1. **12 個 Wrapper Family 是目前的可演化核心，不是永久固定上限。**
+   - 預設先新增 Variant，不輕易新增 Family。
+   - 只有核心認知行動、課堂世界邏輯與節奏都明顯不同時，才可提出新 Family。
+   - AI 不得自行把新 Family 升格為核心；需教師確認。
+
+2. **Scenario Wrapper 的教師確認點位於 Lesson Map 之後、Character Topology 與視覺風格之前。**
+
+```text
+教材定錨
+→ Lesson Map
+→ AI 補充／教學價值判讀
+→ Scenario Wrapper 1–3 候選（可含 OFF）
+→ Teacher Confirm / Lock
+→ Character Topology
+→ Character Registry Retrieval
+→ Visual Grammar
+→ Style Recipe
+→ Renderer
+```
+
+3. **角色驚喜機制保留，但為 optional。**
+   - 教師端可在設計階段知道最終角色。
+   - 學生端可依課程需要在預習單彩蛋、開場、或正式揭曉頁才呈現。
+   - 不要求每課都做猜角色活動。
+
+4. **課後學習可以回寫，但升級權屬教師。**
+   - Wrapper、Variant、角色、視覺策略都可累積使用證據。
+   - AI 可提出 `REUSABLE_CANDIDATE` 建議。
+   - 只有教師可批准升級為 `REUSABLE_CONFIRMED`。
+   - AI 不得因單次學生喜歡、單次視覺成功或高互動，就自行宣布成為全域規則。
+
+---
+
 ## A. 結構
 
 ```yaml
@@ -25,6 +62,7 @@ wrapper_family:
   core_signature_moves: []
   possible_variants: []
   avoid_when: []
+  governance_status: EVOLVABLE_CORE
 
 wrapper_variant:
   variant_id:
@@ -38,6 +76,8 @@ wrapper_variant:
   guide_roles: []
   signature_language: []
   visual_motifs: []
+  promotion_status: LESSON_ONLY | REUSABLE_CANDIDATE | REUSABLE_CONFIRMED
+  promotion_authority: TEACHER_ONLY
 ```
 
 ---
@@ -130,14 +170,16 @@ wrapper_variant:
 
 ---
 
-## D. Retrieval 規則
+## D. Retrieval 與教師確認規則
 
 1. 先從 Text DNA、Teacher Intent、Learning Task 判斷是否需要 Scenario Wrapper；不需要則 `OFF`。
-2. 若需要，先選 Family，再選 Variant；不得直接從 76 種舊風格全量挑選。
-3. 若新想法只是換主題名稱，但核心學生行動相同，掛在既有 Family 下，不另立 Family。
-4. 只有當核心認知行動、課堂世界邏輯與節奏都明顯不同，才建立新的 Family。
-5. 每課最多推薦 1–3 個候選，並附 `why_fit / student_action / risk / provenance`。
-6. Teacher Intent 高於歷史使用紀錄與 AI 推薦。
+2. Scenario Wrapper 候選只在 Lesson Map 與教學價值判讀成立後提出。
+3. 若需要，先選 Family，再選 Variant；不得直接從 76 種舊風格全量挑選。
+4. 若新想法只是換主題名稱，但核心學生行動相同，掛在既有 Family 下，不另立 Family。
+5. 只有當核心認知行動、課堂世界邏輯與節奏都明顯不同，才可提出新 Family 候選。
+6. 每課最多推薦 1–3 個候選，並附 `why_fit / student_action / risk / provenance`；可包含 `OFF`。
+7. 教師確認後，該課 Wrapper 進入 `TEACHER_SELECTED / LOCKED_FOR_LESSON`；後續角色、視覺與 Renderer 不得擅自換包裝。
+8. Teacher Intent 高於歷史使用紀錄與 AI 推薦。
 
 ---
 
@@ -148,6 +190,7 @@ wrapper_variant:
 - 同一位小特派記者可出現在校園新聞與節慶報導。
 - 運動文本可換成全新的場邊主播角色以保留驚喜感。
 - 若課文本身有更自然的人物，優先由課文人物承擔觀察，不強塞外加角色。
+- 角色揭曉策略屬 optional；不得把「猜角色」變成每課固定儀式。
 
 ---
 
@@ -160,6 +203,10 @@ recent_use_penalty:
   family_level: soft
   variant_level: stronger
   character_level: stronger
+
+student_reveal:
+  enabled: optional
+  possible_moments: [預習單彩蛋, 簡報開場, 正式揭曉頁]
 ```
 
 同一 Family 可跨課重用；同一 Variant 與同一角色不宜連續過度出現。
@@ -180,7 +227,14 @@ variant_learning:
   helped_understanding:
   teacher_confirmed:
   promotion_status: LESSON_ONLY | REUSABLE_CANDIDATE | REUSABLE_CONFIRMED
+  promotion_authority: TEACHER_ONLY
 ```
+
+AI 可以提出升級建議，但不能自行升級。
+
+- `LESSON_ONLY → REUSABLE_CANDIDATE`：AI 可建議，教師可接受／拒絕。
+- `REUSABLE_CANDIDATE → REUSABLE_CONFIRMED`：必須由教師明確批准。
+- 單次學生喜歡、單次高互動或單次漂亮，不構成自動升級理由。
 
 優先新增 Variant，不急著新增 Family。
 
@@ -193,3 +247,5 @@ variant_learning:
 > 運動播報中心，是新聞特派記者走進運動場後的樣子。
 
 > 舊系統把一切綁成風格；新系統先問：孩子這一課要用什麼身分、做什麼事、看見什麼？
+
+> AI 可以學習與推薦；升格成為 V-MAX 的長期習慣，最後仍由教師決定。
