@@ -1,4 +1,4 @@
-# V-MAX Knowledge Lab Ordering Policy 1.6
+# V-MAX Knowledge Lab Ordering Policy 1.7
 
 ## 定位
 
@@ -48,7 +48,22 @@ Knowledge Lab 原則上處理：
 - 形近字深教數量由實際教學價值決定，不設固定 `3–5 組` 上限。
 - 多音字若屬教材正式學習內容，亦不受預習單 `3–5 組` 限制。
 
+### A2. 三、四年級生字深教聚焦
+
+以三、四年級教材為預設時，生字教學不採「每個字平均深教」。
+
+正式規則：
+
+1. **完整生字仍全部保留**：來源主檔、基本識寫、形音義與課文語境不能消失。
+2. **深教優先聚焦形近字**：挑選真正有字形混淆風險、部件辨析價值或高頻錯誤可能的字群。
+3. **深教優先聚焦多音字**：使用「讀音 × 語意 × 語境」建立辨義，不只背音表。
+4. 其他生字依教材與課文需求做基本處理，不預設每字都要獨立投影片、完整字源、形近字群或額外遊戲。
+5. 若某個非形近／非多音生字有特殊構形、語義、評量或課文理解價值，AI 可提出例外深教建議並說明理由。
+6. 不得因「聚焦形近字／多音字」而把其他教材正式生字從資料層或基礎識寫教學中刪除。
+
 核心：
+
+> 三、四年級的生字教學要有重心：完整保留，深教聚焦；形近字看辨析，多音字看語境。
 
 > 「3–5 組」是預習單的精選容量，不是簡報的教學上限。
 
@@ -79,6 +94,8 @@ Knowledge Lab 原則上處理：
 - `recommendation_level`
 - `reason`：具體理由
 - `suggested_action`：深教／短辨析／Bonus／低優先
+
+三、四年級預設：形近字／多音字優先進入深教候選；一般生字不因完整性而自動升級為深教。
 
 ### B4. 預習單選擇判讀
 只對需要進預習單容量判斷的形近字群與多音字額外提供：
@@ -147,7 +164,25 @@ AI 必須主動判斷「值不值得先放進預習單」以及「同一冊是�
 
 ---
 
-## D. 推薦指數｜Recommendation Index
+## D. 多音字分析｜Polyphonic Analysis
+
+多音字在三、四年級不得只做「列讀音」或「背詞表」。每一個深教多音字至少包含：
+
+- 各讀音
+- 各讀音對應核心語意
+- 教材／課文中的實際用法
+- 四年級可理解的生活語境
+- 容易誤讀或誤解的位置
+- 可用的語境判斷提示
+- 推薦指數、理由與教學層級
+
+核心：
+
+> 多音字不是兩個音，而是兩組「讀音 × 意思 × 情境」。
+
+---
+
+## E. 推薦指數｜Recommendation Index
 
 `STEP 2.5 語文輻射` 中，推薦指數為必填欄位，不得省略。
 
@@ -182,7 +217,7 @@ recommendation_dimensions:
 
 ---
 
-## E. 快速教師決策代號｜Decision Codes
+## F. 快速教師決策代號｜Decision Codes
 
 ### 教學決策
 
@@ -218,7 +253,7 @@ R 2C/P2 5PE：補「坨」
 
 ---
 
-## F. 預習單 3–5 組規則
+## G. 預習單 3–5 組規則
 
 完整細則以 `core/worksheet/prestudy-language-selection-policy.md` 為準。
 
@@ -234,7 +269,7 @@ R 2C/P2 5PE：補「坨」
 
 ---
 
-## G. 同冊去重｜Volume-level Deduplication
+## H. 同冊去重｜Volume-level Deduplication
 
 1. 同一字群在同一冊原則上只在預習單正式出現一次。
 2. 字群比對採正規化，不因順序不同而視為不同群。
@@ -245,9 +280,9 @@ R 2C/P2 5PE：補「坨」
 
 ---
 
-## H. STEP 2.5 教師端顯示格式
+## I. STEP 2.5 教師端顯示格式
 
-### H1. 教師決策卡是第一輸出
+### I1. 教師決策卡是第一輸出
 
 當狀態為 `WAITING_CONFIRMATION` 時，AI 必須先輸出人類可讀的 Teacher Selection Card，不得只回 JSON、YAML、資料陣列或 `vocabulary[]`。
 
@@ -265,7 +300,7 @@ R 2C/P2 5PE：補「坨」
 
 若需要保留機器資料，可在教師決策卡之後附上 machine-readable payload；但該資料層不能取代分析推薦卡。
 
-### H2. 多音字分析也不得只剩結論
+### I2. 多音字分析也不得只剩結論
 
 每個多音字至少顯示：
 - 各讀音
@@ -277,7 +312,7 @@ R 2C/P2 5PE：補「坨」
 - 教學建議
 - 預習單建議與冊內查重
 
-### H3. 成語也必須先做推薦判讀
+### I3. 成語也必須先做推薦判讀
 
 成語在 STEP 2.5 不應只輸出 `definition / context / relatives / example`。每個成語必須先顯示：
 
@@ -290,17 +325,21 @@ R 2C/P2 5PE：補「坨」
 
 其 `definition / context / relatives / example` 屬後續內容資料，不是教師確認介面的替代品。
 
-### H4. 生字完整清單與形近字深究分開
+成語若被保留，後續必須交給 `core/director/idiom-expression-visualization-policy.md` 的 STEP 2.6 進一步決定生活例句與視覺表達方式。
+
+### I4. 生字完整清單與深教焦點分開
 
 `生字檢查數` 只能做 audit，不代表生字教學已完成。STEP 2.5 必須能證明：
 
 - 教材生字完整清單仍在資料層與正式教學規劃中。
+- 三、四年級深教預設聚焦形近字與多音字。
 - 形近字推薦只是「哪些生字值得額外做字群辨析」。
-- 未被選入形近字群的教材生字不得因此消失。
+- 未被選入形近字群或多音字深教的教材生字不得因此消失。
+- 一般生字可回到課文語境、識寫或基礎形音義處理，不必機械做同規格深教頁。
 
 ---
 
-## I. STEP 2.5 必填資料格式
+## J. STEP 2.5 必填資料格式
 
 ```yaml
 step_2_5_language_radiation:
@@ -310,6 +349,9 @@ step_2_5_language_radiation:
   teaching_scope:
     source_characters_complete: true
     formal_teaching_group_cap: NONE
+    grade_3_4_character_deep_focus:
+      - SHAPE_NEAR
+      - POLYPHONIC
 
   prestudy_scope:
     preferred_group_range: 3-5
@@ -319,6 +361,7 @@ step_2_5_language_radiation:
     required: true
     rendered_before_machine_payload: true
     shape_near_analysis_required: true
+    polyphonic_context_analysis_required: true
 
   items:
     - id:
@@ -358,13 +401,14 @@ step_2_5_language_radiation:
 
 ---
 
-## J. AI 的責任
+## K. AI 的責任
 
 AI 必須同時做到：
 
 - 保留完整教材生字
+- 對三、四年級先完成形近字／多音字深教候選分析
+- 判斷哪些一般生字只需基本識寫／形音義，哪些值得例外深教
 - 先完成形近字／多音字分析整理，再做推薦
-- 判斷哪些字需要一般識寫、哪些值得形近字深究
 - 對正式教學內容給完整推薦，不受預習單容量限制
 - 再從中精選適合預習單先看的 3–5 組左右高價值項目
 - 比較本冊前課已確認的字群／多音字紀錄
@@ -376,25 +420,29 @@ AI 必須同時做到：
 
 ---
 
-## K. Director Engine 接軌
+## L. Director Engine 接軌
 
 1. 讀取完整教材生字／形近字／多音字／成語資料。
-2. **先完成形近字與多音字語文分析整理。**
-3. 再完成正式教學價值判讀，不設 3–5 組上限。
-4. 再讀取同冊 `Volume Language Coverage`。
-5. 從正式候選中精選預習單約 3–5 組形近字／多音字。
-6. **先輸出 Teacher Selection Card：完整分析、推薦指數、理由、A–E、P1/P2/P3/PX。**
-7. 若有 machine payload，再於教師卡後輸出；不得反過來。
-8. 教師主要採 `R` 沿用，僅微調例外。
-9. AI 依確認內容分 Knowledge Chunk，並同步輸出預習單語文項目。
-10. 教師確認的 P1/P2 寫回本冊 Coverage Registry。
-11. 才進入預習單版面與完整 Slide Architecture。
+2. 三、四年級先建立「完整生字基礎層」與「形近字／多音字深教候選層」。
+3. **先完成形近字與多音字語文分析整理。**
+4. 再完成正式教學價值判讀，不設 3–5 組上限。
+5. 再讀取同冊 `Volume Language Coverage`。
+6. 從正式候選中精選預習單約 3–5 組形近字／多音字。
+7. **先輸出 Teacher Selection Card：完整分析、推薦指數、理由、A–E、P1/P2/P3/PX。**
+8. 若有 machine payload，再於教師卡後輸出；不得反過來。
+9. 教師主要採 `R` 沿用，僅微調例外。
+10. 成語保留結果交給 STEP 2.6 決定例句與視覺表達。
+11. AI 依確認內容分 Knowledge Chunk，並同步輸出預習單語文項目。
+12. 教師確認的 P1/P2 寫回本冊 Coverage Registry。
+13. 才進入預習單版面與完整 Slide Architecture。
 
 ---
 
 ## 核心金句
 
 > 教材告訴我們「有什麼」，分析告訴老師「這些字之間到底有什麼關係」，AI 再告訴老師「該教到什麼深度」。
+
+> 三、四年級生字：完整保留，深教聚焦形近字與多音字。
 
 > 推薦不能取代分析；代號不能取代語文判斷。
 
