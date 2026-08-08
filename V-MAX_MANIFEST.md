@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.7
+# V-MAX Manifest 1.8
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.7
+vmax_manifest_version: 1.8
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -38,6 +38,12 @@ knowledge_lab_ordering:
   current_version: 1.8
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
+  current_version: 1.0
+text_embedded_language_policy:
+  path: core/pedagogy/text-embedded-language-teaching-policy.md
+  current_version: 1.0
+text_embedded_language_skill:
+  path: skills/text-embedded-language-teaching/SKILL.md
   current_version: 1.0
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
@@ -163,6 +169,25 @@ SOURCE 0
 
 ---
 
+## Text-Embedded Language Resolution
+
+權威政策：`core/pedagogy/text-embedded-language-teaching-policy.md`
+
+執行摘要：`skills/text-embedded-language-teaching/SKILL.md`
+
+核心規則：
+- **語詞隨段落**：學生可見頁保留原文片段、重點語詞與學生易懂的語意。
+- **句型帶原文**：先有課文原句，再找結構、看懂作用、進行仿說／仿寫。
+- **修辭從文本發現**：先讀原文、觀察特點與效果，最後才命名。
+- 原文是語文教學的共同證據層，不得因 Knowledge Lab、Slide Architecture、Style Recipe 或 Renderer 而消失。
+
+禁止：
+- 語詞只有詞語＋定義，沒有原文。
+- 句型只有公式，沒有課文原句。
+- 修辭只有名稱／定義，沒有文本發現歷程。
+
+---
+
 ## Idiom Expression Resolution
 
 - STEP 2.5：教學價值、保留範圍、CORE/FLEX/BONUS。
@@ -231,7 +256,7 @@ SOURCE 0
 
 ## Adapter Boundary
 
-Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function、Character Group comparison purpose 或 Visual Grammar 的認知目的。
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function、Character Group comparison purpose、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
 
 若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
 
@@ -248,5 +273,7 @@ Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、
 > 三、四年級生字完整保留、深教聚焦；形近字看差異，多音字看語境。
 
 > 生字總覽負責完整，字群深教負責看懂差異。
+
+> 語詞隨文理解；句型回到原句；修辭從文本發現。
 
 > 預習單先帶孩子進文本；短文單再把本課語文工具變成孩子自己的作品。
