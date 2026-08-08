@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.0
+# V-MAX Manifest 1.1
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.0
+vmax_manifest_version: 1.1
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_state: runtime/lesson-state.md
 main_workflow:
@@ -22,6 +22,10 @@ step1_source_anchor: core/governance/step1-source-anchor-policy.md
 hold_policy: core/governance/hold-teacher-interface-policy.md
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 lesson_package_delivery: skills/lesson-package-delivery/SKILL.md
+adapters:
+  chatgpt: adapters/chatgpt.md
+  codex: adapters/codex.md
+  gemini: adapters/gemini.md
 ```
 
 ---
@@ -84,9 +88,27 @@ SOURCE 0
 
 ---
 
+## Adapter Resolution
+
+執行器辨識自己所在平台後，只載入對應 Adapter：
+
+- ChatGPT → `adapters/chatgpt.md`
+- Codex → `adapters/codex.md`
+- Gemini → `adapters/gemini.md`
+
+Adapter 的責任是回答「這個平台怎麼執行 V-MAX」，不是另立一套流程。
+
+若平台沒有對應 Adapter：
+
+1. 仍以 Bootstrap / Manifest / Runtime / Core 為權威。
+2. 標記 `ADAPTER_MISSING`。
+3. 可依平台能力建立新的薄 Adapter，但不得複製或改寫一套新的 Golden Path。
+
+---
+
 ## Adapter Boundary
 
-平台適配檔預定放在：
+平台適配檔放在：
 
 ```text
 adapters/
@@ -101,6 +123,7 @@ Adapter 只能描述：
 - 如何讀取 GitHub / Drive
 - 如何傳遞檔案
 - 如何轉成平台可接受格式
+- 如何讀取與回寫 Runtime State
 - 平台能力／限制
 
 Adapter 不得改寫：
@@ -117,3 +140,5 @@ Adapter 不得改寫：
 ## 核心金句
 
 > Manifest 決定現在誰是權威；模型不靠記憶猜版本。
+
+> Core 不隨平台分裂；Adapter 只處理平台差異。
