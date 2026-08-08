@@ -1,73 +1,94 @@
-# V-MAX Runtime Lesson State
+# V-MAX Runtime State Contract 2.0
 
-> 本檔保存目前正在執行的課程工作流狀態。任何 AI 在續跑前必須先讀取，不得只依賴聊天記憶。
+## 定位
+
+本檔不再保存任何單一課程的即時狀態。
+
+V-MAX 的正式分工：
+
+- GitHub：保存 Runtime schema、欄位規格、讀寫規則與平台 Adapter。
+- Google Drive：保存每一課實際、持續變動的 Runtime State。
+
+不得把每次 HOLD、stage 前進、Teacher Intent 鎖定都當成 GitHub commit。
+
+---
+
+## Google Drive Runtime Root
+
+正式 Runtime 根目錄：
+
+- Folder name: `00_Runtime_State`
+- Folder ID: `1AOjYwALGVNWu99b-SnjBUSALEDrlReMt`
+- Parent: `V-MAX 教材庫`
+
+正式 Index：
+
+- `V-MAX_Runtime_Index`
+- Document ID: `1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ`
+
+---
+
+## 每課 State 命名
+
+```text
+V-MAX_State_{冊別}_{課次}_{課名}
+```
+
+例如：
+
+`V-MAX_State_四上_第一課_水陸小高手`
+
+每課必須獨立存在，不得用第二課覆蓋第一課。
+
+---
+
+## 最低欄位
 
 ```yaml
-runtime_schema_version: 1.0
-workflow_version: 1.8
+runtime_schema_version: 2.0
+storage: GOOGLE_DRIVE
+lesson_id:
+workflow_version:
 lesson:
-  grade_volume: 四上
-  lesson_number: 第一課
-  title: 水陸小高手
-
+  grade_volume:
+  lesson_number:
+  title:
 source:
-  library_mode: GOOGLE_DRIVE_SOURCE_LIBRARY
-  source_status: FOUND
-  source_file: 00_國小國語4上教冊(教學篇)第一本_全.pdf
-
+  library_mode:
+  source_status:
+  source_file:
 state:
-  current_stage: HOLD_2
-  last_completed_stage: STEP_2
-  teacher_confirmation_status: WAITING_CONFIRMATION
-  next_allowed_stage:
-    - STEP_2_5
-  forbidden_next:
-    - STEP_3_LEGACY
-    - STEP_4_LEGACY
-    - TEACHER_INTENT_LOCK
-    - LESSON_MAP
-    - SESSION_MAP
-    - SCENARIO_WRAPPER
-    - CHARACTER
-    - VISUAL_STYLE
-    - SLIDE_ARCHITECTURE
-    - PAGE_ESTIMATE
-
-locked_decisions:
-  source_anchor: true
-  step2_teaching_value: proposed_not_confirmed
-  step2_5_language_scope: false
-  teacher_intent: false
-  lesson_map: false
-  session_map: false
-  scenario: false
-  character: false
-  visual_style: false
-
+  current_stage:
+  last_completed_stage:
+  teacher_confirmation_status:
+  next_allowed_stage: []
+  forbidden_next: []
+locked_decisions: {}
 runtime_rules:
   single_stage_advance: true
   teacher_confirmation_advances_one_stage_only: true
   legacy_stage_aliases_forbidden: true
   model_memory_cannot_override_runtime: true
-
-notes:
-  - 目前真實測試曾出現 STEP 2 後跳至舊版 STEP 3 / STEP 4；該路徑已標記 LEGACY_FLOW_ALIAS。
-  - 下一次教師確認 HOLD 2 後，唯一合法下一步為 STEP 2.5 語文輻射分析與教師選擇。
+notes: []
 ```
 
-## 更新規則
+---
 
-每完成一個正式 stage 或教師完成一次 HOLD 決策後，更新本檔：
+## 啟動與續跑
 
-- `current_stage`
-- `last_completed_stage`
-- `teacher_confirmation_status`
-- `next_allowed_stage`
-- `forbidden_next`
-- `locked_decisions`
+1. 先讀 `V-MAX_Runtime_Index`。
+2. 依教師指定課次找到對應 State；若教師說「繼續目前這課」，才使用 Index 的 active lesson。
+3. 讀取該課 `current_stage / next_allowed_stage / locked_decisions`。
+4. 只執行合法下一階段。
+5. 每次 HOLD 確認或正式 stage 完成後，回寫該課 Google Drive State。
+6. 必要時同步更新 Runtime Index 的 active lesson 與狀態摘要。
 
-不得預先把尚未確認的階段寫成 completed / locked。
+若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得以 GitHub 範例狀態、模型記憶或舊對話猜測目前進度。
+
+---
 
 ## 核心金句
 
-> 對話會換、模型會換；Runtime State 告訴下一個執行器現在真正跑到哪裡。
+> GitHub 保存規則；Google Drive 保存每一課現在真正跑到哪裡。
+
+> 課程狀態會一直變，不應讓 GitHub commit history 變成課堂操作日誌。
