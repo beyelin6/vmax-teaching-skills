@@ -1,13 +1,17 @@
-# V-MAX Main Workflow 1.5
+# V-MAX Main Workflow 1.6
 
 ## 定位
 
-本檔定義 V-MAX 教材製作的正式主流程、教師確認點、工作流測試入口與完整 Lesson Package 交付。平台、Renderer、NotebookLM、Gemini、ChatGPT、Canva 等都不得反向改寫此核心順序。
+本檔定義 V-MAX 教材製作的正式主流程、教師確認點、工作流測試入口、來源庫讀取與完整 Lesson Package 交付。平台、Renderer、NotebookLM、Gemini、ChatGPT、Canva 等都不得反向改寫此核心順序。
 
 所有 HOLD 共同遵循：
 
 - `core/governance/hold-teacher-interface-policy.md`
 - `core/governance/workflow-test-freeze.md`
+
+來源取得另遵循：
+
+- `core/governance/source-library-policy.md`
 
 STEP 1 另遵循：
 
@@ -24,7 +28,8 @@ STEP 1 另遵循：
 V-MAX 的教師端體驗必須維持下列節奏：
 
 ```text
-先把教材看懂
+從固定 Source Library 找原始教材
+→ 先把教材看懂
 → AI 主動做有理由的教學推薦
 → 教師只微調例外
 → 再決定整課怎麼教
@@ -34,13 +39,14 @@ V-MAX 的教師端體驗必須維持下列節奏：
 
 這不是介面美化，而是主流程本身。
 
-### Golden Path 不可遺失的五件事
+### Golden Path 不可遺失的六件事
 
-1. **AI 推薦不可被跳過**：不得從教材整理直接跳到頁數帳本／逐頁腳本。
-2. **教師是導演，不是審稿員**：AI 要先提出判讀與理由，教師主要做少量例外調整。
-3. **每個文本單位自然長出教法**：不得用固定五頁、固定五步、固定問題數機械套每一段／詩節。
-4. **頁數是結果，不是起點**：Lesson / Session / Act / Knowledge Chunk 尚未成立前，不得先鎖總頁數。
-5. **亮點優先保存**：若完整性與教學節奏衝突，優先保留最能改變學生理解、發現、朗讀、推論、遷移的設計。
+1. **來源庫優先**：教師已指定 Source Library 時，先自動找冊別／課次；只有找不到、版本衝突或權限阻擋時才要求重新上傳。
+2. **AI 推薦不可被跳過**：不得從教材整理直接跳到頁數帳本／逐頁腳本。
+3. **教師是導演，不是審稿員**：AI 要先提出判讀與理由，教師主要做少量例外調整。
+4. **每個文本單位自然長出教法**：不得用固定五頁、固定五步、固定問題數機械套每一段／詩節。
+5. **頁數是結果，不是起點**：Lesson / Session / Act / Knowledge Chunk 尚未成立前，不得先鎖總頁數。
+6. **亮點優先保存**：若完整性與教學節奏衝突，優先保留最能改變學生理解、發現、朗讀、推論、遷移的設計。
 
 ---
 
@@ -61,7 +67,8 @@ V-MAX 的教師端體驗必須維持下列節奏：
 ## 正式主流程
 
 ```text
-STEP 1 教材定錨
+SOURCE 0｜Google Drive Source Library 尋源
+→ STEP 1 教材定錨
 → HOLD 1
 → STEP 2 AI 教學價值判讀／Teacher Intent 候選
 → STEP 2.5 語文輻射分析與教師選擇
@@ -85,6 +92,18 @@ STEP 1 教材定錨
 → Google Drive 歸檔與驗證
 ```
 
+### SOURCE 0｜Google Drive Source Library 尋源
+
+若教師已指定固定 Source Library，開工時預設：
+
+1. 依冊別／課次／課名搜尋來源庫。
+2. 找到整冊教師手冊即可，不要求教師拆成單課。
+3. 定位本課內容後交給 STEP 1 做 Source Anchor。
+4. 同冊有多個疑似版本時，先列少量候選讓教師確認。
+5. 找不到、版本衝突、權限阻擋或來源不足時，才要求教師補檔。
+
+不得明明來源庫已有原始教材，仍要求教師每課重新上傳同一本 PDF。
+
 ### STEP 2.5 與 Knowledge Lab 的分工
 
 - **STEP 2.5 = Selection Gate**：完成生字完整性檢查、形近字／多音字分析、成語教學價值判讀、預習單語文候選與教師選擇。此時不決定投影片頁型。
@@ -99,7 +118,7 @@ STEP 1 教材定錨
 ## 各階段要點
 
 ### 1. STEP 1｜教材定錨
-來源真值、課文、完整生字、完整教材詞語、教材成語、教材語文活動先確認。
+來源真值、課文、完整生字、完整教材詞語、教材成語、教材語文活動先確認。來源取得優先依 `core/governance/source-library-policy.md`。
 
 STEP 1 禁止提前鎖定：Drama / Mode A / Field Trip、Scenario Wrapper、Character / Cast、Visual Grammar、Style Recipe、Session 數、Slide Architecture / 頁數。
 
@@ -212,10 +231,13 @@ STEP 1 禁止提前鎖定：Drama / Mode A / Field Trip、Scenario Wrapper、Cha
 - 不因先宣告頁數而平均切文本。
 - 不因 PPTX/PDF 已完成就忽略 Source Master、腳本、視覺規格、角色資產或學習單。
 - 不得在指定 Google Drive 歸檔時只說「之後會上傳」而未實際驗證。
+- 不得在固定 Source Library 已有完整原始教材時，仍把「重新上傳 PDF」當成每課標準步驟。
 
 ---
 
 ## 核心金句
+
+> 原始教材只上傳一次；之後每一課，V-MAX 自己去來源庫找。
 
 > 先把教材讀對，再決定教什麼；先決定教什麼，再決定怎麼教；最後才決定怎麼呈現。
 
