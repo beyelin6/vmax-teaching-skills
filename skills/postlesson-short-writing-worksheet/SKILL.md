@@ -1,6 +1,6 @@
 # V-MAX Post-lesson Short Writing Worksheet Skill
 
-版本：1.0
+版本：1.1
 
 ## 目的
 
@@ -17,8 +17,22 @@
 - 尺寸：A4 橫式。
 - 風格：與本課預習單同一視覺家族，可愛、清楚、有任務感。
 - 主體：大面積白／米白書寫底，手繪框線與少量主題插圖。
-- 閱讀對象：三、四年級優先，文字與勾選項不得過小。
+- 閱讀對象：三、四年級優先。
+- **學生可見、需要閱讀或勾選的任何文字，列印於 A4、100% 尺寸時不得小於 12 pt。**
+- 建議層級：正文／提示／Bonus 項目 12–14 pt 以上；區塊標題 14–18 pt 以上；主標題 20 pt 以上。可依版面放大，不得因工具箱內容多而縮到最低值以下。
+- 班級／座號／姓名、勾選項、Bonus 標籤、角色提示、圖說、底部自我回顧等，只要需要學生辨讀，都受 12 pt 下限約束。
+- 純裝飾符號、不承載閱讀資訊的圖形不受字級規範。
 - 角色：可放在頁首或側邊做短提示，但不得占用主要寫作區。
+
+### A1. 字級不足時的處理順序
+
+若內容放不下，依序：
+
+`刪除低價值 Bonus → 縮短提示 → 重組版面 → 增加頁數（若教師允許）`
+
+**不得以縮小到 12 pt 以下解決版面問題。**
+
+若輸出為圖片或 PDF，需以 A4 實際列印尺寸檢查等效字級；不得因整張縮圖、畫布縮放或輸出 DPI 造成實際閱讀尺寸低於 12 pt。
 
 ---
 
@@ -58,6 +72,8 @@ Bonus 的核心：**可選，不要求全部使用。**
 
 學生可勾選實際想使用的工具。
 
+若工具太多導致字級低於 12 pt，必須減少工具數量，不得縮字硬塞。
+
 ### B3. 正式創作區
 
 - 佔整頁最大面積。
@@ -90,11 +106,11 @@ AI 依 Teacher Intent、Lesson Map、STEP 2.5、STEP 2.6 與本課寫作任務�
 
 ### C3. 句型
 
-以可直接模仿的骨架呈現，例如：
+句型工具須承接 `core/pedagogy/text-embedded-language-teaching-policy.md`：
 
-- 「……一般……」
-- 「我……，就像……」
-- 「……全都……」
+- 優先保留課文原句或足以辨認來源的原文片段。
+- 再標示可模仿的句型骨架。
+- 不只顯示抽離文本的公式。
 
 句型只能當支架，不能讓全班作品變成同一篇填空作文。
 
@@ -118,6 +134,7 @@ AI 依 Teacher Intent、Lesson Map、STEP 2.5、STEP 2.6 與本課寫作任務�
 5. 不因工具箱存在而犧牲正式寫作空間。
 6. 鼓勵個人選擇與不同作品，不做制式填空作文。
 7. 學生版不放標準答案或示範全文；若需要教師示例，放教師版／備註。
+8. **任何學生需要讀的文字不得低於 12 pt；內容過多時刪減或重排，不縮字。**
 
 ---
 
@@ -146,6 +163,7 @@ AI 依 Teacher Intent、Lesson Map、STEP 2.5、STEP 2.6 與本課寫作任務�
 - 角色台詞以一句短提示為限，如「先寫出你的畫面，再挑喜歡的 Bonus」。
 - 角色不能替學生完成聯想或提供完整答案。
 - 版面要像任務手冊頁，而不是卡通海報。
+- 角色台詞只要需要學生閱讀，同樣不得低於 12 pt。
 
 ---
 
@@ -168,6 +186,12 @@ postlesson_short_writing_worksheet:
   main_writing_area_ratio: ">= 0.50"
   student_visible_model_answer: false
   teacher_guidance_separate: true
+  typography:
+    min_student_visible_pt: 12
+    body_recommended_pt: 12-14+
+    section_heading_recommended_pt: 14-18+
+    title_recommended_pt: 20+
+    shrink_below_minimum: false
   theme_assets: []
 ```
 
@@ -183,11 +207,13 @@ postlesson_short_writing_worksheet:
 - 語詞／成語／句型只是塞滿清單，與寫作任務無關。
 - 成語使用方向與 STEP 2.6 已確認語意不一致。
 - 全班被迫套同一句型、同一篇結構。
-- 字太小或書寫空間不足。
+- **任何學生需閱讀文字在 A4 100% 列印時低於 12 pt。**
+- 為塞 Bonus 或提示縮小字體而不是刪減／重排。
+- 書寫空間不足。
 - 裝飾／角色干擾學生書寫。
 - 學生版出現完整示範答案。
 
-分類：`WRITING_WORKSHEET_LAYOUT_FAIL / BONUS_OVERLOAD / WRITING_SCAFFOLD_FAIL / WRITING_TOOL_DRIFT / ANSWER_LEAK`
+分類：`WRITING_WORKSHEET_LAYOUT_FAIL / BONUS_OVERLOAD / WRITING_SCAFFOLD_FAIL / WRITING_TOOL_DRIFT / ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL`
 
 ---
 
@@ -196,3 +222,5 @@ postlesson_short_writing_worksheet:
 > 先幫孩子找到可以寫的畫面，再給他幾個可自由選用的語文工具。
 
 > Bonus 是讓作品更精彩的工具箱，不是全部都要交作業。
+
+> A4 學習單寧可少放一點，也不要把孩子要讀的字縮到 12 pt 以下。
