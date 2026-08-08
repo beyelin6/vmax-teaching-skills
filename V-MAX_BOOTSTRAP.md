@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.1
+# V-MAX Bootstrap 1.2
 
 ## 目的
 
@@ -25,6 +25,25 @@
 7. 讀與當前 stage 直接相關的 policy / skill。
 
 若平台無法讀 GitHub，標記 `BOOTSTRAP_BLOCKED`；若可讀 GitHub 但無法讀 Drive Runtime，標記 `RUNTIME_DRIVE_BLOCKED`。不得假裝已載入現行狀態。
+
+---
+
+## 高優先語文教學摘要
+
+當任務涉及課文語詞、句型或修辭時，必須載入：
+
+- `skills/text-embedded-language-teaching/SKILL.md`
+- 完整規格：`core/pedagogy/text-embedded-language-teaching-policy.md`
+
+執行口訣：
+
+> **語詞隨段落，句型帶原文，修辭從文本發現。原文不可消失。**
+
+最低要求：
+- 語詞：原文片段＋重點語詞＋學生易懂的意義。
+- 句型：先有課文原句，再抽出結構與仿用。
+- 修辭：先讀原文、觀察效果，再命名。
+- Renderer 不得為版面美化刪除原文證據層。
 
 ---
 
@@ -84,3 +103,5 @@ V-MAX Core 不依賴：
 > 先載入 V-MAX，再讀這一課現在跑到哪裡，才開始教學設計。
 
 > GitHub 管規格；Google Drive 管每一課的生命週期。
+
+> 語詞隨文理解；句型回到原句；修辭從文本發現。
