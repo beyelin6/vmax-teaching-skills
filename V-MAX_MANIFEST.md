@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.4
+# V-MAX Manifest 2.5
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.4
+vmax_manifest_version: 2.5
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -68,16 +68,16 @@ prestudy_language_selection:
   current_version: 1.1
 prestudy_worksheet:
   path: skills/prestudy-worksheet/SKILL.md
-  current_version: 1.0
+  current_version: 1.1
 postlesson_short_writing_worksheet:
   path: skills/postlesson-short-writing-worksheet/SKILL.md
-  current_version: 1.0
+  current_version: 1.1
 worksheet_regression:
   path: tests/worksheet-regression-cases.md
-  current_version: 1.0
+  current_version: 1.1
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
-  current_version: 1.2
+  current_version: 1.3
 google_drive_lesson_archive:
   path: skills/google-drive-lesson-archive/SKILL.md
   current_version: 1.0
@@ -212,6 +212,37 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 
 ---
 
+## Worksheet Resolution
+
+### Pre-study Worksheet
+權威：`skills/prestudy-worksheet/SKILL.md` v1.1。
+
+### Post-lesson Short Writing Worksheet
+權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.1。
+
+兩份學習單共同硬規格：
+
+> **A4 100% 實際列印時，所有學生需要閱讀、辨認、勾選或作答依據的文字不得低於 12 pt。**
+
+建議層級：
+- 正文／題幹／Bonus 項目：12–14 pt 以上
+- 區塊標題：14–18 pt 以上
+- 主標題：20 pt 以上
+
+班級／座號／姓名、勾選項、提示語、角色台詞與必要圖說，只要需要學生辨讀，同樣受 12 pt 下限約束。
+
+內容放不下時：`刪減 → 縮短 → 重排 → 必要時增加頁數`；**不得縮到 12 pt 以下**。
+
+圖片／PDF 輸出必須以 A4 實際列印尺寸檢查等效字級，避免畫布縮放造成假 PASS。
+
+預習單與短文單可共享視覺家族，但功能必須分開：
+- 預習單：探索／理解／預備
+- 短文單：素材啟動／語文 Bonus／創作遷移
+
+正式交付必須通過 `tests/worksheet-regression-cases.md` v1.1；若 `WORKSHEET_FONT_TOO_SMALL` 或 `WORKSHEET_EXPORT_SCALE_FAIL`，不得交付為 PASS。
+
+---
+
 ## Google Drive Lesson Archive Resolution
 
 固定根目錄：
@@ -255,6 +286,7 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 - 語詞／句型／修辭沒有原文證據
 - 已選整課圖像心智地圖卻在大綱消失
 - Drive 舊五類資料夾結構
+- A4 學習單靠縮字到 12 pt 以下塞內容
 
 ---
 
@@ -263,3 +295,5 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 > Manifest 決定現在誰是權威；Executor 必須真的載入，而不是只靠模型記得。
 
 > 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
+
+> 學習單寧可少放內容，也不要讓學生真正印出來看到的字小於 12 pt。
