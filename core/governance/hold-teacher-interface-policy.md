@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.1
+# V-MAX HOLD Teacher Interface Policy 1.2
 
 ## 定位
 
@@ -12,15 +12,17 @@
 
 > AI 要把判斷做重，把老師的操作做輕。
 
+> 一次確認，只往前走一關。
+
 ---
 
 ## A. 適用範圍
 
 本規則適用所有需要教師確認的階段，包括但不限於：
 
-- STEP 1 教材定錨
-- AI 教學價值判讀
-- STEP 2.5 語文輻射
+- STEP 1 教材定錨 → HOLD 1
+- STEP 2 AI 教學價值判讀 → HOLD 2
+- STEP 2.5 語文輻射 → HOLD 2.5
 - Teacher Intent Lock
 - Lesson Map
 - 補充內容／學習框架候選
@@ -40,15 +42,17 @@
 
 1. `Teacher Confirmation Card`：人類可讀摘要／分析／推薦。
 2. 明確標示目前 HOLD 與可做的教師決策。
-3. 等教師確認或微調。
-4. Machine JSON / YAML / schema 只在系統內保留，或教師明確要求時再顯示。
+3. 明確寫出「確認後唯一下一步」。
+4. 等教師確認或微調。
+5. Machine JSON / YAML / schema 只在系統內保留，或教師明確要求時再顯示。
 
 禁止：
 
 - 只輸出 JSON / YAML / vocabulary[] / schema。
 - 先貼大段 machine payload，再要求教師確認。
-- 用 internal key（如 `mode`, `basicInfo`, `visualStructureRecommendation`）取代教師語言。
-- 因為後續 NotebookLM / Renderer 需要結構化資料，就把結構化資料當 HOLD UI。
+- 用 internal key 取代教師語言。
+- 因 downstream 需要結構化資料，就把結構化資料當 HOLD UI。
+- 在 HOLD 結尾列出多個後續階段，暗示一次確認可連跑。
 
 若違反上述規則，該 HOLD 狀態標記 `MISSING_INTERFACE`，不可直接往下一階段。
 
@@ -64,10 +68,11 @@
 - **為什麼這樣建議？**
 - 哪些內容仍是教師決策？
 - 教師如何用最少輸入完成確認／微調？
+- 確認後唯一會進哪一階段？
 
-若該步只是資料定錨，不能加入後段才應決定的 Scenario / Character / Style / Layout。
+若該步只是資料定錨，不能加入後段才應決定的 Scenario / Character / Style / Layout，也不能先決定「每段都怎麼教」。
 
-若該步是 AI 教學價值判讀，不能只給分類結果；必須有足以讓教師判斷的理由、取捨與風險。
+若該步是 AI 教學價值判讀，不能只給分類結果；必須有足以讓教師判斷的理由、取捨與風險，並在 `HOLD 2` 停下來。
 
 ---
 
@@ -80,6 +85,7 @@ AI 先分析與推薦
 → 說明理由與教學價值
 → 教師看得懂差異
 → 教師只改例外
+→ 停在當前 HOLD
 ```
 
 不得反過來要求教師先選大量 A/B/C 選項，再由 AI 補理由。
@@ -97,6 +103,7 @@ AI 先分析與推薦
 - 只有 `A/B/C/D/E`，沒有分析。
 - 教師確認 STEP 1 後直接收到「52 頁帳本」。
 - 把每一段都做成完全相同的五步模板，再請教師確認。
+- STEP 2 做完後直接說「下一步進課程結構與簡報模組配置」。
 
 ---
 
@@ -119,21 +126,50 @@ AI 應先完整分析，再降低教師輸入成本。
 
 ---
 
-## F. HOLD 不得跨階段
+## F. HOLD 不得跨階段｜Single-stage Advance
 
-教師在某個 HOLD 說「確認／好／可以」時，只代表**當前決策被確認**，不代表 AI 可以跳過中間流程。
+教師在某個 HOLD 說「確認／好／可以」時，只代表**當前決策被確認**，且只解鎖主流程中**緊接的一個正式階段**。
 
-例如：
+### 必守鏈條
 
-- HOLD 1 確認後，下一步應進 AI 教學價值判讀，而不是頁數帳本。
-- STEP 2 / STEP 2.5 確認後，應進 Teacher Intent Lock / Lesson Map，而不是直接逐頁腳本。
+```text
+HOLD 1
+→ STEP 2
+→ HOLD 2
+→ STEP 2.5
+→ HOLD 2.5
+→ Teacher Intent Lock
+→ Lesson Map
+```
+
+因此：
+
+- HOLD 1 確認後，只做 STEP 2，然後停在 HOLD 2。
+- HOLD 2 確認後，只做 STEP 2.5，然後停在 HOLD 2.5。
+- HOLD 2.5 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Architecture。
 - Session Map 尚未成立前，不得宣告完整教學版總頁數。
 
-若跳過主流程中介階段，標記 `SKIPPED_DECISION_LAYER`。
+若一個「確認」後連續跑過兩個以上需教師介入的決策層，標記：
+
+`RUNAWAY_WORKFLOW / SKIPPED_HOLD / STAGE_LEAP`
 
 ---
 
-## G. 教師主權的實際判定
+## G. 下一步指向驗證
+
+每個 HOLD 最後一句「確認後下一步」必須和 `vmax-main-workflow.md` 完全一致。
+
+例如：
+
+- HOLD 1 下一步只能是 `STEP 2 AI 教學價值判讀`。
+- HOLD 2 下一步只能是 `STEP 2.5 語文輻射分析與教師選擇`。
+- HOLD 2.5 下一步只能是 `Teacher Intent Lock`。
+
+若文字把下一步寫成「課程結構與簡報模組配置」「頁數規劃」「逐頁腳本」，但正式流程尚未到該階段，標記 `WRONG_NEXT_STAGE_POINTER`。
+
+---
+
+## H. 教師主權的實際判定
 
 好的 HOLD 應讓教師感覺自己在「導演」：
 
@@ -141,6 +177,7 @@ AI 應先完整分析，再降低教師輸入成本。
 - AI 提出少量、有理由的判斷。
 - 教師可以接受大部分，只改真正不同意的部分。
 - 教師不用替 AI 補回它漏掉的教學亮點。
+- 教師有時間在關鍵轉折處真正做決策，而不是看系統連跑。
 
 若教師主要工作變成：
 
@@ -148,16 +185,17 @@ AI 應先完整分析，再降低教師輸入成本。
 - 逐項替 AI 做初步分類
 - 因 AI 已鎖頁數而被迫接受結構
 - 反覆修正機械模板
+- 追著已經飛過去的流程叫 AI 回頭
 
 則該 HOLD 雖形式上有確認點，仍視為 `TEACHER_EFFORT_FAIL`。
 
 ---
 
-## H. TEST_FREEZE 相容
+## I. TEST_FREEZE 相容
 
 在 `TEST_FREEZE` 中，若某 HOLD 沒有依此政策顯示：
 
-- 記錄 `MISSING_INTERFACE / SKIPPED_DECISION_LAYER / TEACHER_EFFORT_FAIL`
+- 記錄 `MISSING_INTERFACE / SKIPPED_DECISION_LAYER / TEACHER_EFFORT_FAIL / RUNAWAY_WORKFLOW / WRONG_NEXT_STAGE_POINTER`
 - 停在原 HOLD
 - 不自行修改系統
 
@@ -165,7 +203,7 @@ AI 應先完整分析，再降低教師輸入成本。
 
 ---
 
-## I. Machine Payload 原則
+## J. Machine Payload 原則
 
 Machine payload 是 downstream contract，不是 Teacher UI。
 
@@ -190,5 +228,7 @@ Machine payload 是 downstream contract，不是 Teacher UI。
 > HOLD 的價值是降低教師決策負擔，不是把內部資料格式丟給老師。
 
 > AI 要把判斷做重，把老師的操作做輕。
+
+> 一次確認，只往前走一關；不要飛站。
 
 > 教師確認的是方向與例外，不是替 AI 補完整套教學設計。
