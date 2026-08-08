@@ -1,4 +1,4 @@
-# V-MAX Knowledge Lab Ordering Policy 1.1
+# V-MAX Knowledge Lab Ordering Policy 1.2
 
 ## 定位
 
@@ -97,56 +97,126 @@ recommendation_dimensions:
 
 ---
 
-## D. STEP 2.5 必填輸出格式
+## D. 快速教師決策代號｜Decision Codes
+
+為降低確認負擔，`STEP 2.5` 採「**數字看 AI 推薦，字母回教師決策**」的雙軌代號。
+
+### AI 推薦
+
+沿用 `1–5`：
+- `5` 強烈推薦
+- `4` 推薦
+- `3` 可選
+- `2` 低優先
+- `1` 疑似雞肋
+
+### 教師決策
+
+- `A｜深教`：正式進入 CORE，建立完整辨析／情境／練習。
+- `B｜短辨析`：保留，但快速處理，不展開成完整深教頁。
+- `C｜Bonus`：保留為學生自選挑戰／延伸。
+- `D｜刪除`：本課不教，但來源資料仍保留 provenance。
+- `E｜調整`：要補充／替換／改字群／修改內容，AI 應詢問或依教師同回合補充執行。
+
+### 快速回覆格式
+
+教師可直接回：
+
+```text
+1A 2D 3B 4C 5A
+```
+
+其中前面的數字是「項目編號」，不是推薦指數。
+
+若需要避免混淆，確認卡固定顯示：
+
+```text
+01｜泳／永／詠｜推薦 5/5｜AI 建議 A
+02｜般／搬／船｜推薦 2/5｜AI 建議 D
+03｜溜／留／遛｜推薦 5/5｜AI 建議 A
+```
+
+教師只需回：`1A 2D 3A`。
+
+也可以用群組簡寫：
+
+```text
+A：1,3,4
+B：6,7
+C：8,9,10
+D：2
+E：5（補「坨」）
+```
+
+### 規則
+
+- `AI 建議 A/B/C/D` 只是建議，不得預填為教師決策。
+- `E` 一律代表需要調整，不能直接視為通過。
+- 若教師只回代號，系統應依當前卡片項目順序解析，不要求重新貼全文。
+- 下一個 HOLD 前，所有需要教師決策的項目都應有 A–E 或明確的全選／沿用指令。
+
+---
+
+## E. STEP 2.5 必填輸出格式
 
 ```yaml
 step_2_5_language_radiation:
   status: WAITING_CONFIRMATION
 
+  decision_legend:
+    A: 深教
+    B: 短辨析
+    C: Bonus
+    D: 刪除
+    E: 調整
+
   shape_near_groups:
-    - item: 泳／永／詠
+    - id: 1
+      item: 泳／永／詠
       provenance: SOURCE_TEXTBOOK | TEACHER_ADDED | AI_SUGGESTED
       recommendation_index: 5
       recommendation_level: 強烈推薦
-      suggested_action: CORE_DEEP_DIVE
+      ai_suggested_decision: A
       reason: 與本課生字直接相關，字形近、讀音與詞義皆具辨析價值。
       teacher_decision: PENDING
 
   polyphonic_characters:
-    - character: 溜
+    - id: 2
+      character: 溜
       source_usages: []
       extension_usages: []
       recommendation_index: 5
       recommendation_level: 強烈推薦
-      suggested_action: CORE
+      ai_suggested_decision: A
       reason: 課文直接出現，且不同讀音對應不同語意與使用情境。
       teacher_decision: PENDING
 
   idioms:
-    - item: 耳目一新
+    - id: 3
+      item: 耳目一新
       provenance: SOURCE_TEXTBOOK
       recommendation_index: 4
       recommendation_level: 推薦
-      suggested_action: BONUS_HIGH
+      ai_suggested_decision: C
       reason: 語意生活化且可遷移到口語與寫作，但非理解本課童詩的必要條件。
       teacher_decision: PENDING
 ```
 
-若同一回合採「核心＋Bonus 自選」呈現，仍必須在每一項旁邊保留推薦指數。
+若同一回合採「核心＋Bonus 自選」呈現，仍必須在每一項旁邊保留推薦指數與項目編號。
 
 例如：
 
 ```text
-核心｜泳／永／詠　★★★★★ 5/5｜強烈推薦
+01｜泳／永／詠｜5/5 強烈推薦｜AI 建議 A 深教
 理由：本課生字直接相關，且三字形近、語意差異清楚。
 
-Bonus｜鷹／應　★★★☆☆ 3/5｜可選
+02｜鷹／應｜3/5 可選｜AI 建議 B 短辨析
 理由：可做短辨析，但學生實際混淆風險低於其他字群。
 ```
 
 ---
 
-## E. 生字區
+## F. 生字區
 
 ### 目的
 讓教師與學生掌握本課完整生字範圍，再決定哪些字值得深入處理。
@@ -161,7 +231,7 @@ Bonus｜鷹／應　★★★☆☆ 3/5｜可選
 
 ---
 
-## F. 形近字／字群區
+## G. 形近字／字群區
 
 ### 目的
 針對教師選定的重點生字，建立真正有價值的同場比較與字族關係。
@@ -192,7 +262,7 @@ Bonus｜鷹／應　★★★☆☆ 3/5｜可選
 
 ---
 
-## G. 多音字區
+## H. 多音字區
 
 ### 目的
 完整建立教材所列多音字的「讀音 × 語意 × 情境」關係。
@@ -206,7 +276,7 @@ Bonus｜鷹／應　★★★☆☆ 3/5｜可選
 
 ---
 
-## H. 成語區
+## I. 成語區
 
 ### 目的
 以教材原始來源為底，再依教師需要補充，讓學生看懂語意、辨識使用情境並遷移。
@@ -223,7 +293,7 @@ Bonus｜鷹／應　★★★☆☆ 3/5｜可選
 
 ---
 
-## I. 分組邏輯優先於頁數
+## J. 分組邏輯優先於頁數
 
 Knowledge Lab 不以「教材列了幾個項目」直接等同頁數，而以教師確認後的教學範圍與認知關係決定。
 
@@ -231,7 +301,7 @@ Knowledge Lab 不以「教材列了幾個項目」直接等同頁數，而以教
 
 ---
 
-## J. 權限原則
+## K. 權限原則
 
 ### Source First
 教材／轉錄來源決定「有哪些原始候選」。
@@ -240,11 +310,11 @@ Knowledge Lab 不以「教材列了幾個項目」直接等同頁數，而以教
 AI 必須提供：
 - recommendation_index
 - recommendation_level
-- suggested_action
+- ai_suggested_decision
 - one-line reason
 
 ### Teacher Selects & Curates
-教師決定：
+教師用 A–E 快速決定：
 - 哪些生字深入
 - 哪些形近字保留／替換／補充
 - 哪些成語保留／補充
@@ -257,56 +327,50 @@ AI 不得把「推薦」偷偷變成「已決定」。
 
 ---
 
-## K. Director Engine 接軌
+## L. Director Engine 接軌
 
 Director Engine 在完成段落閱讀 Acts 後：
 
 1. 讀取教材原始生字／形近字／多音字／成語資料。
 2. 輸出 `STEP 2.5 語文輻射 Teacher Selection Card`。
-3. **先對所有候選產出推薦指數與一句理由。**
-4. 教師選定需深教／短辨析／Bonus／刪除內容。
+3. **先對所有候選產出推薦指數、AI 建議代號與一句理由。**
+4. 教師以 A–E 決定需深教／短辨析／Bonus／刪除／調整內容。
 5. AI 依教師確認內容分 Knowledge Chunk。
 6. 決定 Knowledge Lab 是否集中出現，或穿插在閱讀後的自然位置。
 7. 最後才決定 Shot 數與版面。
 
-若 `STEP 2.5` 沒有推薦指數，視為 `INCOMPLETE`，不得進入下一個 HOLD。
+若 `STEP 2.5` 沒有推薦指數、項目編號或教師決策代號介面，視為 `INCOMPLETE`，不得進入下一個 HOLD。
 
 ---
 
-## L. Teacher Selection Card 必填格式
+## M. Teacher Selection Card 必填格式
 
 ```yaml
 teacher_selection_card:
-  shape_near_groups:
-    - item:
+  decision_legend:
+    A: 深教
+    B: 短辨析
+    C: Bonus
+    D: 刪除
+    E: 調整
+
+  items:
+    - id:
+      category:
+      item:
       provenance:
       recommendation_index:
       recommendation_level:
-      suggested_action:
-      reason:
-      teacher_decision: PENDING
-
-  polyphonic_characters:
-    - item:
-      recommendation_index:
-      recommendation_level:
-      suggested_action:
-      reason:
-      teacher_decision: PENDING
-
-  idioms:
-    - item:
-      provenance:
-      recommendation_index:
-      recommendation_level:
-      suggested_action:
+      ai_suggested_decision:
       reason:
       teacher_decision: PENDING
 ```
 
 此卡片是確認介面，不是教師必須逐欄填寫的表單。教師端應優先呈現簡潔的：
 
-`項目｜推薦指數｜AI 判讀｜教師決策`
+`編號｜項目｜推薦指數｜AI 建議｜一句理由`
+
+教師通常只需要回：`1A 2D 3B 4C ...`。
 
 ---
 
@@ -314,4 +378,4 @@ teacher_selection_card:
 
 > 教材告訴我們「有什麼」，AI 要告訴老師「值不值得教到什麼深度」，最後仍由老師決定。
 
-> 推薦指數的目的不是替老師打分，而是讓老師不用自己重新判讀整份教材。
+> 數字讓老師快速看 AI 的判讀，字母讓老師快速下決策。
