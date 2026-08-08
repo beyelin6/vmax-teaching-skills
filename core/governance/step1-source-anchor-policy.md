@@ -1,4 +1,4 @@
-# V-MAX STEP 1 Source Anchor Policy 1.1
+# V-MAX STEP 1 Source Anchor Policy 1.2
 
 ## 定位
 
@@ -11,6 +11,7 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 來源取得另遵循：
 
 - `core/governance/source-library-policy.md`
+- `core/governance/recognition-only-character-policy.md`
 
 ---
 
@@ -23,7 +24,8 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 - 年級／冊別
 - 文體
 - 課文原文或可核對的段落／詩節結構
-- 完整教材生字
+- 完整教材正式生字／我會寫字
+- **認讀字／只認不寫／無方格字 presence check**
 - 完整教材詞語聯集／教材重要語詞
 - 教材成語
 - 教材正式語文活動
@@ -31,6 +33,25 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 - source provenance / 不確定處
 
 可加入「初步教材觀察」，但必須明確標示為 AI observation，不得冒充教材來源。
+
+### A1. 認讀字必須獨立判定
+
+STEP 1 必須依 `core/governance/recognition-only-character-policy.md` 明確標記：
+
+```yaml
+recognition_only_characters:
+  status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL
+  source_label:
+  items: []
+  provenance:
+```
+
+規則：
+- 來源有認讀字：完整列出，與正式生字分開。
+- 來源沒有：明確顯示 `N/A_SOURCE_NOT_PRESENT`，不得整欄消失。
+- 標示不清：保留來源原標籤並列為待確認，不自行改判。
+- 不得以年級經驗取代來源判定。
+- 不得把偏旁識字活動誤判為認讀字。
 
 ---
 
@@ -69,7 +90,8 @@ STEP 1｜教材定錨
 年級／冊別：
 
 課文結構：
-完整生字：
+正式生字／我會寫字：
+認讀字：有→完整列出｜無→來源未列（N/A）｜不確定→列待確認
 教材詞語：
 教材成語：
 教材語文活動：
@@ -102,11 +124,11 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 
 ## E. 與 STEP 2 / STEP 2.5 的界線
 
-- STEP 1：教材真值與範圍。
+- STEP 1：教材真值與範圍，包含認讀字 presence / N/A 判定。
 - STEP 2：AI 教學價值判讀／Teacher Intent 候選。
-- STEP 2.5：語文輻射分析與教師選擇，包括形近字、多音字、成語教學價值與預習單候選。
+- STEP 2.5：語文輻射分析與教師選擇，包括形近字、多音字、成語教學價值與預習單候選；若來源有認讀字，才條件式處理其教學深度。
 
-因此 STEP 1 不需要先做形近字深究、成語教學層級、預習單 3–5 組選擇；這些留給 STEP 2.5。
+因此 STEP 1 不需要先做形近字深究、成語教學層級、認讀字頁型、預習單 3–5 組選擇；這些留給後續階段。
 
 ---
 
@@ -118,6 +140,9 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 - teacher_readable_card_rendered: true
 - machine_payload_not_primary_ui: true
 - source_library_checked_if_configured: true
+- recognition_only_character_presence_checked: true
+- recognition_only_character_source_status_explicit: true
+- no_grade_assumption_override: true
 - no_unnecessary_reupload_request: true
 - no_scenario_lock: true
 - no_character_lock: true
@@ -131,6 +156,8 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 ## 核心金句
 
 > 先把教材讀對，再談怎麼教。
+
+> 認讀字看來源，不看年級猜；「沒有」也要明確留下 N/A。
 
 > STEP 1 是教材定錨，不是視覺提案會議。
 
