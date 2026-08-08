@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.2
+# V-MAX Manifest 2.3
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.2
+vmax_manifest_version: 2.3
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -78,6 +78,9 @@ worksheet_regression:
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
   current_version: 1.1
+google_drive_lesson_archive:
+  path: skills/google-drive-lesson-archive/SKILL.md
+  current_version: 1.0
 renderer_contract: core/renderer/image-first-hybrid-renderer.md
 adapters:
   chatgpt: adapters/chatgpt.md
@@ -252,6 +255,44 @@ SOURCE 0
 
 ---
 
+## Google Drive Lesson Archive Resolution
+
+權威技能：`skills/google-drive-lesson-archive/SKILL.md`
+
+固定根目錄：
+
+```text
+V-MAX 教材庫
+folder_id: 1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
+```
+
+每課版本資料夾固定包含：
+
+```text
+01_教材整理
+02_逐頁腳本
+03_NotebookLM
+04_角色視覺
+05_簡報成品
+06_延伸教材
+```
+
+同一課完整重做時不得覆蓋舊版，必須先讀 Drive 現有版本，再建立下一個課資料夾：
+
+```text
+{課資料夾}
+{課資料夾}_01
+{課資料夾}_02
+{課資料夾}_03
+...
+```
+
+版本尾碼只加在課資料夾層，不加在六個固定分類資料夾上。
+
+Drive Archive 只有在實際上傳後再次 list/search 驗證成功，才可標記 `PASS`。
+
+---
+
 ## Deprecated / Legacy Flow Aliases
 
 下列名稱只可作歷史參考：
@@ -278,7 +319,7 @@ SOURCE 0
 
 ## Adapter Boundary
 
-Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Character Deep Teaching scope、Polyphonic Source identity、Recognition-only source identity、Lesson Visual Map invariant、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Character Deep Teaching scope、Polyphonic Source identity、Recognition-only source identity、Lesson Visual Map invariant、Text-Embedded Language evidence layer、Google Drive Lesson Archive structure 或 Visual Grammar 的認知目的。
 
 ---
 
@@ -295,3 +336,5 @@ Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、
 > 多音字先看身分，再看讀音：教材明列保留；AI 只從正式生字推薦；老師可以因班級真實困難指定加入。
 
 > 語詞隨文理解；句型回到原句；修辭從文本發現。
+
+> 同一課重做不覆蓋：保留原版，新的完整版本用 `_01`、`_02`、`_03` 接續管理。
