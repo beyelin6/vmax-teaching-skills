@@ -1,8 +1,8 @@
-# V-MAX Workflow HOLD Regression Cases 1.3
+# V-MAX Workflow HOLD Regression Cases 1.4
 
 ## 用途
 
-本檔用真實工作流失敗案例檢查 V-MAX 在新對話／重跑時是否仍遵守 Teacher UI、STEP 1 邊界、STEP 2 / 2.5 / 2.6 推薦深度、三四年級生字聚焦、自然教學節奏、單階段前進與頁數延後原則。
+本檔用真實工作流失敗案例檢查 V-MAX 在新對話／重跑時是否仍遵守 Teacher UI、STEP 1 邊界、STEP 2 / 2.5 / 2.6 推薦深度、三四年級生字聚焦、認讀字來源判定、自然教學節奏、單階段前進與頁數延後原則。
 
 ---
 
@@ -12,7 +12,8 @@
 - 教師可讀 `STEP 1｜教材定錨` 卡
 - 課名／作者／年級冊別／文體
 - 課文結構或詩節
-- 完整教材生字
+- 完整教材正式生字
+- 認讀字 presence check（有則列出；無則 N/A；不確定則列待確認）
 - 教材詞語
 - 教材成語
 - 教材語文活動
@@ -47,10 +48,17 @@
 - 理解需求
 - STEP 2.5 不鎖死漫畫格數或最終頁型
 
+### PASS｜認讀字
+- 只在 STEP 1 來源狀態為 PRESENT 時進入處理
+- 與正式生字分開
+- 預設以識讀、字音、基本字義／語境為主
+- N/A_SOURCE_NOT_PRESENT 時不得生成內容
+
 ### BLOCKER
 - 形近字只有字群＋推薦，沒有分析
 - 多音字只有讀音表
 - 成語只有 definition/context/example，沒有推薦
+- 來源無認讀字卻自行補造
 - 直接進 Slide Architecture
 
 ---
@@ -212,11 +220,49 @@ Visual Grammar / Slide Architecture 後仍可追溯上述資訊。
 
 ---
 
+## CASE W-13｜認讀字必須來源驅動
+
+### 真實失敗模式 A｜低年級漏掉
+教材明列認讀字／只認不寫／無方格字，但 AI 只抓有書寫方格的正式生字，造成認讀字消失。
+
+### 真實失敗模式 B｜高年級亂補
+來源沒有認讀字，但 AI 因為系統有認讀字模組或過去某年級常見，就自行補出一批認讀字。
+
+### PASS
+STEP 1 必須明確留下：
+
+```yaml
+recognition_only_characters:
+  status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL
+```
+
+- PRESENT：完整列出，與正式生字分開。
+- N/A_SOURCE_NOT_PRESENT：明確顯示已檢查為無。
+- UNCERTAIN_SOURCE_LABEL：保留教材原標籤並進 HOLD 1 待確認。
+- Knowledge Lab 只在 PRESENT 時建立認讀字內容。
+- 年級經驗只能提示檢查，不能取代來源判定。
+- 偏旁識字活動不能被誤判為認讀字。
+
+### BLOCKER
+- 來源有認讀字但 STEP 1 完全沒列
+- 沒有書寫方格就被漏掉
+- 來源無認讀字卻由 AI 自行補造
+- 直接寫死「某年級一定有／一定沒有認讀字」
+- N/A 後仍生成認讀字頁
+- 偏旁識字活動被當成認讀字
+
+### 預期分類
+`RECOGNITION_CHAR_DROPPED / RECOGNITION_CHAR_HALLUCINATED / GRADE_ASSUMPTION_OVERRIDE / RECOGNITION_CHAR_MISCLASSIFIED`
+
+---
+
 ## 整體 PASS 條件
 
 ```yaml
 workflow_hold_regression:
   step1_teacher_ui: PASS
+  recognition_only_source_detection: PASS
+  no_recognition_only_hallucination: PASS
   step2_recommendation_not_skipped: PASS
   step2_5_analysis_preserved: PASS
   grade_3_4_character_focus: PASS
