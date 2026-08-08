@@ -1,4 +1,4 @@
-# V-MAX STEP 1 Source Anchor Policy 1.2
+# V-MAX STEP 1 Source Anchor Policy 1.3
 
 ## 定位
 
@@ -25,7 +25,7 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 - 文體
 - 課文原文或可核對的段落／詩節結構
 - 完整教材正式生字／我會寫字
-- **認讀字／只認不寫／無方格字 presence check**
+- **認讀字 presence check，且必須完成「課文頁下方小字 × 課後獨立生字表」雙來源核對**
 - 完整教材詞語聯集／教材重要語詞
 - 教材成語
 - 教材正式語文活動
@@ -34,24 +34,34 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 
 可加入「初步教材觀察」，但必須明確標示為 AI observation，不得冒充教材來源。
 
-### A1. 認讀字必須獨立判定
+### A1. 認讀字必須雙來源核對
 
-STEP 1 必須依 `core/governance/recognition-only-character-policy.md` 明確標記：
+STEP 1 必須依 `core/governance/recognition-only-character-policy.md` 檢查：
+
+1. 課文頁下方的小字生字標示
+2. 課文後方獨立生字表／生字教學頁
+
+然後交叉核對，才可判定正式生字／認讀字身分。
 
 ```yaml
 recognition_only_characters:
-  status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL
+  status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL | SOURCE_CONFLICT
   source_label:
   items: []
+  textbook_footer_evidence: []
+  posttext_character_table_evidence: []
+  cross_check_status: MATCH | PARTIAL_MATCH | CONFLICT | NOT_APPLICABLE
   provenance:
 ```
 
 規則：
-- 來源有認讀字：完整列出，與正式生字分開。
+- 認讀字不是「無方格字」的同義詞；無方格只能作為版面辨識線索。
+- 教材明確列為識讀、但非正式書寫生字時，才判定為認讀字。
+- 課文中一般字、形近補充字、比較字、偏旁識字示例，不得因此被判為認讀字。
+- 兩處來源一致：正常定錨。
+- 兩處來源不一致：標記 `SOURCE_CONFLICT`，完整列出差異，進 HOLD 1。
 - 來源沒有：明確顯示 `N/A_SOURCE_NOT_PRESENT`，不得整欄消失。
-- 標示不清：保留來源原標籤並列為待確認，不自行改判。
 - 不得以年級經驗取代來源判定。
-- 不得把偏旁識字活動誤判為認讀字。
 
 ---
 
@@ -91,7 +101,8 @@ STEP 1｜教材定錨
 
 課文結構：
 正式生字／我會寫字：
-認讀字：有→完整列出｜無→來源未列（N/A）｜不確定→列待確認
+認讀字：有→完整列出｜無→來源未列（N/A）｜不確定→列待確認｜衝突→列兩處差異
+來源核對：課文頁下方小字 ✓／課後獨立生字表 ✓
 教材詞語：
 教材成語：
 教材語文活動：
@@ -124,7 +135,7 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 
 ## E. 與 STEP 2 / STEP 2.5 的界線
 
-- STEP 1：教材真值與範圍，包含認讀字 presence / N/A 判定。
+- STEP 1：教材真值與範圍，包含正式生字／認讀字身分與雙來源核對。
 - STEP 2：AI 教學價值判讀／Teacher Intent 候選。
 - STEP 2.5：語文輻射分析與教師選擇，包括形近字、多音字、成語教學價值與預習單候選；若來源有認讀字，才條件式處理其教學深度。
 
@@ -141,7 +152,11 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 - machine_payload_not_primary_ui: true
 - source_library_checked_if_configured: true
 - recognition_only_character_presence_checked: true
+- recognition_footer_checked: true
+- recognition_posttext_character_table_checked: true
+- recognition_cross_check_completed: true
 - recognition_only_character_source_status_explicit: true
+- recognition_conflict_not_silently_resolved: true
 - no_grade_assumption_override: true
 - no_unnecessary_reupload_request: true
 - no_scenario_lock: true
@@ -157,7 +172,9 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 
 > 先把教材讀對，再談怎麼教。
 
-> 認讀字看來源，不看年級猜；「沒有」也要明確留下 N/A。
+> 認讀字看教材生字系統，不看方格猜。
+
+> 課文下方小字與課後生字表都要看，兩邊核對後才定身分。
 
 > STEP 1 是教材定錨，不是視覺提案會議。
 
