@@ -1,4 +1,4 @@
-# V-MAX Scenario Wrapper Family Model 1.0
+# V-MAX Scenario Wrapper Family Model 1.1
 
 ## 定位
 
@@ -9,6 +9,8 @@ Scenario Wrapper 不應無限制增加成數十個互不相干的小包裝。若
 > 母型保存教學邏輯；變體負責貼合文本情境。
 
 > 同一母型可以換節目、換角色、換語彙，但不需要每次建立全新的系統規則。
+
+舊 76 種風格的拆解與逐項歸類見 `core/visual/scenario-wrapper-archaeology-index.md`。
 
 ---
 
@@ -28,6 +30,7 @@ wrapper_variant:
   variant_id:
   parent_family:
   name:
+  provenance:
   topic_fit: []
   genre_fit: []
   task_fit: []
@@ -39,114 +42,147 @@ wrapper_variant:
 
 ---
 
-## B. 現場報導母型｜LIVE_REPORTING
+## B. 目前 12 個母型家族
+
+### WF-01｜LIVE_REPORTING｜現場報導 / 特派記者
+- 核心行動：觀察 → 抓重點 → 描述 → 回顧／分析 → 報導
+- 變體：一般新聞特派、運動播報中心、活動／節慶特派、自然／科學現場特派
+- 注意：運動播報中心是此母型變體，不另立母型。
+
+### WF-02｜INVESTIGATION｜偵探 / 調查 / 掃描
+- 核心行動：發現疑點 → 找線索 → 蒐證 → 推論 → 驗證
+- 變體：偵探辦案所、網路偵探、AR 掃描員、科學調查員
+
+### WF-03｜QUEST｜冒險 / 任務 / 闖關
+- 核心行動：目標 → 關卡 → 難點 → 策略 → 完成任務
+- 變體：RPG 任務地圖、像素攻略、英雄卡牌、探險公會
+
+### WF-04｜STORY_SERIAL｜故事 / 說書 / 連載
+- 核心行動：進入故事 → 事件展開 → 轉折 → 揭曉／回望
+- 變體：立體故事書、學習漫畫、韓系條漫、傳說繪本
+
+### WF-05｜FILM_PRODUCTION｜導演 / 影像製作
+- 核心行動：取景 → 視角 → 鏡頭 → 定格 → 剪接／回看
+- 變體：大導演拍片現場、電影旁白、MV／電影片頭
+
+### WF-06｜FIELD_EXPLORATION｜探索 / 野外觀察
+- 核心行動：到現場 → 觀察 → 紀錄 → 比較 → 發現
+- 變體：自然探索日誌、生態踏查、野外研究員
+
+### WF-07｜CURATION｜博物館 / 展覽 / 策展
+- 核心行動：總覽 → 分區 → 聚焦展件 → 建立關聯 → 導覽總結
+- 變體：博物館微縮模型、畫廊導覽、古典展卷、文化展覽
+
+### WF-08｜ANALYSIS_LAB｜研究室 / 實驗室 / 專家分析
+- 核心行動：問題 → 觀察／資料 → 分析 → 結論／應用
+- 變體：科學研究室、工程分析室、熱成像分析、系統掃描室
+
+### WF-09｜EDITORIAL｜編輯部 / 媒體製作
+- 核心行動：主題 → 採集材料 → 選重點 → 編輯 → 發布
+- 變體：特刊編輯部、手作雜誌、海報編輯室、學習速記現場
+
+### WF-10｜SHOW_HOSTING｜節目 / 主持 / 直播
+- 核心行動：開場 → 主題介紹 → 互動 → 重點段落 → 收尾
+- 變體：直播間、兒童節目、美食節目製作室、訪談節目
+
+### WF-11｜ARGUMENT_PITCH｜提案 / 辯論 / 宣言
+- 核心行動：問題／立場 → 證據 → 說服 → 行動
+- 變體：新創提案、思辨法庭、街頭宣言、公開辯論
+
+### WF-12｜QUIET_STUDY｜陪伴閱讀 / 私人學習空間
+- 核心行動：安靜進入 → 閱讀 → 自我提問 → 整理 → 回望
+- 變體：Lo-Fi 讀書室、電子書閱讀、交換日記、康乃爾複習室
+
+---
+
+## C. LIVE_REPORTING 詳細規格
 
 ### 母型定位
+學生像「正在現場」的記者／觀察員，把正在發生的事情看清楚、抓出重點，再向觀眾報導。
 
-學生不是被動聽老師說明，而是像「正在現場」的記者／觀察員，把正在發生的事情看清楚、抓出重點，再向觀眾報導。
-
-- family_id: `SW-FAMILY-LIVE-REPORTING`
-- family_name: 現場報導／特派記者
+- family_id: `WF-01-LIVE_REPORTING`
 - core_metaphor: 新聞現場、特派採訪、即時轉播
-- core_student_action: 觀察 → 抓重點 → 描述 → 回顧／分析 → 報導
 - possible_guide_roles: 主播、現場記者、特派員、攝影記者、分析員
-- core_signature_moves:
-  - 現場連線
-  - 關鍵畫面
-  - 即時觀察
-  - 重點快報
-  - 回放／整理
-  - 主播台統整
+- core_signature_moves: 現場連線、關鍵畫面、即時觀察、重點快報、回放／整理、主播台統整
 
-### 變體 1｜一般新聞特派記者
-
-- variant_id: `SW-LIVE-NEWS`
-- parent_family: `SW-FAMILY-LIVE-REPORTING`
-- 適合：事件記敘、校園事件、社會議題、現象說明、需要整理「誰／何時／何地／發生什麼」的文本
+#### Variant｜一般新聞特派記者
+- variant_id: `WF-01-NEWS`
+- 適合：事件記敘、校園事件、社會議題、現象說明
 - student_role: 小記者、現場特派員
-- signature_moves: 現場連線 → 採訪／找證據 → 快報 → 主播台統整
-- wrapper_language_examples:
-  - 「現場目前發生了什麼？」
-  - 「哪一個畫面最值得報導？」
-  - 「如果你是特派記者，你會先說哪一件事？」
 
-### 變體 2｜運動播報中心
-
-- variant_id: `SW-LIVE-SPORTS`
-- parent_family: `SW-FAMILY-LIVE-REPORTING`
+#### Variant｜運動播報中心
+- variant_id: `WF-01-SPORTS`
 - provenance: TEACHER_DISCUSSION
-- 定位：運動播報不是獨立母型，而是「新聞／現場特派記者」在運動文本中的高動態變體。
+- 定位：新聞／現場特派記者在運動文本中的高動態變體。
 - 適合：運動、競賽、動作描寫、速度、節奏、過程、情緒起伏
 - student_role: 現場記者、小主播、動作分析員、場邊特派員
-- guide_roles: 主播、球評／分析員、場邊記者
-- signature_moves:
-  - 現場連線
-  - 關鍵動作
-  - 精彩回放
-  - 慢動作分析
-  - 賽後整理
-- wrapper_language_examples:
-  - 「主播台交給現場！」
-  - 「剛剛哪一個動作最關鍵？」
-  - 「我們把這一幕慢動作回放一次。」
+- signature_moves: 現場連線 → 關鍵動作 → 精彩回放 → 慢動作分析 → 賽後整理
 - compatible_visual_grammars: Motion Grammar, Temporal Progression, Sequential Narrative
-- avoid_when: 靜態說理、需要長時間情緒留白的頁面
 
-### 變體 3｜活動／節慶特派員
+#### Variant｜活動／節慶特派
+- variant_id: `WF-01-EVENT`
+- 適合：節慶、校園活動、參訪、表演、地方文化活動
 
-- variant_id: `SW-LIVE-EVENT`
-- parent_family: `SW-FAMILY-LIVE-REPORTING`
-- 適合：節慶、校園活動、參訪、表演、地方文化活動、旅行現場
-- student_role: 活動特派員、採訪記者
-- signature_moves: 現場氣氛 → 觀察亮點 → 訪問／紀錄 → 重點整理
-
-### 變體 4｜科學／自然現場特派
-
-- variant_id: `SW-LIVE-FIELD`
-- parent_family: `SW-FAMILY-LIVE-REPORTING`
+#### Variant｜自然／科學現場特派
+- variant_id: `WF-01-FIELD`
 - 適合：自然觀察、科普現象、戶外踏查、生態事件
-- student_role: 科學特派員、自然記者
 - signature_moves: 現場觀察 → 現象紀錄 → 證據 → 解釋／回報
 
 ---
 
-## C. Retrieval 規則
+## D. Retrieval 規則
 
-1. 先判斷是否適合 `LIVE_REPORTING` 母型。
-2. 若適合，再依主題與任務選擇最自然的 Variant。
-3. 不因為「有運動」就必選運動播報；仍需檢查是否真的需要即時觀察、動作回放、過程描述。
-4. 若一般新聞特派已足夠，不另外新增新的母型。
-5. 新變體若只是換主題名稱，但核心學生行動相同，掛在既有母型下，不另立 Family。
-6. 只有當學生的認知行動與課堂世界邏輯都明顯不同，才建立新的 Wrapper Family。
-
----
-
-## D. 與 Character Registry 的關係
-
-同一母型可重用已建立的角色，但角色不等於母型。
-
-例如：
-- 同一位「小特派記者」可出現在校園新聞與節慶報導。
-- 運動課文也可以換成全新的場邊主播角色，保留驚喜感。
-- 若課文本身有更自然的人物，優先由課文人物承擔現場觀察，不強塞記者角色。
+1. 先從 Text DNA、Teacher Intent、Learning Task 判斷是否需要 Scenario Wrapper；不需要則 `OFF`。
+2. 若需要，先選 Family，再選 Variant；不得直接從 76 種舊風格全量挑選。
+3. 若新想法只是換主題名稱，但核心學生行動相同，掛在既有 Family 下，不另立 Family。
+4. 只有當核心認知行動、課堂世界邏輯與節奏都明顯不同，才建立新的 Family。
+5. 每課最多推薦 1–3 個候選，並附 `why_fit / student_action / risk / provenance`。
+6. Teacher Intent 高於歷史使用紀錄與 AI 推薦。
 
 ---
 
-## E. 驚喜感保護
+## E. 與 Character Registry 的關係
 
-母型可重用，但變體、角色、視覺世界不必重複。
+同一 Family 可重用既有角色，但角色不等於母型。
 
-> 孩子可以認得「這次又是現場報導任務」，但仍應期待：這次是哪個節目、誰是特派員、現場會長什麼樣子？
+- 同一位小特派記者可出現在校園新聞與節慶報導。
+- 運動文本可換成全新的場邊主播角色以保留驚喜感。
+- 若課文本身有更自然的人物，優先由課文人物承擔觀察，不強塞外加角色。
 
-因此近期使用懲罰可以分兩層：
+---
+
+## F. 驚喜感保護
+
+母型可以重用，變體、角色、視覺世界不必重複。
 
 ```yaml
 recent_use_penalty:
   family_level: soft
   variant_level: stronger
+  character_level: stronger
 ```
 
-同一 Family 可在不同課重用；同一 Variant 不宜連續過度出現。
+同一 Family 可跨課重用；同一 Variant 與同一角色不宜連續過度出現。
+
+---
+
+## G. 新 Variant 學習機制
+
+完成一課後，若出現新的高品質包裝方式：
+
+```yaml
+variant_learning:
+  candidate_name:
+  parent_family:
+  lesson:
+  why_it_worked:
+  student_engagement_signal:
+  helped_understanding:
+  teacher_confirmed:
+  promotion_status: LESSON_ONLY | REUSABLE_CANDIDATE | REUSABLE_CONFIRMED
+```
+
+優先新增 Variant，不急著新增 Family。
 
 ---
 
@@ -155,3 +191,5 @@ recent_use_penalty:
 > 不是每換一個主題就發明一套新包裝，而是先找到可重用的教學世界，再讓它為這一課變身。
 
 > 運動播報中心，是新聞特派記者走進運動場後的樣子。
+
+> 舊系統把一切綁成風格；新系統先問：孩子這一課要用什麼身分、做什麼事、看見什麼？
