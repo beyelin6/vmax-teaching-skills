@@ -1,8 +1,8 @@
-# V-MAX Workflow HOLD Regression Cases 1.0
+# V-MAX Workflow HOLD Regression Cases 1.1
 
 ## 用途
 
-本檔用真實工作流失敗案例檢查 V-MAX 在新對話／重跑時是否仍遵守 Teacher UI、STEP 1 邊界與 STEP 2.5 語文分析規格。
+本檔用真實工作流失敗案例檢查 V-MAX 在新對話／重跑時是否仍遵守 Teacher UI、STEP 1 邊界、STEP 2 / 2.5 推薦深度、自然教學節奏與頁數延後原則。
 
 ---
 
@@ -128,17 +128,96 @@ HOLD 1 已確認，進入 `STEP 2.5 語文輻射`。
 
 ---
 
+## CASE W-06｜AI 教學推薦層不可被跳過
+
+### 真實失敗模式
+完成教材整理後，AI 宣稱下一步要做「有理由的教學推薦」，但教師一確認，系統直接進入「完整教學版頁數帳本」。
+
+### PASS
+在任何頁數／逐頁腳本之前，教師必須實際看見：
+- 本課最值得深教的教學亮點
+- 推薦理由
+- 可縮短項目與理由
+- Bonus／低優先項目與理由
+- 需要保留發現空間的位置
+- 朗讀／推論／聯想／比較／遷移中真正高價值的段落
+- 教師可以用「大致接受，只改例外」完成決策
+
+### BLOCKER
+- STEP 1 確認後直接產出 43／47／52 頁帳本
+- 只說「建議 CORE/FLEX/BONUS」而沒有理由
+- AI 已經替教師完成所有取捨，再叫教師確認
+
+### 預期分類
+`SKIPPED_DECISION_LAYER / TEACHER_EFFORT_FAIL`
+
+---
+
+## CASE W-07｜文本單位不得機械套固定教學模板
+
+### 真實失敗模式
+六個詩節雖然口頭宣稱「不是硬模板」，實際卻全部配置為：
+
+`讀詩 → 語詞 → 文意 → 寫法 → 朗讀` 五頁。
+
+### PASS
+- 每個自然段／詩節先判斷自己最重要的理解任務。
+- 有的段落可一頁完成，有的可多頁深入。
+- 朗讀、語詞、修辭、證據推論只在真正有價值時成為獨立 Shot。
+- 能說明為什麼這一段需要與其他段不同的節奏。
+
+### BLOCKER
+- 每段固定相同頁數
+- 每段固定相同五步
+- 為追求形式完整硬塞低價值句型／修辭／題目
+- 先定頁數再平均分配內容
+
+### 預期分類
+`TEMPLATE_DRIFT / DIRECTOR_RHYTHM_FAIL`
+
+---
+
+## CASE W-08｜頁數只能在 Slide Architecture 後估算
+
+### 真實失敗模式
+Teacher Intent / Lesson Map / Session Map 尚未完成，就先宣告「52 頁完整教學版」，並進一步說頁數已鎖定、不再調整。
+
+### PASS
+頁數估算前必須至少完成：
+- Teacher Intent Lock
+- Lesson Map
+- Session Map
+- Lesson Visual Map Strategy（若啟用）
+- Scenario / Character 決策（可 OFF）
+- Knowledge Lab 正式編排
+- Visual Grammar / Slide Architecture
+
+頁數由必要 Shot 自然累積，可在代表頁驗證後再調整。
+
+### BLOCKER
+- 前段直接宣告固定總頁數
+- 頁數被當成不可變 Teacher Intent
+- 為守頁數而填塞／壓縮教學內容
+
+### 預期分類
+`PREMATURE_PAGE_LOCK / ARCHITECTURE_ORDER_FAIL`
+
+---
+
 ## 整體 PASS 條件
 
 ```yaml
 workflow_hold_regression:
   step1_teacher_ui: PASS
   no_premature_visual_decision: PASS
+  step2_recommendation_not_skipped: PASS
   step2_5_analysis_preserved: PASS
   step2_5_recommendation_interface: PASS
   prestudy_scope_separated: PASS
   hold_teacher_ui_global: PASS
   selection_vs_orchestration_separated: PASS
+  no_template_drift: PASS
+  no_premature_page_lock: PASS
 ```
 
 只要其中一項 FAIL，不應宣告「工作流回歸測試完成」。
