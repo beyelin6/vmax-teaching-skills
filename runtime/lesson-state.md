@@ -1,8 +1,8 @@
-# V-MAX Runtime State Contract 2.0
+# V-MAX Runtime State Contract 2.1
 
 ## 定位
 
-本檔不再保存任何單一課程的即時狀態。
+本檔不保存任何單一課程的即時狀態。
 
 V-MAX 的正式分工：
 
@@ -34,10 +34,6 @@ V-MAX 的正式分工：
 V-MAX_State_{冊別}_{課次}_{課名}
 ```
 
-例如：
-
-`V-MAX_State_四上_第一課_水陸小高手`
-
 每課必須獨立存在，不得用第二課覆蓋第一課。
 
 ---
@@ -45,7 +41,7 @@ V-MAX_State_{冊別}_{課次}_{課名}
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.0
+runtime_schema_version: 2.1
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
@@ -63,7 +59,22 @@ state:
   teacher_confirmation_status:
   next_allowed_stage: []
   forbidden_next: []
-locked_decisions: {}
+locked_decisions:
+  source_anchor:
+  step2_teaching_value:
+  step2_5_language_scope:
+  step2_6_idiom_expression:
+  teacher_intent:
+  lesson_map:
+  session_map:
+  scenario:
+  character:
+  visual_style:
+language_focus:
+  grade_3_4_character_deep_focus:
+    - SHAPE_NEAR
+    - POLYPHONIC
+  source_characters_complete: true
 runtime_rules:
   single_stage_advance: true
   teacher_confirmation_advances_one_stage_only: true
@@ -72,13 +83,35 @@ runtime_rules:
 notes: []
 ```
 
+`step2_6_idiom_expression` 若本課無需成語處理，應寫入 `N/A_NO_IDIOM`，不得留空後默默跳過。
+
+---
+
+## 合法前段狀態鏈
+
+```text
+STEP_1 → HOLD_1
+STEP_2 → HOLD_2
+STEP_2_5 → HOLD_2_5
+STEP_2_6 → HOLD_2_6
+TEACHER_INTENT_LOCK
+```
+
+若本課沒有需保留成語：
+
+```text
+HOLD_2_5 confirmed
+→ STEP_2_6 = N/A_NO_IDIOM
+→ TEACHER_INTENT_LOCK
+```
+
 ---
 
 ## 啟動與續跑
 
 1. 先讀 `V-MAX_Runtime_Index`。
 2. 依教師指定課次找到對應 State；若教師說「繼續目前這課」，才使用 Index 的 active lesson。
-3. 讀取該課 `current_stage / next_allowed_stage / locked_decisions`。
+3. 讀取該課 `current_stage / next_allowed_stage / locked_decisions / language_focus`。
 4. 只執行合法下一階段。
 5. 每次 HOLD 確認或正式 stage 完成後，回寫該課 Google Drive State。
 6. 必要時同步更新 Runtime Index 的 active lesson 與狀態摘要。
@@ -90,5 +123,7 @@ notes: []
 ## 核心金句
 
 > GitHub 保存規則；Google Drive 保存每一課現在真正跑到哪裡。
+
+> 三、四年級生字深教聚焦可以寫進課程 State，但不能讓未聚焦的教材正式生字消失。
 
 > 課程狀態會一直變，不應讓 GitHub commit history 變成課堂操作日誌。
