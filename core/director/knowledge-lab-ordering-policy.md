@@ -1,4 +1,4 @@
-# V-MAX Knowledge Lab Ordering Policy 1.7
+# V-MAX Knowledge Lab Ordering Policy 1.8
 
 ## 定位
 
@@ -28,6 +28,7 @@ Knowledge Lab 原則上處理：
 - 形近字／字群
 - 多音字
 - 成語
+- **認讀字（僅當來源狀態為 PRESENT）**
 
 語詞不列為固定 Knowledge Lab 項目。語詞跟著課文處理，而且只教教師選定或確認的重點語詞。
 
@@ -67,13 +68,32 @@ Knowledge Lab 原則上處理：
 
 > 「3–5 組」是預習單的精選容量，不是簡報的教學上限。
 
+### A3. 認讀字條件式處理
+
+認讀字依 `core/governance/recognition-only-character-policy.md` 處理。
+
+- `PRESENT`：Knowledge Lab 才建立認讀字內容。
+- `N/A_SOURCE_NOT_PRESENT`：明確記錄 N/A，不生成認讀字教學頁或活動。
+- `UNCERTAIN_SOURCE_LABEL`：維持待確認，不自行升級為正式認讀字。
+
+認讀字預設重點：
+- 字音辨識
+- 基本字義／語境
+- 必要的字形辨認線索
+- 與課文閱讀直接相關的識讀
+
+認讀字不因身分自動要求完整書寫、筆順或每字獨立深教。若有高價值形近／多音關係，可另以 AI_SUGGESTION 升級，但必須有理由。
+
+不得把偏旁識字活動誤判為認讀字清單。
+
 ---
 
 ## B. 教材優先與教師篩選流程
 
 生成 Knowledge Lab 前，系統先從教材／結構化轉錄來源完整讀取：
 
-- 本課完整生字清單
+- 本課完整正式生字清單
+- 認讀字 presence status 與清單（若 PRESENT）
 - 教材已列出的形近字／字形辨析
 - 本課多音字
 - 教材已列出的成語
@@ -82,20 +102,23 @@ Knowledge Lab 原則上處理：
 接著必須將四個層次分開呈現：
 
 ### B1. 教材原有
-忠實列出來源，不因 AI 判斷而靜默刪除。
+忠實列出來源，不因 AI 判斷而靜默刪除。正式生字與認讀字必須分欄保存。
 
 ### B2. 形近字／多音字語文分析
 先整理可供教師判斷與後續教材生成的語文資料，不得直接跳到推薦結論。
 
 ### B3. AI 教學價值判讀
-對每一個「形近字群／多音字／成語／其他語文活動」提供：
+對每一個「形近字群／多音字／成語／認讀字（若 PRESENT）／其他語文活動」提供必要的教學價值判讀。
 
+形近字／多音字／成語至少提供：
 - `recommendation_index`：1–5
 - `recommendation_level`
 - `reason`：具體理由
 - `suggested_action`：深教／短辨析／Bonus／低優先
 
 三、四年級預設：形近字／多音字優先進入深教候選；一般生字不因完整性而自動升級為深教。
+
+認讀字則先遵守來源身分與識讀目的，不自動套用正式生字的書寫深教規格。
 
 ### B4. 預習單選擇判讀
 只對需要進預習單容量判斷的形近字群與多音字額外提供：
@@ -327,11 +350,12 @@ R 2C/P2 5PE：補「坨」
 
 成語若被保留，後續必須交給 `core/director/idiom-expression-visualization-policy.md` 的 STEP 2.6 進一步決定生活例句與視覺表達方式。
 
-### I4. 生字完整清單與深教焦點分開
+### I4. 生字完整清單、認讀字與深教焦點分開
 
 `生字檢查數` 只能做 audit，不代表生字教學已完成。STEP 2.5 必須能證明：
 
-- 教材生字完整清單仍在資料層與正式教學規劃中。
+- 教材正式生字完整清單仍在資料層與正式教學規劃中。
+- 認讀字若來源 PRESENT，另列識讀層；若 N/A，不生成。
 - 三、四年級深教預設聚焦形近字與多音字。
 - 形近字推薦只是「哪些生字值得額外做字群辨析」。
 - 未被選入形近字群或多音字深教的教材生字不得因此消失。
@@ -348,6 +372,7 @@ step_2_5_language_radiation:
 
   teaching_scope:
     source_characters_complete: true
+    recognition_only_status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL
     formal_teaching_group_cap: NONE
     grade_3_4_character_deep_focus:
       - SHAPE_NEAR
@@ -365,7 +390,7 @@ step_2_5_language_radiation:
 
   items:
     - id:
-      category: CHARACTER | SHAPE_NEAR | POLYPHONIC | IDIOM | OTHER
+      category: CHARACTER | RECOGNITION_ONLY | SHAPE_NEAR | POLYPHONIC | IDIOM | OTHER
       item:
       provenance:
       analysis:
@@ -395,6 +420,8 @@ step_2_5_language_radiation:
 
 若資料層沒有完整教材生字，或系統用 `3–5 組` 規則刪掉正式教學內容，STEP 2.5 視為 `INCOMPLETE`。
 
+若來源 `recognition_only_status = N/A_SOURCE_NOT_PRESENT` 卻仍生成認讀字內容，STEP 2.5 視為 `INCOMPLETE`。
+
 若 `WAITING_CONFIRMATION` 只輸出 raw JSON / YAML 而沒有教師分析推薦卡，STEP 2.5 同樣視為 `INCOMPLETE`，不得進入下一個 HOLD。
 
 若形近字只顯示字群＋推薦結果，卻沒有分析整理／構形辨析／混淆點，STEP 2.5 亦視為 `INCOMPLETE`。
@@ -405,7 +432,9 @@ step_2_5_language_radiation:
 
 AI 必須同時做到：
 
-- 保留完整教材生字
+- 保留完整教材正式生字
+- 先讀取 STEP 1 的認讀字 presence status，不以年級猜測
+- 認讀字有才處理、沒有就 N/A，不自行補造
 - 對三、四年級先完成形近字／多音字深教候選分析
 - 判斷哪些一般生字只需基本識寫／形音義，哪些值得例外深教
 - 先完成形近字／多音字分析整理，再做推薦
@@ -422,25 +451,28 @@ AI 必須同時做到：
 
 ## L. Director Engine 接軌
 
-1. 讀取完整教材生字／形近字／多音字／成語資料。
-2. 三、四年級先建立「完整生字基礎層」與「形近字／多音字深教候選層」。
-3. **先完成形近字與多音字語文分析整理。**
-4. 再完成正式教學價值判讀，不設 3–5 組上限。
-5. 再讀取同冊 `Volume Language Coverage`。
-6. 從正式候選中精選預習單約 3–5 組形近字／多音字。
-7. **先輸出 Teacher Selection Card：完整分析、推薦指數、理由、A–E、P1/P2/P3/PX。**
-8. 若有 machine payload，再於教師卡後輸出；不得反過來。
-9. 教師主要採 `R` 沿用，僅微調例外。
-10. 成語保留結果交給 STEP 2.6 決定例句與視覺表達。
-11. AI 依確認內容分 Knowledge Chunk，並同步輸出預習單語文項目。
-12. 教師確認的 P1/P2 寫回本冊 Coverage Registry。
-13. 才進入預習單版面與完整 Slide Architecture。
+1. 讀取完整教材正式生字、認讀字 status、形近字、多音字、成語資料。
+2. 若 recognition-only = PRESENT，建立識讀層；若 N/A，明確跳過且不生成模組。
+3. 三、四年級先建立「完整生字基礎層」與「形近字／多音字深教候選層」。
+4. **先完成形近字與多音字語文分析整理。**
+5. 再完成正式教學價值判讀，不設 3–5 組上限。
+6. 再讀取同冊 `Volume Language Coverage`。
+7. 從正式候選中精選預習單約 3–5 組形近字／多音字。
+8. **先輸出 Teacher Selection Card：完整分析、推薦指數、理由、A–E、P1/P2/P3/PX。**
+9. 若有 machine payload，再於教師卡後輸出；不得反過來。
+10. 教師主要採 `R` 沿用，僅微調例外。
+11. 成語保留結果交給 STEP 2.6 決定例句與視覺表達。
+12. AI 依確認內容分 Knowledge Chunk，並同步輸出預習單語文項目。
+13. 教師確認的 P1/P2 寫回本冊 Coverage Registry。
+14. 才進入預習單版面與完整 Slide Architecture。
 
 ---
 
 ## 核心金句
 
 > 教材告訴我們「有什麼」，分析告訴老師「這些字之間到底有什麼關係」，AI 再告訴老師「該教到什麼深度」。
+
+> 認讀字看來源，不看年級猜；有才教，沒有就明確 N/A。
 
 > 三、四年級生字：完整保留，深教聚焦形近字與多音字。
 
