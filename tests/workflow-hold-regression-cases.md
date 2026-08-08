@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.4
+# V-MAX Workflow HOLD Regression Cases 1.5
 
 ## 用途
 
@@ -13,7 +13,8 @@
 - 課名／作者／年級冊別／文體
 - 課文結構或詩節
 - 完整教材正式生字
-- 認讀字 presence check（有則列出；無則 N/A；不確定則列待確認）
+- 認讀字 presence check
+- 認讀字完成「課文頁下方小字 × 課後獨立生字表」雙來源核對
 - 教材詞語
 - 教材成語
 - 教材語文活動
@@ -49,10 +50,11 @@
 - STEP 2.5 不鎖死漫畫格數或最終頁型
 
 ### PASS｜認讀字
-- 只在 STEP 1 來源狀態為 PRESENT 時進入處理
+- 只在 STEP 1 雙來源核對後狀態為 PRESENT 時進入處理
 - 與正式生字分開
 - 預設以識讀、字音、基本字義／語境為主
 - N/A_SOURCE_NOT_PRESENT 時不得生成內容
+- SOURCE_CONFLICT / UNCERTAIN_SOURCE_LABEL 時不得逕自生成正式認讀字教學
 
 ### BLOCKER
 - 形近字只有字群＋推薦，沒有分析
@@ -203,56 +205,73 @@ Visual Grammar / Slide Architecture 後仍可追溯上述資訊。
 
 ### PASS
 - 教材正式生字全部保留在 Source / 基礎識寫層。
-- 深教優先聚焦形近字與多音字。
+- AI 主動深教只聚焦形近字與多音字。
 - 形近字有真正辨析價值才深教。
 - 多音字以讀音 × 語意 × 語境處理。
-- 一般生字可在課文語境或基本識寫處理，不強制獨頁。
-- 非形近／非多音字若有特殊價值，可有理由地例外升級。
+- 一般生字不自動獨頁。
+- 單一生字詳解只有教師明確指定才可建立。
 
 ### BLOCKER
 - 每字固定同規格頁面
 - 因未列入形近字／多音字就讓教材生字消失
 - 多音字只有音表沒有語境
 - 為湊數加入低價值形近字
+- AI 以易錯／複雜／有趣為由自行建立單字詳解頁
 
 ### 預期分類
-`CHARACTER_DEPTH_FLATTENING / SHAPE_NEAR_VALUE_FAIL / POLYPHONIC_CONTEXT_FAIL`
+`CHARACTER_DEPTH_FLATTENING / SHAPE_NEAR_VALUE_FAIL / POLYPHONIC_CONTEXT_FAIL / SINGLE_CHARACTER_AUTO_EXPANSION`
 
 ---
 
-## CASE W-13｜認讀字必須來源驅動
+## CASE W-13｜認讀字必須依教材生字系統雙來源判定
 
-### 真實失敗模式 A｜低年級漏掉
-教材明列認讀字／只認不寫／無方格字，但 AI 只抓有書寫方格的正式生字，造成認讀字消失。
+### 真實失敗模式 A｜只看課後生字表
+教材在課文頁下方小字有生字提示，但 AI 只抓課後獨立生字表，造成認讀字或生字身分遺漏。
 
-### 真實失敗模式 B｜高年級亂補
-來源沒有認讀字，但 AI 因為系統有認讀字模組或過去某年級常見，就自行補出一批認讀字。
+### 真實失敗模式 B｜只看課文頁底
+AI 只讀課文頁下方小字，沒有回頭核對課後獨立生字表，因此無法確認哪些是正式書寫生字、哪些是認讀字。
+
+### 真實失敗模式 C｜把無方格當定義
+AI 看到某字沒有書寫方格，就直接判定為認讀字。
 
 ### PASS
-STEP 1 必須明確留下：
+STEP 1 必須同時檢查：
+
+```text
+課文頁下方小字
+＋
+課後獨立生字表／生字教學頁
+→ 交叉核對
+```
+
+並留下：
 
 ```yaml
 recognition_only_characters:
-  status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL
+  status: PRESENT | N/A_SOURCE_NOT_PRESENT | UNCERTAIN_SOURCE_LABEL | SOURCE_CONFLICT
+  textbook_footer_evidence: []
+  posttext_character_table_evidence: []
+  cross_check_status: MATCH | PARTIAL_MATCH | CONFLICT | NOT_APPLICABLE
 ```
 
-- PRESENT：完整列出，與正式生字分開。
-- N/A_SOURCE_NOT_PRESENT：明確顯示已檢查為無。
-- UNCERTAIN_SOURCE_LABEL：保留教材原標籤並進 HOLD 1 待確認。
-- Knowledge Lab 只在 PRESENT 時建立認讀字內容。
-- 年級經驗只能提示檢查，不能取代來源判定。
-- 偏旁識字活動不能被誤判為認讀字。
+正式定義：
+- 認讀字是教材在本課生字系統中明確列為「需識讀、但非正式書寫生字」的字。
+- 無方格、字小、位於頁底只能作為辨識線索，不能單獨作為判定依據。
 
 ### BLOCKER
+- 只讀其中一個教材位置
+- 沒有完成雙來源交叉核對
+- 把無方格直接當認讀字定義
+- 課文中一般字被誤標為認讀字
+- 形近補充字／比較字被誤標為認讀字
 - 來源有認讀字但 STEP 1 完全沒列
-- 沒有書寫方格就被漏掉
 - 來源無認讀字卻由 AI 自行補造
-- 直接寫死「某年級一定有／一定沒有認讀字」
+- 兩處來源有差異卻靜默合併
+- SOURCE_CONFLICT 還直接進 Knowledge Lab
 - N/A 後仍生成認讀字頁
-- 偏旁識字活動被當成認讀字
 
 ### 預期分類
-`RECOGNITION_CHAR_DROPPED / RECOGNITION_CHAR_HALLUCINATED / GRADE_ASSUMPTION_OVERRIDE / RECOGNITION_CHAR_MISCLASSIFIED`
+`RECOGNITION_CHAR_DROPPED / RECOGNITION_CHAR_HALLUCINATED / RECOGNITION_CHAR_MISCLASSIFIED / RECOGNITION_SOURCE_CROSSCHECK_MISSING / RECOGNITION_SOURCE_CONFLICT_IGNORED`
 
 ---
 
@@ -261,6 +280,9 @@ recognition_only_characters:
 ```yaml
 workflow_hold_regression:
   step1_teacher_ui: PASS
+  recognition_footer_checked: PASS
+  recognition_posttext_table_checked: PASS
+  recognition_source_crosscheck: PASS
   recognition_only_source_detection: PASS
   no_recognition_only_hallucination: PASS
   step2_recommendation_not_skipped: PASS
