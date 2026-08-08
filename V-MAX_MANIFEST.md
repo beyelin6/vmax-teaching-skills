@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.1
+# V-MAX Manifest 2.2
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.1
+vmax_manifest_version: 2.2
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -27,12 +27,15 @@ executor:
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
-  current_version: 1.2
+  current_version: 1.3
 recognition_only_character_policy:
   path: core/governance/recognition-only-character-policy.md
-  current_version: 1.0
+  current_version: 1.1
 hold_policy: core/governance/hold-teacher-interface-policy.md
 workflow_test_freeze: core/governance/workflow-test-freeze.md
+workflow_hold_regression:
+  path: tests/workflow-hold-regression-cases.md
+  current_version: 1.5
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.8
@@ -139,13 +142,27 @@ SOURCE 0
 
 ## Recognition-only Character Resolution
 
-認讀字／只認不寫／無方格字採 Source-driven Presence Detection：
+正式定義：
 
-- `PRESENT`：來源有列，完整保留，與正式生字分開。
-- `N/A_SOURCE_NOT_PRESENT`：來源沒有，明確留下 N/A，不生成認讀字模組。
-- `UNCERTAIN_SOURCE_LABEL`：來源標示不清，保留原標籤進 HOLD 1，不自行改判。
+> 認讀字 = 教材在本課生字系統中明確列為需要識讀、但不屬正式書寫生字的字。
 
-權威規則：`core/governance/recognition-only-character-policy.md`。
+判定必須完成教材雙來源核對：
+
+1. 課文頁下方的小字生字標示
+2. 課文後方獨立生字表／生字教學頁
+
+兩者交叉核對後，才可判定正式生字／認讀字身分。
+
+重要邊界：
+- 「無方格」只能是版面線索，不能單獨作為認讀字定義。
+- 課文一般字、形近補充字、比較字、AI 補充字、偏旁識字示例不得因此被判為認讀字。
+- 兩個教材位置不一致時，標記 `SOURCE_CONFLICT`，不得靜默採其中一邊。
+- 來源未列認讀字時，明確記錄 `N/A_SOURCE_NOT_PRESENT`。
+
+權威規則：
+- `core/governance/recognition-only-character-policy.md` v1.1
+- `core/governance/step1-source-anchor-policy.md` v1.3
+- `tests/workflow-hold-regression-cases.md` v1.5
 
 ---
 
@@ -164,7 +181,7 @@ SOURCE 0
 - `core/director/character-deep-teaching-focus-policy.md` v1.1
 - `tests/character-teaching-regression-cases.md`
 
-若 `knowledge-lab-ordering-policy.md` 或舊文件仍含「AI 可因特殊構形／語義／易錯而自行例外深教單字」的舊表述，視為 **deprecated conflict**，以本節與 `character-deep-teaching-focus-policy.md` v1.1 的較窄規則為準。
+若 `knowledge-lab-ordering-policy.md` 或舊文件仍含「AI 可因特殊構形／語義／易錯而自行例外深教單字」的舊表述，視為 deprecated conflict，以本節與 `character-deep-teaching-focus-policy.md` v1.1 的較窄規則為準。
 
 ### Polyphonic Source Resolution
 
@@ -261,11 +278,15 @@ SOURCE 0
 
 ## Adapter Boundary
 
-Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Character Deep Teaching scope、Polyphonic Source identity、Lesson Visual Map invariant、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Character Deep Teaching scope、Polyphonic Source identity、Recognition-only source identity、Lesson Visual Map invariant、Text-Embedded Language evidence layer 或 Visual Grammar 的認知目的。
 
 ---
 
 ## 核心金句
+
+> 認讀字看教材生字系統，不看方格猜。
+
+> 課文下方小字與課後生字表都要看，兩邊核對後才定身分。
 
 > 生字表 ≠ 生字教學清單。
 
