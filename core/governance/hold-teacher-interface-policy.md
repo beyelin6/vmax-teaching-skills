@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.0
+# V-MAX HOLD Teacher Interface Policy 1.1
 
 ## 定位
 
@@ -9,6 +9,8 @@
 > HOLD 是給老師做決策的，不是給系統展示資料結構的。
 
 > Machine payload 可以存在，但不得先於或取代教師可讀確認卡。
+
+> AI 要把判斷做重，把老師的操作做輕。
 
 ---
 
@@ -59,14 +61,46 @@
 - 現在確認的是什麼？
 - AI 根據哪些教材來源／既有規則判讀？
 - AI 的建議或分析是什麼？
+- **為什麼這樣建議？**
 - 哪些內容仍是教師決策？
 - 教師如何用最少輸入完成確認／微調？
 
 若該步只是資料定錨，不能加入後段才應決定的 Scenario / Character / Style / Layout。
 
+若該步是 AI 教學價值判讀，不能只給分類結果；必須有足以讓教師判斷的理由、取捨與風險。
+
 ---
 
-## D. 快速決策原則
+## D. Recommendation-first｜推薦先完整，操作再簡化
+
+教師端預設流程：
+
+```text
+AI 先分析與推薦
+→ 說明理由與教學價值
+→ 教師看得懂差異
+→ 教師只改例外
+```
+
+不得反過來要求教師先選大量 A/B/C 選項，再由 AI 補理由。
+
+### 可接受
+
+- 「這組形近字 5/5，因為……；建議深教。」
+- 「這個成語 2/5，和本課連結弱，建議 Bonus／可刪。」
+- 「這一詩節最大的價值是聲音與畫面的交錯，不建議硬塞另一個句型頁。」
+- 「這一段應保留推論空間，先找證據再揭示。」
+
+### 不可接受
+
+- 只有 `CORE / FLEX / BONUS`，沒有理由。
+- 只有 `A/B/C/D/E`，沒有分析。
+- 教師確認 STEP 1 後直接收到「52 頁帳本」。
+- 把每一段都做成完全相同的五步模板，再請教師確認。
+
+---
+
+## E. 快速決策原則
 
 AI 應先完整分析，再降低教師輸入成本。
 
@@ -85,11 +119,45 @@ AI 應先完整分析，再降低教師輸入成本。
 
 ---
 
-## E. TEST_FREEZE 相容
+## F. HOLD 不得跨階段
+
+教師在某個 HOLD 說「確認／好／可以」時，只代表**當前決策被確認**，不代表 AI 可以跳過中間流程。
+
+例如：
+
+- HOLD 1 確認後，下一步應進 AI 教學價值判讀，而不是頁數帳本。
+- STEP 2 / STEP 2.5 確認後，應進 Teacher Intent Lock / Lesson Map，而不是直接逐頁腳本。
+- Session Map 尚未成立前，不得宣告完整教學版總頁數。
+
+若跳過主流程中介階段，標記 `SKIPPED_DECISION_LAYER`。
+
+---
+
+## G. 教師主權的實際判定
+
+好的 HOLD 應讓教師感覺自己在「導演」：
+
+- AI 主動看懂教材與學生學習需要。
+- AI 提出少量、有理由的判斷。
+- 教師可以接受大部分，只改真正不同意的部分。
+- 教師不用替 AI 補回它漏掉的教學亮點。
+
+若教師主要工作變成：
+
+- 幫 AI 找漏掉的內容
+- 逐項替 AI 做初步分類
+- 因 AI 已鎖頁數而被迫接受結構
+- 反覆修正機械模板
+
+則該 HOLD 雖形式上有確認點，仍視為 `TEACHER_EFFORT_FAIL`。
+
+---
+
+## H. TEST_FREEZE 相容
 
 在 `TEST_FREEZE` 中，若某 HOLD 沒有依此政策顯示：
 
-- 記錄 `MISSING_INTERFACE`
+- 記錄 `MISSING_INTERFACE / SKIPPED_DECISION_LAYER / TEACHER_EFFORT_FAIL`
 - 停在原 HOLD
 - 不自行修改系統
 
@@ -97,7 +165,7 @@ AI 應先完整分析，再降低教師輸入成本。
 
 ---
 
-## F. Machine Payload 原則
+## I. Machine Payload 原則
 
 Machine payload 是 downstream contract，不是 Teacher UI。
 
@@ -120,3 +188,7 @@ Machine payload 是 downstream contract，不是 Teacher UI。
 > 資料結構給系統讀；確認卡給老師做決策。
 
 > HOLD 的價值是降低教師決策負擔，不是把內部資料格式丟給老師。
+
+> AI 要把判斷做重，把老師的操作做輕。
+
+> 教師確認的是方向與例外，不是替 AI 補完整套教學設計。
