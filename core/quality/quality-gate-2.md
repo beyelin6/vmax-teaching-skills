@@ -1,19 +1,25 @@
-# V-MAX Quality Gate 2.1
+# V-MAX Quality Gate 2.2
 
 ## 定位
 
-Quality Gate 2.1 是 V-MAX 在正式簡報渲染與交付前的最後一道檢查。
+Quality Gate 2.2 是 V-MAX 在正式簡報渲染與交付前的最後一道檢查。
 
-它不是單純抓錯字，而是同時檢查：
-
+它同時檢查：
 - 教學結構是否成立
 - 觀看路徑是否清楚
 - 圖像是否真的幫助理解
+- Lesson Visual Map 是否有效且不爆雷
 - 文字是否正確且可讀
 - 是否出現 AI 生成的奇怪中文字／假字／變形字
 - 角色是否有功能
+- 整套視覺是否發生 Visual Drift
 - 圖文整合是否保留美感
 - 新版是否比舊版退步
+- 教師是否仍需替 AI 完成後製
+
+必要子檢查：
+- `core/quality/lesson-visual-map-quality-gate.md`
+- `core/quality/visual-drift-detector.md`
 
 核心問題：
 
@@ -26,46 +32,36 @@ Quality Gate 2.1 是 V-MAX 在正式簡報渲染與交付前的最後一道檢�
 ## 一、四層 Gate
 
 ### Gate A｜Teaching Integrity
-檢查教學設計是否成立。
 
 必查：
-- 段落 Acts 是否來自自然段／意義段，而非為湊頁數硬切。
-- 語詞是否只處理教師選定／確認的重點。
-- 句型、修辭是否仍依附原句與段落語境。
+- Acts 是否來自自然段／意義段與真正理解任務，而非湊頁數。
+- 語詞、句型、修辭是否仍依附來源與課文語境。
 - 生字、形近字、多音字、成語是否遵守 Teacher Selection 與教材來源。
-- 每一頁是否有清楚的理解任務。
+- Teacher Intent LOCKED 項是否完整保留。
+- 每頁是否有清楚的理解任務。
 - 是否存在不必要的重複頁。
 
-Fail 條件：
-- AI 擅自增加大量教學內容。
-- 語文知識與課文脫節。
-- 每段固定套相同頁型。
-- 學生看完頁面仍不知道要理解什麼。
-
----
+Fail：AI 擅自增加大量內容、語文知識脫離課文、固定模板覆蓋文本結構、學生不知道要理解什麼。
 
 ### Gate B｜Visual Understanding
-檢查畫面是否真的承擔理解功能。
 
 必查：
 - Visual Grammar 是否回應內容關係。
 - Sequence 是否只在需要連續畫面時使用。
 - 第一視線是否清楚。
-- 同場比較是否真的能看出差異。
-- 是否有至少一個高記憶度畫面支撐整課。
-- 世界觀、材質、角色與色彩是否保持連續。
+- 比較、因果、空間、時間、證據等關係是否真的看得出來。
+- 是否有高記憶度畫面支撐整課。
+- 世界觀、材質、角色、色彩是否在合理變奏中保持一致。
 
-Fail 條件：
-- 插圖只是漂亮背景。
-- 形近字被拆成互不相關卡片。
-- 成語畫面與語意無關。
-- 每頁像不同模板／不同 AI。
-- 文字與圖片互相搶視線。
+若 `lesson_visual_map.status != OFF`，必須額外通過 `Lesson Visual Map Quality Gate`：
+- OPEN 不得爆雷。
+- CLOSE 不得變成密集文字表。
+- 結構形式不得固定樹狀心智圖。
+- 必須通過 5-Second Grasp Test。
 
----
+Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖互搶視線、Lesson Visual Map 造成誤解。
 
 ### Gate C｜Text Accuracy & Readability
-檢查學生真正看到的文字。
 
 #### C1. Zero-Tolerance Core Text
 以下必須零錯誤：
@@ -74,210 +70,126 @@ Fail 條件：
 - 注音
 - 多音字
 - 形近字正式字形
-- 成語本體
-- 正式成語定義
+- 成語本體與正式定義
 - 題目與選項
-- 需朗讀、抄寫、辨識的文字
+- Lesson Visual Map 中的正式主旨／結構／語文標籤
+- 所有需朗讀、抄寫、辨識的文字
 
-若圖片式文字無法穩定正確：
-1. 先局部重渲染。
-2. 仍不穩定則改 Native Text Overlay。
-3. Native Text 必須融入原構圖，不得另開生硬文字區。
+若圖片式文字不穩定：
+1. 局部修復或無字重渲染。
+2. 改 Native Text Overlay。
+3. 必要時小區域重做。
+4. 最後才整頁重渲染。
 
 #### C2. Low-Risk Decorative Text
-可接受極少數微小誤差：
-- 背景招牌
-- 手帳微型裝飾字
-- 不承擔教學功能的場景文字
-
-但必須：
-- 不會被當作教材內容。
-- 不影響作答。
-- 不大量出現。
-- 不成為放棄校對的理由。
+極少數純背景、不可被當教材內容的微型裝飾文字可容忍，但不得大量出現、不得影響理解或作答。
 
 #### C3. Readability
-- 核心文字不可因版面不足被縮成小字。
 - 不得用縮字解決資訊過量。
-- 課文與任務從教室後排仍應可辨識。
+- 核心文字從教室後排應可辨識。
 - 比較頁相同欄位位置需穩定。
+- Lesson Visual Map 若資訊過量，刪減或拆分，不得縮小核心字。
 
-#### C4. Strange Chinese Character Scan｜奇怪中文字掃描
-正式產出前，必須逐頁檢查所有學生可見區域，特別是圖片式文字、裝飾性文字、角色手持卡片、背景標誌與混合渲染區。
+#### C4. Strange Chinese Character Scan
+逐頁檢查所有學生可見區域：假字、筆畫黏連／斷裂、偏旁錯位、簡體／日文漢字混入、同字不一致、背景亂碼、注音不符、課文被改字漏字增字。
 
-必查項目：
-- 是否出現看似中文字但實際不存在的「假字」。
-- 是否有筆畫黏連、斷裂、增減或變形成另一個字。
-- 是否有偏旁錯位、部件被替換、左右／上下結構異常。
-- 是否誤用簡體字、日文漢字、異體字或非教材規範字形。
-- 同一個字在同頁或不同頁是否出現不同怪異字形。
-- 圖像模型生成的招牌、標籤、卡片、書本封面等，是否偷偷產生無意義中文字。
-- 注音是否與對應國字一致，聲調位置是否正確。
-- 課文鎖定文字是否因圖像重繪而被改字、漏字、增字。
-
-風險分級：
-- `BLOCKER`：任何可能被學生當成正式教材內容、造成誤學的怪字／錯字，必須修正後才能交付。
-- `REVISE`：非核心但明顯可見的怪字、假字、亂碼，應局部移除、遮蔽、重渲染或改 Native Text。
-- `TOLERATED`：極小、不可辨識、純背景且不承擔任何教學功能的紋理性符號，可記錄但不必破壞整頁重做。
-
-修復優先順序：
-1. 直接刪除沒有必要存在的圖片中文字。
-2. 以無字圖像局部重渲染。
-3. 以 Native Text 覆蓋正式中文字。
-4. 小區域重做。
-5. 最後才考慮整頁重渲染。
-
-禁止：
-- 明知圖片中有怪字，因為「只是 AI 圖」就直接交付。
-- 為修一個怪字而破壞整張已成功的構圖。
-- 用字體縮小、模糊化或遮一半來掩蓋錯字。
+風險：
+- `BLOCKER`：可能造成誤學，必修。
+- `REVISE`：非核心但明顯可見，應修。
+- `TOLERATED`：極小純背景紋理且不承擔教學功能。
 
 核心：
 
 > 圖可以有生成感，學生會讀到的中文字不能有「AI 猜字感」。
 
----
-
 ### Gate D｜Renderer & Regression
-檢查是否真的完成可交付成品。
 
 #### Renderer Completion
-不通過情況：
-- 老師需要自己把字移到圖片上。
-- 老師需要重新排圖片位置。
-- 原生文字像後貼標籤，破壞整體構圖。
-- 為了可編輯而將高品質整頁設計拆成拼貼。
+不通過：
+- 老師需自己搬字、排圖、重打核心文字。
+- Native Text 像後貼標籤，破壞整體構圖。
+- 為可編輯而拆掉成功的圖像式設計。
+
+#### Visual Drift Check
+正式交付前必須使用 `core/quality/visual-drift-detector.md`，以代表頁通過後的 Visual Baseline 檢查：
+- WORLD_DRIFT
+- STYLE_DRIFT
+- PALETTE_DRIFT
+- CHARACTER_DRIFT
+- TYPOGRAPHY_DRIFT
+- UI_DRIFT
+- COMPOSITION_DRIFT
+- PEDAGOGICAL_VISUAL_DRIFT
+- LVM_DRIFT
+
+任何 `unresolved_blockers` 不為空 → `FAIL`。
+
+合理的高潮對比、Knowledge Lab 精準頁、不同 Act Visual Grammar 或情緒變奏不算 Drift；關鍵是變化是否由教學理由產生。
 
 #### Regression Check
-與 Bee Quality Benchmark 並排，檢查：
-- 教學清楚度
-- 畫面記憶
-- 整課節奏
-- 角色自然度
-- 圖文整合
-- 語文知識完整性
-
-若新版在核心面向明顯低於舊版，判定 Regression Fail。
+與 Bee Quality Benchmark 並排檢查：教學清楚度、畫面記憶、節奏、角色自然度、圖文整合、語文知識完整性。
 
 最低要求：
-- 「教學清楚度、畫面記憶、節奏、角色自然度」四項至少三項不低於舊基準。
-- 核心文字正確性不得比舊版差。
+- 教學清楚度、畫面記憶、節奏、角色自然度四項至少三項不低於舊基準。
+- 核心文字正確性不得退步。
 - 圖文整合不得因可編輯需求明顯退化。
 
 ---
 
-## 二、Page Risk Level｜頁面風險等級
-
-Quality Gate 先替每頁判斷風險，再決定 Renderer 策略。
+## 二、Page Risk Level
 
 ### R1｜Visual Safe
-例：
-- 封面
-- 情境開場
-- 童詩意象頁
-- 情緒停格
-- 無核心教學文字的故事場景
-
-策略：
-- Image-first 可優先。
-- 圖片式文字可存在，但仍需人工／模型視覺校對與 Strange Chinese Character Scan。
+封面、情境開場、童詩意象、情緒停格等。Image-first 可優先，但仍需中文掃描。
 
 ### R2｜Hybrid Recommended
-例：
-- 段落原句＋情境圖
-- 語詞頁
-- 句型／修辭頁
-- 成語情境頁
-
-策略：
-- 保留整體圖片式構圖。
-- 核心文字區域優先 Native Text Overlay。
-- 不破壞背景構圖與留白。
+段落原句＋情境圖、語詞、句型／修辭、成語情境、Lesson Visual Map 等。核心正式文字優先 Native Text Overlay。
 
 ### R3｜Precision Required
-例：
-- 生字
-- 注音
-- 形近字
-- 多音字
-- 正式定義
-- 評量題目
-
-策略：
-- Native Text / programmatic text 優先。
-- 圖片只負責情境與視覺關係。
-- 文字對齊與正確性優先於圖片模型自由度。
+生字、注音、形近字、多音字、正式定義、評量題目。Native / programmatic text 優先。
 
 ---
 
-## 三、Automatic Escalation｜自動升級規則
+## 三、Automatic Escalation
 
-若同一頁：
-- 核心文字錯誤 ≥ 2 個
-- 同一核心文字重渲染 2 次仍錯
-- 注音／生字位置不穩定
-- 原句被誤改
-- 題目文字影響答案
-- 出現可被學生閱讀到的假字／怪字
-
-則頁面 Renderer 自動從：
+若同頁核心文字錯誤 ≥2、重渲染兩次仍錯、注音／字形不穩、原句被改、題目影響答案或出現可讀怪字：
 
 `Image-first → Hybrid → Precision`
 
-不得無限重畫整張。
-
-目標是以最小修改成本保留最佳構圖。
+不得無限整頁重畫。
 
 ---
 
-## 四、Visual Preservation Rule｜美感保留規則
+## 四、Visual Preservation Rule
 
-當局部文字需要修正時：
-
-優先順序：
-1. 局部文字修復
+修正順序：
+1. 局部文字／物件修復
 2. 局部 Native Overlay
 3. 小區域重新渲染
 4. 最後才整頁重做
 
-禁止：
-- 因一個錯字重建成傳統 PPT 模板。
-- 為了 editable 把全頁設計拆散。
-- 將圖片縮成半頁，再用另一半塞文字。
-
-核心：
-
 > 修錯字時，修的是字，不是把整張好看的投影片拆掉。
 
----
-
-## 五、Teacher Effort Gate｜教師加工成本
-
-正式交付前必問：
-
-- 教師是否需要搬移元素？
-- 教師是否需要手動對齊？
-- 教師是否需要逐頁重打核心文字？
-- 教師是否需要自己修正大量圖片中文字？
-
-若任一答案為「是，而且不是極少量例外」，則 Renderer 尚未完成。
-
-V-MAX 的責任是交付可直接教學的成品，而不是半成品。
+Visual Drift 修正同樣優先局部處理，不因一頁漂移而整套重畫。
 
 ---
 
-## 六、Pre-delivery Text Preflight｜交付前文字預檢
+## 五、Teacher Effort Gate
 
-正式輸出 PPT／PDF／圖片前，必須完成一次全檔文字預檢：
+正式交付前必問：教師是否還需搬移、對齊、逐頁重打核心文字、修大量圖片中文字或自行統一角色／風格？
 
-1. 核對所有 Native Text 與鎖定來源文字。
-2. 視覺掃描所有圖片區域中的可見中文字。
-3. 對照生字、形近字、多音字、成語、課文原句與注音。
-4. 列出可疑字形頁碼與位置。
-5. 修正後再次檢查該頁，不因局部修正造成 Visual Drift。
-6. 只有當所有 `BLOCKER` 歸零，才允許輸出正式成品。
+若答案為「是，而且不是極少量例外」，Renderer 尚未完成。
 
-此步驟屬於交付流程，不需教師另外提醒。
+---
+
+## 六、Pre-delivery Preflight
+
+1. 核對 Native Text 與鎖定來源。
+2. 執行 Strange Chinese Character Scan。
+3. 若有 Lesson Visual Map，執行 LVM Quality Gate。
+4. 執行 Visual Drift Detector，確認無 unresolved blocker。
+5. 對照生字、形近字、多音字、成語、課文與注音。
+6. 修正後重檢局部頁，避免修正造成新 Drift。
+7. 所有 BLOCKER 歸零才允許正式輸出。
 
 ---
 
@@ -286,15 +198,17 @@ V-MAX 的責任是交付可直接教學的成品，而不是半成品。
 ```yaml
 quality_gate:
   overall: PASS | REVISE | FAIL
-
   teaching:
     status:
     issues: []
-
   visual:
     status:
     issues: []
-
+    lesson_visual_map_gate:
+      status: OFF | PASS | REVISE | BLOCKER
+    visual_drift_check:
+      status: PASS | REVISE | BLOCKER
+      unresolved_blockers: []
   text:
     status:
     core_errors: []
@@ -304,30 +218,23 @@ quality_gate:
       blocker_pages: []
       suspicious_pages: []
       fixes_applied: []
-
   renderer:
     status:
     pages_to_escalate: []
-
   regression:
     status:
     benchmark_notes: []
-
   teacher_effort:
     manual_fix_required: false
     notes: []
 ```
 
-只有 `overall: PASS` 且 `strange_chinese_scan.status: PASS` 才進正式交付。
+只有 `overall: PASS`、`strange_chinese_scan.status: PASS`、Lesson Visual Map（若啟用）無 BLOCKER、Visual Drift 無 unresolved blocker，才進正式交付。
 
 ---
 
-## 八、核心金句
+## 核心金句
 
 > 好的 AI 教材不是完全沒有任何生成痕跡，而是老師拿到時，不需要再替 AI 完成它本來就該完成的工作。
 
-> 少數低風險小瑕疵可以容忍；會教錯孩子的字，一個都不能放過。
-
-> 圖可以有生成感，學生會讀到的中文字不能有「AI 猜字感」。
-
-> 可編輯性不能以犧牲整體設計為代價。
+> 一致不是每頁長一樣，而是每頁都像同一位導演拍的、同一個世界裡發生的事。
