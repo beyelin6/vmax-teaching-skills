@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.2
+# V-MAX Manifest 1.3
 
 ## 角色
 
@@ -9,9 +9,15 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.2
+vmax_manifest_version: 1.3
 bootstrap: V-MAX_BOOTSTRAP.md
-runtime_state: runtime/lesson-state.md
+runtime_contract: runtime/lesson-state.md
+runtime_storage:
+  provider: GOOGLE_DRIVE
+  root_folder_name: 00_Runtime_State
+  root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
+  index_title: V-MAX_Runtime_Index
+  index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
   current_version: 1.8
@@ -30,6 +36,24 @@ adapters:
   notebooklm: adapters/notebooklm.md
   canva_renderer: adapters/canva.md
 ```
+
+---
+
+## Runtime Authority
+
+GitHub 保存 Runtime schema 與規則；每一課的即時 Runtime State 以 Google Drive 為正式權威。
+
+正式讀取順序：
+
+```text
+runtime/lesson-state.md
+→ Google Drive V-MAX_Runtime_Index
+→ 對應課程 V-MAX_State_{冊別}_{課次}_{課名}
+```
+
+不得用 GitHub 範例狀態、模型記憶或舊對話取代 Drive 中該課最新 State。
+
+若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`。
 
 ---
 
@@ -105,7 +129,7 @@ Adapter 的責任是回答「這個平台怎麼執行／承接 V-MAX」，不是
 
 若平台沒有對應 Adapter：
 
-1. 仍以 Bootstrap / Manifest / Runtime / Core 為權威。
+1. 仍以 Bootstrap / Manifest / Runtime Contract / Core 為權威。
 2. 標記 `ADAPTER_MISSING`。
 3. 可依平台能力建立新的薄 Adapter，但不得複製或改寫一套新的 Golden Path。
 
@@ -113,22 +137,11 @@ Adapter 的責任是回答「這個平台怎麼執行／承接 V-MAX」，不是
 
 ## Adapter Boundary
 
-平台適配檔放在：
-
-```text
-adapters/
-  chatgpt.md
-  codex.md
-  gemini.md
-  notebooklm.md
-  canva.md
-```
-
 Adapter 只能描述：
 - 如何讀取 GitHub / Drive
 - 如何傳遞檔案
 - 如何轉成平台可接受格式
-- 如何讀取與回寫 Runtime State
+- 如何讀取與回寫 Google Drive Runtime State
 - 平台能力／限制
 - 如何驗證實際 handoff / render 是否真的完成
 
@@ -159,6 +172,4 @@ Renderer 只負責呈現與輸出，不得因平台能力限制反向刪改已 L
 
 > Manifest 決定現在誰是權威；模型不靠記憶猜版本。
 
-> Core 不隨平台分裂；Adapter 只處理平台差異。
-
-> 平台可以換，教學設計不能跟著漂移。
+> GitHub 管系統，Drive 管每一課；兩者職責不要混在一起。
