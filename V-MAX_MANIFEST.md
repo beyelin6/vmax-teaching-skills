@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.1
+# V-MAX Manifest 1.2
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.1
+vmax_manifest_version: 1.2
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_state: runtime/lesson-state.md
 main_workflow:
@@ -22,10 +22,13 @@ step1_source_anchor: core/governance/step1-source-anchor-policy.md
 hold_policy: core/governance/hold-teacher-interface-policy.md
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 lesson_package_delivery: skills/lesson-package-delivery/SKILL.md
+renderer_contract: core/renderer/image-first-hybrid-renderer.md
 adapters:
   chatgpt: adapters/chatgpt.md
   codex: adapters/codex.md
   gemini: adapters/gemini.md
+  notebooklm: adapters/notebooklm.md
+  canva_renderer: adapters/canva.md
 ```
 
 ---
@@ -95,8 +98,10 @@ SOURCE 0
 - ChatGPT → `adapters/chatgpt.md`
 - Codex → `adapters/codex.md`
 - Gemini → `adapters/gemini.md`
+- NotebookLM → `adapters/notebooklm.md`
+- Canva / 視覺 Renderer → `adapters/canva.md`
 
-Adapter 的責任是回答「這個平台怎麼執行 V-MAX」，不是另立一套流程。
+Adapter 的責任是回答「這個平台怎麼執行／承接 V-MAX」，不是另立一套流程。
 
 若平台沒有對應 Adapter：
 
@@ -125,6 +130,7 @@ Adapter 只能描述：
 - 如何轉成平台可接受格式
 - 如何讀取與回寫 Runtime State
 - 平台能力／限制
+- 如何驗證實際 handoff / render 是否真的完成
 
 Adapter 不得改寫：
 - Source Truth
@@ -135,6 +141,18 @@ Adapter 不得改寫：
 - Knowledge selection
 - Visual Grammar 的認知目的
 
+若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
+
+---
+
+## Renderer Contract
+
+所有 NotebookLM / Canva / 未來視覺 Renderer 共同遵循：
+
+`core/renderer/image-first-hybrid-renderer.md`
+
+Renderer 只負責呈現與輸出，不得因平台能力限制反向刪改已 LOCKED 教學設計。
+
 ---
 
 ## 核心金句
@@ -142,3 +160,5 @@ Adapter 不得改寫：
 > Manifest 決定現在誰是權威；模型不靠記憶猜版本。
 
 > Core 不隨平台分裂；Adapter 只處理平台差異。
+
+> 平台可以換，教學設計不能跟著漂移。
