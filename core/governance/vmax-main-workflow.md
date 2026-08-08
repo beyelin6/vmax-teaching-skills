@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 1.0
+# V-MAX Main Workflow 1.1
 
 ## 定位
 
@@ -13,6 +13,7 @@
 → Lesson Map
 → 補充內容／學習框架候選
 → Session Map
+→ Lesson Visual Map Strategy
 → Scenario Wrapper
 → Character Topology / Cast
 → Knowledge Lab
@@ -32,15 +33,24 @@
 4. Lesson Map：先決定整課理解旅程，不先切頁。
 5. 補充內容／學習框架候選：可選，不強制；外部補充要保留 provenance。
 6. Session Map：AI 依內容自然切堂，教師確認後才進完整 Slide Architecture。
-7. Scenario Wrapper：由 AI 看懂課文後提出最多 1–3 個候選，可 OFF。
-8. Character Topology / Cast：先角色功能再選角色，Wrapper 不綁固定卡司。
-9. Knowledge Lab：來源先行、教師選擇、AI 組織比較與視覺化。
-10. Visual Grammar / Slide Architecture：先認知關係，再決定畫面序列與頁面。
-11. Style Recipe：最後決定媒材與美術語言，不反推教學。
-12. 代表頁驗證：先驗證關鍵頁型與角色／文字／視覺一致性。
-13. 全量 Renderer：依已鎖定設計生成，不擅自改課程。
-14. Quality Gate：教學正確、視覺理解、中文字、Regression、Teacher Effort 均需過關。
-15. Lesson Learning：每課必跑，區分 lesson-specific、global candidate、one-off exception；任何全域升級需教師批准。
+7. Lesson Visual Map Strategy：判斷 `OPEN / CLOSE / BOTH / OFF`、用途、整體結構與 Reveal Guardrails。此階段只決定整課理解圖策略，不先畫頁面；正式視覺化在 Visual Grammar / Slide Architecture 階段完成。
+8. Scenario Wrapper：由 AI 看懂課文後提出最多 1–3 個候選，可 OFF。
+9. Character Topology / Cast：先角色功能再選角色，Wrapper 不綁固定卡司。
+10. Knowledge Lab：來源先行、教師選擇、AI 組織比較與視覺化。
+11. Visual Grammar / Slide Architecture：先認知關係，再決定畫面序列與頁面；若 Lesson Visual Map 已啟用，在此轉成實際學生版頁面。
+12. Style Recipe：最後決定媒材與美術語言，不反推教學。
+13. 代表頁驗證：先驗證關鍵頁型、Lesson Visual Map、角色、文字與視覺一致性。
+14. 全量 Renderer：依已鎖定設計生成，不擅自改課程。
+15. Quality Gate：教學正確、視覺理解、Lesson Visual Map、Visual Drift、中文字、Regression、Teacher Effort 均需過關。
+16. Lesson Learning：每課必跑，區分 lesson-specific、global candidate、one-off exception；任何全域升級需教師批准。
+
+## Lesson Visual Map 決策原則
+
+- Lesson Visual Map 是學生可見的整課理解圖，不取代 Lesson Map。
+- 不因「每課都要有心智圖」而強制啟用。
+- `OPEN` 不得提前揭露需要學生推論的結論。
+- `CLOSE` 可整理已確認的主旨、結構與高價值語文焦點。
+- 圖像結構依文體與理解關係產生，不固定樹狀心智圖。
 
 ## 教師主權
 
@@ -55,6 +65,7 @@ AI 的任務是減少決策疲勞：先分析、縮小候選、說明差異，�
 - 不因畫風漂亮改 Text DNA 或 Teacher Intent。
 - 不因 Renderer 做不到而刪掉已 LOCKED 教學重點。
 - 不因舊 76 種風格庫而讓教師重新面對大型選單。
+- 不因 Lesson Visual Map 是高價值頁型就每課固定生成。
 
 ## 核心金句
 
