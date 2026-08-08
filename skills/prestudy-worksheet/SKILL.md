@@ -1,6 +1,6 @@
 # V-MAX Pre-study Worksheet Skill
 
-版本：1.0
+版本：1.1
 
 ## 目的
 
@@ -17,9 +17,23 @@
 - 尺寸：A4 橫式。
 - 風格：圖像化、任務式、清楚分區；可愛但不幼稚。
 - 主體：白／米白書寫底，手繪框線、少量主題插圖、明確編號。
-- 文字：適合三、四年級投影與列印閱讀，不以縮小字塞滿版面。
+- 文字：適合三、四年級列印閱讀，不以縮小字塞滿版面。
+- **學生可見、需要閱讀或作答的任何文字，列印於 A4、100% 尺寸時不得小於 12 pt。**
+- 建議層級：正文／題幹 12–14 pt 以上；區塊標題 14–18 pt 以上；主標題 20 pt 以上。可依版面放大，不得為塞內容而低於最低值。
+- 班級／座號／姓名、勾選項、Bonus 標籤、提示語、圖說等只要需要學生辨讀，也受 12 pt 下限約束。
+- 純裝飾符號、不承載閱讀資訊的圖形不受字級規範。
 - 角色：只在提示、鼓勵或任務入口出現，不搶學生書寫區。
 - 裝飾：依本課主題替換，不能遮線、壓縮書寫空間或變成純裝飾海報。
+
+### A1. 字級不足時的處理順序
+
+若內容放不下，依序：
+
+`刪除低價值內容 → 縮短題幹／提示 → 重組區塊 → 增加頁數（若教師允許）`
+
+**不得以縮小到 12 pt 以下解決版面問題。**
+
+若輸出為圖片或 PDF，需以 A4 實際列印尺寸檢查等效字級；不得因整張縮圖、畫布縮放或輸出 DPI 造成實際閱讀尺寸低於 12 pt。
 
 ---
 
@@ -84,6 +98,10 @@
 
 - `core/director/knowledge-lab-ordering-policy.md`
 - `core/worksheet/prestudy-language-selection-policy.md`
+- `core/director/character-deep-teaching-focus-policy.md`
+- `core/director/polyphonic-source-policy.md`
+
+AI 不因易錯、複雜或字源有趣自行增加單一生字詳解；單字額外教學只有教師指定時才進入。
 
 形近字＋多音字主要練習區約 3–5 組為軟性容量，不是硬上限；本課實際只值得 2 組時不得硬湊。
 
@@ -113,6 +131,7 @@
 6. 課文理解題要能回到文本，不做無來源的泛問。
 7. 預習不提前揭露應留給課堂發現的核心結論。
 8. 教師答案／判準留在教師版或交付備註，不進學生版。
+9. **任何學生需要讀的文字不得低於 12 pt；內容過多時刪減或重排，不縮字。**
 
 ---
 
@@ -140,6 +159,7 @@
 - 不生成大量無關吉祥物貼圖。
 - 本課角色若啟用，可用一句短提示引導，例如「從課文找線索」。
 - 角色不得替學生說出答案。
+- 角色對話只要是學生要閱讀的內容，同樣不得低於 12 pt。
 
 ---
 
@@ -161,6 +181,12 @@ prestudy_worksheet:
   teacher_key_separate: true
   writing_space_priority: HIGH
   visual_density: LOW_TO_MEDIUM
+  typography:
+    min_student_visible_pt: 12
+    body_recommended_pt: 12-14+
+    section_heading_recommended_pt: 14-18+
+    title_recommended_pt: 20+
+    shrink_below_minimum: false
   theme_assets: []
 ```
 
@@ -171,7 +197,9 @@ prestudy_worksheet:
 以下任一情況 FAIL：
 
 - 做成縮小版講義或考卷。
-- 字太小、格子太多、沒有足夠書寫空間。
+- **任何學生需閱讀文字在 A4 100% 列印時低於 12 pt。**
+- 為塞內容縮小字體而不是刪減／重排。
+- 格子太多、沒有足夠書寫空間。
 - 所有生字平均塞進預習單。
 - 形近字／多音字沒有依 STEP 2.5 的教師確認範圍。
 - 同冊重複內容未檢查。
@@ -179,7 +207,7 @@ prestudy_worksheet:
 - 裝飾／角色占掉學生操作區。
 - 學生版出現答案。
 
-分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK`
+分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL`
 
 ---
 
@@ -188,3 +216,5 @@ prestudy_worksheet:
 > 預習單是孩子進課文前的一張探索地圖，不是老師把整課先講完。
 
 > 先看線索、留下痕跡；上課再把理解長出來。
+
+> A4 學習單寧可少放一點，也不要把孩子要讀的字縮到 12 pt 以下。
