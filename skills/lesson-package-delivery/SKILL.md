@@ -1,6 +1,6 @@
 # V-MAX Lesson Package Delivery
 
-版本：1.2
+版本：1.3
 
 ## 目的
 
@@ -48,10 +48,41 @@
 學生可見內容正確、正式中文字／注音可驗證、學生頁無答案、PPTX 教師答案放講者備註、與 Teacher Intent / LVM / Text-Embedded rules 一致。
 
 ### Pre-study Worksheet
-遵循 `skills/prestudy-worksheet/SKILL.md`。
+遵循 `skills/prestudy-worksheet/SKILL.md` v1.1。
+
+最低交付檢查：
+- A4 橫式
+- 學生可見必要閱讀文字在 A4 100% 列印時 **>= 12 pt**
+- 寫作／作答空間足夠
+- 不因塞內容縮字
+- 學生版無答案
 
 ### Post-lesson Short Writing Worksheet
-遵循 `skills/postlesson-short-writing-worksheet/SKILL.md`。
+遵循 `skills/postlesson-short-writing-worksheet/SKILL.md` v1.1。
+
+最低交付檢查：
+- A4 橫式
+- 素材／畫面啟動 → Bonus 工具箱 → 正式創作區
+- 正式創作區維持最大面積
+- Bonus 為可選，不要求全部使用
+- 學生可見必要閱讀文字在 A4 100% 列印時 **>= 12 pt**
+- 不因工具箱過多縮字
+- 學生版無完整示範答案
+
+### Worksheet Typography Gate
+
+兩份學習單共同硬規格：
+
+```yaml
+worksheet_typography_gate:
+  print_size: A4_100_PERCENT
+  min_student_visible_font_pt: 12
+  prestudy: PASS | FAIL
+  postlesson_short_writing: PASS | FAIL
+  export_scale_preserved: PASS | FAIL
+```
+
+若圖片式／PDF 匯出後等效字級低於 12 pt，即使設計原始檔標示 12 pt 以上，也視為 FAIL。
 
 ---
 
@@ -126,12 +157,16 @@ lesson_package_delivery:
   teaching_pptx: PASS | N/A_BY_TEACHER
   prestudy_worksheet: PASS | N/A_BY_TEACHER
   postlesson_short_writing_worksheet: PASS | N/A_BY_TEACHER
+  worksheet_min_font_12pt: PASS
+  worksheet_export_scale: PASS
   worksheet_regression: PASS
   workflow_regression: PASS
   google_drive_archive: PASS | BLOCKED
 ```
 
 Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 PASS 才能宣告完整交付。
+
+若 `worksheet_min_font_12pt` 或 `worksheet_export_scale` FAIL，不得把學習單列為 PASS。
 
 ---
 
@@ -143,16 +178,19 @@ Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 P
 - 課版本號正確
 - 六個分類資料夾存在
 - 8 項交付物依類別實際存在
+- 預習單與短文單通過 12 pt 字級與匯出縮放檢查
 - 檔名可辨識
 - Drive list/search 可重新查到
 
 不得只建立空資料夾，也不得只說「已上傳」而沒有 Connector / API 驗證。
 
 失敗：
-`LESSON_PACKAGE_INCOMPLETE / DRIVE_ARCHIVE_STRUCTURE_DRIFT / DRIVE_ARCHIVE_UNVERIFIED / VERSION_FOLDER_COLLISION`
+`LESSON_PACKAGE_INCOMPLETE / DRIVE_ARCHIVE_STRUCTURE_DRIFT / DRIVE_ARCHIVE_UNVERIFIED / VERSION_FOLDER_COLLISION / WORKSHEET_FONT_TOO_SMALL / WORKSHEET_EXPORT_SCALE_FAIL`
 
 ---
 
 ## 核心金句
 
 > Lesson Package 管「要交哪些成果」；Google Drive Archive Skill 管「成果放哪裡、怎麼分版」。兩者不得各自維護一套資料夾規格。
+
+> 學習單寧可少放內容，也不能靠縮字塞滿 A4；學生真正印出來看到的字，至少要有 12 pt。
