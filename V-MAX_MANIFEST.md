@@ -1,4 +1,4 @@
-# V-MAX Manifest 1.4
+# V-MAX Manifest 1.5
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 1.4
+vmax_manifest_version: 1.5
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -34,7 +34,21 @@ knowledge_lab_ordering:
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
   current_version: 1.0
-lesson_package_delivery: skills/lesson-package-delivery/SKILL.md
+prestudy_language_selection:
+  path: core/worksheet/prestudy-language-selection-policy.md
+  current_version: 1.1
+prestudy_worksheet:
+  path: skills/prestudy-worksheet/SKILL.md
+  current_version: 1.0
+postlesson_short_writing_worksheet:
+  path: skills/postlesson-short-writing-worksheet/SKILL.md
+  current_version: 1.0
+worksheet_regression:
+  path: tests/worksheet-regression-cases.md
+  current_version: 1.0
+lesson_package_delivery:
+  path: skills/lesson-package-delivery/SKILL.md
+  current_version: 1.1
 renderer_contract: core/renderer/image-first-hybrid-renderer.md
 adapters:
   chatgpt: adapters/chatgpt.md
@@ -112,14 +126,42 @@ SOURCE 0
 
 ## Idiom Expression Resolution
 
-成語的「是否教」與「怎麼讓學生看懂」分成兩層：
-
 - STEP 2.5：教學價值、保留範圍、CORE/FLEX/BONUS。
 - STEP 2.6：生活例句、理解重點、單圖／前後對照／漫畫／同框比較／文字優先、是否獨立成頁。
 
 權威規則：`core/director/idiom-expression-visualization-policy.md`。
 
 不得進入視覺風格階段後只剩成語名稱而遺失例句與表達意圖。
+
+---
+
+## Worksheet Resolution
+
+### Pre-study Worksheet
+
+權威技能：`skills/prestudy-worksheet/SKILL.md`
+
+固定精神：
+- A4 橫式任務探索單。
+- 課前探索＋學後複習雙用途。
+- 三、四年級語文預習聚焦高價值形近字／多音字。
+- 左／上短任務、右側較大閱讀理解區、下方開放思考區為預設 Layout Grammar；不得機械套版。
+- 學生版無答案。
+
+### Post-lesson Short Writing Worksheet
+
+權威技能：`skills/postlesson-short-writing-worksheet/SKILL.md`
+
+固定精神：
+- A4 橫式圖像化寫作任務單。
+- 素材／畫面啟動 → Bonus 工具箱 → 正式創作。
+- Bonus 語詞、四字語詞／成語、句型、修辭皆為可選，不要求全部使用。
+- 正式創作區為最大面積。
+- 可依本課 Teacher Intent 寫短文、童詩或彈性創作。
+
+預習單與短文單可共享同一課的視覺家族，但任務功能不得混同。
+
+正式交付時必須通過：`tests/worksheet-regression-cases.md`。
 
 ---
 
@@ -150,7 +192,7 @@ SOURCE 0
 
 ## Adapter Boundary
 
-Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection 或 Visual Grammar 的認知目的。
+Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、Golden Path、Lesson Map、Session Map、Knowledge selection、Worksheet learning function 或 Visual Grammar 的認知目的。
 
 若平台沒有直接 Connector / API 或無法驗證寫入，必須標記 `*_HANDOFF_READY` 或 `*_BLOCKED`，不得宣稱已匯入、已生成或已建立。
 
@@ -163,3 +205,5 @@ Adapter 只能描述平台差異，不得改寫 Source Truth、Teacher Intent、
 > GitHub 管系統，Drive 管每一課；兩者職責不要混在一起。
 
 > 三、四年級生字完整保留、深教聚焦；成語先決定教不教，再決定怎麼看懂。
+
+> 預習單先帶孩子進文本；短文單再把本課語文工具變成孩子自己的作品。
