@@ -22,6 +22,16 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 5. Repository 根目錄 `AGENTS.md`
 6. Style Library、Role Library 與 Layout Library 中當課已核准的設定
 
+生成圖文資訊頁前必讀：
+
+- `core/renderer/image-first-hybrid-renderer.md`
+- `core/visual/visual-grammar.md`
+- `core/visual/bee-visual-language-v1.md`
+- `core/quality/visual-drift-detector.md`
+- `core/export/infographic-pdf-output-contract.md`
+
+若 Teacher Intent 鎖定 `IMAGE_INTEGRATED_VERIFIED_TEXT`、角色基準、背景明度或內容驅動文字載體，Renderer 不得以自己的平台預設覆蓋。
+
 LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生最終輸出。
 
 ## 可選輸出
@@ -192,3 +202,4 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 ## 完成條件
 
 只有所有選定輸出、manifest 與驗證報告均完成，且狀態為 `ready_for_teacher_review` 時，本技能才算完成。教師確認前不得標示為 approved。
+
