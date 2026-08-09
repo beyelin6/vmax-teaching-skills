@@ -1,6 +1,6 @@
 # V-MAX 中文指令速查表
 
-版本：1.1
+版本：1.2
 
 ## 你不需要記英文代碼
 
@@ -63,6 +63,22 @@
 
 ---
 
+## 在哪裡跑
+
+- **ChatGPT**：最適合直接用中文操作、續跑 checkpoint、批次做預習單／短文單／腳本／PDF。
+- **Codex**：最適合 GitHub 規格、技能、Renderer、批次腳本與大量檔案維護。
+- **NotebookLM**：讀已核准的 Source MD / Instruction MD，做來源導向圖文生成。
+- **Google Drive**：跨電腦／手機找檔、續作、下載與保存 checkpoint／成果。
+- **GitHub**：保存 V-MAX 的 skill、policy、schema、registry 與系統規則。
+
+一句話：
+
+> **ChatGPT / Codex 負責執行；NotebookLM 負責來源導向生成；Google Drive 負責帶著走；GitHub 負責規則。**
+
+如果一個平台暫時讀不到需要的資料，換另一個能讀取同一份 Drive artifact 的平台繼續，不要重算上游分析。
+
+---
+
 ## Google Drive｜跨裝置找得到
 
 教師需要之後在不同電腦／手機查找、續作或下載的成果，都要有 Google Drive 副本。
@@ -93,4 +109,4 @@
 
 ## 維護
 
-若 checkpoint、技能 I/O、批次能力、常用輸出、中文別名或 Google Drive 歸檔規則更新，本速查表必須與 `docs/V-MAX_使用指南.md` 及 Google Drive 現行副本同步更新；不同步標記 `USER_GUIDE_STALE / USER_GUIDE_DRIVE_STALE`。
+若 checkpoint、技能 I/O、批次能力、常用輸出、中文別名、平台角色或 Google Drive 歸檔規則更新，本速查表必須與 `docs/V-MAX_使用指南.md` 及 Google Drive 現行副本同步更新；不同步標記 `USER_GUIDE_STALE / USER_GUIDE_DRIVE_STALE`。
