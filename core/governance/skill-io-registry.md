@@ -1,4 +1,4 @@
-# V-MAX Skill I/O Registry 1.0
+# V-MAX Skill I/O Registry 1.1
 
 ## 定位
 
@@ -80,5 +80,21 @@ skills:
 - 可共用技能規則、版面家族、教師明確鎖定的跨課偏好。
 - 不可共用生字、語詞、閱讀題、答案、Teacher Intent。
 
+## User-facing Guide Synchronization
+
+以下文件是本 Registry 的教師可讀鏡像：
+- `docs/V-MAX_使用指南.md`
+- `docs/V-MAX_中文指令速查表.md`
+
+若發生以下任一變更，修改者必須在同一變更批次檢查並同步更新兩份文件：
+- checkpoint 新增、刪除、更名、用途或 alias 改變
+- `skill_io_contract` 的 minimum checkpoint、accepted artifacts、produced artifacts 改變
+- standalone / batch capability 改變
+- 新增、刪除或更名可直接呼叫技能
+- Golden Path / Checkpoint Resume 的交界改變
+- 使用者可直接要求的輸出格式改變
+
+若 canonical 規格已更新而教師指南仍描述舊行為，標記 `USER_GUIDE_STALE`；該次規格變更不得宣稱文件同步完成。
+
 ## 核心金句
-> Manifest 管誰是權威；I/O Registry 管積木怎麼接。
+> Manifest 管誰是權威；I/O Registry 管積木怎麼接；使用指南把積木翻成老師自然會說的中文。
