@@ -12,6 +12,47 @@
 
 ---
 
+## 0. Standalone / Batch I-O Contract
+
+本技能支援 `CHECKPOINT_RESUME`，不要求每次從 SOURCE 0 重跑。
+
+```yaml
+skill_io_contract:
+  can_run_standalone: true
+  minimum_checkpoint: CP_PRESTUDY_INPUT
+  accepted_artifacts:
+    - CP_PRESTUDY_INPUT
+    - CP_LESSON_CONTENT_MASTER
+    - CP_TEACHING_ANALYSIS
+  required_fields:
+    - lesson_id
+    - lesson_title
+    - approved_text_scope
+    - approved_language_focus
+    - reading_task_source
+  optional_fields:
+    - teacher_selected_error_prone_character
+    - visual_theme
+    - lesson_character
+    - prior_same_volume_items
+  produces_artifacts:
+    - PRESTUDY_WORKSHEET_SOURCE
+    - PRESTUDY_WORKSHEET_OUTPUT
+    - PRESTUDY_TEACHER_KEY
+  batch_capable: true
+  may_recompute_upstream: false
+```
+
+若取得的是較高階相容 artifact，只抽取本技能 required_fields，不重做上游分析。
+
+若教師一次指定多課，例如「一次做第一到第六課預習單」，逐課讀取各自 checkpoint 後批次執行；某一課缺資料只標記該課 `INPUT_INCOMPLETE`，不得阻塞其他課。
+
+不得把不同課的生字、閱讀題或 Teacher Intent 混在同一課的預習單資料包。
+
+完整規則依 `core/governance/modular-checkpoint-execution-policy.md`。
+
+---
+
 ## A. 預設版型
 
 - 尺寸：A4 橫式。
@@ -201,13 +242,14 @@ prestudy_worksheet:
 - 為塞內容縮小字體而不是刪減／重排。
 - 格子太多、沒有足夠書寫空間。
 - 所有生字平均塞進預習單。
-- 形近字／多音字沒有依 STEP 2.5 的教師確認範圍。
+- 形近字／多音字沒有依已核准的 STEP 2.5 / CP_PRESTUDY_INPUT 範圍。
 - 同冊重複內容未檢查。
 - 閱讀題脫離課文或提前揭露核心答案。
 - 裝飾／角色占掉學生操作區。
 - 學生版出現答案。
+- Batch Mode 中不同課資料互相污染。
 
-分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL`
+分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / BATCH_CROSS_LESSON_CONTAMINATION`
 
 ---
 
@@ -216,5 +258,7 @@ prestudy_worksheet:
 > 預習單是孩子進課文前的一張探索地圖，不是老師把整課先講完。
 
 > 先看線索、留下痕跡；上課再把理解長出來。
+
+> 已分析好的課程資料可以直接拿來做預習單，不需要為了進入本技能重跑整課流程。
 
 > A4 學習單寧可少放一點，也不要把孩子要讀的字縮到 12 pt 以下。
