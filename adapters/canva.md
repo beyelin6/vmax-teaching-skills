@@ -1,4 +1,4 @@
-# V-MAX Canva / Visual Renderer Adapter 1.0
+# V-MAX Canva / Visual Renderer Adapter 1.1
 
 ## 定位
 
@@ -100,7 +100,8 @@ Canva 可進行：
 - 元素與文字位置調整
 - 動畫／轉場
 - 版面比例轉換
-- PPTX / PDF 等格式輸出（若平台能力支援）
+- 單頁 PNG 與圖文資訊圖表 PDF 輸出
+- PPTX（僅教師明確要求且平台能力支援時）
 
 Canva 不得自行：
 
@@ -141,22 +142,22 @@ Canva 不得自行：
 
 ---
 
-## 6. PDF / PPTX 雙輸出
+## 6. 圖文資訊圖表 PDF 預設輸出
 
-V-MAX 成品層預設保留兩種簡報：
+V-MAX 成品層遵循 `core/export/infographic-pdf-output-contract.md`：
 
-### Image-first PDF
-- 高完成度視覺版
-- 可直接投影／分享
+### Infographic Teaching PDF
+- 每頁為完成構圖的 16:9 圖文資訊頁
+- 依 page_id 組裝成單一可直接投影／分享的 PDF
 - 學生可見文字已驗證
+- 最終 PDF 已全頁重渲染檢查
 
 ### Teaching PPTX
-- 可編輯
-- 關鍵文字 Native Text
-- 教師答案／引導放講者備註
-- Session / CORE / FLEX / BONUS 可調整
+- 預設不產生
+- 只有教師明確要求時選配
+- 不得把整頁圖片塞入 PPTX 後宣稱這是可修改的正式來源
 
-兩者應內容一致，但不要求技術結構完全相同。
+正式可修改來源仍是 Source Master、Renderer Script、Visual YAML 與單頁圖檔。
 
 ---
 

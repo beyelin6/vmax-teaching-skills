@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.5
+# V-MAX Manifest 2.7
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.5
+vmax_manifest_version: 2.7
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -20,10 +20,10 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.0
+  current_version: 2.1
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.2
+  current_version: 1.4
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
@@ -35,13 +35,13 @@ hold_policy: core/governance/hold-teacher-interface-policy.md
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.6
+  current_version: 1.8
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
-  current_version: 1.9
+  current_version: 2.0
 character_deep_teaching_focus:
   path: core/director/character-deep-teaching-focus-policy.md
-  current_version: 1.1
+  current_version: 1.2
 polyphonic_source_policy:
   path: core/director/polyphonic-source-policy.md
   current_version: 1.0
@@ -50,7 +50,7 @@ character_group_visual_comparison:
   current_version: 1.0
 character_teaching_regression:
   path: tests/character-teaching-regression-cases.md
-  current_version: 1.0
+  current_version: 1.1
 lesson_visual_map:
   path: core/visual/lesson-visual-map.md
   current_version: 1.1
@@ -77,11 +77,19 @@ worksheet_regression:
   current_version: 1.1
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
-  current_version: 1.3
+  current_version: 1.4
 google_drive_lesson_archive:
   path: skills/google-drive-lesson-archive/SKILL.md
+  current_version: 1.1
+renderer_contract:
+  path: core/renderer/image-first-hybrid-renderer.md
+  current_version: 1.2
+infographic_pdf_output:
+  path: core/export/infographic-pdf-output-contract.md
   current_version: 1.0
-renderer_contract: core/renderer/image-first-hybrid-renderer.md
+infographic_pdf_regression:
+  path: tests/infographic-pdf-regression-cases.md
+  current_version: 1.0
 adapters:
   chatgpt: adapters/chatgpt.md
   codex: adapters/codex.md
@@ -162,9 +170,10 @@ SOURCE 0
 - 正式生字完整保留。
 - **AI 主動深教只有 `SHAPE_NEAR`、`POLYPHONIC`。**
 - 一般單字 = `BASIC_LITERACY_ONLY`。
-- 單一生字詳解只有教師指定 → `TEACHER_ADDED_SINGLE_CHARACTER`。
-- AI 只能提示 `AI_SUGGESTION_SINGLE_CHARACTER`，不得自動成頁。
-- 易錯／複雜／字源／評量／語義特殊皆不是 AI 第三入口。
+- `SHAPE_NEAR` 必須以兩字以上的字群比較教學，不得退化成單字詳解。
+- 易錯字只由教師主動指定 → `TEACHER_ADDED_WRITING_FOCUS`；AI 不列易錯字候選。
+- 複雜／字源／評量／語義特殊皆不是 AI 第三入口。
+- 其餘生字不特別提出深教，只留在基礎識寫層。
 
 權威：`character-deep-teaching-focus-policy.md` v1.1、`knowledge-lab-ordering-policy.md` v1.9。
 
@@ -182,7 +191,7 @@ SOURCE 0
 
 形近字／多音字學生可見頁遵循 `skills/character-group-visual-comparison/SKILL.md`。
 
-- 形近字：大字＋注音＋字義情境圖＋例詞＋像／不像＋辨認提示。
+- 形近字：以字群同框比較，大字＋注音＋字義情境圖＋例詞＋像／不像＋辨認提示。
 - 多音字：同一大字＋不同讀音＋語意／情境＋例詞／例句＋課文判斷。
 
 ---
@@ -203,6 +212,18 @@ SOURCE 0
 若教師已選定整課圖像心智地圖，它成為 downstream invariant；簡報大綱、Slide Architecture、頁數估算、Renderer 都不得靜默刪除。
 
 權威：`core/visual/lesson-visual-map.md` v1.1。
+
+---
+
+## Final Teaching Visual Output Resolution
+
+- 正式課堂視覺成品預設為 16:9 圖文資訊圖表 PDF。
+- 每頁是完整圖文構圖，可採情境敘事型或知識比較型，但不得固定套版。
+- 可修改性保留在 Source Master、Renderer Script、Visual YAML、Character Assets 與單頁圖檔。
+- 不製作「圖片塞進可修改 PPT」作為預設交付；PPTX 只有教師明確要求才產生。
+- 最終 PDF 必須逐頁渲染回 PNG，完成文字、注音、頁序、裁切、清晰度與答案外洩檢查。
+
+權威：`core/export/infographic-pdf-output-contract.md` v1.0、`core/renderer/image-first-hybrid-renderer.md` v1.2。
 
 ---
 
@@ -280,13 +301,15 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 
 以下一律視為舊規則：
 - STEP 3／STEP 4 舊主流程
-- AI 因易錯／特殊構形自行建立單字詳解
+- AI 提出易錯字候選，或因易錯／特殊構形自行建立單字詳解
 - 形近補充字因多音被 AI 拉入多音字單元
 - 無方格直接等於認讀字
 - 語詞／句型／修辭沒有原文證據
 - 已選整課圖像心智地圖卻在大綱消失
 - Drive 舊五類資料夾結構
 - A4 學習單靠縮字到 12 pt 以下塞內容
+- 把可修改的圖片式 PPT 當成預設正式成品
+- 只輸出單頁圖片卻未組裝、重渲染與驗證最終 PDF
 
 ---
 
@@ -294,6 +317,6 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 
 > Manifest 決定現在誰是權威；Executor 必須真的載入，而不是只靠模型記得。
 
-> 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
+> 生字表 ≠ 生字教學清單；形近字用字群教，多音字用語境教，易錯字只由老師指定，其餘不另提深教。
 
 > 學習單寧可少放內容，也不要讓學生真正印出來看到的字小於 12 pt。

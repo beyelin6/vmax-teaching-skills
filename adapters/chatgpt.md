@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.0
+# V-MAX Adapter｜ChatGPT 1.1
 
 ## 目的
 
@@ -49,7 +49,8 @@ ChatGPT 可負責：
 - 教師確認卡
 - Source Master / Script / Visual YAML MD
 - 圖像生成／教材檔案生成（若平台工具可用）
-- PPTX / PDF / Worksheet 產出
+- 16:9 圖文資訊圖表單頁、正式 PDF 與 Worksheet 產出
+- PPTX 僅在教師明確要求時選配
 - GitHub Runtime State 回寫
 - Google Drive 歸檔驗證
 

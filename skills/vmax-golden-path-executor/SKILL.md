@@ -1,6 +1,6 @@
 # V-MAX Golden Path Executor
 
-版本：1.2
+版本：1.4
 
 ## 目的
 
@@ -53,7 +53,8 @@ SOURCE 0｜Google Drive Source Library 尋源
 → 頁數估算／頁數帳本
 → Style Recipe
 → 代表頁驗證
-→ 全量 Renderer
+→ 全量圖文資訊圖表 Renderer
+→ PDF 組裝與逐頁 Preflight
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery Gate
@@ -113,9 +114,10 @@ STEP 2.5 必須同時載入：
 
 - AI 主動深教只有 `SHAPE_NEAR` 與 `POLYPHONIC`。
 - 一般單字預設 `BASIC_LITERACY_ONLY`。
-- 單一生字詳解只有教師明確指定後，才能成為 `TEACHER_ADDED_SINGLE_CHARACTER`。
+- 形近字必須以兩字以上的字群比較教學，不得以單字頁冒充 `SHAPE_NEAR`。
+- 易錯字只有教師主動指定後，才能成為 `TEACHER_ADDED_WRITING_FOCUS`。
 - 「容易寫錯／字形複雜／字源有趣／評量重要／語義特殊」都不能成為 AI 自動建立單字頁的第三入口。
-- AI 最多只能提示 `AI_SUGGESTION_SINGLE_CHARACTER`，不得自動成頁。
+- AI 不主動列易錯字候選；其餘生字不特別提出教學。
 
 ### 多音字合法來源
 
@@ -128,7 +130,7 @@ STEP 2.5 必須同時載入：
 
 ### 學生可見字群頁
 
-- 形近字：大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示。
+- 形近字：字群同框，大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示。
 - 多音字：同一大字＋不同讀音＋語意／情境＋例詞／例句＋回到課文判斷。
 
 完成後顯示 `HOLD 2.5`。
@@ -187,6 +189,9 @@ STEP 2.5 必須同時載入：
 交付必須同時載入：
 - `skills/lesson-package-delivery/SKILL.md`
 - `skills/google-drive-lesson-archive/SKILL.md`
+- `core/export/infographic-pdf-output-contract.md`
+
+正式課堂視覺成品預設為 16:9 圖文資訊圖表 PDF。不得在教師未要求時把可修改圖片式 PPTX 當成必要交付；最終 PDF 必須全頁重渲染檢查後才可 PASS。
 
 Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
@@ -217,6 +222,6 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 > AI 做重判斷，老師只改例外；一次確認只走一站。
 
-> 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
+> 生字表 ≠ 生字教學清單；形近字用字群教，多音字用語境教，易錯字只由老師指定，其餘不另提深教。
 
 > 規格寫了不算載入；Executor 必須真的把當前 canonical policy 帶進實跑。

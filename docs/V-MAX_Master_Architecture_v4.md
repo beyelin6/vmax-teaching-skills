@@ -58,7 +58,9 @@ Library 只提供選項與規則，不得覆蓋教材事實。
 - NotebookLM Source MD
 - NotebookLM 生成指令
 - 投影片腳本
-- PPTX
+- 16:9 圖文資訊圖表 PDF（預設正式課堂視覺成品）
+- 單頁 PNG
+- PPTX（僅教師明確要求時選配）
 - 教師講者備註
 - 預習單、仿作單、評量等延伸教材
 - Output Manifest
@@ -266,7 +268,8 @@ lesson-id/
     ├── notebooklm-source.md
     ├── notebooklm-instruction.md
     ├── slide-script.md
-    ├── presentation.pptx
+    ├── infographic-teaching.pdf
+    ├── infographic-pages/
     └── output-manifest.md
 ```
 
@@ -298,7 +301,9 @@ outputs:
   notebooklm_source: true
   notebooklm_instruction: true
   slide_script: true
-  pptx: true
+  infographic_pdf: true
+  infographic_page_png: true
+  pptx: false  # 僅教師明確要求時改為 true
   speaker_notes: true
 ```
 

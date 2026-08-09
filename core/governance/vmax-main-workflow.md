@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.0
+# V-MAX Main Workflow 2.1
 
 ## 定位
 
@@ -67,7 +67,8 @@ SOURCE 0｜Google Drive Source Library 尋源
 → 頁數估算／頁數帳本
 → Style Recipe
 → 代表頁驗證
-→ 全量 Renderer
+→ 全量圖文資訊圖表 Renderer
+→ PDF 組裝與逐頁 Preflight
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery Gate
@@ -132,7 +133,8 @@ AI 主動提出：
 - 正式生字完整保留。
 - AI 主動深教只有 `SHAPE_NEAR`、`POLYPHONIC`。
 - 一般單字 `BASIC_LITERACY_ONLY`。
-- 單一生字詳解只有教師指定 `TEACHER_ADDED_SINGLE_CHARACTER`。
+- `SHAPE_NEAR` 必須以兩字以上字群比較教學。
+- 易錯字只有教師主動指定 `TEACHER_ADDED_WRITING_FOCUS`；AI 不列候選。
 - 易錯、複雜、字源有趣、評量重要都不是 AI 自動第三入口。
 
 ### 多音字
@@ -216,6 +218,8 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 Lesson Package 交付依 `skills/lesson-package-delivery/SKILL.md`。
 Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護第二套。
+
+正式課堂視覺成品預設依 `core/export/infographic-pdf-output-contract.md` 產生 16:9 圖文資訊圖表 PDF；PPTX 僅在教師明確要求時選配。
 
 固定六類：
 `01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`。

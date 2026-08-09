@@ -1,8 +1,8 @@
-# V-MAX Quality Gate 2.2
+# V-MAX Quality Gate 2.3
 
 ## 定位
 
-Quality Gate 2.2 是 V-MAX 在正式簡報渲染與交付前的最後一道檢查。
+Quality Gate 2.3 是 V-MAX 在正式圖文資訊圖表 PDF 渲染與交付前的最後一道檢查。
 
 它同時檢查：
 - 教學結構是否成立
@@ -109,6 +109,19 @@ Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖�
 - 老師需自己搬字、排圖、重打核心文字。
 - Native Text 像後貼標籤，破壞整體構圖。
 - 為可編輯而拆掉成功的圖像式設計。
+- 把整頁圖片塞進 PPTX 並將它當成預設正式成品。
+
+#### Infographic PDF Completion
+
+依 `core/export/infographic-pdf-output-contract.md` 與 `tests/infographic-pdf-regression-cases.md`：
+
+- 每頁為完整 16:9 圖文資訊圖表，不是割裂的圖文拼貼。
+- 最終單一 PDF 的頁數與頁序符合 Renderer Script。
+- 最終 PDF 已全頁重渲染為 PNG，逐頁檢查裁切、模糊、黑框、錯頁、漏頁與重複頁。
+- 正式繁體中文、注音、原句、生字與題目已核對，學生頁無答案。
+- PPTX 未經教師明確要求時為 `N/A_DEFAULT_FORMAT`。
+
+任一項失敗 → `INFOGRAPHIC_PDF_BLOCKER`。
 
 #### Visual Drift Check
 正式交付前必須使用 `core/quality/visual-drift-detector.md`，以代表頁通過後的 Visual Baseline 檢查：
@@ -190,6 +203,7 @@ Visual Drift 修正同樣優先局部處理，不因一頁漂移而整套重畫�
 5. 對照生字、形近字、多音字、成語、課文與注音。
 6. 修正後重檢局部頁，避免修正造成新 Drift。
 7. 所有 BLOCKER 歸零才允許正式輸出。
+8. 組裝圖文資訊圖表 PDF，將最終 PDF 全頁重渲染並通過 PDF Preflight。
 
 ---
 
@@ -221,6 +235,11 @@ quality_gate:
   renderer:
     status:
     pages_to_escalate: []
+    infographic_pdf:
+      status: PASS | REVISE | BLOCKER
+      page_sequence: PASS | FAIL
+      rendered_page_inspection: PASS | FAIL
+      pptx: N/A_DEFAULT_FORMAT | PASS_BY_TEACHER_REQUEST
   regression:
     status:
     benchmark_notes: []

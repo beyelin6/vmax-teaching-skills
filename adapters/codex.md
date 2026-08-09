@@ -1,4 +1,4 @@
-# V-MAX Adapter｜Codex 1.0
+# V-MAX Adapter｜Codex 1.1
 
 ## 目的
 
@@ -34,7 +34,8 @@ Codex 特別適合：
 - 產出 Renderer Script / Source Master 的結構化版本
 - 批次處理教材檔案
 - 建立／維護 platform adapter
-- 產生 PPTX / PDF / worksheet pipeline 程式
+- 產生圖文資訊圖表單頁、PDF 組裝／重渲染驗證與 worksheet pipeline 程式
+- 教師明確要求時才建立 PPTX pipeline
 - 驗證 Lesson Package 完整性
 
 Codex 不因擅長程式化，就自行決定：

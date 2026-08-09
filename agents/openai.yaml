@@ -1,0 +1,4 @@
+interface:
+  display_name: "V-MAX Teaching Skills"
+  short_description: "依 V-MAX 流程建立圖文資訊圖表 PDF 國語教材"
+  default_prompt: "使用 $vmax-teaching-skills 依目前課程狀態執行下一個合法階段，並以圖文資訊圖表 PDF 作為正式視覺成品。"

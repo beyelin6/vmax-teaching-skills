@@ -1,8 +1,8 @@
-# V-MAX Image-first Hybrid Renderer 1.1
+# V-MAX Image-first Hybrid Renderer 1.2
 
 ## 定位
 
-V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護」的混合式 Renderer。
+V-MAX 的正式課堂視覺輸出採「圖片式整體構圖優先 + 文字正確性保護」的混合式 Renderer，預設交付為 16:9 圖文資訊圖表 PDF。
 
 核心原則：
 
@@ -17,11 +17,11 @@ V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護�
 ### Mode 1｜Visual Image Slide
 適合封面、情境進場、童詩意象、故事／成語分鏡、高峰停格、視覺導覽。
 
-### Mode 2｜Hybrid Overlay Slide
-先生成完整圖片式構圖，再以 Native Text 重建需要高正確性／可編輯性的核心文字。這是預設主力。
+### Mode 2｜Hybrid Overlay Infographic
+先生成完整圖片式構圖，再以 Native Text／程式化文字重建需要高正確性的核心文字，最後扁平化為資訊圖表頁。這是預設主力。
 
-### Mode 3｜Native Analytic Slide
-以 PPT 文字與圖形為主，適合高密度比較、表格、結構圖、練習與評量。
+### Mode 3｜Precision Analytic Infographic
+以精準文字層與圖像卡片組成完整資訊圖表，適合高密度比較、結構圖、練習與評量；不要求以 PPT 物件交付。
 
 ---
 
@@ -89,12 +89,14 @@ Native Text 要成為畫面的一部分，可壓在天然留白、紙張、卡�
 
 ## 7. 教師交付原則
 
-最終 PPT 應已完成圖文合成。教師不需要自己搬字、對齊、遮 AI 錯字或重做版面。若 V-MAX 無法完成，該頁視為 Renderer 未完成。
+最終 PDF 的每頁應已完成圖文合成。教師不需要自己搬字、對齊、遮 AI 錯字或重做版面。可修改性保留在來源文件、Renderer Script、Visual YAML 與單頁圖檔；不得以「圖片塞進可編輯 PPT」作為預設交付。
+
+完整輸出與 PDF Preflight 遵循 `core/export/infographic-pdf-output-contract.md`。
 
 ---
 
 ## 核心金句
 
-> 圖片式投影片負責讓孩子想看，正式文字層負責讓孩子看對。
+> 圖像資訊頁負責讓孩子想看，正式文字層負責讓孩子看對；最終 PDF 負責讓老師直接上課。
 
 > 局部出錯先局部修，不要為了一個字拆掉整個好畫面。
