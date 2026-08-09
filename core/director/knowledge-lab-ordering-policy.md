@@ -1,4 +1,4 @@
-# V-MAX Knowledge Lab Ordering Policy 2.0
+# V-MAX Knowledge Lab Ordering Policy 2.1
 
 ## 定位
 
@@ -6,7 +6,7 @@
 
 核心：
 
-> 教材告訴我們「有什麼」；AI 分析哪些形近字群／多音字值得教；易錯字只由老師主動指定。
+> 教材告訴我們「有什麼」；AI 分析哪些形近字群／多音字值得教；容易搞錯的單字只由老師依班級需求主動指定。
 
 > 預習單可以精選，正式教學不能被預習單容量反向裁切。
 
@@ -39,13 +39,15 @@ AI 主動深教只有兩類：
 
 可在課文、造詞、基本形音義或識寫活動自然處理，但不預設獨立成頁。
 
-### 教師指定易錯字
+### 教師指定易錯／易混淆單字
 
-只有教師明確指出某字容易寫錯，才可建立：
+只有教師依班級實際狀況明確指出「這個字學生很容易搞錯」，才可建立：
 
 `TEACHER_ADDED_WRITING_FOCUS`
 
-教師指定後只處理必要的易錯部件、筆畫、位置、比例與書寫提醒；不擴張成完整單字百科頁。
+教師指定後只處理實際混淆焦點，例如：易漏／多寫筆畫、部件位置與比例、局部字形看錯／寫錯、必要筆順或其他已觀察到的辨認／書寫混淆點；不擴張成完整單字百科頁。
+
+若真正需要處理的是與另一字形近，應回到 `SHAPE_NEAR`；若是多音語境，應回到 `POLYPHONIC`。
 
 AI 不主動列易錯字候選，也不以詢問清單要求教師逐字確認。
 
@@ -181,7 +183,7 @@ STEP 2.5 先決定：
 多音字順序：
 `字 → 合法來源 → 各讀音／語意／語境 → 課文用法 → 易混淆點 → 推薦指數＋理由 → 教學／預習單建議`
 
-易錯字欄只顯示教師已主動指定的 `TEACHER_ADDED_WRITING_FOCUS`；未指定時標示 `NONE_TEACHER_SPECIFIED`，不得由 AI 補候選。
+易錯／易混淆單字欄只顯示教師已主動指定的 `TEACHER_ADDED_WRITING_FOCUS`，並記錄 `confusion_focus`；未指定時標示 `NONE_TEACHER_SPECIFIED`，不得由 AI 補候選。
 
 ---
 
@@ -196,6 +198,9 @@ step_2_5_language_radiation:
     - SHAPE_NEAR
     - POLYPHONIC
   writing_focus_rule: TEACHER_SPECIFIED_ONLY
+  teacher_added_confusion_focus:
+    status: NONE_TEACHER_SPECIFIED | PRESENT
+    items: []
   items:
     - id:
       category: CHARACTER | RECOGNITION_ONLY | SHAPE_NEAR | POLYPHONIC | IDIOM | OTHER
@@ -218,6 +223,7 @@ step_2_5_language_radiation:
 - 正式生字不完整
 - 每個生字平均深教
 - AI 提出易錯字候選，或以易錯／字源／評量理由自行建立單字詳解頁
+- 教師只指定混淆焦點，後段卻擴張成百科式單字頁
 - 形近補充字因本身多音而被 AI 拉進多音字單元
 - 認讀字因本身多音而被 AI 自動升級
 - 多音字只有音表
@@ -226,7 +232,7 @@ step_2_5_language_radiation:
 - WAITING_CONFIRMATION 只輸出 machine payload
 
 失敗分類：
-`CHARACTER_SCOPE_EXPANSION / WRITING_FOCUS_AUTO_SUGGESTED / SINGLE_CHARACTER_AUTO_DEEPENING / POLYPHONIC_SOURCE_LEAK / CHARACTER_DEPTH_FLATTENING / POLYPHONIC_CONTEXT_FAIL / SHAPE_NEAR_NOT_GROUPED / SHAPE_NEAR_ANALYSIS_DROPPED`
+`CHARACTER_SCOPE_EXPANSION / WRITING_FOCUS_AUTO_SUGGESTED / WRITING_FOCUS_SCOPE_EXPANSION / SINGLE_CHARACTER_AUTO_DEEPENING / POLYPHONIC_SOURCE_LEAK / CHARACTER_DEPTH_FLATTENING / POLYPHONIC_CONTEXT_FAIL / SHAPE_NEAR_NOT_GROUPED / SHAPE_NEAR_ANALYSIS_DROPPED`
 
 ---
 
@@ -234,6 +240,6 @@ step_2_5_language_radiation:
 
 > 生字表 ≠ 生字教學清單。
 
-> 形近字用字群教，多音字用語境教，易錯字只由老師指定，其餘不另提深教。
+> 形近字用字群教，多音字用語境教；老師可依班級需要指定「孩子容易搞錯的字」額外提醒，其餘不另提深教。
 
 > 多音字先看來源身分，再談讀音教學。
