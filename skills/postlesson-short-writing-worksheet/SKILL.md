@@ -1,6 +1,6 @@
 # V-MAX Post-lesson Short Writing Worksheet Skill
 
-版本：1.1
+版本：1.2
 
 ## 目的
 
@@ -9,6 +9,37 @@
 核心定位：
 
 > 短文單不是傳統作文稿紙；它是一張 A4 橫式、圖像化、可直接啟動寫作的任務單。先幫學生找到畫面與素材，再提供可自由選用的語文 Bonus，最後留下足夠空間完成短文或童詩。
+
+## Skill I/O Contract
+
+```yaml
+skill_io_contract:
+  can_run_standalone: true
+  minimum_checkpoint: CP_LESSON_CONTENT_MASTER
+  accepted_artifacts:
+    - CP_LESSON_CONTENT_MASTER
+    - CP_TEACHING_ANALYSIS
+    - CP_PRESTUDY_INPUT
+  required_fields:
+    - lesson_id
+    - writing_task_source
+    - approved_language_tools
+  optional_fields:
+    - core_vocabulary
+    - idioms_or_four_character_phrases
+    - sentence_patterns
+    - rhetoric_focus
+    - teacher_selected_bonus_items
+    - writing_mode
+    - theme_assets
+  produces_artifacts:
+    - POSTLESSON_WRITING_WORKSHEET_SOURCE
+    - POSTLESSON_WRITING_WORKSHEET_OUTPUT
+  batch_capable: true
+  may_recompute_upstream: false
+```
+
+若輸入 artifact 已包含所需欄位，直接執行，不要求重跑 STEP 1–2.6。若只有單一欄位缺失，只補該欄位；不得無理由重算整課分析。Batch 模式每課獨立驗證，一課缺資料不得阻塞其他課。
 
 ---
 
