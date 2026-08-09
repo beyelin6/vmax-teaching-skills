@@ -1,6 +1,6 @@
 # V-MAX 使用指南｜中文指令優先 × 中英對照
 
-版本：1.0
+版本：1.1
 
 ## 目的
 
@@ -12,12 +12,13 @@
 
 > 已確認的資料不重算；技能只讀自己需要的資料。
 
+> 教師之後可能在別台電腦或手機找得到、接著做的成果，都要有 Google Drive 可搜尋副本。
+
 ---
 
 ## 1. 兩種工作方式
 
 ### A. 完整模式｜Golden Path
-
 適合第一次完整建立一課。
 
 常用中文：
@@ -27,7 +28,6 @@
 系統對應：`FULL_GOLDEN_PATH`
 
 ### B. 跳接模式｜Checkpoint Resume
-
 適合已經完成一部分，只想直接做下一項工作。
 
 常用中文：
@@ -59,37 +59,31 @@
 ## 3. 最常用中文指令
 
 ### 做六課預習單
-
 > 請用之前分析好的第一到第六課資料，批次製作六份 A4 橫式預習單，不要重新分析教材。
 
 系統對應：`CHECKPOINT_RESUME → CP_PRESTUDY_INPUT / CP_LESSON_CONTENT_MASTER → prestudy-worksheet`
 
 ### 做短文單
-
 > 請用第二課整理好的教材主檔直接製作課後短文 Bonus 學習單，不重跑上游分析。
 
 系統對應：`CP_LESSON_CONTENT_MASTER → postlesson-short-writing-worksheet`
 
 ### 做逐頁腳本
-
 > 請用第一課已確認的分析主檔建立逐頁腳本。
 
 系統對應：`CP_LESSON_CONTENT_MASTER → CP_SLIDE_SCRIPT`
 
 ### 做 NotebookLM / Renderer MD
-
 > 請用第一課已確認的逐頁腳本，直接整理成 NotebookLM 與 Renderer 可用的詳細 MD。
 
 系統對應：`CP_SLIDE_SCRIPT → NOTEBOOKLM_RENDERER_MD / RENDERER_DETAILED_SCRIPT_MD`
 
 ### 做圖片式簡報 PDF
-
 > 請用第三課已準備好的簡報生成資料，直接製作圖片式教學 PDF。
 
 系統對應：`CP_RENDER_READY → INFOGRAPHIC_PDF`
 
 ### 停在某一步
-
 > 今天先做到教材主檔，保存 checkpoint，下次繼續。
 
 或：
@@ -105,7 +99,6 @@
 V-MAX 支援同一技能跨多課批次執行。
 
 例如：
-
 > 幫我把第一到第六課先做教材分析與整理主檔，這次不要做簡報。
 
 > 用第一到第六課整理好的教材主檔，批次製作六份課後短文 Bonus 學習單。
@@ -123,7 +116,6 @@ V-MAX 支援同一技能跨多課批次執行。
 ## 5. 同時做不同課不同工作
 
 允許：
-
 > 第一課做逐頁腳本，第二課做預習單，第三課做短文單，第四課先停在教材主檔。
 
 執行器應逐課解析 target skill 與可用 checkpoint，不要求所有課走同一 stage。
@@ -133,7 +125,6 @@ V-MAX 支援同一技能跨多課批次執行。
 ## 6. 局部重做
 
 可以直接說：
-
 - 「只重做第二課形近字頁。」
 - 「第三課簡報只修改成語部分。」
 - 「第一課只換角色，不改教學內容。」
@@ -146,19 +137,11 @@ V-MAX 支援同一技能跨多課批次執行。
 
 ## 7. 最簡單的三句話
 
-平常只要記這三種說法：
+> **從頭完整做……** → Golden Path
 
-> **從頭完整做……**
+> **用之前做好的資料，直接做……** → Checkpoint Resume
 
-→ Golden Path
-
-> **用之前做好的資料，直接做……**
-
-→ Checkpoint Resume
-
-> **今天先做到……，存起來下次接著做。**
-
-→ Save Checkpoint
+> **今天先做到……，存起來下次接著做。** → Save Checkpoint
 
 ---
 
@@ -168,41 +151,56 @@ V-MAX 支援同一技能跨多課批次執行。
 
 ```yaml
 checkpoint_aliases:
-  CP_SOURCE_ANCHOR:
-    - 教材來源整理
-    - 教材定錨
-    - 來源整理
-  CP_TEACHING_ANALYSIS:
-    - 教學分析
-    - 教材分析結果
-  CP_LESSON_CONTENT_MASTER:
-    - 教材主檔
-    - 分析主檔
-    - 內容母檔
-    - 整理好的教材資料
-  CP_PRESTUDY_INPUT:
-    - 預習單資料包
-    - 預習單輸入資料
-  CP_VISUAL_INTENT:
-    - 視覺教學設計
-    - 視覺意圖
-    - 導演視覺設計
-  CP_SLIDE_SCRIPT:
-    - 逐頁腳本
-    - 簡報腳本
-  CP_RENDER_READY:
-    - 簡報生成資料包
-    - 可直接產圖資料
-    - 渲染資料包
+  CP_SOURCE_ANCHOR: [教材來源整理, 教材定錨, 來源整理]
+  CP_TEACHING_ANALYSIS: [教學分析, 教材分析結果]
+  CP_LESSON_CONTENT_MASTER: [教材主檔, 分析主檔, 內容母檔, 整理好的教材資料]
+  CP_PRESTUDY_INPUT: [預習單資料包, 預習單輸入資料]
+  CP_VISUAL_INTENT: [視覺教學設計, 視覺意圖, 導演視覺設計]
+  CP_SLIDE_SCRIPT: [逐頁腳本, 簡報腳本]
+  CP_RENDER_READY: [簡報生成資料包, 可直接產圖資料, 渲染資料包]
 ```
 
 中文自然語句優先；系統代碼只作內部映射。
 
 ---
 
-## 9. 文件維護規則
+## 9. Google Drive 跨裝置保存
 
-本指南不是靜態說明文件。以下任一項發生 canonical 變更時，必須同步更新本指南與中文速查表：
+教師會需要在不同電腦、手機或不同 AI 平台查找、續作、下載或重用的成果，都必須有 Google Drive 可搜尋副本。
+
+全域操作文件固定放在：
+
+```text
+V-MAX 教材庫/
+└── 00_使用指南與系統文件/
+```
+
+單課 checkpoint 與成品則依課程版本資料夾保存於：
+
+```text
+01_教材整理
+02_逐頁腳本
+03_NotebookLM
+04_角色視覺
+05_簡報成品
+06_延伸教材
+```
+
+需要保存的包含：教材分析、教材主檔、預習單資料包、視覺意圖、逐頁腳本、Render Ready、預習單／短文單、NotebookLM MD、角色資產、單頁圖片、正式 PDF 與其他可續作成果。
+
+純暫時 scratch 或可重算 cache 不必強制保存。
+
+老師說「今天先到這裡」時，除了建立 checkpoint，也必須確認其 Drive persistence；只存在聊天或暫存區不算跨裝置保存完成。
+
+對使用指南與速查表等唯一現行文件，更新時優先更新既有 Drive 文件，不建立大量同名副本；版本歷史由 Google Drive revision history 保留。
+
+權威：`core/governance/google-drive-portable-artifact-policy.md`。
+
+---
+
+## 10. 文件維護規則
+
+本指南不是靜態說明文件。以下任一項發生 canonical 變更時，必須同步更新本指南、中文速查表與 Google Drive 現行副本：
 
 - checkpoint 名稱、用途或 schema
 - `skill_io_contract`
@@ -212,13 +210,15 @@ checkpoint_aliases:
 - 常用輸出格式
 - 使用者可用的中文別名
 - 需要教師確認的合法 HOLD
+- Google Drive 歸檔位置或跨裝置續作規則
 
-若系統規格已更新但指南未同步，標記：`USER_GUIDE_STALE`。
+若系統規格已更新但指南未同步，標記：`USER_GUIDE_STALE`；若 GitHub 已更新而 Drive 指南仍舊，標記：`USER_GUIDE_DRIVE_STALE`。
 
 權威來源：
 - `V-MAX_MANIFEST.md`
 - `core/governance/modular-checkpoint-execution-policy.md`
 - `core/governance/skill-io-registry.md`
+- `core/governance/google-drive-portable-artifact-policy.md`
 - `skills/vmax-checkpoint-resume/SKILL.md`
 
 ---
@@ -228,3 +228,5 @@ checkpoint_aliases:
 > 老師不需要學會系統語言；系統要學會理解老師的中文。
 
 > 一課可以分很多天做，技能可以跳著用、批次用、局部重做；已確認的資料要能一直重用。
+
+> 保存不是模型記得，而是 Drive 找得到。
