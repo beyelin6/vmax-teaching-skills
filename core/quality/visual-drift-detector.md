@@ -24,6 +24,8 @@ visual_baseline:
   line_and_texture:
   character_dna_refs: []
   typography_logic:
+  text_integration_mode: NATIVE_OVERLAY | IMAGE_INTEGRATED_VERIFIED_TEXT
+  background_value_anchor:
   ui_motifs: []
   visual_grammar_constraints: []
   lesson_visual_map_signature:
@@ -45,6 +47,10 @@ Baseline 是一致性參考，不是固定版型。
 7. `COMPOSITION_DRIFT`：整套從圖像式觀看突然退化成機械模板，或反之。
 8. `PEDAGOGICAL_VISUAL_DRIFT`：畫面仍好看，但已不再服務原本的 Visual Grammar / Director Intent。
 9. `LVM_DRIFT`：Lesson Visual Map 與整課視覺世界、結構關係或 Reveal Policy 不一致。
+10. `CHARACTER_IDENTITY_SPLIT`：同一角色在不同頁被生成成不同年齡、臉型、髮型、服裝或物種；例如教師化身與昆蟲吉祥物被誤當成同一角色。
+11. `BACKGROUND_VALUE_DRIFT`：已確認的明度方向漂移；例如偏白象牙紙面逐頁變成黃褐舊紙。
+12. `UI_MOTIF_TEMPLATE_DRIFT`：木牌、紙卡、彩帶等候選載體被 Renderer 無視內容地重複套版。
+13. `TEXT_INTEGRATION_DRIFT`：教師已鎖定圖文同步生成，後續卻退回機械疊字；或生成文字雖美觀但未通過逐字核對。
 
 ## C. 允許的變奏
 
@@ -52,6 +58,7 @@ Baseline 是一致性參考，不是固定版型。
 - 高潮頁增加對比或鏡頭張力。
 - Knowledge Lab 使用更精準的 Native Analytic Slide。
 - 不同 Act 使用不同 Visual Grammar。
+- 文字載體隨內容改成水波、輪跡、雲層、物件或其他場景元素，只要閱讀層級與整課媒材一致。
 - 情緒轉折造成明暗、景別、留白變化。
 - Lesson Visual Map 使用較高層級的整體視角。
 
@@ -103,3 +110,4 @@ Visual Drift Detector 是 Quality Gate 的必要輸入之一。任何 `unresolve
 ## 核心金句
 
 > 一致不是每頁長一樣，而是每頁都像同一位導演拍的、同一個世界裡發生的事。
+
