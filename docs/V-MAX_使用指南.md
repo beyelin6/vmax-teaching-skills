@@ -1,6 +1,6 @@
 # V-MAX 使用指南｜中文指令優先 × 中英對照
 
-版本：1.1
+版本：1.2
 
 ## 目的
 
@@ -164,7 +164,56 @@ checkpoint_aliases:
 
 ---
 
-## 9. Google Drive 跨裝置保存
+## 9. 在哪裡可以跑｜Platform Roles
+
+V-MAX 不綁單一 AI。只要平台能讀取所需 artifact 並具備目標技能需要的工具，就可以從合法 checkpoint 接續。
+
+### ChatGPT｜主要互動工作台
+適合：
+- 教材分析與 Golden Path 對話
+- Checkpoint Resume
+- 批次製作預習單／短文單
+- 逐頁腳本與 NotebookLM MD
+- 圖片／PDF 生成與檢查（工具可用時）
+- 讀寫 Google Drive、維護 GitHub 規格（連接器可用時）
+
+常用中文：
+> 「讀取第一到第六課分析好的資料，直接做六份預習單。」
+
+> 「從第二課教材主檔繼續，不要重跑分析。」
+
+### Codex｜規格、程式與大量檔案維護
+適合：
+- GitHub skill / policy / registry 維護
+- Renderer、驗證器、批次腳本等程式工作
+- 大量 repository 檔案一致性修改
+- 依 checkpoint / Source Master 建立可執行產出流程
+
+Codex 不應因自己方便而重新解讀已核准教材內容；已確認的 Teacher Intent 與 checkpoint 仍是上游權威。
+
+### NotebookLM｜來源導向的圖文生成／研究工作台
+適合：
+- 匯入 `NOTEBOOKLM_SOURCE_MD`
+- 搭配 `NOTEBOOKLM_INSTRUCTION_MD`
+- 依已核准內容產生圖文簡報或整理來源
+
+NotebookLM 不作為 V-MAX canonical 教學判斷來源；若輸出回到 V-MAX，仍須通過文字真值、Gold Pattern 與 Quality Gate 檢查。
+
+### Google Drive｜跨裝置工作台與成果權威位置
+負責保存教師跨電腦／手機需要查找、續作、下載或重用的 checkpoint、腳本、角色資產、學習單、PDF 與操作指南。
+
+### GitHub｜系統規格權威
+保存 skill、policy、schema、registry、adapter、quality rule 與使用指南來源版本；不取代 Google Drive 的教師工作成果庫。
+
+平台分工一句話：
+
+> **ChatGPT / Codex 負責執行；NotebookLM 負責來源導向生成；Google Drive 負責帶著走；GitHub 負責規則。**
+
+若某平台當下無法讀取需要的 checkpoint 或缺少必要工具，應改用可讀取相同 Drive artifact 的另一執行端，而不是重算上游分析。
+
+---
+
+## 10. Google Drive 跨裝置保存
 
 教師會需要在不同電腦、手機或不同 AI 平台查找、續作、下載或重用的成果，都必須有 Google Drive 可搜尋副本。
 
@@ -198,7 +247,7 @@ V-MAX 教材庫/
 
 ---
 
-## 10. 文件維護規則
+## 11. 文件維護規則
 
 本指南不是靜態說明文件。以下任一項發生 canonical 變更時，必須同步更新本指南、中文速查表與 Google Drive 現行副本：
 
@@ -211,6 +260,7 @@ V-MAX 教材庫/
 - 使用者可用的中文別名
 - 需要教師確認的合法 HOLD
 - Google Drive 歸檔位置或跨裝置續作規則
+- ChatGPT / Codex / NotebookLM / Google Drive / GitHub 的平台角色與執行邊界
 
 若系統規格已更新但指南未同步，標記：`USER_GUIDE_STALE`；若 GitHub 已更新而 Drive 指南仍舊，標記：`USER_GUIDE_DRIVE_STALE`。
 
