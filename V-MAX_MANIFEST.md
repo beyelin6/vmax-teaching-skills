@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.8
+# V-MAX Manifest 2.9
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.8
+vmax_manifest_version: 2.9
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -23,7 +23,7 @@ main_workflow:
   current_version: 2.1
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.5
+  current_version: 1.6
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
@@ -38,10 +38,10 @@ workflow_hold_regression:
   current_version: 1.8
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
-  current_version: 2.0
+  current_version: 2.1
 character_deep_teaching_focus:
   path: core/director/character-deep-teaching-focus-policy.md
-  current_version: 1.2
+  current_version: 1.3
 polyphonic_source_policy:
   path: core/director/polyphonic-source-policy.md
   current_version: 1.0
@@ -180,11 +180,13 @@ SOURCE 0
 - **AI 主動深教只有 `SHAPE_NEAR`、`POLYPHONIC`。**
 - 一般單字 = `BASIC_LITERACY_ONLY`。
 - `SHAPE_NEAR` 必須以兩字以上的字群比較教學，不得退化成單字詳解。
-- 易錯字只由教師主動指定 → `TEACHER_ADDED_WRITING_FOCUS`；AI 不列易錯字候選。
+- 容易搞錯的單字只由教師依班級需求主動指定 → `TEACHER_ADDED_WRITING_FOCUS`；AI 不列易錯字候選。
+- 教師指定後只處理實際混淆焦點，例如易漏／多寫筆畫、部件位置與比例、局部字形看錯／寫錯、必要筆順或其他已觀察到的辨認／書寫混淆點；不得擴張成完整單字百科頁。
+- 若真正需要的是形近字比較或多音語境，仍回到 `SHAPE_NEAR` / `POLYPHONIC`。
 - 複雜／字源／評量／語義特殊皆不是 AI 第三入口。
 - 其餘生字不特別提出深教，只留在基礎識寫層。
 
-權威：`character-deep-teaching-focus-policy.md` v1.2、`knowledge-lab-ordering-policy.md` v2.0。
+權威：`character-deep-teaching-focus-policy.md` v1.3、`knowledge-lab-ordering-policy.md` v2.1。
 
 ### Polyphonic Source
 合法來源只有：
@@ -333,6 +335,7 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 以下一律視為舊規則：
 - STEP 3／STEP 4 舊主流程
 - AI 提出易錯字候選，或因易錯／特殊構形自行建立單字詳解
+- 把教師指定的單字混淆焦點擴張成百科式單字頁
 - 形近補充字因多音被 AI 拉入多音字單元
 - 無方格直接等於認讀字
 - 語詞／句型／修辭沒有原文證據
@@ -350,6 +353,8 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 ## 核心金句
 
 > Manifest 決定現在誰是權威；Executor 必須真的載入，而不是只靠模型記得。
+
+> 形近字用字群教，多音字用語境教；老師可以依班級需要指定「孩子容易搞錯的字」額外提醒，其餘不另提深教。
 
 > 學習單寧可少放內容，也不要讓學生真正印出來看到的字小於 12 pt。
 
