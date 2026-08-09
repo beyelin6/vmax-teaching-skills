@@ -1,6 +1,6 @@
 # V-MAX Golden Path Executor
 
-版本：1.4
+版本：1.5
 
 ## 目的
 
@@ -49,7 +49,9 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Scenario Wrapper
 → Character Topology / Cast
 → Knowledge Lab 正式編排
-→ Visual Grammar / Slide Architecture
+→ Visual Grammar
+→ Gold Page Pattern
+→ Slide Architecture / Visual Sequence
 → 頁數估算／頁數帳本
 → Style Recipe
 → 代表頁驗證
@@ -184,12 +186,42 @@ STEP 2.5 必須同時載入：
 
 ---
 
+## H2. Gold Page Pattern Guard｜Visual Grammar 不能只停在 metadata
+
+進入代表頁驗證與全量 Renderer 前，必須載入：
+
+- `core/visual/visual-grammar.md`
+- `core/visual/gold-page-pattern-library.md`
+- `docs/quality/BEE_QUALITY_BENCHMARK_1.0.md`
+
+每張正式學生頁至少記錄：
+- `primary_grammar`
+- `primary_pattern`
+- `first_focus`
+- `discovery_relation`
+- `visual_evidence`
+- `text_integration_plan`
+
+規則：
+- Visual Grammar 回答「要看懂哪種認知關係」；Gold Pattern 回答「這個關係在學生眼前怎麼發生」。
+- 不得跳過 Gold Pattern，直接把比較、動作、證據、結構翻成左文右圖、大白框、三欄資料卡。
+- 代表頁先通過 Gold Page Gate 才能全量渲染；代表頁不過，不得靠批量生成期待後面變好。
+- Lesson Visual Map 若啟用，優先以 `WORLD_MAP` 或其他能承載真實文本關係的 Pattern 呈現，不得用矩形＋箭頭冒充整課圖像地圖。
+- 形近字優先 `CHARACTER_MEANING_FIELD`；多音字通常 `DUAL_WORLD_COMPARE`；動作／事件過程通常 `SEQUENCE_DISCOVERY`；閱讀證據通常 `EVIDENCE_DISCOVERY`。
+- Theme 負責世界一致；Pattern 負責教學變化。不得因風格一致而讓整課頁型一致。
+
+若出現以下任一情況，代表頁或全量輸出不得 PASS：
+`TEMPLATE_CARD_DRIFT / LEFT_TEXT_RIGHT_IMAGE_DRIFT / VISUAL_EVIDENCE_MISSING / DISCOVERY_PREEMPTED / GOLD_PATTERN_DROPPED`
+
+---
+
 ## I. Delivery / Drive Guard
 
 交付必須同時載入：
 - `skills/lesson-package-delivery/SKILL.md`
 - `skills/google-drive-lesson-archive/SKILL.md`
 - `core/export/infographic-pdf-output-contract.md`
+- `core/visual/gold-page-pattern-library.md`
 
 正式課堂視覺成品預設為 16:9 圖文資訊圖表 PDF。不得在教師未要求時把可修改圖片式 PPTX 當成必要交付；最終 PDF 必須全頁重渲染檢查後才可 PASS。
 
@@ -215,6 +247,9 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 - 認讀字只靠「無方格」判定
 - 已選定整課圖像心智地圖卻在大綱消失
 - Drive 仍使用舊五類資料夾結構
+- Visual Grammar 只存在 metadata，Renderer 未落實認知關係
+- 連續出現固定左圖右文／大框文字／資料卡模板
+- 圖片拿掉仍完全不影響理解
 
 ---
 
@@ -222,6 +257,6 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 > AI 做重判斷，老師只改例外；一次確認只走一站。
 
-> 生字表 ≠ 生字教學清單；形近字用字群教，多音字用語境教，易錯字只由老師指定，其餘不另提深教。
-
 > 規格寫了不算載入；Executor 必須真的把當前 canonical policy 帶進實跑。
+
+> 內容正確只是底線；Gold Pattern 要把理解變成學生眼睛能直接看到的教學事件。
