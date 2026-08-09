@@ -1,13 +1,14 @@
-# V-MAX Quality Gate 2.3
+# V-MAX Quality Gate 2.4
 
 ## 定位
 
-Quality Gate 2.3 是 V-MAX 在正式圖文資訊圖表 PDF 渲染與交付前的最後一道檢查。
+Quality Gate 2.4 是 V-MAX 在正式圖文資訊圖表 PDF 渲染與交付前的最後一道檢查。
 
 它同時檢查：
 - 教學結構是否成立
 - 觀看路徑是否清楚
 - 圖像是否真的幫助理解
+- Gold Page Pattern 是否真的落地，而非只存在 metadata
 - Lesson Visual Map 是否有效且不爆雷
 - 文字是否正確且可讀
 - 是否出現 AI 生成的奇怪中文字／假字／變形字
@@ -18,6 +19,7 @@ Quality Gate 2.3 是 V-MAX 在正式圖文資訊圖表 PDF 渲染與交付前的
 - 教師是否仍需替 AI 完成後製
 
 必要子檢查：
+- `core/visual/gold-page-pattern-library.md`
 - `core/quality/lesson-visual-map-quality-gate.md`
 - `core/quality/visual-drift-detector.md`
 
@@ -47,19 +49,37 @@ Fail：AI 擅自增加大量內容、語文知識脫離課文、固定模板覆�
 
 必查：
 - Visual Grammar 是否回應內容關係。
+- 每張代表頁是否有 `primary_pattern`，並依 `core/visual/gold-page-pattern-library.md` 落地。
 - Sequence 是否只在需要連續畫面時使用。
 - 第一視線是否清楚。
+- 第二步是否能發現真正的認知關係。
+- 圖片是否承擔理解，而非只裝飾。
 - 比較、因果、空間、時間、證據等關係是否真的看得出來。
 - 是否有高記憶度畫面支撐整課。
 - 世界觀、材質、角色、色彩是否在合理變奏中保持一致。
+- 是否避免連續左文右圖／大白框／資料卡模板。
+
+Gold Page 共通 Gate：
+- `scene_first`
+- `visual_evidence`
+- `discovery_before_label`
+- `semantic_layout`
+- `character_functional`（若角色出現）
+- `page_surprise`
+- `world_continuity`
+- `text_integration`
 
 若 `lesson_visual_map.status != OFF`，必須額外通過 `Lesson Visual Map Quality Gate`：
 - OPEN 不得爆雷。
 - CLOSE 不得變成密集文字表。
 - 結構形式不得固定樹狀心智圖。
+- 不得以 3–6 個矩形＋箭頭冒充整課圖像地圖。
 - 必須通過 5-Second Grasp Test。
 
-Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖互搶視線、Lesson Visual Map 造成誤解。
+Fail：插圖只是背景、關係看不懂、Visual Grammar 只存在 metadata、每頁像不同 AI、文字與圖互搶視線、Lesson Visual Map 造成誤解。
+
+失敗分類：
+`GOLD_PATTERN_DROPPED / TEMPLATE_CARD_DRIFT / LEFT_TEXT_RIGHT_IMAGE_DRIFT / VISUAL_EVIDENCE_MISSING / DISCOVERY_PREEMPTED`。
 
 ### Gate C｜Text Accuracy & Readability
 
@@ -104,18 +124,31 @@ Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖�
 
 ### Gate D｜Renderer & Regression
 
+#### Representative Gold Page Validation
+
+全量 Renderer 前，代表頁必須先通過 Gold Page Gate。
+
+不得：
+- 代表頁未過就直接批量生成。
+- 期待「多生幾頁自然會變好」。
+- 只檢查 Style / Palette，卻不檢查認知關係是否被看見。
+
+若代表頁 `gold_page_gate != PASS` → `FULL_RENDER_BLOCKED`。
+
 #### Renderer Completion
 不通過：
 - 老師需自己搬字、排圖、重打核心文字。
 - Native Text 像後貼標籤，破壞整體構圖。
 - 為可編輯而拆掉成功的圖像式設計。
 - 把整頁圖片塞進 PPTX 並將它當成預設正式成品。
+- Renderer 把已確認的 Gold Pattern 退化成模板卡片。
 
 #### Infographic PDF Completion
 
 依 `core/export/infographic-pdf-output-contract.md` 與 `tests/infographic-pdf-regression-cases.md`：
 
 - 每頁為完整 16:9 圖文資訊圖表，不是割裂的圖文拼貼。
+- 每個主要頁型仍保留其 Gold Pattern 的理解功能。
 - 最終單一 PDF 的頁數與頁序符合 Renderer Script。
 - 最終 PDF 已全頁重渲染為 PNG，逐頁檢查裁切、模糊、黑框、錯頁、漏頁與重複頁。
 - 正式繁體中文、注音、原句、生字與題目已核對，學生頁無答案。
@@ -146,6 +179,7 @@ Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖�
 - 教學清楚度、畫面記憶、節奏、角色自然度四項至少三項不低於舊基準。
 - 核心文字正確性不得退步。
 - 圖文整合不得因可編輯需求明顯退化。
+- 至少抽查代表頁是否符合已選 Gold Pattern，而不是只有「看起來漂亮」。
 
 ---
 
@@ -169,6 +203,9 @@ Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖�
 `Image-first → Hybrid → Precision`
 
 不得無限整頁重畫。
+
+若問題是「理解關係沒被看見」，不得只換字體／背景；必須回到：
+`Visual Grammar → Gold Page Pattern → Visual Sequence / Layout`。
 
 ---
 
@@ -198,12 +235,13 @@ Visual Drift 修正同樣優先局部處理，不因一頁漂移而整套重畫�
 
 1. 核對 Native Text 與鎖定來源。
 2. 執行 Strange Chinese Character Scan。
-3. 若有 Lesson Visual Map，執行 LVM Quality Gate。
-4. 執行 Visual Drift Detector，確認無 unresolved blocker。
-5. 對照生字、形近字、多音字、成語、課文與注音。
-6. 修正後重檢局部頁，避免修正造成新 Drift。
-7. 所有 BLOCKER 歸零才允許正式輸出。
-8. 組裝圖文資訊圖表 PDF，將最終 PDF 全頁重渲染並通過 PDF Preflight。
+3. 執行 Gold Page Pattern Gate，確認代表頁與主要頁型未退化。
+4. 若有 Lesson Visual Map，執行 LVM Quality Gate。
+5. 執行 Visual Drift Detector，確認無 unresolved blocker。
+6. 對照生字、形近字、多音字、成語、課文與注音。
+7. 修正後重檢局部頁，避免修正造成新 Drift。
+8. 所有 BLOCKER 歸零才允許正式輸出。
+9. 組裝圖文資訊圖表 PDF，將最終 PDF 全頁重渲染並通過 PDF Preflight。
 
 ---
 
@@ -218,6 +256,10 @@ quality_gate:
   visual:
     status:
     issues: []
+    gold_page_gate:
+      status: PASS | REVISE | BLOCKER
+      blocker_pages: []
+      pattern_drift: []
     lesson_visual_map_gate:
       status: OFF | PASS | REVISE | BLOCKER
     visual_drift_check:
@@ -248,7 +290,7 @@ quality_gate:
     notes: []
 ```
 
-只有 `overall: PASS`、`strange_chinese_scan.status: PASS`、Lesson Visual Map（若啟用）無 BLOCKER、Visual Drift 無 unresolved blocker，才進正式交付。
+只有 `overall: PASS`、`gold_page_gate.status: PASS`、`strange_chinese_scan.status: PASS`、Lesson Visual Map（若啟用）無 BLOCKER、Visual Drift 無 unresolved blocker，才進正式交付。
 
 ---
 
@@ -257,3 +299,5 @@ quality_gate:
 > 好的 AI 教材不是完全沒有任何生成痕跡，而是老師拿到時，不需要再替 AI 完成它本來就該完成的工作。
 
 > 一致不是每頁長一樣，而是每頁都像同一位導演拍的、同一個世界裡發生的事。
+
+> 內容正確只是底線；真正的 Gold Page 要讓學生在老師開口前，就已經有東西可以看、猜、比較或發現。
