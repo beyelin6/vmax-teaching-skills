@@ -1,4 +1,4 @@
-# V-MAX Character Deep Teaching Focus Policy 1.2
+# V-MAX Character Deep Teaching Focus Policy 1.3
 
 ## 定位
 
@@ -8,7 +8,7 @@
 
 > 生字表 ≠ 生字教學清單。
 
-> AI 預設只主動聚焦兩類：形近字群、多音字。易錯字只由教師主動指定，其餘生字不另外提出深教。
+> AI 預設只主動聚焦兩類：形近字群、多音字。容易搞錯的單字只由教師依班級需求主動指定，其餘生字不另外提出深教。
 
 ---
 
@@ -64,22 +64,26 @@ AI 自行推薦時，只能從本課正式生字產生；教材明列與教師�
 
 ---
 
-## C. 易錯字只由教師主動指定
+## C. 容易搞錯的單字只由教師主動指定
 
-若教師依班級實際書寫狀況指定某個字容易寫錯，可建立：
+若教師依班級實際學習狀況，知道某個字學生特別容易搞錯，可建立：
 
 `TEACHER_ADDED_WRITING_FOCUS`
 
-只處理教師指定的書寫焦點，例如：
+此入口不是一般性的「單字百科詳解」，而是聚焦該班實際容易出錯／混淆的地方，例如：
 - 容易漏寫／多寫的筆畫或部件
-- 部件位置與比例
-- 容易混淆的書寫位置
+- 部件位置、比例或組合方式
+- 容易看錯、寫錯的局部字形
 - 必要的筆順／書寫提醒
+- 教師已觀察到、確實需要額外說明的辨認或書寫混淆點
+
+若該字真正需要處理的是「與另一字形近」或「多音語境」，仍應回到 `SHAPE_NEAR` 或 `POLYPHONIC`，不要用教師單字入口取代既有字群／多音字規則。
 
 重要邊界：
 - AI 不主動產生易錯字候選，也不要求教師逐字確認。
-- 只有教師明確點名的字，才能標記為 `TEACHER_ADDED_WRITING_FOCUS`。
+- 只有教師明確點名「這個字學生容易搞錯」，才能標記為 `TEACHER_ADDED_WRITING_FOCUS`。
 - 教師未指定時，其餘非形近字、非多音字一律維持 `BASIC_LITERACY_ONLY`，不另外提出教學。
+- 教師指定後只處理實際混淆焦點，不擴張成完整字源、語義、造詞、百科式單字頁。
 
 ---
 
@@ -91,6 +95,7 @@ character_teaching_focus:
   source_status: OFFICIAL_CHARACTER
   teaching_category: SHAPE_NEAR | POLYPHONIC | BASIC_LITERACY_ONLY | TEACHER_ADDED_WRITING_FOCUS
   reason:
+  confusion_focus:
   independent_page: true | false
   teacher_override: NONE | CONFIRMED
 ```
@@ -98,7 +103,7 @@ character_teaching_focus:
 規則：
 - `BASIC_LITERACY_ONLY` 預設 `independent_page: false`
 - `SHAPE_NEAR` / `POLYPHONIC` 可由 AI 推薦，再由教師確認
-- `TEACHER_ADDED_WRITING_FOCUS` 必須有教師明確指定
+- `TEACHER_ADDED_WRITING_FOCUS` 必須有教師明確指定，且 `confusion_focus` 必須描述班級實際容易搞錯之處
 
 ---
 
@@ -109,7 +114,7 @@ Renderer 不得為了版面完整而把所有生字平均拆頁。
 只有以下內容可建立獨立生字深教頁／圖卡：
 - 已確認的形近字深教
 - 已確認的多音字深教
-- 教師明確指定的易錯字書寫焦點
+- 教師明確指定的易錯／易混淆單字焦點
 
 其他正式生字可集中於生字總覽、課文語境或基礎識寫活動。
 
@@ -121,7 +126,8 @@ Renderer 不得為了版面完整而把所有生字平均拆頁。
 
 - `CHARACTER_DEPTH_FLATTENING`：每字平均深教
 - `CHARACTER_SCOPE_EXPANSION`：AI 任意增加單一生字深教或易錯字候選
-- `WRITING_FOCUS_WITHOUT_TEACHER_OVERRIDE`：易錯字書寫焦點沒有教師明確指定
+- `WRITING_FOCUS_WITHOUT_TEACHER_OVERRIDE`：易錯／易混淆單字焦點沒有教師明確指定
+- `WRITING_FOCUS_SCOPE_EXPANSION`：教師只指定混淆點，Renderer 卻擴張成完整單字百科頁
 - `SHAPE_NEAR_NOT_GROUPED`：形近字沒有以字群比較呈現
 - `BASIC_CHARACTER_OVERPAGING`：一般生字被大量獨立成頁
 
@@ -131,4 +137,4 @@ Renderer 不得為了版面完整而把所有生字平均拆頁。
 
 > 生字表 ≠ 生字教學清單。
 
-> 形近字用字群教，多音字用語境教，易錯字只由老師指定，其餘不另提深教。
+> 形近字用字群教，多音字用語境教；老師可以依班級需要指定「孩子容易搞錯的字」額外提醒，其餘不另提深教。
