@@ -11,6 +11,7 @@
 3. 每一頁先回答「學生要看懂什麼」，再決定怎麼畫。
 4. 同一課可使用不同版型、鏡頭與序列形式，但世界觀、媒材、色票、角色 DNA 必須一致。
 5. 新版不得低於 Bee 過去最佳成品的畫面記憶、教學清晰度、角色一致性與世界觀沉浸感。
+6. Visual Grammar 決定認知關係；Gold Page Pattern 決定這個關係如何在學生眼前發生；Layout 與 Style 不得越級取代 Pattern。
 
 ---
 
@@ -58,6 +59,8 @@
 
 原則：作者怎麼看，畫面就怎麼帶學生看。
 
+Director Grammar / Visual Grammar 確立後，必須先交給 `core/visual/gold-page-pattern-library.md` 選出學生可見的發現模式，再進入 Layout。不得直接從 Grammar 跳到版型。
+
 ### L4｜Layout / Visual Structure 版型結構
 決定資訊「如何同框」。
 
@@ -74,7 +77,7 @@
 - Challenge Board：單一任務或問題
 - Summary Map：概念網絡／結構統整
 
-原則：Layout 由認知關係決定，不由頁型名稱決定。
+原則：Layout 由認知關係與 Gold Pattern 決定，不由頁型名稱決定。即使使用同一個 Layout 名稱，也不得破壞 Pattern 的發現順序與視覺證據。
 
 ### L5｜Character System 角色系統
 決定誰陪學生看、何時出場、做什麼。
@@ -88,6 +91,7 @@
 - 角色不是每頁強制出場。
 - 引導者功能分為 LOOK / HINT / QUESTION / REVEAL / COACH / REFLECT / TRANSITION。
 - 角色台詞必須有教學功能，不得重複模板句。
+- 教師化身、主角與吉祥物身分必須分離鎖定，不得因生成方便互相混成同一角色。
 
 ### L6｜Text UI 文字介面
 決定正式文字如何安全、清楚地進入畫面。
@@ -102,7 +106,7 @@
 - 不再強制所有文字多盒化；以理解層級決定資訊盒數量。
 - 三秒內要看懂「這頁要幹嘛」。
 - 文字密度由閱讀負荷決定，不硬套固定行數。
-- 文字載體由 Visual Grammar、場景與學習關係決定；不得把木牌、手帳紙、彩帶、徽章或卡片寫死為整課固定模板。
+- 文字載體由 Visual Grammar、Gold Pattern、場景與學習關係決定；不得把木牌、手帳紙、彩帶、徽章或卡片寫死為整課固定模板。
 - 圖文同步生成時，標題、關鍵詞與提問應沿著當頁的水波、輪跡、風線、視線、動作弧或物件形狀自然生長，而不是先造通用框再填字。
 
 ---
@@ -134,6 +138,9 @@
 
 ### BVL-08｜視覺必須服從閱讀路徑
 寫景、故事、說明、童詩、議論等文體不可使用同一種觀看方式。
+
+### BVL-09｜Pattern 必須活到最終成品
+若 Script 標記了 `primary_pattern`，最終頁仍必須看得出該 Pattern 的理解功能；不得只在 metadata 中存在。
 
 ---
 
@@ -206,17 +213,40 @@ visual_intent:
   understanding_to_leave:
   world_context:
   director_grammar:
+  primary_grammar:
+  secondary_grammar: []
+  primary_pattern:
+  secondary_pattern:
+  first_focus:
+  discovery_relation:
+  visual_evidence:
+  visual_sequence:
   relationship_type: single | compare | sequence | hierarchy | map | transformation
   visual_structure:
   main_visual_anchor:
   character_role:
+  character_dna_refs: []
+  text_integration_mode: NATIVE_OVERLAY | IMAGE_INTEGRATED_VERIFIED_TEXT
   text_layer:
+  text_carrier_logic:
+  background_value_anchor:
   reveal_order:
   memory_hook:
   accessibility_notes:
 ```
 
-Renderer 只負責忠實執行 Visual Intent，不得重新決定教學結構。
+固定關係：
+
+```text
+Director Intent
+→ Visual Grammar
+→ Gold Page Pattern
+→ Visual Intent
+→ Layout / Style / Character / Text Integration
+→ Renderer
+```
+
+Renderer 只負責忠實執行 Visual Intent，不得重新決定教學結構、Pattern 或揭示順序。
 
 ---
 
@@ -228,9 +258,10 @@ Renderer 只負責忠實執行 Visual Intent，不得重新決定教學結構。
 2. 如果拿掉圖片，是否失去一個重要理解？若不會，圖片可能只是裝飾。
 3. 如果拿掉文字，圖片是否仍提供有意義的視覺線索？
 4. 這頁與整課世界觀一致嗎？
-5. 版型是否由內容關係決定，而非模板習慣？
-6. 是否比 Bee 過去最佳成品至少在「教學清晰／畫面記憶／角色自然／世界觀一致」四項中的三項不退步？
-7. 是否有任何當年平台 workaround 被誤當成教學原則？
+5. 版型是否由內容關係與 Gold Pattern 決定，而非模板習慣？
+6. 最終畫面是否仍看得出 `primary_pattern`，而不是只在 metadata 裡存在？
+7. 是否比 Bee 過去最佳成品至少在「教學清晰／畫面記憶／角色自然／世界觀一致」四項中的三項不退步？
+8. 是否有任何當年平台 workaround 被誤當成教學原則？
 
 ---
 
@@ -239,6 +270,6 @@ Renderer 只負責忠實執行 Visual Intent，不得重新決定教學結構。
 1. 將 76 種 Style Library 轉為 Style Recipe 分群。
 2. 建立核心 Layout / Visual Structure Library。
 3. 建立 World / Theme Library。
-4. 把 Director Designer 與 Visual Grammar 接入 BVL。
-5. 以《水陸小高手》第一課做第一個完整驗證，但先只產 Director Map 與 Visual Intent，不產正式簡報。
+4. 把 Director Designer、Visual Grammar 與 Gold Page Pattern 接入 BVL。
+5. 以實際課程的代表頁做完整驗證：先驗證 Director Map / Visual Intent / Gold Pattern，再決定是否進正式全量渲染。
 
