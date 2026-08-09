@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.7
+# V-MAX Manifest 2.8
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.7
+vmax_manifest_version: 2.8
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -23,7 +23,7 @@ main_workflow:
   current_version: 2.1
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.4
+  current_version: 1.5
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
@@ -54,6 +54,9 @@ character_teaching_regression:
 lesson_visual_map:
   path: core/visual/lesson-visual-map.md
   current_version: 1.1
+gold_page_pattern:
+  path: core/visual/gold-page-pattern-library.md
+  current_version: 1.0
 text_embedded_language_policy:
   path: core/pedagogy/text-embedded-language-teaching-policy.md
   current_version: 1.0
@@ -86,10 +89,13 @@ renderer_contract:
   current_version: 1.2
 infographic_pdf_output:
   path: core/export/infographic-pdf-output-contract.md
-  current_version: 1.0
+  current_version: 1.1
 infographic_pdf_regression:
   path: tests/infographic-pdf-regression-cases.md
-  current_version: 1.0
+  current_version: 1.1
+quality_gate:
+  path: core/quality/quality-gate-2.md
+  current_version: 2.4
 adapters:
   chatgpt: adapters/chatgpt.md
   codex: adapters/codex.md
@@ -134,11 +140,14 @@ SOURCE 0
 → Scenario Wrapper
 → Character Topology / Cast
 → Knowledge Lab
-→ Visual Grammar / Slide Architecture
+→ Visual Grammar
+→ Gold Page Pattern
+→ Slide Architecture / Visual Sequence
 → Page Estimate
 → Style Recipe
-→ Representative Validation
+→ Representative Gold Page Validation
 → Full Renderer
+→ PDF Assembly / Preflight
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery
@@ -175,7 +184,7 @@ SOURCE 0
 - 複雜／字源／評量／語義特殊皆不是 AI 第三入口。
 - 其餘生字不特別提出深教，只留在基礎識寫層。
 
-權威：`character-deep-teaching-focus-policy.md` v1.1、`knowledge-lab-ordering-policy.md` v1.9。
+權威：`character-deep-teaching-focus-policy.md` v1.2、`knowledge-lab-ordering-policy.md` v2.0。
 
 ### Polyphonic Source
 合法來源只有：
@@ -211,19 +220,41 @@ SOURCE 0
 
 若教師已選定整課圖像心智地圖，它成為 downstream invariant；簡報大綱、Slide Architecture、頁數估算、Renderer 都不得靜默刪除。
 
-權威：`core/visual/lesson-visual-map.md` v1.1。
+LVM 不得退化為矩形＋箭頭流程圖；需以能承載真實文本關係的整課世界、路徑、場景或結構視覺呈現。
+
+權威：`core/visual/lesson-visual-map.md` v1.1、`core/visual/gold-page-pattern-library.md` v1.0。
+
+---
+
+## Gold Page Pattern Resolution
+
+Visual Grammar 與 Renderer 之間新增正式 canonical layer：`Gold Page Pattern`。
+
+- Visual Grammar：決定學生要看懂哪一種認知關係。
+- Gold Page Pattern：決定這個關係在學生眼前如何發生。
+- Layout / Style Recipe：只能在 Pattern 之後決定。
+
+正式 Pattern：
+`WORLD_MAP / DUAL_WORLD_COMPARE / SEQUENCE_DISCOVERY / COGNITIVE_METAPHOR / CHARACTER_MEANING_FIELD / SENSORY_TRANSLATION / EVIDENCE_DISCOVERY / CHOICE_PATH`。
+
+代表頁必須先通過 Gold Page Gate，才可進全量 Renderer。
+
+以下不得 PASS：
+`TEMPLATE_CARD_DRIFT / LEFT_TEXT_RIGHT_IMAGE_DRIFT / VISUAL_EVIDENCE_MISSING / DISCOVERY_PREEMPTED / GOLD_PATTERN_DROPPED`。
+
+權威：`core/visual/gold-page-pattern-library.md` v1.0。
 
 ---
 
 ## Final Teaching Visual Output Resolution
 
 - 正式課堂視覺成品預設為 16:9 圖文資訊圖表 PDF。
-- 每頁是完整圖文構圖，可採情境敘事型或知識比較型，但不得固定套版。
+- 每頁是完整圖文構圖，但必須先由 Visual Grammar → Gold Page Pattern 決定理解方式，不得固定套版。
 - 可修改性保留在 Source Master、Renderer Script、Visual YAML、Character Assets 與單頁圖檔。
 - 不製作「圖片塞進可修改 PPT」作為預設交付；PPTX 只有教師明確要求才產生。
-- 最終 PDF 必須逐頁渲染回 PNG，完成文字、注音、頁序、裁切、清晰度與答案外洩檢查。
+- 最終 PDF 必須逐頁渲染回 PNG，完成 Gold Pattern、文字、注音、頁序、裁切、清晰度與答案外洩檢查。
 
-權威：`core/export/infographic-pdf-output-contract.md` v1.0、`core/renderer/image-first-hybrid-renderer.md` v1.2。
+權威：`core/export/infographic-pdf-output-contract.md` v1.1、`core/renderer/image-first-hybrid-renderer.md` v1.2、`core/quality/quality-gate-2.md` v2.4。
 
 ---
 
@@ -310,6 +341,9 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 - A4 學習單靠縮字到 12 pt 以下塞內容
 - 把可修改的圖片式 PPT 當成預設正式成品
 - 只輸出單頁圖片卻未組裝、重渲染與驗證最終 PDF
+- Visual Grammar 只存在 metadata，未落實成學生可見 Gold Pattern
+- 固定左文右圖／大白框／資料卡連發
+- 圖片移除後完全不影響理解卻仍宣稱為圖像式教學頁
 
 ---
 
@@ -317,6 +351,6 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 
 > Manifest 決定現在誰是權威；Executor 必須真的載入，而不是只靠模型記得。
 
-> 生字表 ≠ 生字教學清單；形近字用字群教，多音字用語境教，易錯字只由老師指定，其餘不另提深教。
-
 > 學習單寧可少放內容，也不要讓學生真正印出來看到的字小於 12 pt。
+
+> 內容正確只是底線；Gold Page 要把理解變成學生眼睛能直接看到的教學事件。
