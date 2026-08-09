@@ -1,6 +1,6 @@
 # V-MAX Checkpoint Resume Executor
 
-版本：1.0
+版本：1.1
 
 ## 目的
 
@@ -37,9 +37,10 @@
 
 1. `V-MAX_MANIFEST.md`
 2. `core/governance/modular-checkpoint-execution-policy.md`
-3. Google Drive 對應課程 Runtime State / checkpoint registry
-4. 教師提供或指定的 artifact
-5. 目標技能本身的 `skill_io_contract`
+3. `core/governance/skill-io-registry.md`
+4. Google Drive 對應課程 Runtime State / checkpoint registry
+5. 教師提供或指定的 artifact
+6. Registry 指定的目標技能與該技能自身 `skill_io_contract`
 
 不得把模型記憶當作 artifact。
 
@@ -59,7 +60,7 @@ resume_request:
   batch_mode: false
 ```
 
-若教師指定輸出但未指定技能，依 Manifest / skill registry 找最直接的技能，不要求走完整課程流程。
+若教師指定輸出但未指定技能，先讀 `skill-io-registry.md` 找最直接的合法技能，不要求走完整課程流程。
 
 ---
 
@@ -68,12 +69,13 @@ resume_request:
 對每一課：
 
 1. 找到可用 checkpoint。
-2. 讀取目標技能 `accepted_artifacts / minimum_checkpoint / required_fields`。
-3. 選「距離目標最近且資料完整」的 artifact。
-4. required_fields 齊全 → 直接執行。
-5. 缺少少量欄位 → 只補欄位。
-6. checkpoint 尚未核准，而目標技能依賴該決策 → 停止該課並要求必要確認。
-7. 不得因缺一個欄位就重跑 SOURCE 0 → STEP 2.6。
+2. 從 Registry 讀目標技能的 `accepted_artifacts / minimum_checkpoint / batch_capable`。
+3. 再讀技能本身的 `required_fields`。
+4. 選距離目標最近且資料完整的 artifact。
+5. required_fields 齊全 → 直接執行。
+6. 缺少少量欄位 → 只補欄位。
+7. checkpoint 尚未核准，而目標技能依賴該決策 → 停止該課並要求必要確認。
+8. 不得因缺一個欄位就重跑 SOURCE 0 → STEP 2.6。
 
 違反：`UPSTREAM_RECOMPUTE_WITHOUT_NEED`。
 
@@ -96,6 +98,7 @@ batch_run:
 
 固定規則：
 
+- 只有 Registry / 技能標記 `batch_capable: true` 才可批次。
 - 每課使用自己的 checkpoint。
 - 每課產物獨立命名、獨立驗證、獨立寫回 Runtime。
 - 一課缺資料不阻塞其他課。
@@ -115,18 +118,7 @@ L5 CP_PRESTUDY_INPUT ─┤
 L6 CP_PRESTUDY_INPUT ─┘
 ```
 
-不執行：
-
-```text
-L1 STEP1→STEP2→STEP2.5→預習單
-L2 STEP1→STEP2→STEP2.5→預習單
-...重算六次
-```
-
-如果 L4 缺 reading_task_source：
-- L1/L2/L3/L5/L6 照常完成。
-- L4 標記 `CHECKPOINT_REQUIRED_FIELD_MISSING`。
-- 只補 L4 缺失資料後再跑 L4。
+如果 L4 缺 `reading_task_source`：L1/L2/L3/L5/L6 照常完成；L4 標記 `CHECKPOINT_REQUIRED_FIELD_MISSING`，只補 L4 後再跑 L4。
 
 ---
 
@@ -139,15 +131,13 @@ L2 STEP1→STEP2→STEP2.5→預習單
 1. 將目前完成內容保存成合法 artifact。
 2. 寫入 `artifact_type / approved_status / source_provenance / downstream_eligible_skills`。
 3. Runtime 登記 checkpoint。
-4. 回報「下次可以直接從哪個技能開始」。
+4. 回報下次可以直接從哪個技能開始。
 
 不得只在聊天中說「下次再繼續」而沒有留下可重讀的紀錄。
 
 ---
 
 ## H. Partial Rerun
-
-若教師只要求修一部分：
 
 - 預習單某一題 → 只重做該題與受影響版面。
 - 簡報某幾頁 → 讀 `CP_SLIDE_SCRIPT / CP_RENDER_READY`，只重做受影響頁。
@@ -174,4 +164,4 @@ L2 STEP1→STEP2→STEP2.5→預習單
 
 > Golden Path 管完整建課；Checkpoint Resume 管今天真正要做的那一小段。
 
-> 技能應該像積木，可以接著用、跳著用、批次用，而不是每次都從第一塊重新搭。
+> Manifest 管權威、I/O Registry 管積木接法、Runtime 管每一課現在有哪些可重用成果。
