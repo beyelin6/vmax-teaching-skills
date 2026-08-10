@@ -1,10 +1,15 @@
+---
+name: prestudy-worksheet
+description: 依已核准的 V-MAX 教材分析或預習單資料包，選擇臺灣國小國語課前預習單的語文焦點、閱讀任務與開放思考內容。支援 Checkpoint Resume 與跨課批次，不重跑已核准上游分析；當需要 A4 預習單內容規劃、預習題目、形近字／多音字配置或預習單資料包時使用。
+---
+
 # V-MAX Pre-study Worksheet Skill
 
-版本：1.1
+版本：1.2
 
 ## 目的
 
-本技能定義 V-MAX 國語課前預習單的內容選擇、版面骨架與輸出規格。
+本技能定義 V-MAX 國語課前預習單的**內容選擇、教學任務與資料骨架**。正式 A／B 雙版本視覺渲染由 `vmax-chinese-preview-worksheet` 專用輸出技能承接；本技能不與 Renderer 重複決定視覺模式。
 
 核心定位：
 
@@ -39,6 +44,7 @@ skill_io_contract:
     - PRESTUDY_WORKSHEET_SOURCE
     - PRESTUDY_WORKSHEET_OUTPUT
     - PRESTUDY_TEACHER_KEY
+  downstream_render_skill: vmax-chinese-preview-worksheet
   batch_capable: true
   may_recompute_upstream: false
 ```
@@ -190,6 +196,8 @@ AI 不因易錯、複雜或字源有趣自行增加單一生字詳解，也不�
 ```
 
 此為 Layout Grammar，不是固定模板。若課文更適合時間線、比較表或段落結構，可改骨架。
+
+正式 A／B 視覺模式、300 DPI、列印安全白邊、整頁 AI 手繪與 PDF 組裝由 `vmax-chinese-preview-worksheet` 執行，不在本技能複製其規格。
 
 ---
 
