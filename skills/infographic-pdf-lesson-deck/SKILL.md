@@ -1,3 +1,8 @@
+---
+name: infographic-pdf-lesson-deck
+description: 從已核准的 Render-ready artifact 直接產生 16:9 圖文資訊圖表單頁與正式教學 PDF。當已有 CP_RENDER_READY 或相容 artifact，需要產生或局部重做教學 PDF、並完成逐頁 Preflight 而不重跑上游分析時使用。
+---
+
 # V-MAX Infographic PDF Lesson Deck Skill
 
 版本：1.0
