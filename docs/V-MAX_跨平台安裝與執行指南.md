@@ -1,4 +1,4 @@
-# V-MAX 跨平台安裝與執行指南 1.1
+# V-MAX 跨平台安裝與執行指南 1.2
 
 ## 目的
 
@@ -42,7 +42,7 @@
 
 - `lesson-content-master-builder`
 - `prestudy-worksheet`：預習單內容／題目／教學任務層
-- `vmax-chinese-preview-worksheet`：預習單 A／B 雙版本 Renderer、300 DPI、列印安全、PDF／Drive（目前在 PR #3，待 branch reconciliation）
+- `vmax-chinese-preview-worksheet`：預習單 A／B 雙版本 Renderer、300 DPI、列印安全、PDF／Drive
 - `postlesson-short-writing-worksheet`：課後短文／童詩 Bonus 學習單
 - `slide-script-generator`
 - `notebooklm-renderer-script`
@@ -53,6 +53,10 @@
 預習單的兩個 Skill 是上下游分工，不是兩套競爭系統：
 
 `prestudy-worksheet → PRESTUDY_WORKSHEET_SOURCE → vmax-chinese-preview-worksheet → PNG/PDF/Drive`
+
+Renderer 的唯一最低輸入為已核准 `PRESTUDY_WORKSHEET_SOURCE`；不得從 `CP_PRESTUDY_INPUT` 或教材主檔自行重做內容選擇。輸出模式固定為 `A_CLEAR_FRAME` 或 `B_FREEHAND`，批次採多課佇列、逐課渲染、逐課校字、逐課驗證。
+
+PDF 共通壓縮與 preflight 直接遵循 `core/export/infographic-pdf-output-contract.md`；預習單 Skill 只加上 A4 300 dpi、3508×2480 與 4.5 mm 安全白邊等特有規則。AI 中文局部修復仍失敗時，依 Core Renderer 的 verified/native-text fallback，不無限重生整頁。
 
 課後短文單直接從已核准 `CP_LESSON_CONTENT_MASTER` 或相容 artifact 啟動，不重跑教材分析。
 
@@ -105,7 +109,7 @@ Drive 保存：
 - 圖片與正式 PDF
 - 使用指南與跨平台操作文件
 
-GitHub 管規則；Drive 管老師帶著走的成果。
+實際 Drive folder/file ID 不寫死在 canonical Skill；由 project/runtime artifact、checkpoint 或執行當次 Drive 查詢取得。GitHub 管規則；Drive 管老師帶著走的成果。
 
 ## 換平台時怎麼說
 
@@ -141,7 +145,7 @@ GitHub canonical Skill 更新後：
 
 視覺細節可不同，但 Canonical Decision 不得漂移。
 
-預習單與課後短文單都必須列入 conformance test；預習單另驗證 A／B 模式、300 DPI、安全白邊與逐課 batch queue 語意。
+預習單與課後短文單都必須列入 conformance test；預習單另驗證 A／B 模式、300 DPI、安全白邊、逐課 batch queue、verified/native-text fallback 與 portable Drive target 語意。
 
 ## 核心金句
 

@@ -42,9 +42,13 @@ Skill 的通用封裝規則見：
 - `four-learning-open-class-planner`
 
 ### 學生教材
-- `prestudy-worksheet`
-- `vmax-chinese-preview-worksheet`（雙版本視覺輸出技能，待與通用預習單 Skill 完成正式整合）
-- `postlesson-short-writing-worksheet`
+- `prestudy-worksheet`：預習單內容選擇與題目設計層
+- `vmax-chinese-preview-worksheet`：A／B 雙版本視覺 Renderer、300 dpi PNG／PDF／Drive 交付層
+- `postlesson-short-writing-worksheet`：課後短文／童詩 Bonus 學習單
+
+預習單標準鏈：
+
+`CP_PRESTUDY_INPUT → prestudy-worksheet → PRESTUDY_WORKSHEET_SOURCE → vmax-chinese-preview-worksheet → PNG / PDF / Drive`
 
 ### 簡報與圖文輸出
 - `slide-script-generator`
