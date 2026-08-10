@@ -1,4 +1,4 @@
-# V-MAX Infographic PDF Output Contract 1.1
+# V-MAX Infographic PDF Output Contract 1.2
 
 ## 定位
 
@@ -20,6 +20,7 @@ teaching_visual_output:
   default_format: INFOGRAPHIC_PDF
   aspect_ratio: 16:9
   page_artifact: FLATTENED_INFOGRAPHIC_PAGE
+  pdf_output_profile: BALANCED_SCREEN_PRINT_SAFE
   teacher_pptx: N/A_DEFAULT_FORMAT
   pptx_allowed_only_when: TEACHER_EXPLICITLY_REQUESTS
 ```
@@ -120,6 +121,7 @@ Approved Content / Teacher Intent
 → Verified Teaching Text 合成
 → 單頁 PNG 檢查
 → 依 page_id 組裝 PDF
+→ Print-safe / Screen-safe Size Optimization
 → PDF 全頁渲染回 PNG
 → Content / Visual / Gold Pattern / PDF Preflight
 ```
@@ -135,21 +137,80 @@ Approved Content / Teacher Intent
 
 ---
 
-## F. PDF Preflight
+## F. PDF Size Optimization｜安全瘦身
+
+正式 PDF 不以「越大越好」代表品質。應在不降低教學可讀性與實際輸出品質的前提下，去除多餘像素與不必要的無損影像負擔。
+
+### F1. 16:9 教學簡報
+
+- 16:9 投影 PDF **不強制套用 300 dpi**；應依實際輸出尺寸與使用場景控制單頁像素。
+- 不得把遠高於實際投影／列印需求的超大 PNG 原尺寸直接嵌入 PDF。
+- 以教室投影、平板、手機與一般列印皆清楚為原則；若需專業印刷，再另建立高解析輸出，不讓所有日常 PDF 都背負印刷母檔大小。
+- 連續色調、插畫型頁面可使用高品質有損影像壓縮；文字、注音、細線與辨字頁採較保守設定。
+- 若整頁轉為 JPEG 型壓縮，建議先以約 88–92 品質試作，再用重渲染與實際檢視決定；不得把固定 JPEG 品質值視為保證。
+
+### F2. A4 列印教材
+
+A4 預習單、短文單、正式紙本學習單維持 **300 dpi 列印基準**；PDF 瘦身不得以降 DPI、縮小畫布、模糊中文字或犧牲注音／細線為代價。
+
+- A4 300 dpi 典型畫布：3508 × 2480（橫式）或 2480 × 3508（直式）。
+- 若來源圖大於實際 A4 300 dpi 需求，先等比例縮至必要像素再嵌入。
+- 白底＋文字＋細線頁採保守壓縮；插畫區可較積極壓縮。
+
+### F3. 輸出層級
+
+```yaml
+pdf_output_profiles:
+  PRINT_MASTER:
+    purpose: archival_or_professional_print
+    a4_dpi: 300
+    compression: conservative
+  BALANCED_SCREEN_PRINT_SAFE:
+    purpose: default_drive_share_projection_and_normal_print
+    a4_dpi: 300
+    infographic_resolution: fit_to_actual_output_need
+    compression: visually_lossless_or_high_quality
+  SCREEN_LIGHT:
+    purpose: phone_tablet_preview
+    target_effective_dpi: 150-200
+    replaces_print_master: false
+```
+
+V-MAX 正式預設為 `BALANCED_SCREEN_PRINT_SAFE`。只有教師明確要求印刷母檔或專業印製時使用 `PRINT_MASTER`；`SCREEN_LIGHT` 只作預覽／快速分享，不取代正式可印版本。
+
+### F4. 壓縮驗證
+
+安全瘦身後必須重新檢查：
+
+1. 100% 檢視：正文、注音、標點、細線清楚。
+2. 200% 檢視：無明顯 JPEG 方塊、彩邊、字緣崩解、線條斷裂。
+3. 16:9：教室後排辨識仍 PASS。
+4. A4：實際列印尺寸的國字筆畫與注音仍 PASS。
+5. Gold Pattern、角色、構圖、頁序、裁切、留白不因壓縮改變。
+
+只有 `FILE_SIZE_REDUCED + VISUAL_QUALITY_PASS + TEXT_READABILITY_PASS` 才能標記 `PDF_SIZE_OPTIMIZED`。
+
+若檔案縮小但文字／線條退化，標記 `PDF_OVERCOMPRESSED` 並回退設定。
+
+---
+
+## G. PDF Preflight
 
 正式交付前必須：
 1. 確認頁數、頁序、16:9 頁面尺寸與檔名。
-2. 將最終 PDF 每頁重新渲染成 PNG 並逐頁視覺檢查。
-3. 檢查裁切、模糊、黑框、色偏、重複頁、漏頁、錯頁與邊界留白異常。
-4. 執行繁體中文、注音、課文原句、生字、形近字、多音字、成語與題目核對。
-5. 檢查學生頁無答案；教師提示另檔保存。
-6. 抽查每個主要 Gold Pattern 是否仍在最終 PDF 中成立，未被 Renderer 退化成模板卡片。
-7. 若使用圖文同步生成，逐頁核對生成文字，並確認局部修復沒有破壞字形或圖文融合。
-8. 確認所有 BLOCKER 歸零後才標記 `INFOGRAPHIC_PDF_PASS`。
+2. 確認已使用符合用途的 PDF output profile，且不存在明顯超規格影像造成不必要檔案膨脹。
+3. 將最終 PDF 每頁重新渲染成 PNG 並逐頁視覺檢查。
+4. 檢查裁切、模糊、黑框、色偏、重複頁、漏頁、錯頁與邊界留白異常。
+5. 執行繁體中文、注音、課文原句、生字、形近字、多音字、成語與題目核對。
+6. 檢查學生頁無答案；教師提示另檔保存。
+7. 抽查每個主要 Gold Pattern 是否仍在最終 PDF 中成立，未被 Renderer 退化成模板卡片。
+8. 若使用圖文同步生成，逐頁核對生成文字，並確認局部修復沒有破壞字形或圖文融合。
+9. 若已執行 size optimization，確認 `PDF_SIZE_OPTIMIZED`，且不存在 `PDF_OVERCOMPRESSED`。
+10. 確認所有 BLOCKER 歸零後才標記 `INFOGRAPHIC_PDF_PASS`。
 
 失敗分類：
 
-`INFOGRAPHIC_PDF_MISSING / PPTX_DEFAULT_DRIFT / PAGE_SEQUENCE_ERROR / PDF_RENDER_FAIL / PDF_PAGE_BLUR / INFOGRAPHIC_TEXT_ERROR / INFOGRAPHIC_LAYOUT_CLIP / TEACHER_ANSWER_LEAK / GOLD_PATTERN_DROPPED / TEMPLATE_CARD_DRIFT / LEFT_TEXT_RIGHT_IMAGE_DRIFT / VISUAL_EVIDENCE_MISSING / DISCOVERY_PREEMPTED`
+`INFOGRAPHIC_PDF_MISSING / PPTX_DEFAULT_DRIFT / PAGE_SEQUENCE_ERROR / PDF_RENDER_FAIL / PDF_PAGE_BLUR / INFOGRAPHIC_TEXT_ERROR / INFOGRAPHIC_LAYOUT_CLIP / TEACHER_ANSWER_LEAK / PDF_OVERSIZED_ASSET / PDF_OVERCOMPRESSED / GOLD_PATTERN_DROPPED / TEMPLATE_CARD_DRIFT / LEFT_TEXT_RIGHT_IMAGE_DRIFT / VISUAL_EVIDENCE_MISSING / DISCOVERY_PREEMPTED`
 
 ---
 
@@ -158,3 +219,5 @@ Approved Content / Teacher Intent
 > 正式成品是一套可直接上課的圖文資訊圖表 PDF；需要修改時回到來源與頁面重生，不把美感拆成 PPT 物件。
 
 > 圖文資訊圖表不是把資訊排漂亮；它必須把理解變成學生眼睛能直接看到的教學事件。
+
+> PDF 不是越大越清楚；只保留實際輸出需要的像素，才是可攜又可靠的成品。
