@@ -1,4 +1,4 @@
-# V-MAX 跨平台安裝與執行指南 1.0
+# V-MAX 跨平台安裝與執行指南 1.1
 
 ## 目的
 
@@ -35,6 +35,26 @@
 - `name` 使用 kebab-case
 - YAML frontmatter 至少有 `name` 與 `description`
 - V-MAX 技能另保留 `Skill I/O Contract`
+
+## 高頻教材 Skill 必帶組
+
+跨平台安裝 V-MAX 時，以下高頻 Skill 應視為同一套工具鏈，不可只帶其中一半：
+
+- `lesson-content-master-builder`
+- `prestudy-worksheet`：預習單內容／題目／教學任務層
+- `vmax-chinese-preview-worksheet`：預習單 A／B 雙版本 Renderer、300 DPI、列印安全、PDF／Drive（目前在 PR #3，待 branch reconciliation）
+- `postlesson-short-writing-worksheet`：課後短文／童詩 Bonus 學習單
+- `slide-script-generator`
+- `notebooklm-renderer-script`
+- `infographic-pdf-lesson-deck`
+- `google-drive-lesson-archive`
+- `vmax-checkpoint-resume`
+
+預習單的兩個 Skill 是上下游分工，不是兩套競爭系統：
+
+`prestudy-worksheet → PRESTUDY_WORKSHEET_SOURCE → vmax-chinese-preview-worksheet → PNG/PDF/Drive`
+
+課後短文單直接從已核准 `CP_LESSON_CONTENT_MASTER` 或相容 artifact 啟動，不重跑教材分析。
 
 ## ChatGPT
 
@@ -97,6 +117,8 @@ GitHub 管規則；Drive 管老師帶著走的成果。
 
 > 請載入 V-MAX，用第一到第六課已確認資料，直接做自由手繪版預習單，不重新分析。
 
+> 請載入 V-MAX，用第一到第六課教材主檔，直接做六份課後短文 Bonus 學習單，不重新分析。
+
 ## Skill 更新
 
 GitHub canonical Skill 更新後：
@@ -118,6 +140,8 @@ GitHub canonical Skill 更新後：
 - artifact schema 可續接
 
 視覺細節可不同，但 Canonical Decision 不得漂移。
+
+預習單與課後短文單都必須列入 conformance test；預習單另驗證 A／B 模式、300 DPI、安全白邊與逐課 batch queue 語意。
 
 ## 核心金句
 
