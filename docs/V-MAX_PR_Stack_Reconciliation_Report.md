@@ -1,4 +1,4 @@
-# V-MAX PR Stack Reconciliation Report 1.1
+# V-MAX PR Stack Reconciliation Report 1.2
 
 ## 目的
 
@@ -23,17 +23,13 @@ main
 
 `PR #1 → PR #2 → PR #3`
 
-不得跳過上游直接把 PR #3 視為可獨立安裝的完整 V-MAX Core。
-
 ---
 
 ## 2. PR #1｜Infographic PDF Base
 
-角色：建立 16:9 圖文資訊圖表 PDF、Gold Page、Renderer、PDF Preflight、Character Teaching 等底層能力。
+角色：建立 16:9 圖文資訊圖表 PDF、Gold Page、Renderer、PDF Preflight、Character Teaching 與 print-safe PDF size optimization 等底層能力。
 
 目前狀態：OPEN / DRAFT / 未 merge。
-
-PR #2 與 PR #3 的後續規格皆依賴 PR #1 的 canonical layers。
 
 ---
 
@@ -43,7 +39,19 @@ PR #2 與 PR #3 的後續規格皆依賴 PR #1 的 canonical layers。
 
 目前狀態：OPEN / DRAFT / 未 merge。
 
-已量測：PR #2 相對 PR #1 最新 head 為 `ahead 66 / behind 2`；正式收斂前需先吸收 PR #1 最新兩個上游 commit。
+### 3.1 上游對齊 — PASS
+
+PR #2 已以 merge ancestry 真正吸收 PR #1 最新 head；compare 已由 `behind 2` 變成 `behind 0`。
+
+同時重新檢查內容後發現 PR #2 的 PDF Contract 曾缺少 PR #1 最新 `PDF Size Optimization` 段落，因此已補回並升級為 `core/export/infographic-pdf-output-contract.md` v1.2，保留：
+- `BALANCED_SCREEN_PRINT_SAFE`
+- A4 300 dpi 紙本基準
+- `PRINT_MASTER / BALANCED_SCREEN_PRINT_SAFE / SCREEN_LIGHT`
+- `PDF_OVERSIZED_ASSET / PDF_OVERCOMPRESSED`
+- 壓縮後 PDF 重渲染檢查
+- PR #2 的 verified image-integrated text 規則
+
+因此不是只修 Git 歷史，也已修正 canonical 內容。
 
 ---
 
@@ -55,13 +63,18 @@ PR #2 與 PR #3 的後續規格皆依賴 PR #1 的 canonical layers。
 
 `CP_PRESTUDY_INPUT → prestudy-worksheet → PRESTUDY_WORKSHEET_SOURCE → vmax-chinese-preview-worksheet → PNG / PDF / validation / Drive`
 
-### 4.1 2026-08-10 Review Safeguards
+### 4.1 真實 stacked history — PASS
 
-依 review 進行四項檢查：
+PR #3 已真正建立在 PR #2 最新 tree / ancestry 上，不再只是 retarget PR base。
+
+已驗證：
+- PR #3 相對當時 PR #2 base 為 `ahead 1 / behind 0`，merge base = PR #2 head。
+- PR #2 後續補回 PDF Core Contract 後，PR #3 再次吸收新的 PR #2 head。
+- 兩張 approved reference PNG 使用原 blob SHA 保留，沒有重新編碼或遺失。
+
+### 4.2 Review Safeguards
 
 #### S-01｜統一 I/O Contract — PASS
-
-Registry 與 Skill 已統一：
 
 ```yaml
 minimum_checkpoint: PRESTUDY_WORKSHEET_SOURCE
@@ -75,39 +88,34 @@ produces_artifacts:
 output_modes: [A_CLEAR_FRAME, B_FREEHAND]
 ```
 
-不再同時維護 `visual_mode`、`PRESTUDY_RENDER_REPORT` 或允許 Renderer 直接從 CP 上游自行重做內容選擇。
+#### S-02｜User-facing Guide Synchronization — PASS
 
-#### S-02｜User-facing Guide Synchronization — STALE_EXPLICIT
+已同步：
+- `docs/V-MAX_使用指南.md` v1.4
+- `docs/V-MAX_中文指令速查表.md` v1.4
+- `docs/V-MAX_跨平台安裝與執行指南.md` v1.2
 
-目前正式標記：`USER_GUIDE_STALE`。
+三份指南均已納入：
+- `PRESTUDY_WORKSHEET_SOURCE` 唯一最低 Renderer 輸入
+- `output_mode: A_CLEAR_FRAME | B_FREEHAND`
+- `PRESTUDY_RENDER_VALIDATION`
+- Core PDF Contract reference
+- verified/native-text fallback
+- portable Drive target / no hard-coded project IDs
 
-原因：PR #3 branch 尚未真正 rebase 到 PR #2 最新 head；三份指南最新 canonical 內容仍在 PR #2。為避免用舊 base 的指南覆蓋新版本，此輪不做假同步。
-
-真正 rebase 後，必須同步：
-- `docs/V-MAX_使用指南.md`
-- `docs/V-MAX_中文指令速查表.md`
-- `docs/V-MAX_跨平台安裝與執行指南.md`
-
-同步完成前不得宣稱 user-facing guides 已更新完成。
+`USER_GUIDE_STALE` 已解除，Registry 狀態為 `USER_GUIDE_SYNC_PASS`。
 
 #### S-03｜PDF Canonical Duplication — PASS
 
-`worksheet-spec.md` 已改成只維護預習單特有規則：A/B 視覺、300 dpi 紙本基準、4.5 mm 安全白邊。
-
-PDF profile、size optimization、JPEG / image compression、重渲染 preflight 與 `PDF_OVERCOMPRESSED` 等共通規格，改為直接引用：
-
-`core/export/infographic-pdf-output-contract.md`
-
-不得再維護第二套 canonical PDF profile。
+Worksheet skill 只保留預習單特有的 A/B 視覺、A4 300 dpi 與 4.5 mm 安全白邊；PDF profile、size optimization、compression 與 rerender preflight 由 Core PDF Contract v1.2 唯一管理。
 
 #### S-04｜Verified Text Fallback + Portable Storage — PASS
 
-- 圖文同步生成文字先局部修復。
-- 合理局部修復仍失敗 → 依 `core/renderer/image-first-hybrid-renderer.md` 回退 verified/native-text 合成。
-- 不允許無限整頁重生或接受錯字。
-- 若 fallback 會破壞鎖定版面，標記 `REVISE` 回代表頁／局部版面修正。
-- `storage.md` 已移除特定冊別 folder ID、正式 PNG/PDF file ID 與固定 Drive URL。
-- 實際 Drive IDs 改由 project/runtime artifact 或當次 Drive search/list 注入並回寫。
+- AI 中文先局部修復。
+- 合理局部修復仍失敗 → verified/native-text fallback。
+- fallback 破壞鎖定版面 → `REVISE`，不接受錯字成品。
+- canonical Skill 不硬編碼冊別 folder/file IDs。
+- 實際 Drive target 由 project/runtime artifact、checkpoint 或當次 Drive search/list 注入。
 
 ---
 
@@ -115,6 +123,9 @@ PDF profile、size optimization、JPEG / image compression、重渲染 preflight
 
 ```yaml
 reconciliation:
+  pr2_upstream_history_alignment: PASS
+  pr2_pdf_core_content_reconciliation: PASS
+  pr3_true_stacked_history: PASS
   preview_content_vs_renderer_boundary: PASS
   preview_skill_io_route: PASS
   preview_io_contract_single_truth: PASS
@@ -126,33 +137,33 @@ reconciliation:
   drive_storage_portability: PASS
   portable_skill_frontmatter: PASS
   readme_route_alignment: PASS
-  pr3_stacked_base_target: PASS
-  user_facing_guides: USER_GUIDE_STALE
+  user_facing_guides: PASS
 ```
 
 ---
 
 ## 6. 仍待完成
 
-### R-01｜Merge / Rebase Chain
+### R-01｜正式合併順序
 
-1. 收斂 PR #1。
-2. 將 PR #2 真正對齊 PR #1 最新 head。
-3. 收斂 PR #2。
-4. 將 PR #3 真正 rebase 到 PR #2，保留 assets / references / icon / approved references。
-5. 同步三份 user-facing guides，移除 `USER_GUIDE_STALE`。
-6. 收斂 PR #3。
+仍須依序：
+1. merge PR #1
+2. 再確認 PR #2 base / mergeability，merge PR #2
+3. 再確認 PR #3 base / mergeability，merge PR #3
 
-### R-02｜Manifest / Registry Final Reconciliation
+不得跳過上游。
 
-合併後重新檢查：
+### R-02｜Merge 後 Canonical Final Reconciliation
+
+三層真正進 main 後重新檢查：
 - `V-MAX_MANIFEST.md`
 - `core/governance/skill-io-registry.md`
 - root `SKILL.md`
 - `README.md`
 - `V-MAX_UNIVERSAL_BOOTSTRAP.md`
+- `core/export/infographic-pdf-output-contract.md`
 
-不得保留重複或失效 route。
+不得保留重複、失效或版本倒退 route。
 
 ### R-03｜Portable Skill Audit
 
@@ -175,6 +186,10 @@ reconciliation:
 
 ## 7. 跨平台安裝包放行 Gate
 
+目前可標記：
+
+`PACKAGE_STRUCTURE_READY / PLATFORM_RUNTIME_NOT_YET_FULLY_TESTED`
+
 只有以下全部成立，才允許標記 `PORTABLE_INSTALL_PACKAGE_READY`：
 
 ```yaml
@@ -192,11 +207,7 @@ portable_install_gate:
   no_known_core_duplication: PASS
 ```
 
-若尚未完成四平台實跑，可標記：
-
-`PACKAGE_STRUCTURE_READY / PLATFORM_RUNTIME_NOT_YET_FULLY_TESTED`
-
-不得標記 `FULLY_VERIFIED_CROSS_PLATFORM`。
+若尚未完成四平台實跑，不得標記 `FULLY_VERIFIED_CROSS_PLATFORM`。
 
 ---
 
