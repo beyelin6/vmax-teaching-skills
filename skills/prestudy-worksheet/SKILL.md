@@ -1,14 +1,61 @@
+---
+name: prestudy-worksheet
+description: 依已核准的 V-MAX 教材分析或預習單資料包，選擇臺灣國小國語課前預習單的語文焦點、閱讀任務與開放思考內容。支援 Checkpoint Resume 與跨課批次，不重跑已核准上游分析；當需要 A4 預習單內容規劃、預習題目、形近字／多音字配置或預習單資料包時使用。
+---
+
 # V-MAX Pre-study Worksheet Skill
 
-版本：1.1
+版本：1.2
 
 ## 目的
 
-本技能定義 V-MAX 國語課前預習單的內容選擇、版面骨架與輸出規格。
+本技能定義 V-MAX 國語課前預習單的**內容選擇、教學任務與資料骨架**。正式 A／B 雙版本視覺渲染由 `vmax-chinese-preview-worksheet` 專用輸出技能承接；本技能不與 Renderer 重複決定視覺模式。
 
 核心定位：
 
 > 預習單不是縮小版講義，也不是小考；它是一張 A4 橫式的「課前探索單」，讓學生先看見本課的重要語文線索、進入文本、留下可供課堂再利用的理解痕跡，並可在學後作為複習材料。
+
+---
+
+## 0. Standalone / Batch I-O Contract
+
+本技能支援 `CHECKPOINT_RESUME`，不要求每次從 SOURCE 0 重跑。
+
+```yaml
+skill_io_contract:
+  can_run_standalone: true
+  minimum_checkpoint: CP_PRESTUDY_INPUT
+  accepted_artifacts:
+    - CP_PRESTUDY_INPUT
+    - CP_LESSON_CONTENT_MASTER
+    - CP_TEACHING_ANALYSIS
+  required_fields:
+    - lesson_id
+    - lesson_title
+    - approved_text_scope
+    - approved_language_focus
+    - reading_task_source
+  optional_fields:
+    - teacher_selected_error_prone_character
+    - visual_theme
+    - lesson_character
+    - prior_same_volume_items
+  produces_artifacts:
+    - PRESTUDY_WORKSHEET_SOURCE
+    - PRESTUDY_WORKSHEET_OUTPUT
+    - PRESTUDY_TEACHER_KEY
+  downstream_render_skill: vmax-chinese-preview-worksheet
+  batch_capable: true
+  may_recompute_upstream: false
+```
+
+若取得的是較高階相容 artifact，只抽取本技能 required_fields，不重做上游分析。
+
+若教師一次指定多課，例如「一次做第一到第六課預習單」，逐課讀取各自 checkpoint 後批次執行；某一課缺資料只標記該課 `INPUT_INCOMPLETE`，不得阻塞其他課。
+
+不得把不同課的生字、閱讀題或 Teacher Intent 混在同一課的預習單資料包。
+
+完整規則依 `core/governance/modular-checkpoint-execution-policy.md`。
 
 ---
 
@@ -150,6 +197,8 @@ AI 不因易錯、複雜或字源有趣自行增加單一生字詳解，也不�
 
 此為 Layout Grammar，不是固定模板。若課文更適合時間線、比較表或段落結構，可改骨架。
 
+正式 A／B 視覺模式、300 DPI、列印安全白邊、整頁 AI 手繪與 PDF 組裝由 `vmax-chinese-preview-worksheet` 執行，不在本技能複製其規格。
+
 ---
 
 ## G. 圖像與角色
@@ -201,13 +250,14 @@ prestudy_worksheet:
 - 為塞內容縮小字體而不是刪減／重排。
 - 格子太多、沒有足夠書寫空間。
 - 所有生字平均塞進預習單。
-- 形近字／多音字沒有依 STEP 2.5 的教師確認範圍。
+- 形近字／多音字沒有依已核准的 STEP 2.5 / CP_PRESTUDY_INPUT 範圍。
 - 同冊重複內容未檢查。
 - 閱讀題脫離課文或提前揭露核心答案。
 - 裝飾／角色占掉學生操作區。
 - 學生版出現答案。
+- Batch Mode 中不同課資料互相污染。
 
-分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL`
+分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / BATCH_CROSS_LESSON_CONTAMINATION`
 
 ---
 
@@ -216,5 +266,7 @@ prestudy_worksheet:
 > 預習單是孩子進課文前的一張探索地圖，不是老師把整課先講完。
 
 > 先看線索、留下痕跡；上課再把理解長出來。
+
+> 已分析好的課程資料可以直接拿來做預習單，不需要為了進入本技能重跑整課流程。
 
 > A4 學習單寧可少放一點，也不要把孩子要讀的字縮到 12 pt 以下。

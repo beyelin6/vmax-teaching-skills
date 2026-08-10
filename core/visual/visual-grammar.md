@@ -1,4 +1,4 @@
-# V-MAX Visual Grammar 2.0
+# V-MAX Visual Grammar 2.1
 
 ## 定位
 
@@ -23,7 +23,9 @@ Director Intent
         ↓
 Visual Grammar
         ↓
-Visual Sequence / Layout
+Gold Page Pattern
+        ↓
+Visual Sequence / Slide Architecture
         ↓
 World / Style Recipe / Character DNA / Text UI
         ↓
@@ -34,13 +36,16 @@ Renderer
 
 - **Director Intent**：決定孩子先看什麼、再發現什麼。
 - **Visual Grammar**：決定這個理解關係應該怎麼被看見。
+- **Gold Page Pattern**：決定這個認知關係在學生眼前如何成為一個可觀看、可發現的教學事件。
 - **Visual Sequence**：決定需要一張、兩張、四格或整段畫面。
-- **Layout**：決定元素放在哪裡。
+- **Layout / Slide Architecture**：決定元素如何同框、如何排列與推進。
 - **Style Recipe**：決定畫面的媒材、色彩、質感與氣氛。
-- **Renderer**：負責真正生成與排版。
+- **Renderer**：負責忠實生成與排版，不重新決定教學關係。
 
-**Visual Grammar ≠ Layout。**
-例如「比較」是一種 Grammar；左右雙欄、上下對照、天平、同景切換只是可能的 Layout。
+**Visual Grammar ≠ Gold Page Pattern ≠ Layout。**
+例如「比較」是一種 Grammar；`DUAL_WORLD_COMPARE` 或 `CHARACTER_MEANING_FIELD` 是可能的 Gold Pattern；左右雙欄、上下對照、同景切換才是 Layout 選擇。
+
+Gold Page Pattern 依 `core/visual/gold-page-pattern-library.md`。不得從 Visual Grammar 直接跳到 Layout / Renderer。
 
 ---
 
@@ -324,16 +329,17 @@ secondary_grammar:
 
 ---
 
-# Grammar 選擇器
+# Grammar → Gold Pattern 選擇器
 
-AI 在選 Visual Grammar 前，依序回答：
+AI 在選 Visual Grammar 與 Gold Page Pattern 時，依序回答：
 
 1. 學生這一頁真正要建立的是哪一種**認知關係**？
 2. 這個關係是一眼比較、逐步變化、空間觀看、時間發展、因果、層級、網絡，還是觀點？
-3. 一張畫面能完成理解嗎？若不能，交給 Visual Sequence 決定幀數。
-4. 是否有課文證據需要被看見？若有，可加入 Evidence Lens。
-5. 是否存在「作者的觀看方式」？若有，優先保留作者的視角／時序／空間語法。
-6. 最後才選 Layout 與 Style Recipe。
+3. 先選 `primary_grammar`，再依 `core/visual/gold-page-pattern-library.md` 選 `primary_pattern`；不得直接跳到 Layout。
+4. 一張畫面能完成理解嗎？若不能，交給 Visual Sequence 決定幀數。
+5. 是否有課文證據需要被看見？若有，可加入 Evidence Lens，並確認 Pattern 中保留 evidence layer。
+6. 是否存在「作者的觀看方式」？若有，優先保留作者的視角／時序／空間語法。
+7. 最後才選 Layout、Style Recipe、Character 與 Text Integration Mode。
 
 ---
 
@@ -368,6 +374,11 @@ visual_intent:
   text_evidence:
   primary_grammar:
   secondary_grammar: []
+  primary_pattern:
+  secondary_pattern: []
+  first_focus:
+  discovery_relation:
+  visual_evidence:
   sequence_requirement:
     frames: 1
     reason:
@@ -380,6 +391,7 @@ visual_intent:
   evidence_focus: []
   layout_hint:
   guide_character_role:
+  text_integration_plan:
   renderer_notes:
 ```
 
@@ -389,25 +401,27 @@ visual_intent:
 
 # Renderer 原則
 
-Renderer 可以改變媒材與美術完成方式，但不得改變 Visual Grammar。
+Renderer 可以改變媒材與美術完成方式，但不得改變 Visual Grammar 或已核准的 Gold Page Pattern。
 
 ```text
 Text DNA：寫景，由遠而近
 Director Intent：讓學生跟著作者視線走近主景
 Visual Grammar：VG-01 far_to_near
+Gold Page Pattern：依理解事件選擇
 Visual Sequence：3 個連續焦距
 Style Recipe：溫暖自然探險
 Renderer：ChatGPT / NotebookLM / Gemini / Canva / 未來平台
 ```
 
-換 Renderer 後，學生的觀看路徑仍必須一致。
+換 Renderer 後，學生的觀看路徑與發現關係仍必須一致。若最終頁已無法辨識 `primary_pattern`，標記 `GOLD_PATTERN_DROPPED`。
 
 ---
 
 # 禁止事項
 
 - 不得把所有文章轉成資訊卡或心智圖。
-- 不得把 Grammar 當成固定版型代碼。
+- 不得把 Grammar 或 Gold Pattern 當成固定版型代碼。
+- 不得從 Grammar 直接跳到 Layout / Renderer。
 - 不得因為有三個項目就自動 grid-3。
 - 不得因為有四個事件就自動四格漫畫；先判斷是否需要序列理解。
 - 不得只因畫面漂亮而破壞作者的觀看順序。
@@ -421,6 +435,8 @@ Renderer：ChatGPT / NotebookLM / Gemini / Canva / 未來平台
 # 核心金句
 
 > AI 真正有價值的，不只是把文字變成圖片，而是把老師腦中的學習畫面變成可以實行的教學現場。
+
+> Visual Grammar 決定「怎麼看」；Gold Page Pattern 決定「這個理解如何在眼前發生」。
 
 > 有些知識，不是一張圖就能理解，而是一連串畫面才能真正看懂。
 

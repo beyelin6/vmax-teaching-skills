@@ -1,253 +1,225 @@
 # V-MAX Google Drive Lesson Archive Skill
 
-版本：1.1
+版本：1.3
 
 ## 目的
 
-本技能定義 V-MAX 每課教材成果在 Google Drive 的正式歸檔位置、分類資料夾與重做版本管理規則。
+本技能定義 V-MAX 成果在 Google Drive 的正式歸檔位置、分類層級、冊別批次教材與單課版本管理規則。
 
 核心原則：
 
 > 教材做完不只要存在 Chat 或暫存區；必須進入教師指定的 Google Drive 教材庫，並且重新列出／搜尋驗證後才算完成。
 
-> 同一課重做時不覆蓋舊版。保留原始版本，新的完整版本以 `_01`、`_02`、`_03` 依序建立新的課資料夾。
+> GitHub 管規則，Drive 管成果；系統資料、冊別批次成果與單課 Lesson Package 分層保存，不強迫所有成果都塞進單課六類。
+
+權威分層：`core/governance/google-drive-storage-architecture.md`。
+
+## Skill I/O Contract
+
+```yaml
+skill_io_contract:
+  can_run_standalone: true
+  minimum_checkpoint: ANY_DELIVERABLE_READY
+  accepted_artifacts:
+    - CP_SOURCE_ANCHOR
+    - CP_TEACHING_ANALYSIS
+    - CP_LESSON_CONTENT_MASTER
+    - CP_PRESTUDY_INPUT
+    - CP_SLIDE_SCRIPT
+    - CP_RENDER_READY
+    - PRESTUDY_WORKSHEET_OUTPUT
+    - POSTLESSON_WRITING_WORKSHEET_OUTPUT
+    - NOTEBOOKLM_SOURCE_MD
+    - NOTEBOOKLM_INSTRUCTION_MD
+    - INFOGRAPHIC_TEACHING_PDF
+  required_fields:
+    - delivery_files
+    - archive_target_root
+  optional_fields:
+    - lesson_id
+    - batch_scope
+    - artifact_scope
+    - version_suffix
+    - archive_notes
+    - runtime_update
+  produces_artifacts:
+    - DRIVE_ARCHIVE_REPORT
+  batch_capable: true
+  may_recompute_upstream: false
+```
+
+若 artifact 是冊別 Batch Artifact，可不要求單一 `lesson_id`，改以 `batch_scope` 標示，例如 `01-06`。
 
 ---
 
 ## A. 固定教材庫根目錄
 
-正式 Google Drive 根目錄：
-
 ```yaml
 google_drive_archive_root:
   title: V-MAX 教材庫
   folder_id: 1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
-  url: https://drive.google.com/drive/folders/1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
 ```
 
-只要此根目錄可存取，就不得另外在 My Drive 根目錄建立第二個同名 `V-MAX 教材庫`。
-
-`00_Runtime_State` 仍為執行狀態專用，不放一般教材成果。
+不得另建第二個同名教材庫。
 
 ---
 
-## B. 冊別／教材層
+## B. 儲存層級
 
-每課成果先進入對應教材冊別資料夾，例如：
+先判斷 artifact scope，再決定位置：
 
-```text
-V-MAX 教材庫/
-└── 四上康軒國語/
-```
+### B1. SYSTEM_GLOBAL
+放：
+`00_系統與數據管理`
 
-冊別資料夾名稱應以教師目前使用的教材版本／冊別為準，不由 AI 擅自更名。
+包含：
+- `00_使用指南與系統文件`
+- `00_Runtime_State`
+- `國語文教材轉錄數據`
+
+### B2. SHARED_ARCHITECTURE
+放：
+`主體架構`
+
+包含跨課／跨冊可重用的角色資料庫、Canva 中文字型庫、視覺語言、Gold Page／Layout Reference 與共用框架。
+
+### B3. VOLUME_SHARED
+放冊別根目錄，例如：
+`01_國語教學資源/四上康軒國語`
+
+包含：
+- `00_教材鎖定主檔`
+- `原始教材手冊`
+
+### B4. VOLUME_BATCH_ARTIFACT
+跨多課的同系列教材放冊別 Batch Folder，例如：
+- `01-06課_預習單規劃`
+- `01-06課_課後短文學習單`
+
+不得為了符合單課六類而把相同實體檔重複複製到六課。
+
+### B5. LESSON_VERSION
+真正屬於單課 Golden Path／Checkpoint Resume 的版本化成果放：
+`03_分課教學簡報與教材/{課次}_{課名}`
 
 ---
 
-## C. 課資料夾命名
-
-基礎格式：
+## C. 單課 Lesson Package 六類
 
 ```text
-{兩位數課次}_{課次中文}_{課名}
+01_教材整理/
+02_逐頁腳本/
+03_NotebookLM/
+04_角色視覺/
+05_簡報成品/
+06_延伸教材/
 ```
 
-例如：
+映射：
+- `CP_SOURCE_ANCHOR / CP_TEACHING_ANALYSIS / CP_LESSON_CONTENT_MASTER` → `01_教材整理`
+- `CP_SLIDE_SCRIPT / RENDERER_DETAILED_SCRIPT_MD` → `02_逐頁腳本`
+- `NOTEBOOKLM_SOURCE_MD / NOTEBOOKLM_INSTRUCTION_MD` → `03_NotebookLM`
+- lesson-specific Character DNA / reference assets → `04_角色視覺`
+- `INFOGRAPHIC_TEACHING_PDF / INFOGRAPHIC_PAGE_PNGS / PAGE_PREFLIGHT_REPORT` → `05_簡報成品`
+- 單課獨立延伸教材 → `06_延伸教材`
 
-```text
-02_第二課_放學後
-```
-
-第一個正式版本使用基礎名稱，不加版本尾碼。
+注意：跨課預習單／短文單系列不強制放 `06_延伸教材`，優先使用冊別 Batch Folder。
 
 ---
 
-## D. 重做版本管理｜Folder Versioning
+## D. 冊別 Batch Artifact
 
-若同一課再次「完整重做／重新生成一套新版本」，不得覆蓋或混入原資料夾。
-
-依序建立：
+最低建議結構：
 
 ```text
-02_第二課_放學後
-02_第二課_放學後_01
-02_第二課_放學後_02
-02_第二課_放學後_03
-...
+{批次範圍}_{教材類型}/
+├── 單課PNG/
+├── 合併PDF/
+└── {冊別}_{批次範圍}_{教材類型}內容確認主檔.md
 ```
 
-### D1. 判定方式
+多視覺版本可在 `單課PNG` 下分版本。
 
-建立新版本前，必須先列出對應冊別資料夾，確認已存在的版本名稱。
+### Batch 執行規則
+- 一次可下多課任務。
+- 實際採逐課渲染、逐課驗證。
+- 每課讀自己的 checkpoint，不混課。
+- 某課缺資料只阻塞該課。
+- 已確認的內容／角色／版本模式不重問。
+- 合併 PDF 只收已通過驗證的同系列頁面。
+
+---
+
+## E. Folder Alias
+
+Drive 現有名稱不必為 canonical 名稱硬搬動。
 
 ```yaml
-lesson_folder_versioning:
-  base_name: 02_第二課_放學後
-  existing_versions: []
-  next_folder_name:
+folder_aliases:
+  A_CLEAR_FRAME:
+    canonical_name: 清楚框線版
+    accepted_drive_aliases: [一般版, 標準版, 清楚框線版]
+  B_FREEHAND:
+    canonical_name: 自由手繪版
+    accepted_drive_aliases: [自由手繪版]
 ```
 
-規則：
-
-1. 若基礎名稱不存在 → 建立基礎名稱。
-2. 若基礎名稱已存在且這次是完整重做 → 建立 `_01`。
-3. 若 `_01` 已存在 → 建立 `_02`，依此類推。
-4. 不得因模型記憶猜測版本號；必須讀 Drive 後決定下一號。
-5. 版本號使用兩位數：`_01`、`_02`、`_03`……。
-
-### D2. 小修與完整重做的差異
-
-- **完整重做／重新跑 Golden Path／產生另一套完整教材包** → 建立新的版本資料夾。
-- **同一版本中的局部修正**（例如修正一張資訊圖表頁、重組 PDF、補一份學習單）→ 原則上留在同一課版本資料夾內，更新對應檔案；除非教師明確要求保留舊檔成另一版本。
-
-若無法判斷是局部修正還是完整重做，優先依教師當下明確語意；不得自行大量複製版本。
+若找到 alias 對應的既有資料夾，直接沿用，不另建同義資料夾。
 
 ---
 
-## E. 每課固定六類資料夾
+## F. 課資料夾與版本
 
-每一個課版本資料夾內固定建立：
+基礎格式：`{兩位數課次}_{課次中文}_{課名}`。
 
-```text
-{課資料夾}/
-├── 01_教材整理/
-├── 02_逐頁腳本/
-├── 03_NotebookLM/
-├── 04_角色視覺/
-├── 05_簡報成品/
-└── 06_延伸教材/
-```
+完整重做：base → `_01` → `_02` → `_03`；建立前必須先讀 Drive 現況。
+局部修正留在同一版本資料夾，除非教師要求另存版本。
 
-### E1. `01_教材整理`
-放置：
-- Source Master MD
-- 教材定錨／結構化轉錄
-- Lesson DNA / 教材整理成果
-- 必要的來源整理檔
-
-### E2. `02_逐頁腳本`
-放置：
-- 完整逐頁／逐 Shot 教學腳本
-- Renderer Script MD
-- 頁面結構與教師講稿
-
-### E3. `03_NotebookLM`
-放置：
-- NotebookLM 驅動腳本
-- NotebookLM 生成指令
-- Visual YAML MD
-- Curated Briefing / NotebookLM 專用來源 MD 或 TXT
-
-### E4. `04_角色視覺`
-放置：
-- Bee 老師或本課角色基準圖
-- Character DNA 視覺資產
-- 表情／姿勢／本課角色變體
-- 其他角色相關輸出
-
-### E5. `05_簡報成品`
-放置：
-- Infographic Teaching PDF（預設正式成品）
-- 依 page_id 排序的單頁 PNG
-- Teaching PPTX／Google Slides（僅教師明確要求時）
-- PDF Preflight／逐頁重渲染驗證結果
-
-### E6. `06_延伸教材`
-放置：
-- 課前預習單
-- 課後短文／微寫作／童詩仿作單
-- 其他學生延伸任務
-- 必要的教師版／答案版延伸教材
+冊別 Batch Artifact 的視覺 A/B 版不是課程版本尾碼，兩版各自保留正式檔，不互相覆蓋。
 
 ---
 
-## F. 建立流程
+## G. 正式歸檔流程
 
-正式歸檔時執行：
+1. 讀 `google-drive-storage-architecture.md`。
+2. 判斷 artifact scope。
+3. 讀 Drive 現況，不靠記憶猜資料夾或 ID。
+4. 找既有 canonical folder 或合法 alias。
+5. 只上傳本次指定 artifacts。
+6. Source + Output 系列教材必須同時檢查內容主檔是否存在。
+7. 再次 list/search/get metadata 驗證。
+8. 寫出 `DRIVE_ARCHIVE_REPORT`。
 
-```text
-1. 讀 V-MAX 教材庫根目錄
-2. 找到對應冊別資料夾
-3. 列出冊別資料夾內現有課版本
-4. 決定 base / _01 / _02 / ... 下一個課資料夾名稱
-5. 建立課資料夾
-6. 建立六個固定分類資料夾
-7. 將各成果放到正確分類
-8. 再次 list/search Google Drive 驗證
-9. 驗證通過才回報 Archive PASS
-```
-
-不得只建立空資料夾就宣告教材已歸檔；檔案也必須實際存在於對應分類中。
+不得只建立空資料夾就宣告完成。
 
 ---
 
-## G. Archive Verification
+## H. 不搬檔優先
 
-```yaml
-google_drive_lesson_archive:
-  root_verified: true | false
-  volume_folder_verified: true | false
-  lesson_folder_name:
-  lesson_folder_version:
-  category_folders:
-    01_教材整理: PASS | MISSING
-    02_逐頁腳本: PASS | MISSING
-    03_NotebookLM: PASS | MISSING
-    04_角色視覺: PASS | MISSING
-    05_簡報成品: PASS | MISSING
-    06_延伸教材: PASS | MISSING
-  uploaded_files_verified: PASS | INCOMPLETE | BLOCKED
-```
-
-完整交付時，若 Google Drive 已被教師指定為固定交付層，`uploaded_files_verified` 必須為 `PASS` 才能宣告「完成」。
+若 Drive 現況已符合教師實際工作方式，而 GitHub 規格較舊：
+- 優先修 GitHub 規格。
+- 不為名稱一致大量搬動現有檔案。
+- 只有真正出現重複、查找困難或錯誤歸檔時才 migration。
 
 ---
 
-## H. 禁止事項
+## I. 禁止事項
 
-- 不得覆蓋舊的完整課版本資料夾。
-- 不得在同一課資料夾內混放兩套完整重跑成果而無版本區隔。
-- 不得跳號建立 `_03` 而沒有先檢查 `_01`／`_02`。
-- 不得把版本尾碼加在六個分類子資料夾上；版本尾碼加在「課資料夾」層。
-- 不得另創不同分類名稱造成同課結構漂移。
-- 不得宣稱上傳成功但沒有 Drive API / Connector 驗證。
+- 不得覆蓋舊完整課程版本。
+- 不得靠模型記憶猜版本號或資料夾 ID。
+- 不得把冊別 Batch Artifact 強制拆散到各課。
+- 不得同時建立「一般版」與「清楚框線版」兩個同義資料夾。
+- 不得只留 PNG / PDF 卻遺失可續作內容主檔。
+- 不得宣稱上傳成功但沒有 Connector 驗證。
+- 不得因歸檔需求重新分析教材。
 
 失敗分類：
-
-`DRIVE_ARCHIVE_ROOT_DRIFT / LESSON_FOLDER_VERSION_COLLISION / LESSON_ARCHIVE_STRUCTURE_DRIFT / DRIVE_ARCHIVE_UNVERIFIED`
-
----
-
-## I. 現行參考實例
-
-```text
-V-MAX 教材庫/
-└── 四上康軒國語/
-    └── 02_第二課_放學後/
-        ├── 01_教材整理/
-        ├── 02_逐頁腳本/
-        ├── 03_NotebookLM/
-        ├── 04_角色視覺/
-        ├── 05_簡報成品/
-        └── 06_延伸教材/
-```
-
-若第二課下一次完整重做，建立：
-
-```text
-02_第二課_放學後_01
-```
-
-再下一次：
-
-```text
-02_第二課_放學後_02
-```
+`DRIVE_ARCHIVE_ROOT_DRIFT / DRIVE_STORAGE_LAYER_DRIFT / LESSON_FOLDER_VERSION_COLLISION / LESSON_ARCHIVE_STRUCTURE_DRIFT / BATCH_ARTIFACT_SCATTERED / BATCH_SOURCE_MASTER_MISSING / FOLDER_ALIAS_DUPLICATION / DRIVE_ARCHIVE_UNVERIFIED / UPSTREAM_RECOMPUTE_WITHOUT_NEED`
 
 ---
 
 ## 核心金句
 
-> 同一課可以一直演化，但舊版本不要消失；一課一版本一個資料夾，重做就往 `_01`、`_02` 接著走。
+> 冊別資料集中管理，單課版本獨立演化；批次成果不必為了形式被拆散。
 
-> GitHub 管規則，Drive 管成果；Drive 裡看得到、分類正確、再次驗證成功，才叫真的交付。
+> 有成品就能獨立歸檔，不必為了存檔重跑整課。

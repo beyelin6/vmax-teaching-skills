@@ -110,3 +110,4 @@ Visual Drift Detector 是 Quality Gate 的必要輸入之一。任何 `unresolve
 ## 核心金句
 
 > 一致不是每頁長一樣，而是每頁都像同一位導演拍的、同一個世界裡發生的事。
+

@@ -54,11 +54,14 @@ source:
   source_status:
   source_file:
 state:
+  execution_mode: FULL_GOLDEN_PATH | CHECKPOINT_RESUME
   current_stage:
   last_completed_stage:
   teacher_confirmation_status:
   next_allowed_stage: []
   forbidden_next: []
+  resume_target_skill:
+  resume_from_artifact:
 locked_decisions:
   source_anchor:
   step2_teaching_value:
@@ -75,15 +78,52 @@ language_focus:
     - SHAPE_NEAR
     - POLYPHONIC
   source_characters_complete: true
+artifacts:
+  available: []
+  checkpoints:
+    CP_SOURCE_ANCHOR:
+    CP_TEACHING_ANALYSIS:
+    CP_LESSON_CONTENT_MASTER:
+    CP_PRESTUDY_INPUT:
+    CP_VISUAL_INTENT:
+    CP_SLIDE_SCRIPT:
+    CP_RENDER_READY:
+  latest_by_type: {}
 runtime_rules:
   single_stage_advance: true
   teacher_confirmation_advances_one_stage_only: true
   legacy_stage_aliases_forbidden: true
   model_memory_cannot_override_runtime: true
+  approved_artifacts_are_reusable: true
+  upstream_recompute_without_need_forbidden: true
 notes: []
 ```
 
 `step2_6_idiom_expression` 若本課無需成語處理，應寫入 `N/A_NO_IDIOM`，不得留空後默默跳過。
+
+---
+
+## Artifact / Checkpoint Registry
+
+Runtime State 除了記「跑到哪一站」，也必須記「哪些結果已經可直接再用」。
+
+每一個 checkpoint 至少記錄：
+
+```yaml
+artifact_id:
+artifact_type:
+location:
+approved_status:
+approved_at_stage:
+content_scope:
+upstream_artifacts: []
+downstream_eligible_skills: []
+updated_at:
+```
+
+合法 checkpoint 與執行規則依 `core/governance/modular-checkpoint-execution-policy.md`。
+
+Checkpoint 必須指向實際可讀檔案或 Drive 文件；不得只寫「已完成」而沒有內容位置。
 
 ---
 
@@ -109,6 +149,8 @@ HOLD_2_5 confirmed
 
 ## 啟動與續跑
 
+### FULL_GOLDEN_PATH
+
 1. 先讀 `V-MAX_Runtime_Index`。
 2. 依教師指定課次找到對應 State；若教師說「繼續目前這課」，才使用 Index 的 active lesson。
 3. 讀取該課 `current_stage / next_allowed_stage / locked_decisions / language_focus`。
@@ -116,13 +158,48 @@ HOLD_2_5 confirmed
 5. 每次 HOLD 確認或正式 stage 完成後，回寫該課 Google Drive State。
 6. 必要時同步更新 Runtime Index 的 active lesson 與狀態摘要。
 
+### CHECKPOINT_RESUME
+
+當教師指定某個技能、產物或既有紀錄檔時：
+
+1. 解析 `target_skill / target_artifact / target_lessons`。
+2. 讀取各課 `artifacts.checkpoints / latest_by_type`。
+3. 驗證目標技能的 `minimum_checkpoint / required_fields`。
+4. 若資料齊全，直接執行該技能，不重跑上游。
+5. 若只缺少部分欄位，只補缺少部分。
+6. 新產物完成後新增 artifact registry 紀錄，不得覆蓋原 checkpoint。
+7. 若為多課 batch，各課獨立記錄結果與錯誤；單課失敗不得阻塞其他課。
+
 若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得以 GitHub 範例狀態、模型記憶或舊對話猜測目前進度。
+
+---
+
+## 多課工作狀態
+
+同一次請求可指定多個 lesson_id，例如一次處理 1–6 課預習單。
+
+Batch controller 只保存批次摘要；每一課仍以自己的 Runtime State 為權威。
+
+```yaml
+batch_run:
+  batch_id:
+  target_skill:
+  lessons: []
+  per_lesson_status: {}
+  completed: []
+  incomplete: []
+  failed: []
+```
+
+禁止建立一份共用 Runtime State 覆蓋六課的個別決策。
 
 ---
 
 ## 核心金句
 
-> GitHub 保存規則；Google Drive 保存每一課現在真正跑到哪裡。
+> GitHub 保存規則；Google Drive 保存每一課現在真正跑到哪裡，以及哪些成果已經可以直接再用。
+
+> 一課可以分很多次做；續跑時先找 checkpoint，不重算老師已經確認過的內容。
 
 > 三、四年級生字深教聚焦可以寫進課程 State，但不能讓未聚焦的教材正式生字消失。
 
