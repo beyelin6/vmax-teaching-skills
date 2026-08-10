@@ -1,3 +1,8 @@
+---
+name: lesson-content-master-builder
+description: 將已核准的教材定錨與教學分析整理成可被預習單、短文單、逐頁腳本、NotebookLM 與 Renderer 重複使用的內容母檔。當已有 CP_TEACHING_ANALYSIS 或相容 artifact，且需要建立或批次建立可續作的 CP_LESSON_CONTENT_MASTER 時使用；不得重新分析已核准上游內容。
+---
+
 # V-MAX Lesson Content Master Builder
 
 版本：1.0
