@@ -1,6 +1,6 @@
 # V-MAX Google Drive Lesson Archive Skill
 
-版本：1.0
+版本：1.1
 
 ## 目的
 
@@ -98,7 +98,7 @@ lesson_folder_versioning:
 ### D2. 小修與完整重做的差異
 
 - **完整重做／重新跑 Golden Path／產生另一套完整教材包** → 建立新的版本資料夾。
-- **同一版本中的局部修正**（例如修正一張圖、替換一個 PPTX、補一份學習單）→ 原則上留在同一課版本資料夾內，更新對應檔案；除非教師明確要求保留舊檔成另一版本。
+- **同一版本中的局部修正**（例如修正一張資訊圖表頁、重組 PDF、補一份學習單）→ 原則上留在同一課版本資料夾內，更新對應檔案；除非教師明確要求保留舊檔成另一版本。
 
 若無法判斷是局部修正還是完整重做，優先依教師當下明確語意；不得自行大量複製版本。
 
@@ -147,10 +147,10 @@ lesson_folder_versioning:
 
 ### E5. `05_簡報成品`
 放置：
-- Teaching PPTX
-- Image-first Slide PDF
-- Google Slides（若建立）
-- 最終可投影簡報成品
+- Infographic Teaching PDF（預設正式成品）
+- 依 page_id 排序的單頁 PNG
+- Teaching PPTX／Google Slides（僅教師明確要求時）
+- PDF Preflight／逐頁重渲染驗證結果
 
 ### E6. `06_延伸教材`
 放置：

@@ -101,7 +101,7 @@
 - `core/director/character-deep-teaching-focus-policy.md`
 - `core/director/polyphonic-source-policy.md`
 
-AI 不因易錯、複雜或字源有趣自行增加單一生字詳解；單字額外教學只有教師指定時才進入。
+AI 不因易錯、複雜或字源有趣自行增加單一生字詳解，也不主動列易錯字候選；只有教師指定的易錯字才可加入書寫焦點。
 
 形近字＋多音字主要練習區約 3–5 組為軟性容量，不是硬上限；本課實際只值得 2 組時不得硬湊。
 

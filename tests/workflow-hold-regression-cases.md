@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.6
+# V-MAX Workflow HOLD Regression Cases 1.8
 
 ## 用途
 
@@ -56,12 +56,14 @@ FAIL：只有名稱／定義、沒有生活例句、所有成語固定同一漫�
 ### PASS
 - 教材正式生字全部留在 Source / 基礎識寫層。
 - AI 主動深教只有 `SHAPE_NEAR`、`POLYPHONIC`。
+- `SHAPE_NEAR` 以兩字以上字群比較教學。
 - 一般單字為 `BASIC_LITERACY_ONLY`，不自動獨立成頁。
-- AI 想提醒單字，只能標 `AI_SUGGESTION_SINGLE_CHARACTER`。
-- 只有教師明確指定，才升級 `TEACHER_ADDED_SINGLE_CHARACTER`。
+- AI 不主動列易錯字候選。
+- 只有教師主動指定，才建立 `TEACHER_ADDED_WRITING_FOCUS`。
 
 ### BLOCKER
 - `ERROR_PRONE_WRITING` 成為 AI 自動第三入口。
+- 單一生字頁冒充 `SHAPE_NEAR` 字群教學。
 - 「特殊構形／語義／評量價值」直接讓 AI 建單字頁。
 - 每字固定同規格頁面。
 
@@ -104,6 +106,14 @@ PASS：每課版本固定六類：
 完整重做依 Drive 現況建立 `_01 / _02...`，上傳後再 list/search 驗證。
 FAIL：使用舊 `01_來源主檔 / 02_生成腳本 / 03_角色與視覺資產 / 04_簡報成品 / 05_學習單` 結構。
 
+## W-18｜正式課堂視覺預設為圖文資訊圖表 PDF
+
+PASS：每頁是完整 16:9 圖文資訊頁，依 page_id 組裝成單一 PDF，並將最終 PDF 全頁重渲染檢查。PPTX 未經教師要求時為 `N/A_DEFAULT_FORMAT`。
+
+FAIL：把圖片塞入可修改 PPT 當成預設正式成品、只交單頁圖片未組 PDF、或未檢查最終 PDF 的頁序／裁切／文字。
+
+分類：`PPTX_DEFAULT_DRIFT / INFOGRAPHIC_PDF_MISSING / PDF_RENDER_FAIL`
+
 ---
 
 ## 整體 PASS
@@ -120,6 +130,7 @@ workflow_hold_regression:
   text_embedded_language: PASS
   lesson_visual_map_preserved: PASS
   drive_archive_structure: PASS
+  infographic_pdf_default: PASS
   no_template_drift: PASS
   no_premature_page_lock: PASS
   single_stage_advance: PASS

@@ -1,11 +1,11 @@
 ---
 name: presentation-engine
-description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、Teaching Strategy Profile 與 Output Profile，轉換成可選格式的 NotebookLM 來源、Curated Briefing、教師版／學生版 Markdown、簡報腳本、講者備註、學習單來源與評量來源。不得重新分析教材或修改官方教材知識。
+description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、Teaching Strategy Profile 與 Output Profile，轉換成圖文資訊圖表 PDF、單頁圖檔、NotebookLM 來源、簡報腳本、教師資料、學習單與評量來源。預設正式課堂視覺成品為 16:9 圖文資訊圖表 PDF；PPTX 僅在教師明確要求時選配。不得重新分析教材或修改官方教材知識。
 ---
 
 # Presentation Engine
 
-版本：0.1.0
+版本：0.2.0
 
 ## 使命
 
@@ -22,6 +22,16 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 5. Repository 根目錄 `AGENTS.md`
 6. Style Library、Role Library 與 Layout Library 中當課已核准的設定
 
+生成圖文資訊頁前必讀：
+
+- `core/renderer/image-first-hybrid-renderer.md`
+- `core/visual/visual-grammar.md`
+- `core/visual/bee-visual-language-v1.md`
+- `core/quality/visual-drift-detector.md`
+- `core/export/infographic-pdf-output-contract.md`
+
+若 Teacher Intent 鎖定 `IMAGE_INTEGRATED_VERIFIED_TEXT`、角色基準、背景明度或內容驅動文字載體，Renderer 不得以自己的平台預設覆蓋。
+
 LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生最終輸出。
 
 ## 可選輸出
@@ -36,12 +46,16 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - `student_markdown`
 - `slide_source`
 - `slide_script`
+- `infographic_page_png`
+- `infographic_teaching_pdf`
 - `speaker_notes`
 - `worksheet_source`
 - `assessment_source`
 - `output_manifest`
 
 不得自行產生未被選取的格式。
+
+正式課堂視覺輸出未另行指定時，自動採用 `infographic_page_png + infographic_teaching_pdf`；不得自行改成 PPTX。
 
 ## 核心原則
 
@@ -106,7 +120,7 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - 不建立重複的 `slides` 節點。
 - 確認角色 DNA 變數已正確替換。
 
-## 簡報來源與腳本規則
+## 圖文資訊圖表來源與腳本規則
 
 每張投影片至少記錄：
 
@@ -122,6 +136,14 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - layout_id
 - illustration_requirement
 - answer_visibility
+
+正式渲染與組裝遵循 `core/export/infographic-pdf-output-contract.md`：
+
+- 每頁先形成完整 16:9 圖文資訊圖表，再組裝為單一 PDF。
+- 情境敘事頁以主場景／動作序列承擔理解；知識比較頁以清楚分欄、情境圖與對位欄位承擔比較。
+- 正式教材文字以已核准來源合成並核對，不讓圖片模型猜寫。
+- 教師答案、提示與講稿另存教師用 MD／PDF，不放進學生頁。
+- PPTX 預設不產生，只有教師明確要求時才列入 output manifest。
 
 ### 成語頁
 
@@ -154,9 +176,10 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 4. 執行教師／學生資訊分流。
 5. 執行視覺、角色與版型映射。
 6. 產生選取的輸出格式。
-7. 產生 `output-manifest.md`。
-8. 執行輸出驗證。
-9. 狀態設為 `ready_for_teacher_review`，停止等待教師確認。
+7. 若產生正式課堂視覺，將單頁 PNG 組裝成 PDF，並將最終 PDF 全頁重渲染檢查。
+8. 產生 `output-manifest.md`。
+9. 執行輸出驗證。
+10. 狀態設為 `ready_for_teacher_review`，停止等待教師確認。
 
 ## 輸出驗證
 
@@ -173,6 +196,8 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - 無未替換角色變數
 - 插圖需求符合教材句意
 - 未混入其他課次內容
+- 最終圖文資訊圖表 PDF 頁數、頁序、裁切、清晰度與文字正確
+- 未在教師未要求時把 PPTX 當成必要交付物
 
 ## 完成條件
 

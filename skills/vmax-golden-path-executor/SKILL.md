@@ -1,6 +1,6 @@
 # V-MAX Golden Path Executor
 
-版本：1.2
+版本：1.6
 
 ## 目的
 
@@ -49,11 +49,14 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Scenario Wrapper
 → Character Topology / Cast
 → Knowledge Lab 正式編排
-→ Visual Grammar / Slide Architecture
+→ Visual Grammar
+→ Gold Page Pattern
+→ Slide Architecture / Visual Sequence
 → 頁數估算／頁數帳本
 → Style Recipe
 → 代表頁驗證
-→ 全量 Renderer
+→ 全量圖文資訊圖表 Renderer
+→ PDF 組裝與逐頁 Preflight
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery Gate
@@ -113,9 +116,12 @@ STEP 2.5 必須同時載入：
 
 - AI 主動深教只有 `SHAPE_NEAR` 與 `POLYPHONIC`。
 - 一般單字預設 `BASIC_LITERACY_ONLY`。
-- 單一生字詳解只有教師明確指定後，才能成為 `TEACHER_ADDED_SINGLE_CHARACTER`。
+- 形近字必須以兩字以上的字群比較教學，不得以單字頁冒充 `SHAPE_NEAR`。
+- 容易搞錯的單字只有教師依班級需求主動指定後，才能成為 `TEACHER_ADDED_WRITING_FOCUS`。
+- 教師指定後只處理實際混淆焦點，例如易漏／多寫筆畫、部件位置與比例、局部字形看錯／寫錯、必要筆順或其他已觀察到的辨認／書寫混淆點；不得擴張成完整單字百科頁。
+- 若真正需要的是形近字比較或多音語境，仍回到 `SHAPE_NEAR` / `POLYPHONIC`。
 - 「容易寫錯／字形複雜／字源有趣／評量重要／語義特殊」都不能成為 AI 自動建立單字頁的第三入口。
-- AI 最多只能提示 `AI_SUGGESTION_SINGLE_CHARACTER`，不得自動成頁。
+- AI 不主動列易錯字候選；其餘生字不特別提出教學。
 
 ### 多音字合法來源
 
@@ -128,7 +134,7 @@ STEP 2.5 必須同時載入：
 
 ### 學生可見字群頁
 
-- 形近字：大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示。
+- 形近字：字群同框，大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示。
 - 多音字：同一大字＋不同讀音＋語意／情境＋例詞／例句＋回到課文判斷。
 
 完成後顯示 `HOLD 2.5`。
@@ -182,11 +188,44 @@ STEP 2.5 必須同時載入：
 
 ---
 
+## H2. Gold Page Pattern Guard｜Visual Grammar 不能只停在 metadata
+
+進入代表頁驗證與全量 Renderer 前，必須載入：
+
+- `core/visual/visual-grammar.md`
+- `core/visual/gold-page-pattern-library.md`
+- `docs/quality/BEE_QUALITY_BENCHMARK_1.0.md`
+
+每張正式學生頁至少記錄：
+- `primary_grammar`
+- `primary_pattern`
+- `first_focus`
+- `discovery_relation`
+- `visual_evidence`
+- `text_integration_plan`
+
+規則：
+- Visual Grammar 回答「要看懂哪種認知關係」；Gold Pattern 回答「這個關係在學生眼前怎麼發生」。
+- 不得跳過 Gold Pattern，直接把比較、動作、證據、結構翻成左文右圖、大白框、三欄資料卡。
+- 代表頁先通過 Gold Page Gate 才能全量渲染；代表頁不過，不得靠批量生成期待後面變好。
+- Lesson Visual Map 若啟用，優先以 `WORLD_MAP` 或其他能承載真實文本關係的 Pattern 呈現，不得用矩形＋箭頭冒充整課圖像地圖。
+- 形近字優先 `CHARACTER_MEANING_FIELD`；多音字通常 `DUAL_WORLD_COMPARE`；動作／事件過程通常 `SEQUENCE_DISCOVERY`；閱讀證據通常 `EVIDENCE_DISCOVERY`。
+- Theme 負責世界一致；Pattern 負責教學變化。不得因風格一致而讓整課頁型一致。
+
+若出現以下任一情況，代表頁或全量輸出不得 PASS：
+`TEMPLATE_CARD_DRIFT / LEFT_TEXT_RIGHT_IMAGE_DRIFT / VISUAL_EVIDENCE_MISSING / DISCOVERY_PREEMPTED / GOLD_PATTERN_DROPPED`
+
+---
+
 ## I. Delivery / Drive Guard
 
 交付必須同時載入：
 - `skills/lesson-package-delivery/SKILL.md`
 - `skills/google-drive-lesson-archive/SKILL.md`
+- `core/export/infographic-pdf-output-contract.md`
+- `core/visual/gold-page-pattern-library.md`
+
+正式課堂視覺成品預設為 16:9 圖文資訊圖表 PDF。不得在教師未要求時把可修改圖片式 PPTX 當成必要交付；最終 PDF 必須全頁重渲染檢查後才可 PASS。
 
 Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
@@ -210,6 +249,9 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 - 認讀字只靠「無方格」判定
 - 已選定整課圖像心智地圖卻在大綱消失
 - Drive 仍使用舊五類資料夾結構
+- Visual Grammar 只存在 metadata，Renderer 未落實認知關係
+- 連續出現固定左圖右文／大框文字／資料卡模板
+- 圖片拿掉仍完全不影響理解
 
 ---
 
@@ -217,6 +259,6 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 > AI 做重判斷，老師只改例外；一次確認只走一站。
 
-> 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
-
 > 規格寫了不算載入；Executor 必須真的把當前 canonical policy 帶進實跑。
+
+> 內容正確只是底線；Gold Pattern 要把理解變成學生眼睛能直接看到的教學事件。

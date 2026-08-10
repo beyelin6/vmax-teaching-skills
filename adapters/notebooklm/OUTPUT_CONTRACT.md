@@ -1,12 +1,12 @@
 # NotebookLM Output Contract
 
-版本：0.2.0（開學可用版）
+版本：0.3.0（Infographic PDF 版）
 
 ## 定位
 
 NotebookLM 是 V-MAX 的渲染器之一，主要負責：
 
-- 圖片式教學簡報
+- 圖文資訊圖表單頁生成，供組裝正式教學 PDF
 - Podcast 式課文導讀
 - 語文知識音訊
 - 寫作教練音訊
@@ -29,7 +29,7 @@ V-MAX 早期曾直接由 AI 生成簡報，但當時常出現：
 
 > 先保證教學內容與視覺規格正確，再交給當下最擅長呈現的渲染器。
 
-NotebookLM 是目前偏好的圖片式簡報與 Podcast Renderer，但未來可被其他具備更佳視覺一致性、排版、美感或音訊能力的平台替換。
+NotebookLM 可作為圖文資訊頁與 Podcast Renderer，但最終正式課堂視覺成品依 `core/export/infographic-pdf-output-contract.md` 組裝與驗證為 PDF；未來仍可替換其他 Renderer。
 
 ## Renderer-Agnostic Pipeline
 
@@ -49,7 +49,7 @@ Renderer Adapter
         ├─ Canva
         └─ Future Renderer
         ↓
-Rendered Presentation / Audio
+Infographic Pages → Verified PDF / Audio
 ```
 
 Core 層不得依賴 NotebookLM 專屬語法。NotebookLM 特有操作、限制與提示規則只存在本 Adapter。
@@ -65,9 +65,11 @@ Core 層不得依賴 NotebookLM 專屬語法。NotebookLM 特有操作、限制�
 5. `slide-script.md`：逐頁教學目的、學生可見文字、圖片意圖與講者備註。
 6. `output-manifest.md`：來源版本與輸出追溯。
 
-## 圖片式簡報規則
+## 圖文資訊圖表 PDF 規則
 
-- 最終頁面可以不可逐項編輯。
+- 最終頁面不要求逐項編輯；可修改性留在來源、腳本、Visual YAML 與單頁圖檔。
+- 每頁輸出完整 16:9 圖文資訊圖表，依 page_id 組裝成單一正式 PDF。
+- 不製作「圖片塞入可修改 PPT」作為預設成品；PPTX 只有教師明確要求才產生。
 - 內容來源必須可修改並保留版本。
 - 一頁只處理一個主要學習焦點。
 - 每頁需有明確視覺焦點；插圖應服務理解。
@@ -75,6 +77,7 @@ Core 層不得依賴 NotebookLM 專屬語法。NotebookLM 特有操作、限制�
 - 官方教材、Bee 老師補充與學習延伸必須清楚區分。
 - 長課文只擷取當頁需要的關鍵句，不以縮小字體塞滿頁面。
 - 不得為湊頁數反向改變 Teaching Flow。
+- PDF 組裝後必須全頁重渲染，檢查頁序、裁切、模糊、中文字、注音與答案外洩。
 
 ## 引導者規則
 
@@ -183,7 +186,7 @@ Podcast 不逐字朗讀整份簡報，而應補充聽覺理解、想像、口語
 3. 中文文字正確率
 4. 角色一致性
 5. 長簡報整套一致性
-6. 圖片式簡報品質
+6. 圖文資訊圖表與最終 PDF 品質
 7. 音訊／Podcast 品質
 8. 局部重生成能力
 9. 成本與處理時間
