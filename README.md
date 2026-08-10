@@ -20,3 +20,4 @@ V-MAX 國語教材轉錄、課程設計、NotebookLM 與簡報生成技能庫。
 - Role Library
 - `vmax-chinese-short-writing-worksheet`：依課文語詞、句型、修辭與學習目標製作課後短文學習單，含四年級舒適書寫格線規則。
 - `vmax-chinese-preview-worksheet`：製作 A4 橫式國語課前預習單，含清楚框線／自由手繪雙版本、印刷安全邊界、局部修字保版與正式輸出前逐字線性比對。
+- `vmax-typography-bridge`：V-MAX 共用字體橋接技能。依視覺風格自動推薦 H1／H2／正文／角色字形 DNA，生成 AI 圖像中文字體描述並映射 Canva 可編輯繁中字型；含學生教材可讀性 Safety Lock 與單頁字型預算規則。
