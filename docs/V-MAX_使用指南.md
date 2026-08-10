@@ -1,10 +1,10 @@
 # V-MAX 使用指南｜中文指令優先 × 中英對照
 
-版本：1.2
+版本：1.3
 
 ## 目的
 
-這份指南提供教師以自然中文操作 V-MAX，不要求記住工程化 checkpoint 名稱。英文／代碼只作系統對照，方便跨 ChatGPT、Codex、NotebookLM、GitHub 與其他 Renderer 共用。
+這份指南讓教師以自然中文操作 V-MAX，不要求記住工程化 checkpoint 名稱。英文／代碼只作系統對照，方便跨 ChatGPT、Codex、NotebookLM、GitHub 與其他 Renderer 共用。
 
 核心原則：
 
@@ -56,37 +56,27 @@
 
 ---
 
-## 3. 最常用中文指令
+## 3. 常用中文指令
 
 ### 做六課預習單
 > 請用之前分析好的第一到第六課資料，批次製作六份 A4 橫式預習單，不要重新分析教材。
 
-系統對應：`CHECKPOINT_RESUME → CP_PRESTUDY_INPUT / CP_LESSON_CONTENT_MASTER → prestudy-worksheet`
+系統對應：`CHECKPOINT_RESUME → 各課 CP_PRESTUDY_INPUT / CP_LESSON_CONTENT_MASTER → prestudy worksheet → 逐課渲染驗證 → 冊別 Batch Artifact`
 
 ### 做短文單
 > 請用第二課整理好的教材主檔直接製作課後短文 Bonus 學習單，不重跑上游分析。
 
-系統對應：`CP_LESSON_CONTENT_MASTER → postlesson-short-writing-worksheet`
-
 ### 做逐頁腳本
 > 請用第一課已確認的分析主檔建立逐頁腳本。
-
-系統對應：`CP_LESSON_CONTENT_MASTER → CP_SLIDE_SCRIPT`
 
 ### 做 NotebookLM / Renderer MD
 > 請用第一課已確認的逐頁腳本，直接整理成 NotebookLM 與 Renderer 可用的詳細 MD。
 
-系統對應：`CP_SLIDE_SCRIPT → NOTEBOOKLM_RENDERER_MD / RENDERER_DETAILED_SCRIPT_MD`
-
 ### 做圖片式簡報 PDF
 > 請用第三課已準備好的簡報生成資料，直接製作圖片式教學 PDF。
 
-系統對應：`CP_RENDER_READY → INFOGRAPHIC_PDF`
-
 ### 停在某一步
 > 今天先做到教材主檔，保存 checkpoint，下次繼續。
-
-或：
 
 > 今天先做到逐頁腳本，先不要產正式簡報。
 
@@ -110,6 +100,8 @@ V-MAX 支援同一技能跨多課批次執行。
 - 一課缺資料，不阻塞其他課。
 - 不得跨課混用生字、多音字、閱讀題、答案或 Teacher Intent。
 - 可共用技能規則、版面家族與教師明確指定的跨課偏好。
+- 一次可以下六課任務，但正式圖像採逐課渲染、逐課驗證。
+- 已確認的內容、角色、版本模式不重複詢問；只有缺少必要資料的課才停等。
 
 ---
 
@@ -135,19 +127,7 @@ V-MAX 支援同一技能跨多課批次執行。
 
 ---
 
-## 7. 最簡單的三句話
-
-> **從頭完整做……** → Golden Path
-
-> **用之前做好的資料，直接做……** → Checkpoint Resume
-
-> **今天先做到……，存起來下次接著做。** → Save Checkpoint
-
----
-
-## 8. 中文別名解析規則
-
-系統必須接受以下自然中文，不要求教師輸入英文代碼：
+## 7. 中文別名解析
 
 ```yaml
 checkpoint_aliases:
@@ -164,67 +144,86 @@ checkpoint_aliases:
 
 ---
 
-## 9. 在哪裡可以跑｜Platform Roles
-
-V-MAX 不綁單一 AI。只要平台能讀取所需 artifact 並具備目標技能需要的工具，就可以從合法 checkpoint 接續。
+## 8. 在哪裡可以跑｜Platform Roles
 
 ### ChatGPT｜主要互動工作台
-適合：
-- 教材分析與 Golden Path 對話
-- Checkpoint Resume
-- 批次製作預習單／短文單
-- 逐頁腳本與 NotebookLM MD
-- 圖片／PDF 生成與檢查（工具可用時）
-- 讀寫 Google Drive、維護 GitHub 規格（連接器可用時）
-
-常用中文：
-> 「讀取第一到第六課分析好的資料，直接做六份預習單。」
-
-> 「從第二課教材主檔繼續，不要重跑分析。」
+適合教材分析、Checkpoint Resume、批次學習單、逐頁腳本、NotebookLM MD、圖片／PDF 生成與 Drive/GitHub 操作（工具可用時）。
 
 ### Codex｜規格、程式與大量檔案維護
-適合：
-- GitHub skill / policy / registry 維護
-- Renderer、驗證器、批次腳本等程式工作
-- 大量 repository 檔案一致性修改
-- 依 checkpoint / Source Master 建立可執行產出流程
+適合 GitHub skill / policy / registry、Renderer、驗證器、批次腳本與 repository 一致性修改。
 
-Codex 不應因自己方便而重新解讀已核准教材內容；已確認的 Teacher Intent 與 checkpoint 仍是上游權威。
+### NotebookLM｜來源導向生成
+適合匯入已核准 Source MD / Instruction MD 後做來源導向圖文生成；不取代 V-MAX canonical 教學判斷。
 
-### NotebookLM｜來源導向的圖文生成／研究工作台
-適合：
-- 匯入 `NOTEBOOKLM_SOURCE_MD`
-- 搭配 `NOTEBOOKLM_INSTRUCTION_MD`
-- 依已核准內容產生圖文簡報或整理來源
-
-NotebookLM 不作為 V-MAX canonical 教學判斷來源；若輸出回到 V-MAX，仍須通過文字真值、Gold Pattern 與 Quality Gate 檢查。
-
-### Google Drive｜跨裝置工作台與成果權威位置
-負責保存教師跨電腦／手機需要查找、續作、下載或重用的 checkpoint、腳本、角色資產、學習單、PDF 與操作指南。
+### Google Drive｜跨裝置工作台
+保存教師跨電腦／手機需要查找、續作、下載或重用的 checkpoint、腳本、角色資產、學習單、PDF 與指南。
 
 ### GitHub｜系統規格權威
-保存 skill、policy、schema、registry、adapter、quality rule 與使用指南來源版本；不取代 Google Drive 的教師工作成果庫。
-
-平台分工一句話：
+保存 skill、policy、schema、registry、adapter、quality rule 與指南來源版本；不取代 Google Drive 的工作成果庫。
 
 > **ChatGPT / Codex 負責執行；NotebookLM 負責來源導向生成；Google Drive 負責帶著走；GitHub 負責規則。**
 
-若某平台當下無法讀取需要的 checkpoint 或缺少必要工具，應改用可讀取相同 Drive artifact 的另一執行端，而不是重算上游分析。
-
 ---
 
-## 10. Google Drive 跨裝置保存
+## 9. Google Drive canonical 分層
 
-教師會需要在不同電腦、手機或不同 AI 平台查找、續作、下載或重用的成果，都必須有 Google Drive 可搜尋副本。
-
-全域操作文件固定放在：
+權威：`core/governance/google-drive-storage-architecture.md`。
 
 ```text
 V-MAX 教材庫/
-└── 00_使用指南與系統文件/
+├── 00_系統與數據管理/
+│   ├── 00_使用指南與系統文件/
+│   ├── 00_Runtime_State/
+│   └── 國語文教材轉錄數據/
+│
+├── 主體架構/
+│
+└── 01_國語教學資源/
+    ├── V-MAX國語教學簡報/
+    └── 四上康軒國語/
+        ├── 00_教材鎖定主檔/
+        ├── 原始教材手冊/
+        ├── 01-06課_預習單規劃/
+        ├── 01-06課_課後短文學習單/
+        └── 03_分課教學簡報與教材/
 ```
 
-單課 checkpoint 與成品則依課程版本資料夾保存於：
+### 9.1 `00_系統與數據管理`
+放系統設定、Runtime、使用指南與教材轉錄數據，不放單課成品。
+
+### 9.2 `主體架構`
+定義為跨課、跨冊可重用的教學／視覺資產層，例如：
+- recurring Character DNA
+- Canva 中文字型庫與後製修字規則
+- 視覺語言
+- Gold Page / Layout Reference
+- 共用教學框架
+
+一個角色／素材若尚未被教師確認為跨課重用，不自動升級到此層。
+
+### 9.3 冊別共用層
+`00_教材鎖定主檔` 是冊別權威資料來源；`原始教材手冊` 保存原始 PDF／來源文件。
+
+`00_教材鎖定主檔` 不等於單課版本的 `01_教材整理`：前者是冊別資料庫，後者是某次 Golden Path／Checkpoint Resume 的版本化工作資料。
+
+### 9.4 冊別 Batch Artifact
+跨多課的同系列教材集中保存，例如：
+- `01-06課_預習單規劃`
+- `01-06課_課後短文學習單`
+
+最低建議：
+
+```text
+{批次教材}/
+├── 單課PNG/
+├── 合併PDF/
+└── 內容確認主檔.md
+```
+
+跨課正式實體檔不必重複塞進每課 `06_延伸教材`；單課 Lesson Package 可保存 reference / artifact pointer。
+
+### 9.5 分課 Lesson Package
+真正屬於單課版本的成果放：
 
 ```text
 01_教材整理
@@ -235,21 +234,56 @@ V-MAX 教材庫/
 06_延伸教材
 ```
 
-需要保存的包含：教材分析、教材主檔、預習單資料包、視覺意圖、逐頁腳本、Render Ready、預習單／短文單、NotebookLM MD、角色資產、單頁圖片、正式 PDF 與其他可續作成果。
+---
 
-純暫時 scratch 或可重算 cache 不必強制保存。
+## 10. 預習單雙版本資料夾 alias
 
-老師說「今天先到這裡」時，除了建立 checkpoint，也必須確認其 Drive persistence；只存在聊天或暫存區不算跨裝置保存完成。
+正式模式：
+- A｜清楚框線版
+- B｜自由手繪版
 
-對使用指南與速查表等唯一現行文件，更新時優先更新既有 Drive 文件，不建立大量同名副本；版本歷史由 Google Drive revision history 保留。
+Drive 可接受：
 
-權威：`core/governance/google-drive-portable-artifact-policy.md`。
+```yaml
+A_CLEAR_FRAME:
+  accepted_drive_aliases: [一般版, 標準版, 清楚框線版]
+B_FREEHAND:
+  accepted_drive_aliases: [自由手繪版]
+```
+
+找到合法 alias 就沿用，不因名稱不同另建重複資料夾。
 
 ---
 
-## 11. 文件維護規則
+## 11. Google Drive 跨裝置保存
 
-本指南不是靜態說明文件。以下任一項發生 canonical 變更時，必須同步更新本指南、中文速查表與 Google Drive 現行副本：
+教師會需要查找、續作、下載或重用的成果，都必須有 Drive 可搜尋副本。
+
+老師說「今天先到這裡」時，除了建立 checkpoint，也必須確認 Drive persistence；只存在聊天或暫存區不算完成。
+
+對預習單、短文單等系列教材，應保存：
+
+> **內容確認主檔 + 單課成品 + 合併成品**
+
+不要只保存最後 PDF。
+
+若 Drive 現況已符合教師工作需求、只是 GitHub 規格較舊，優先更新 GitHub，不為名稱一致大量搬動現有檔案。
+
+---
+
+## 12. 最簡單的三句話
+
+> **從頭完整做……** → Golden Path
+
+> **用之前做好的資料，直接做……** → Checkpoint Resume
+
+> **今天先做到……，存起來下次接著做。** → Save Checkpoint + Drive Persistence
+
+---
+
+## 13. 文件維護規則
+
+以下任一項發生 canonical 變更時，必須同步更新本指南、中文速查表與 Google Drive 現行副本：
 
 - checkpoint 名稱、用途或 schema
 - `skill_io_contract`
@@ -258,9 +292,9 @@ V-MAX 教材庫/
 - Golden Path 與 Checkpoint Resume 的交界
 - 常用輸出格式
 - 使用者可用的中文別名
-- 需要教師確認的合法 HOLD
-- Google Drive 歸檔位置或跨裝置續作規則
-- ChatGPT / Codex / NotebookLM / Google Drive / GitHub 的平台角色與執行邊界
+- 合法 HOLD
+- 平台角色
+- Google Drive 分層、Batch Artifact 或 alias 規則
 
 若系統規格已更新但指南未同步，標記：`USER_GUIDE_STALE`；若 GitHub 已更新而 Drive 指南仍舊，標記：`USER_GUIDE_DRIVE_STALE`。
 
@@ -269,6 +303,7 @@ V-MAX 教材庫/
 - `core/governance/modular-checkpoint-execution-policy.md`
 - `core/governance/skill-io-registry.md`
 - `core/governance/google-drive-portable-artifact-policy.md`
+- `core/governance/google-drive-storage-architecture.md`
 - `skills/vmax-checkpoint-resume/SKILL.md`
 
 ---
@@ -280,3 +315,5 @@ V-MAX 教材庫/
 > 一課可以分很多天做，技能可以跳著用、批次用、局部重做；已確認的資料要能一直重用。
 
 > 保存不是模型記得，而是 Drive 找得到。
+
+> 冊別資料集中管理，單課版本獨立演化；批次成果不必為了形式被拆散。
