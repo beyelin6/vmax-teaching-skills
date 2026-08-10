@@ -5,11 +5,11 @@ description: 依已核准的 V-MAX 教材分析或預習單資料包，選擇臺
 
 # V-MAX Pre-study Worksheet Skill
 
-版本：1.2
+版本：1.3
 
 ## 目的
 
-本技能定義 V-MAX 國語課前預習單的**內容選擇、教學任務與資料骨架**。正式 A／B 雙版本視覺渲染由 `vmax-chinese-preview-worksheet` 專用輸出技能承接；本技能不與 Renderer 重複決定視覺模式。
+本技能定義 V-MAX 國語課前預習單的**內容選擇、教學任務與資料骨架**。正式 A／B 雙版本視覺渲染由 `vmax-chinese-preview-worksheet` 專用輸出技能承接；本技能不與 Renderer 重複決定視覺模式，也不產生正式 PNG／PDF 視覺成品。
 
 核心定位：
 
@@ -42,12 +42,13 @@ skill_io_contract:
     - prior_same_volume_items
   produces_artifacts:
     - PRESTUDY_WORKSHEET_SOURCE
-    - PRESTUDY_WORKSHEET_OUTPUT
     - PRESTUDY_TEACHER_KEY
   downstream_render_skill: vmax-chinese-preview-worksheet
   batch_capable: true
   may_recompute_upstream: false
 ```
+
+`PRESTUDY_WORKSHEET_SOURCE` 是正式 Renderer 的唯一內容輸入；本技能不得自行產生 `PRESTUDY_WORKSHEET_PNG / PRESTUDY_WORKSHEET_PDF`，也不再維護第二個 `PRESTUDY_WORKSHEET_OUTPUT` 名稱。
 
 若取得的是較高階相容 artifact，只抽取本技能 required_fields，不重做上游分析。
 
@@ -215,28 +216,34 @@ AI 不因易錯、複雜或字源有趣自行增加單一生字詳解，也不�
 ## H. 最低輸出資料
 
 ```yaml
-prestudy_worksheet:
-  format: A4_LANDSCAPE
-  use: PREVIEW_PLUS_REVIEW
-  title:
+prestudy_worksheet_source:
+  artifact_type: PRESTUDY_WORKSHEET_SOURCE
   lesson_id:
-  module_selection: []
-  language_items:
-    shape_near: []
-    polyphonic: []
-  reading_tasks: []
-  open_thinking_task:
-  student_visible_answers: false
-  teacher_key_separate: true
-  writing_space_priority: HIGH
-  visual_density: LOW_TO_MEDIUM
-  typography:
-    min_student_visible_pt: 12
-    body_recommended_pt: 12-14+
-    section_heading_recommended_pt: 14-18+
-    title_recommended_pt: 20+
-    shrink_below_minimum: false
-  theme_assets: []
+  lesson_title:
+  approved_worksheet_content:
+  source_provenance:
+  teacher_approved: true
+  upstream_artifacts: []
+  content:
+    format: A4_LANDSCAPE
+    use: PREVIEW_PLUS_REVIEW
+    module_selection: []
+    language_items:
+      shape_near: []
+      polyphonic: []
+    reading_tasks: []
+    open_thinking_task:
+    student_visible_answers: false
+    teacher_key_separate: true
+    writing_space_priority: HIGH
+    visual_density: LOW_TO_MEDIUM
+    typography:
+      min_student_visible_pt: 12
+      body_recommended_pt: 12-14+
+      section_heading_recommended_pt: 14-18+
+      title_recommended_pt: 20+
+      shrink_below_minimum: false
+    theme_assets: []
 ```
 
 ---
@@ -256,8 +263,9 @@ prestudy_worksheet:
 - 裝飾／角色占掉學生操作區。
 - 學生版出現答案。
 - Batch Mode 中不同課資料互相污染。
+- 內容層自行產生正式視覺 PNG／PDF，或維護第二套 `PRESTUDY_WORKSHEET_OUTPUT`。
 
-分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / BATCH_CROSS_LESSON_CONTAMINATION`
+分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / BATCH_CROSS_LESSON_CONTAMINATION / PRESTUDY_LAYER_BOUNDARY_DRIFT`
 
 ---
 

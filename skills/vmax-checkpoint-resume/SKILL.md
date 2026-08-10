@@ -1,6 +1,11 @@
+---
+name: vmax-checkpoint-resume
+description: 依 V-MAX 已核准的 checkpoint / portable artifact 直接續跑、跳接、局部重做或跨課批次執行目標 Skill；優先重用既有成果，不重算上游。Use when the user asks to從之前資料繼續、只做某個技能、批次處理多課、局部重做或今天先停在某個 checkpoint。
+---
+
 # V-MAX Checkpoint Resume Executor
 
-版本：1.1
+版本：1.2
 
 ## 目的
 
@@ -13,6 +18,30 @@
 > 先找可重用資料，再決定還需要做什麼。
 
 > 已核准的判斷不重算；AI 使用量留給新的工作。
+
+## Skill I/O Contract
+
+```yaml
+skill_io_contract:
+  can_run_standalone: true
+  minimum_checkpoint: ANY_COMPATIBLE_REGISTERED_ARTIFACT
+  accepted_artifacts:
+    - ANY_ARTIFACT_REGISTERED_IN_SKILL_IO_REGISTRY
+  required_fields:
+    - target_skill_or_output
+  optional_fields:
+    - target_lessons
+    - supplied_artifacts
+    - preferred_checkpoint
+    - batch_mode
+  produces_artifacts:
+    - TARGET_SKILL_OUTPUTS
+    - CHECKPOINT_RESUME_REPORT
+  batch_capable: true
+  may_recompute_upstream: false
+```
+
+本技能是 router / executor，不自行發明新的教材內容 artifact type；`TARGET_SKILL_OUTPUTS` 必須以 `skill-io-registry.md` 與目標 Skill 自身 contract 為準。
 
 ---
 
@@ -113,9 +142,10 @@ batch_run:
 L1 CP_PRESTUDY_INPUT ─┐
 L2 CP_PRESTUDY_INPUT ─┤
 L3 CP_PRESTUDY_INPUT ─┤
-L4 CP_PRESTUDY_INPUT ─┼→ prestudy-worksheet → 六份獨立產物
-L5 CP_PRESTUDY_INPUT ─┤
-L6 CP_PRESTUDY_INPUT ─┘
+L4 CP_PRESTUDY_INPUT ─┼→ prestudy-worksheet → PRESTUDY_WORKSHEET_SOURCE（逐課）
+L5 CP_PRESTUDY_INPUT ─┤                                   ↓
+L6 CP_PRESTUDY_INPUT ─┘                    vmax-chinese-preview-worksheet
+                                                   → PNG / PDF / validation
 ```
 
 如果 L4 缺 `reading_task_source`：L1/L2/L3/L5/L6 照常完成；L4 標記 `CHECKPOINT_REQUIRED_FIELD_MISSING`，只補 L4 後再跑 L4。
@@ -139,7 +169,7 @@ L6 CP_PRESTUDY_INPUT ─┘
 
 ## H. Partial Rerun
 
-- 預習單某一題 → 只重做該題與受影響版面。
+- 預習單某一題 → 回內容層只重做該題；若只改視覺則直接從 `PRESTUDY_WORKSHEET_SOURCE` 重跑 Renderer。
 - 簡報某幾頁 → 讀 `CP_SLIDE_SCRIPT / CP_RENDER_READY`，只重做受影響頁。
 - 角色換圖 → 保留內容與 Gold Pattern，只重做角色／受影響頁。
 - 成語規則更新 → 只重算受該規則影響的內容，除非教師要求整課重跑。
@@ -157,6 +187,7 @@ L6 CP_PRESTUDY_INPUT ─┘
 3. 寫回該課 Runtime checkpoint registry。
 4. Batch 模式更新 per-lesson status。
 5. 清楚標示哪些課完成、哪些待補資料。
+6. 平台缺少 Drive / GitHub / image / code capability 時，必須標記 fallback / pending / blocked，不得偽稱完成。
 
 ---
 

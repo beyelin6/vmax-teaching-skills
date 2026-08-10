@@ -1,6 +1,11 @@
+---
+name: google-drive-lesson-archive
+description: 將已完成或已核准的 V-MAX checkpoint、批次教材、學習單、簡報與其他成果依 canonical Drive 分層規則歸檔，並在寫入後重新查詢驗證。支援單課與冊別 Batch Artifact，不為歸檔重算上游；當使用者要求保存、同步、更新或整理 V-MAX Google Drive 教材庫時使用。
+---
+
 # V-MAX Google Drive Lesson Archive Skill
 
-版本：1.3
+版本：1.4
 
 ## 目的
 
@@ -27,7 +32,11 @@ skill_io_contract:
     - CP_PRESTUDY_INPUT
     - CP_SLIDE_SCRIPT
     - CP_RENDER_READY
-    - PRESTUDY_WORKSHEET_OUTPUT
+    - PRESTUDY_WORKSHEET_SOURCE
+    - PRESTUDY_WORKSHEET_PNG
+    - PRESTUDY_WORKSHEET_PDF
+    - PRESTUDY_RENDER_VALIDATION
+    - POSTLESSON_WRITING_WORKSHEET_SOURCE
     - POSTLESSON_WRITING_WORKSHEET_OUTPUT
     - NOTEBOOKLM_SOURCE_MD
     - NOTEBOOKLM_INSTRUCTION_MD
@@ -52,15 +61,22 @@ skill_io_contract:
 
 ---
 
-## A. 固定教材庫根目錄
+## A. 教材庫根目錄解析
 
 ```yaml
 google_drive_archive_root:
-  title: V-MAX 教材庫
-  folder_id: 1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
+  canonical_title: V-MAX 教材庫
+  folder_id_source: PROJECT_RUNTIME_OR_LIVE_DRIVE_LOOKUP
+  hardcode_folder_id_in_skill: false
 ```
 
-不得另建第二個同名教材庫。
+執行時依序：
+1. 若 project/runtime artifact 已有已驗證 root folder ID，使用該 ID。
+2. 否則以當前帳號／Drive 搜尋 `V-MAX 教材庫`，確認唯一且正確的教材庫後回寫 runtime。
+3. 若同名多個且無法從 provenance 判斷，不自行猜測，標記 `DRIVE_ARCHIVE_ROOT_AMBIGUOUS`。
+4. canonical Skill 不保存特定帳號、學期、冊別或實際 Drive folder/file ID。
+
+不得因名稱相同就任意另建第二個教材庫，也不得跨帳號沿用舊 runtime ID。
 
 ---
 
@@ -183,12 +199,12 @@ folder_aliases:
 
 1. 讀 `google-drive-storage-architecture.md`。
 2. 判斷 artifact scope。
-3. 讀 Drive 現況，不靠記憶猜資料夾或 ID。
+3. 解析當前 Drive root；不靠記憶猜資料夾或 ID。
 4. 找既有 canonical folder 或合法 alias。
 5. 只上傳本次指定 artifacts。
 6. Source + Output 系列教材必須同時檢查內容主檔是否存在。
 7. 再次 list/search/get metadata 驗證。
-8. 寫出 `DRIVE_ARCHIVE_REPORT`。
+8. 寫出 `DRIVE_ARCHIVE_REPORT`，並把本次實際 folder/file IDs 存入 project/runtime artifact，而不是 canonical Skill。
 
 不得只建立空資料夾就宣告完成。
 
@@ -207,6 +223,7 @@ folder_aliases:
 
 - 不得覆蓋舊完整課程版本。
 - 不得靠模型記憶猜版本號或資料夾 ID。
+- 不得把實際 Drive folder/file ID 寫死進 canonical Skill。
 - 不得把冊別 Batch Artifact 強制拆散到各課。
 - 不得同時建立「一般版」與「清楚框線版」兩個同義資料夾。
 - 不得只留 PNG / PDF 卻遺失可續作內容主檔。
@@ -214,7 +231,7 @@ folder_aliases:
 - 不得因歸檔需求重新分析教材。
 
 失敗分類：
-`DRIVE_ARCHIVE_ROOT_DRIFT / DRIVE_STORAGE_LAYER_DRIFT / LESSON_FOLDER_VERSION_COLLISION / LESSON_ARCHIVE_STRUCTURE_DRIFT / BATCH_ARTIFACT_SCATTERED / BATCH_SOURCE_MASTER_MISSING / FOLDER_ALIAS_DUPLICATION / DRIVE_ARCHIVE_UNVERIFIED / UPSTREAM_RECOMPUTE_WITHOUT_NEED`
+`DRIVE_ARCHIVE_ROOT_DRIFT / DRIVE_ARCHIVE_ROOT_AMBIGUOUS / DRIVE_STORAGE_LAYER_DRIFT / LESSON_FOLDER_VERSION_COLLISION / LESSON_ARCHIVE_STRUCTURE_DRIFT / BATCH_ARTIFACT_SCATTERED / BATCH_SOURCE_MASTER_MISSING / FOLDER_ALIAS_DUPLICATION / DRIVE_ARCHIVE_UNVERIFIED / DRIVE_ID_HARDCODED / UPSTREAM_RECOMPUTE_WITHOUT_NEED`
 
 ---
 
