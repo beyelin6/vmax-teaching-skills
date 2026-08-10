@@ -1,3 +1,8 @@
+---
+name: slide-script-generator
+description: 從已核准的內容母檔與視覺意圖直接建立逐頁教學腳本。當已有 CP_LESSON_CONTENT_MASTER 或相容 artifact，且需要單課或批次產生 CP_SLIDE_SCRIPT、不中途重跑教材分析時使用。
+---
+
 # V-MAX Slide Script Generator
 
 版本：1.0
