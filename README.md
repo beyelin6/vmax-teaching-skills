@@ -18,3 +18,4 @@ V-MAX 國語教材轉錄、課程設計、NotebookLM 與簡報生成技能庫。
 - `chinese-extension-materials`
 - Style Library
 - Role Library
+- `vmax-chinese-short-writing-worksheet`：依課文語詞、句型、修辭與學習目標製作課後短文學習單，含四年級舒適書寫格線規則。
