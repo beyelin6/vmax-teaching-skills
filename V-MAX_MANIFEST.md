@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.9
+# V-MAX Manifest 3.0
 
 ## 角色
 
@@ -9,7 +9,8 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.9
+vmax_manifest_version: 3.0
+universal_bootstrap: V-MAX_UNIVERSAL_BOOTSTRAP.md
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -24,6 +25,36 @@ main_workflow:
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
   current_version: 1.6
+checkpoint_resume_executor:
+  path: skills/vmax-checkpoint-resume/SKILL.md
+  current_version: 1.1
+modular_checkpoint_execution:
+  path: core/governance/modular-checkpoint-execution-policy.md
+  current_version: 1.0
+skill_io_registry:
+  path: core/governance/skill-io-registry.md
+  current_version: 1.1
+universal_skill_packaging:
+  path: core/governance/universal-skill-packaging-standard.md
+  current_version: 1.0
+platform_capability_matrix:
+  path: core/governance/platform-capability-matrix.md
+  current_version: 1.0
+skill_sync_policy:
+  path: core/governance/skill-sync-policy.md
+  current_version: 1.0
+artifact_migration_policy:
+  path: core/governance/artifact-migration-policy.md
+  current_version: 1.0
+platform_conformance_test:
+  path: tests/platform-conformance/vmax-platform-conformance-test.md
+  current_version: 1.0
+google_drive_storage_architecture:
+  path: core/governance/google-drive-storage-architecture.md
+  current_version: 1.0
+google_drive_portable_artifact_policy:
+  path: core/governance/google-drive-portable-artifact-policy.md
+  current_version: 1.1
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
@@ -71,10 +102,10 @@ prestudy_language_selection:
   current_version: 1.1
 prestudy_worksheet:
   path: skills/prestudy-worksheet/SKILL.md
-  current_version: 1.1
+  current_version: 1.2
 postlesson_short_writing_worksheet:
   path: skills/postlesson-short-writing-worksheet/SKILL.md
-  current_version: 1.1
+  current_version: 1.3
 worksheet_regression:
   path: tests/worksheet-regression-cases.md
   current_version: 1.1
@@ -83,13 +114,13 @@ lesson_package_delivery:
   current_version: 1.4
 google_drive_lesson_archive:
   path: skills/google-drive-lesson-archive/SKILL.md
-  current_version: 1.1
+  current_version: 1.3
 renderer_contract:
   path: core/renderer/image-first-hybrid-renderer.md
   current_version: 1.2
 infographic_pdf_output:
   path: core/export/infographic-pdf-output-contract.md
-  current_version: 1.1
+  current_version: 1.2
 infographic_pdf_regression:
   path: tests/infographic-pdf-regression-cases.md
   current_version: 1.1
@@ -98,8 +129,10 @@ quality_gate:
   current_version: 2.4
 adapters:
   chatgpt: adapters/chatgpt.md
+  claude: adapters/claude.md
   codex: adapters/codex.md
   gemini: adapters/gemini.md
+  gemini_spark: adapters/gemini-spark.md
   notebooklm: adapters/notebooklm.md
   canva_renderer: adapters/canva.md
 ```
@@ -117,6 +150,28 @@ runtime/lesson-state.md
 ```
 
 不得以模型記憶、舊對話、舊簡報取代 Drive 最新 State。
+
+---
+
+## Cross-platform Execution Resolution
+
+所有相容執行器先經：
+
+```text
+V-MAX_UNIVERSAL_BOOTSTRAP
+→ Capability Detection
+→ Platform Adapter
+→ V-MAX_BOOTSTRAP
+→ FULL_GOLDEN_PATH | CHECKPOINT_RESUME
+```
+
+- ChatGPT、Claude、Codex、Gemini Spark 都是執行器，不是 canonical authority。
+- 平台差異只由 Adapter 與 Capability Matrix 處理；不得複製一套平台專屬 Core。
+- 已核准 artifact 可直接由 Checkpoint Resume 使用；不得因換平台重新轉錄／分析教材。
+- 平台缺少 Drive、GitHub、image 或 code 能力時，必須誠實標記 fallback / blocked，不得偽稱已完成外部操作。
+- 舊 artifact 優先依 Artifact Migration Policy 無損升級；不得只因 schema 版本較舊就整課重算。
+
+權威：`V-MAX_UNIVERSAL_BOOTSTRAP.md`、`core/governance/platform-capability-matrix.md`、`core/governance/universal-skill-packaging-standard.md`、`core/governance/skill-sync-policy.md`、`core/governance/artifact-migration-policy.md`。
 
 ---
 
@@ -155,6 +210,20 @@ SOURCE 0
 ```
 
 若無成語：STEP 2.6 明確記錄 `N/A_NO_IDIOM`。
+
+---
+
+## Checkpoint Resume Resolution
+
+Golden Path 定義完整課程如何形成；Checkpoint Resume 定義已形成資料如何重用。
+
+- 已核准資料不重算。
+- target skill 只讀自己真正需要的 checkpoint / artifact。
+- 缺欄位只補缺欄位，不自行回到 SOURCE 0。
+- Batch Mode 每課使用自己的 checkpoint；一課失敗不阻塞其他課。
+- standalone skill 不得假裝推進 Golden Path `current_stage`。
+
+權威：`core/governance/modular-checkpoint-execution-policy.md`、`core/governance/skill-io-registry.md`、`skills/vmax-checkpoint-resume/SKILL.md`。
 
 ---
 
@@ -255,8 +324,9 @@ Visual Grammar 與 Renderer 之間新增正式 canonical layer：`Gold Page Patt
 - 可修改性保留在 Source Master、Renderer Script、Visual YAML、Character Assets 與單頁圖檔。
 - 不製作「圖片塞進可修改 PPT」作為預設交付；PPTX 只有教師明確要求才產生。
 - 最終 PDF 必須逐頁渲染回 PNG，完成 Gold Pattern、文字、注音、頁序、裁切、清晰度與答案外洩檢查。
+- PDF 以 `BALANCED_SCREEN_PRINT_SAFE` 為預設；A4 列印教材維持 300 dpi，不以降 DPI 換取檔案大小。
 
-權威：`core/export/infographic-pdf-output-contract.md` v1.1、`core/renderer/image-first-hybrid-renderer.md` v1.2、`core/quality/quality-gate-2.md` v2.4。
+權威：`core/export/infographic-pdf-output-contract.md` v1.2、`core/renderer/image-first-hybrid-renderer.md` v1.2、`core/quality/quality-gate-2.md` v2.4。
 
 ---
 
@@ -269,10 +339,12 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 ## Worksheet Resolution
 
 ### Pre-study Worksheet
-權威：`skills/prestudy-worksheet/SKILL.md` v1.1。
+權威：`skills/prestudy-worksheet/SKILL.md` v1.2。
+
+內容層只負責題目、語文焦點、閱讀任務、Teacher Key 與 `PRESTUDY_WORKSHEET_SOURCE`；A／B 雙版本視覺 Renderer 在 PR #3 收斂後由 Registry 接續，不得反向改寫已核准內容。
 
 ### Post-lesson Short Writing Worksheet
-權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.1。
+權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.3。
 
 兩份學習單共同硬規格：
 
@@ -297,26 +369,38 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 
 ---
 
-## Google Drive Lesson Archive Resolution
+## Google Drive Storage Resolution
 
-固定根目錄：
-`V-MAX 教材庫` — folder_id `1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA`
+Drive 不再以「所有成果都塞進每課六類」作為唯一模型。正式採分層架構：
 
-每課版本固定六類：
 ```text
-01_教材整理
-02_逐頁腳本
-03_NotebookLM
-04_角色視覺
-05_簡報成品
-06_延伸教材
+V-MAX 教材庫
+├─ 00_系統與數據管理
+├─ 主體架構
+└─ 學科教學資源
+   └─ 冊別
+      ├─ 冊別共用來源／鎖定主檔
+      ├─ Batch Artifact（跨課系列教材）
+      └─ 分課 Lesson Package
 ```
 
-完整重做不覆蓋舊版，先讀 Drive 後建立 `_01 / _02 / _03...`。
+- 系統文件、Runtime 與轉錄數據進 `00_系統與數據管理`。
+- 跨課角色／視覺／可重用資產可進「主體架構」。
+- 第一至六課預習單、短文單等跨課系列可集中為冊別 Batch Artifact；不必重複塞進每課 `06_延伸教材`。
+- 單課 Golden Path / Lesson Package 仍可使用六類：`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`。
+- GitHub 管規則；Drive 管教師跨裝置需要續作、查找與交付的 portable artifact。
+- 只有實際上傳並再次 list/search 驗證成功，才可 Archive PASS。
 
-Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與版本的唯一權威。
+權威：`core/governance/google-drive-storage-architecture.md`、`core/governance/google-drive-portable-artifact-policy.md`、`skills/google-drive-lesson-archive/SKILL.md` v1.3。
 
-只有實際上傳並再次 list/search 驗證成功，才可 Archive PASS。
+---
+
+## Platform Conformance Resolution
+
+正式宣稱跨平台 PASS 前，必須使用 `tests/platform-conformance/vmax-platform-conformance-test.md` 驗證至少 C-01～C-09。
+
+- Renderer 可以有平台差異；Canonical Decision 不可以有平台差異。
+- 沒有實際四平台測試資料時，只能標記 `PACKAGE_STRUCTURE_READY / PLATFORM_RUNTIME_NOT_YET_FULLY_TESTED`，不得標記 `FULLY_VERIFIED_CROSS_PLATFORM`。
 
 ---
 
@@ -341,12 +425,16 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 - 語詞／句型／修辭沒有原文證據
 - 已選整課圖像心智地圖卻在大綱消失
 - Drive 舊五類資料夾結構
+- 把「每課六類」誤當成跨課 Batch Artifact 也必須重複存放的唯一模型
 - A4 學習單靠縮字到 12 pt 以下塞內容
+- A4 正式列印教材靠降 DPI 瘦身
 - 把可修改的圖片式 PPT 當成預設正式成品
 - 只輸出單頁圖片卻未組裝、重渲染與驗證最終 PDF
 - Visual Grammar 只存在 metadata，未落實成學生可見 Gold Pattern
 - 固定左文右圖／大白框／資料卡連發
 - 圖片移除後完全不影響理解卻仍宣稱為圖像式教學頁
+- 平台內 Skill 副本反向覆蓋 GitHub canonical
+- 因換 ChatGPT／Claude／Codex／Gemini Spark 而重算已核准教材
 
 ---
 
@@ -354,8 +442,12 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 
 > Manifest 決定現在誰是權威；Executor 必須真的載入，而不是只靠模型記得。
 
+> Golden Path 定義完整課程如何形成；Checkpoint Resume 定義已形成資料如何重用。
+
 > 形近字用字群教，多音字用語境教；老師可以依班級需要指定「孩子容易搞錯的字」額外提醒，其餘不另提深教。
 
 > 學習單寧可少放內容，也不要讓學生真正印出來看到的字小於 12 pt。
+
+> V-MAX 不屬於任何一個 AI；平台只是不同執行器，Canonical Decision 不得漂移。
 
 > 內容正確只是底線；Gold Page 要把理解變成學生眼睛能直接看到的教學事件。
