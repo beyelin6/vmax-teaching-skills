@@ -1,10 +1,15 @@
+---
+name: postlesson-short-writing-worksheet
+description: 依已核准的 V-MAX 教材主檔與語文工具，製作臺灣國小國語課後短文／童詩 Bonus 寫作單。包含素材啟動、可自由選用的語詞／成語／句型／修辭工具箱與主要創作區，支援 Checkpoint Resume 與跨課批次，不重跑已核准上游分析。Use when the user asks to製作、續作、修改或批次產生課後短文、童詩仿作、Bonus 寫作學習單。
+---
+
 # V-MAX Post-lesson Short Writing Worksheet Skill
 
-版本：1.2
+版本：1.3
 
 ## 目的
 
-本技能定義 V-MAX 課後短文／童詩 Bonus 寫作單的內容鷹架、版面骨架與輸出規格。
+本技能定義 V-MAX 課後短文／童詩 Bonus 寫作單的內容鷹架、版面骨架與輸出規格，並作為 ChatGPT、Claude、Codex、Gemini Spark 可共同載入的 portable Skill。
 
 核心定位：
 
@@ -40,6 +45,8 @@ skill_io_contract:
 ```
 
 若輸入 artifact 已包含所需欄位，直接執行，不要求重跑 STEP 1–2.6。若只有單一欄位缺失，只補該欄位；不得無理由重算整課分析。Batch 模式每課獨立驗證，一課缺資料不得阻塞其他課。
+
+跨平台執行時，平台差異只由對應 Adapter 處理；不得因換到 ChatGPT、Claude、Codex 或 Gemini Spark 而改變已核准的寫作任務、Bonus 選擇原則或 Teacher Intent。
 
 ---
 
