@@ -1,4 +1,4 @@
-# V-MAX Skill I/O Registry 1.3
+# V-MAX Skill I/O Registry 1.4
 
 ## 定位
 
@@ -116,7 +116,7 @@ skills:
 - `docs/V-MAX_跨平台安裝與執行指南.md`
 
 若發生以下任一變更，修改者必須在同一變更批次檢查並同步更新教師指南：
-- checkpoint 新增、刪除、更名、用途或 alias 改變
+- checkpoint / artifact 新增、刪除、更名、用途或 alias 改變
 - `skill_io_contract` 的 minimum checkpoint、accepted artifacts、produced artifacts 改變
 - standalone / batch capability 改變
 - 新增、刪除或更名可直接呼叫技能
@@ -124,17 +124,17 @@ skills:
 - 使用者可直接要求的輸出格式改變
 - 預習單內容層與 Renderer 層的責任邊界改變
 
-**PR #3 當前狀態：`USER_GUIDE_STALE`。**
+**PR #3 當前狀態：`USER_GUIDE_SYNC_PASS`。**
 
-原因：此 branch 尚未真正 rebase 到 PR #2 最新 head；三份 user-facing guides 的 canonical 最新版本目前仍在 PR #2。完成真實 rebase 後，必須把本 Registry 1.3 的以下變更同步進三份指南，才可移除 stale：
-
+三份指南已同步以下 Renderer 規則：
 1. `PRESTUDY_WORKSHEET_SOURCE` 是 Renderer 唯一最低輸入。
-2. Renderer required field 使用 `output_mode`，不是 `visual_mode`。
-3. Renderer 產出名稱統一為 `PRESTUDY_RENDER_VALIDATION`，並在 Drive 寫入成功時產出 `DRIVE_ARCHIVE_REPORT`。
-4. PDF 共通規格引用 Core PDF Contract，不在 worksheet skill 維護第二套 canonical 壓縮規格。
-5. Drive 實際 IDs 由 project/runtime artifact 注入，不硬編碼在 canonical Skill。
+2. Renderer required field 使用 `output_mode`，合法值 `A_CLEAR_FRAME | B_FREEHAND`。
+3. Renderer 產出名稱統一為 `PRESTUDY_RENDER_VALIDATION`，Drive 成功歸檔後產出 `DRIVE_ARCHIVE_REPORT`。
+4. PDF 共通規格引用 Core PDF Contract；worksheet skill 不維護第二套 canonical 壓縮規格。
+5. AI 中文局部修復失敗時依 Core Renderer 使用 verified/native-text fallback。
+6. Drive 實際 IDs 由 project/runtime artifact 或當次查詢注入，不硬編碼在 canonical Skill。
 
-在 stale 移除前，不得宣稱 PR #3 的教師指南同步完成。
+若後續任一 canonical 規則再變更而指南未同步，重新標記 `USER_GUIDE_STALE`。
 
 ## 核心金句
 > Manifest 管誰是權威；I/O Registry 管積木怎麼接；使用指南把積木翻成老師自然會說的中文。
