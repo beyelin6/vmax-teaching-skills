@@ -1,3 +1,8 @@
+---
+name: notebooklm-renderer-script
+description: 將已核准的逐頁腳本轉成 NotebookLM 可讀的來源 MD、生成指令 MD 與 Renderer 詳細腳本。當已有 CP_SLIDE_SCRIPT 或相容 artifact，需要跨平台生成 NotebookLM／Renderer 可用檔案而不重跑教材分析時使用。
+---
+
 # V-MAX NotebookLM / Renderer Script Skill
 
 版本：1.0
