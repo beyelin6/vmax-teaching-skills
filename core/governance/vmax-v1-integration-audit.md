@@ -16,7 +16,7 @@
 | 來源尋源／教材定錨 | source library + step1 policies | KEEP |
 | 正式生字／認讀字規則 | recognition-only / character policies | KEEP |
 | 形近字／多音字選擇 | character deep teaching + polyphonic policies | KEEP |
-| 形近字／多音字視覺比較 | `skills/character-group-visual-comparison/SKILL.md` | KEEP / EXTEND DENSITY RULE |
+| 形近字／多音字視覺比較 | `skills/character-group-visual-comparison/SKILL.md` | EXTENDED v1.1-draft |
 | 語詞／句型／修辭回原文 | text-embedded policy + skill | KEEP |
 | 成語選擇／視覺化 | idiom policy | KEEP |
 | 預習單 | `skills/prestudy-worksheet/SKILL.md` | KEEP / ALIGN EXPERIENCE |
@@ -24,187 +24,168 @@
 | Typography DNA | `vmax-typography-bridge` | KEEP / EXTEND TEXT QA |
 | Lesson Package | `skills/lesson-package-delivery/SKILL.md` | KEEP |
 | Drive Archive | `skills/google-drive-lesson-archive/SKILL.md` | KEEP |
-| Renderer | `core/renderer/image-first-hybrid-renderer.md` | KEEP / ALIGN IMAGE-FIRST |
+| Renderer | `core/renderer/image-first-hybrid-renderer.md` | KEEP / SMALL EXTEND |
 | NotebookLM adapter | `adapters/notebooklm.md` | KEEP / FUTURE EXPANSION |
+| Experience Layer | `core/experience/vmax-experience-layer.md` | NEW DRAFT |
+| Lesson Budget / Page Ledger | `core/governance/lesson-budget-policy.md` | NEW DRAFT |
 
 ---
 
-## 2. 今日測試後新增／需正式化的系統概念
+## 2. 已完成裁決
 
-### A. Lesson Knowledge Base
-現況：來源定錨、Knowledge Lab 已存在，但需補一個「所有後續教材共用同一整課知識底座」的明確契約。
+### A. HOLD 與 3 Gate
+不二選一。
 
-待決：
-- 擴充現有 Knowledge Lab，或
-- 新增 `core/knowledge/lesson-knowledge-base.md`
+- `HOLD 1 / 2 / 2.5 / 2.6`：前段資料與教學安全閘門，保留 Single-stage Advance。
+- `Gate A｜Teaching Direction Lock`：把前段分析收束成核心技能、取捨與 Lesson Budget。
+- `Gate B｜Experience + Storyboard Lock`：角色、Learner Role、Context Wrapper、Lesson Skin、Surprise Signature、Storyboard、Page Ledger 一次確認。
+- `Gate C｜Representative Visual Validation`：1–2 張樣張確認後批次 Renderer。
 
-### B. Content Journey / Spiral Learning
-新增規則：
-- PREVIEW → CORE_REINFORCE → RECOGNIZE → APPLY / TRANSFER
-- 預習出現過的形近字／多音字，不等於正式教材略過。
-- Routing 是「安排出現時機與深度」，不是只分配唯一去向。
+教師說「好／可以／繼續」：
+- 在 Mandatory HOLD：只解鎖唯一合法下一 stage。
+- 在已鎖定 Storyboard 的製作階段：直接工作，不重述、不逐頁再問。
 
-待決：新增 routing policy，或併入 Knowledge Lab Ordering。
+### B. Role / Style / Scenario
+裁決：`EXTEND，不重造`。
 
-### C. Character Group Page Density
-新增規則：
-- 主要字群 1 群原則 1 頁。
-- 若字群只有 2 字且認知負荷低，可 1 頁放 2 群。
-- 多音字同理。
-
-建議：更新 `character-group-visual-comparison`，不要另立平行 skill。
-
-### D. Experience Layer
-現有 Golden Path 已有 `Scenario Wrapper / Character Topology / Style Recipe`，但今天補出的內容更完整：
+Golden Path 已有 Scenario Wrapper / Character Topology / Style Recipe。新的 `core/experience/vmax-experience-layer.md` 作為上位 Experience contract，補：
 - Guide Character 的教學功能
 - Learner Role
-- Context Wrapper 的 SOURCE_WORLD / LIGHT_WRAPPER / OFF
-- BOOK DNA
-- LESSON SKIN
-- MATERIAL MODE
+- SOURCE_WORLD / LIGHT_WRAPPER / OFF
+- BOOK DNA / LESSON SKIN / MATERIAL MODE
 - Visual Identity Lock
 - Surprise Signature
 
-建議：新增 `core/experience/vmax-experience-layer.md`，再由 Main Workflow wiring。
+### C. Page Estimate / Page Ledger
+裁決：`EXTEND 成 Lesson Budget`。
 
-### E. Lesson Budget / Stop Rule
-現有：頁數估算／頁數帳本。
-新增：
+新增 `core/governance/lesson-budget-policy.md`：
 - MUST / SHOULD / COULD
+- CORE / PLUS
 - 一頁 = 一個完整認知場景
 - 同頁可兩個有層次問題
-- 每新增一頁必須說明新增理解
-- 不是為漂亮、重複或 Bonus 無限加頁
+- Stop Rule
+- Merge / Cut Check
+- Extension / Experience Budget
 
-建議：擴充頁數帳本 policy，或新增 `core/governance/lesson-budget-policy.md`。
+頁數仍只能在 Slide Architecture 後正式估算。
 
-### F. Teaching Skill vs Visual Tool Separation
-新增核心：
+### D. Character Group Skill
+已升 `1.1-draft`：
+- PREVIEW → CORE_REINFORCE → RECOGNIZE → APPLY / TRANSFER
+- 主要字群原則一群一頁
+- 簡單兩字群可一頁兩組
+- 多音字同理
+- 允許圖文一體生成草稿
+- 正式學生教材以 Text QA 兜底
+- 局部錯字先局部修，不先整頁重畫
 
-教學技能：COMPARE / INFER / STRUCTURE / STAGE / PROBLEM_LOOP / STORY_ARC / CHARACTER_EVIDENCE / PREDICT_VERIFY / TRANSFER / RETURN
+### E. Renderer
+裁決：`KEEP + SMALL EXTEND`。
 
-視覺工具：ZOOM / SCALE / TIMELINE / STORYBOARD / COMPARE_VIEW / CAUSE_ARROW / MINI_ICON / STAGE_VIEW
+現有 Reference Composition、Verified Teaching Text、Hybrid Overlay、局部修復順序已符合大方向。後續只需補：
+- Visual Continuity
+- Text QA priority / Typography Engine wiring
+- Experience Layer visual identity invariant
+
+### F. Spiral Learning
+不另造平行預習系統。
+
+既有 `prestudy-language-selection-policy` 已分 `lesson_teaching_action` / `prestudy_action`，並明定 P3/PX 不等於正式教學刪除。v1 只補上完整 lifecycle：
+
+`PREVIEW → CORE_REINFORCE → RECOGNIZE → APPLY / TRANSFER`。
+
+---
+
+## 3. 尚待正式化
+
+### A. Lesson Knowledge Base
+需補「所有輸出共用同一整課知識底座」明確 contract。
+
+候選：
+- 擴充 Knowledge Lab；或
+- 新增 `core/knowledge/lesson-knowledge-base.md`。
+
+### B. Teaching Skill vs Visual Tool Separation
+需新增 canonical policy：
+
+教學技能：COMPARE / INFER / STRUCTURE / STAGE / PROBLEM_LOOP / STORY_ARC / CHARACTER_EVIDENCE / PREDICT_VERIFY / TRANSFER / RETURN。
+
+視覺工具：ZOOM / SCALE / TIMELINE / STORYBOARD / COMPARE_VIEW / CAUSE_ARROW / MINI_ICON / STAGE_VIEW。
 
 硬規則：不得從視覺工具反推教學需求。
 
-建議：新增 `core/pedagogy/teaching-skill-selection-policy.md`。
-
-### G. Text Anchor / Return
-現有：text-embedded language 已保留原文證據。
-新增：
+### C. Text Anchor / Return
+併入 teaching-skill policy：
 - TEXT_ANCHOR = 系統規則
 - RETURN = 可選教學技能
 - 每個 RETURN 必有 Text Anchor；不是每個 Text Anchor 都要 RETURN
 
-建議：併入 teaching-skill selection policy。
-
-### H. Visual Continuity
-新增：
-- 同一段保持角色／核心場景／物件關係
-- 用鏡頭、焦點、比例、狀態推進
-- 避免每頁重造世界
-
-建議：併入 Renderer / Visual Grammar。
-
-### I. Image-first Chinese Text Rule
-現有 Typography Bridge 偏安全與後製。
-今日裁決：
-
-> 允許且鼓勵 AI 圖片引擎生成含繁中中文字的完整圖文構圖；AI 文字是草稿層，正式教材由 Text QA 兜底。
-
-最高風險字：課文、生字、形近字、多音字、注音、關鍵句、劇本臺詞。
-
-建議：Typography Bridge 升版時加入 `TEXT_QA_PRIORITY` 與「視覺融合優先、正式 QA 兜底」表述。
-
-### J. Extension Layer
-新增：
+### D. Extension Layer
+待新增 canonical policy：
 - DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM
 - LIGHT / THEME_MODE
 - Extension 必須重算 Lesson Budget
 - 新增內容優先問「取代什麼？」
 
-建議：新增 `core/extension/extension-layer-policy.md`。
+### E. Typography / Text QA
+需找回／定位 `vmax-typography-bridge` 的正式 canonical 路徑，再做升版；不得平行造第二套 Typography。
 
-### K. Teacher Control
-現有：HOLD / Teacher Interface policy。
-今日新增操作語言：
-- 好／可以／繼續 = 直接往下
-- 下一頁 = 進下一教學場景，不重畫
-- 換一個版本 = 同內容重新設計
-- 重畫 = 重生目前視覺
-- 鎖定 = downstream invariant
-- 回前面 = 回指定決策點
+### F. NotebookLM Pipeline
+DEFERRED，不影響 v1 其他收尾。
 
-注意：今日討論偏向 3 個主要 Gate；現有 Main Workflow 仍有 HOLD 1 / 2 / 2.5 / 2.6。這是**待整合衝突**，不可直接刪 HOLD。
-
-建議：明日專門裁決「Golden Path 前段 HOLD」與「製作階段 3 Gate」如何共存。
-
-### L. NotebookLM Pipeline
-今日只鎖定位，不封細節：
-- NotebookLM 是主要輸出支線，不是臨時額外產出。
-- Source Pack 應從 Lesson Knowledge Base 產生。
-- Visual source 與 Audio source 可採不同編排。
-
-狀態：DEFERRED，不影響 v1 其他收尾。
+目前只鎖：NotebookLM 是主要輸出支線，不是臨時額外產出；Source Pack 從 Lesson Knowledge Base 產生；Visual / Audio 可不同編排。
 
 ---
 
-## 3. 本輪已驗證的跨文體案例
+## 4. 已驗證跨文體案例
 
 ### 第九課〈請到我的家鄉來〉
-偏向：COMPARE / INFER / STRUCTURE / TRANSFER / TEXT ANCHOR。
+COMPARE / INFER / STRUCTURE / TRANSFER / TEXT ANCHOR。
 
-重要測得規則：
-- 課文原段落不能被漂亮摘要取代。
-- 一頁可兩問，避免一題一頁。
-- 形近字「堤／提／題」可一頁完成視覺辨析＋撤支架小測。
-- 四國特色可用小圖軌道取代大量文字。
-- 臺灣挑戰作為 Transfer。
+測得：原文不能被摘要取代；一頁可兩問；字群可完整辨析＋撤支架；四國特色可小圖化；臺灣挑戰作 Transfer。
 
 ### 第十一課〈兔子先生等等我〉
-偏向：STAGE / PROBLEM_LOOP / PREDICT_VERIFY。
+STAGE / PROBLEM_LOOP / PREDICT_VERIFY。
 
-重要測得規則：
-- 劇本的括號舞臺提示應「演出來」，不是只標色。
-- SCALE 只是視覺工具，不能升格成教學目的。
+測得：舞臺提示要演出來；SCALE 是視覺工具，不是教學目的。
 
 ### 第十二課〈老鞋匠和小精靈〉
-偏向：STORY_ARC / CHARACTER_EVIDENCE / 主旨形成 / TRANSFER。
+STORY_ARC / CHARACTER_EVIDENCE / 主旨形成 / TRANSFER。
 
-重要測得規則：
-- 系統應能關掉上一課成功的 STAGE。
-- 視覺可呈現「善意往返」，讓主旨從情節長出來。
-- 簡單句型可用低成本視覺，不必大型 AI 場景。
-
-結論：同一系統必須依文體／難點選技能，不能套固定模板。
+測得：系統能關掉上一課成功技能；善意往返可視覺化；簡單句型不需大型 AI 場景。
 
 ---
 
-## 4. 明日優先遺漏稽核
+## 5. 下一輪優先順序
 
-1. 早期 Role Library 與 Guide Character 是否已有更細 canonical 規則？
-2. Style Library／Scenario Wrapper／Style Recipe 與 BOOK DNA / LESSON SKIN 如何合併，不重複建系統？
-3. 預習單與短文單現有角色／畫風共享規則是否已存在？需避免雙重權威。
-4. Main Workflow HOLD 1/2/2.5/2.6 與今日 3 Gate 的裁決。
-5. Page Ledger 現有規則與 Lesson Budget / Stop Rule 的裁決。
-6. Renderer 現有 image-first hybrid 與「圖片式投影片＋中文字 QA」是否已足夠，或需升版。
-7. NotebookLM adapter 舊規則與待討論 Source Pack 是否衝突。
-8. Output / Drive 六類資料夾結構是否需要因新 Layer 修改；目前預設 **不修改**。
+1. 建立 `Teaching Skill Selection Policy` + Text Anchor / Return。
+2. 建立／裁決 `Lesson Knowledge Base` contract。
+3. 建立 `Extension Layer Policy`。
+4. 定位 Typography Bridge 正式路徑並升 Text QA。
+5. 把 Experience Layer、Lesson Budget、Character Skill wiring 回 Main Workflow / Executor / Runtime schema。
+6. 更新 Manifest 版本裁決。
+7. 新增 regression cases，確認沒有破壞 HOLD、Worksheet、Character、LVM、Drive Archive。
+8. NotebookLM Source Pack / Audio Studio 後續另議。
 
 ---
 
-## 5. 暫時禁止的動作
+## 6. 暫時禁止
 
-在上述稽核完成前：
+在 wiring / regression 完成前：
 - 不刪除現有 HOLD policy。
 - 不改 Runtime Authority。
 - 不改 Drive 六資料夾權威。
-- 不新增與既有 Character / Typography / Worksheet 功能平行的重複 skill。
-- 不把 NotebookLM 細節硬塞進 v1 收尾。
-- 不因今日架構文件存在就視為 main canonical 已升版。
+- 不新增與既有 Character / Typography / Worksheet 平行的重複 skill。
+- 不把 NotebookLM 細節硬塞進本輪 v1 收尾。
+- 不把 draft architecture 視為 main canonical 已升版。
 
 ---
 
-## 6. 下一個封版條件
+## 7. 封版條件
 
-只有完成「遺漏稽核＋衝突裁決＋Manifest wiring＋必要 regression」後，才將 `vmax-system-architecture.md` 從 draft 升為 canonical。
+完成：
+
+`遺漏稽核 → 衝突裁決 → canonical policy → Main Workflow / Executor / Runtime wiring → Manifest → regression`
+
+後，才將 `vmax-system-architecture.md` 從 draft 升為 canonical。
