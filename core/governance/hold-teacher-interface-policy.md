@@ -1,223 +1,210 @@
-# V-MAX HOLD Teacher Interface Policy 1.2
+# V-MAX HOLD Teacher Interface Policy 1.3-draft
 
 ## 定位
-
-本規則定義所有 V-MAX `HOLD / WAITING_CONFIRMATION` 階段的共同教師介面。
+本規則定義 V-MAX 所有需要教師確認的 Source Gate、HOLD、LKB Review 與 Production Gate 的共同教師介面。
 
 核心原則：
 
 > HOLD 是給老師做決策的，不是給系統展示資料結構的。
 
-> Machine payload 可以存在，但不得先於或取代教師可讀確認卡。
-
 > AI 要把判斷做重，把老師的操作做輕。
 
-> 一次確認，只往前走一關。
+> 一次確認，只往前走一個合法決策層。
 
 ---
 
-## A. 適用範圍
+## A. Confirmation Types
 
-本規則適用所有需要教師確認的階段，包括但不限於：
+### 1. Source Truth Gate
+- STEP 1 → HOLD 1
+- 確認 Official Knowledge / Source Anchor 是否可用
+- HOLD 1 confirmed 後才允許 LKB Assembly
 
-- STEP 1 教材定錨 → HOLD 1
-- STEP 2 AI 教學價值判讀 → HOLD 2
-- STEP 2.5 語文輻射 → HOLD 2.5
-- Teacher Intent Lock
-- Lesson Map
-- 補充內容／學習框架候選
-- Session Map
-- Lesson Visual Map Strategy
-- Scenario Wrapper
-- Character Topology / Cast
-- Knowledge Lab Selection
-- 代表頁驗證
-- 正式輸出前 Quality Gate 需要教師決策之處
+### 2. LKB Review
+- Chinese Lesson Knowledge Builder 完成 `ready_for_lkb_review` 後啟動
+- 只確認整合、去重、來源追溯、Teacher Knowledge 分流是否正確
+- 不新增新的 Learning Expansion / Teaching Strategy / Style / Scenario
+- confirmed 後狀態為 `approved_lkb`
 
----
+### 3. Mandatory Teaching HOLD
+- STEP 2 → HOLD 2
+- STEP 2.5 → HOLD 2.5
+- STEP 2.6 → HOLD 2.6
 
-## B. 教師介面優先
+### 4. Production Gates
+- Gate A：Teaching Direction Lock
+- Gate B：Experience + Storyboard Lock
+- Gate C：Representative Visual Validation
 
-當狀態為 `WAITING_CONFIRMATION` 時，輸出順序必須是：
-
-1. `Teacher Confirmation Card`：人類可讀摘要／分析／推薦。
-2. 明確標示目前 HOLD 與可做的教師決策。
-3. 明確寫出「確認後唯一下一步」。
-4. 等教師確認或微調。
-5. Machine JSON / YAML / schema 只在系統內保留，或教師明確要求時再顯示。
-
-禁止：
-
-- 只輸出 JSON / YAML / vocabulary[] / schema。
-- 先貼大段 machine payload，再要求教師確認。
-- 用 internal key 取代教師語言。
-- 因 downstream 需要結構化資料，就把結構化資料當 HOLD UI。
-- 在 HOLD 結尾列出多個後續階段，暗示一次確認可連跑。
-
-若違反上述規則，該 HOLD 狀態標記 `MISSING_INTERFACE`，不可直接往下一階段。
+Production Gate 是大型設計決策鎖，不是每張投影片重新確認。
 
 ---
 
-## C. 教師確認卡的最低要求
+## B. Teacher Interface First
 
-每張確認卡至少回答：
+任何 `WAITING_CONFIRMATION` 都必須先顯示 Teacher Confirmation Card，再保留 machine payload。
 
-- 現在確認的是什麼？
-- AI 根據哪些教材來源／既有規則判讀？
-- AI 的建議或分析是什麼？
-- **為什麼這樣建議？**
-- 哪些內容仍是教師決策？
-- 教師如何用最少輸入完成確認／微調？
-- 確認後唯一會進哪一階段？
+確認卡至少回答：
+- 現在確認什麼？
+- 依據哪些來源／規則？
+- AI 建議是什麼？
+- 為什麼？
+- 教師可改哪些例外？
+- 最省力的確認方式是什麼？
+- 確認後唯一下一個決策層是什麼？
 
-若該步只是資料定錨，不能加入後段才應決定的 Scenario / Character / Style / Layout，也不能先決定「每段都怎麼教」。
-
-若該步是 AI 教學價值判讀，不能只給分類結果；必須有足以讓教師判斷的理由、取捨與風險，並在 `HOLD 2` 停下來。
+禁止只丟 JSON / YAML / schema 當教師 UI。
 
 ---
 
-## D. Recommendation-first｜推薦先完整，操作再簡化
+## C. Recommendation-first
 
-教師端預設流程：
+預設互動：
 
 ```text
-AI 先分析與推薦
-→ 說明理由與教學價值
-→ 教師看得懂差異
+AI 完成分析與推薦
+→ 用人類語言說明理由、取捨與風險
 → 教師只改例外
-→ 停在當前 HOLD
+→ 停在當前確認點
 ```
 
-不得反過來要求教師先選大量 A/B/C 選項，再由 AI 補理由。
+可用短命令：`好 / 可以 / 繼續 / R / 短句例外修改`。
 
-### 可接受
-
-- 「這組形近字 5/5，因為……；建議深教。」
-- 「這個成語 2/5，和本課連結弱，建議 Bonus／可刪。」
-- 「這一詩節最大的價值是聲音與畫面的交錯，不建議硬塞另一個句型頁。」
-- 「這一段應保留推論空間，先找證據再揭示。」
-
-### 不可接受
-
-- 只有 `CORE / FLEX / BONUS`，沒有理由。
-- 只有 `A/B/C/D/E`，沒有分析。
-- 教師確認 STEP 1 後直接收到「52 頁帳本」。
-- 把每一段都做成完全相同的五步模板，再請教師確認。
-- STEP 2 做完後直接說「下一步進課程結構與簡報模組配置」。
+短命令不代表可以跨過兩個以上需要教師決策的層級。
 
 ---
 
-## E. 快速決策原則
+## D. Single-stage Advance
 
-AI 應先完整分析，再降低教師輸入成本。
-
-可使用：
-
-- `R`：其餘沿用 AI 推薦
-- A/B/C/D/E：當該模組已定義決策代號時
-- P1/P2/P3/PX/PE：預習單語文選擇
-- 短句式例外修改
-
-不得為了讓輸入變短而刪掉教師判斷所需的分析理由。
-
-核心：
-
-> 推薦要完整，操作要簡單。
-
----
-
-## F. HOLD 不得跨階段｜Single-stage Advance
-
-教師在某個 HOLD 說「確認／好／可以」時，只代表**當前決策被確認**，且只解鎖主流程中**緊接的一個正式階段**。
-
-### 必守鏈條
+合法鏈：
 
 ```text
 HOLD 1
+→ LKB ASSEMBLY
+→ LKB REVIEW
 → STEP 2
 → HOLD 2
 → STEP 2.5
 → HOLD 2.5
+→ STEP 2.6
+→ HOLD 2.6
 → Teacher Intent Lock
-→ Lesson Map
 ```
 
-因此：
+規則：
+- HOLD 1 confirmed：執行 LKB Assembly，停在 LKB REVIEW。
+- LKB REVIEW confirmed：標記 `approved_lkb`，執行 STEP 2，停在 HOLD 2。
+- HOLD 2 confirmed：執行 STEP 2.5，停在 HOLD 2.5。
+- HOLD 2.5 confirmed：執行 STEP 2.6，停在 HOLD 2.6。
+- HOLD 2.6 confirmed：才進 Teacher Intent Lock。
 
-- HOLD 1 確認後，只做 STEP 2，然後停在 HOLD 2。
-- HOLD 2 確認後，只做 STEP 2.5，然後停在 HOLD 2.5。
-- HOLD 2.5 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Architecture。
-- Session Map 尚未成立前，不得宣告完整教學版總頁數。
-
-若一個「確認」後連續跑過兩個以上需教師介入的決策層，標記：
-
-`RUNAWAY_WORKFLOW / SKIPPED_HOLD / STAGE_LEAP`
+違反：`RUNAWAY_WORKFLOW / SKIPPED_HOLD / STAGE_LEAP`。
 
 ---
 
-## G. 下一步指向驗證
+## E. Production Gate Semantics
 
-每個 HOLD 最後一句「確認後下一步」必須和 `vmax-main-workflow.md` 完全一致。
+### Gate A｜Teaching Direction Lock
+確認：
+- 本課真正要學什麼
+- 核心 Teaching Skills
+- MUST / SHOULD / COULD
+- 刻意不做什麼
+- Lesson Budget Draft
 
-例如：
+Gate A 不確認精確頁數。
 
-- HOLD 1 下一步只能是 `STEP 2 AI 教學價值判讀`。
-- HOLD 2 下一步只能是 `STEP 2.5 語文輻射分析與教師選擇`。
-- HOLD 2.5 下一步只能是 `Teacher Intent Lock`。
+### Gate B｜Experience + Storyboard Lock
+確認：
+- Source World / Scenario ref
+- Character topology / cast / DNA refs
+- Learner Role
+- Lesson Skin / Style Recipe ref
+- Surprise Signature
+- Storyboard
+- Lesson Budget Final / Page Ledger
 
-若文字把下一步寫成「課程結構與簡報模組配置」「頁數規劃」「逐頁腳本」，但正式流程尚未到該階段，標記 `WRONG_NEXT_STAGE_POINTER`。
+### Gate C｜Representative Visual Validation
+確認 1–2 張代表頁：
+- 畫面世界與角色
+- Typography / Text integration
+- 投影可讀性
+- 視覺密度
+- 教學重點是否一眼可見
 
----
-
-## H. 教師主權的實際判定
-
-好的 HOLD 應讓教師感覺自己在「導演」：
-
-- AI 主動看懂教材與學生學習需要。
-- AI 提出少量、有理由的判斷。
-- 教師可以接受大部分，只改真正不同意的部分。
-- 教師不用替 AI 補回它漏掉的教學亮點。
-- 教師有時間在關鍵轉折處真正做決策，而不是看系統連跑。
-
-若教師主要工作變成：
-
-- 幫 AI 找漏掉的內容
-- 逐項替 AI 做初步分類
-- 因 AI 已鎖頁數而被迫接受結構
-- 反覆修正機械模板
-- 追著已經飛過去的流程叫 AI 回頭
-
-則該 HOLD 雖形式上有確認點，仍視為 `TEACHER_EFFORT_FAIL`。
+Gate C confirmed 後，Full Renderer 可批次進行；不得每頁再問同一層級的「可以嗎」。
 
 ---
 
-## I. TEST_FREEZE 相容
+## F. Teacher Command Resolution
 
-在 `TEST_FREEZE` 中，若某 HOLD 沒有依此政策顯示：
-
-- 記錄 `MISSING_INTERFACE / SKIPPED_DECISION_LAYER / TEACHER_EFFORT_FAIL / RUNAWAY_WORKFLOW / WRONG_NEXT_STAGE_POINTER`
-- 停在原 HOLD
-- 不自行修改系統
-
-只有教師明確要求修正／更新規則時才寫回 Core。
+- `好 / 可以 / 繼續`：只確認當前 Source/HOLD/Review/Gate，依合法 transition 前進。
+- production phase 且 Gate C confirmed 後：`繼續` = 依已鎖 Storyboard 繼續製作。
+- `下一頁` = 下一認知場景，不重畫目前頁。
+- `換一個版本` = 重設計同內容。
+- `重畫` = 重生目前視覺。
+- `鎖定` = 寫入 downstream invariant。
+- `回前面` = 回指定 decision point 並重開受影響 downstream。
 
 ---
 
-## J. Machine Payload 原則
+## G. Wrong Next-stage Pointer Guard
 
-Machine payload 是 downstream contract，不是 Teacher UI。
+每個確認卡最後的 next step 必須與 `vmax-main-workflow.md` 一致。
 
-它可以用於：
+正確例：
+- HOLD 1 → LKB ASSEMBLY → LKB REVIEW
+- LKB REVIEW → STEP 2 → HOLD 2
+- HOLD 2 → STEP 2.5 → HOLD 2.5
+- HOLD 2.5 → STEP 2.6 → HOLD 2.6
+- HOLD 2.6 → Teacher Intent Lock
 
-- Source Master
-- NotebookLM / Gemini / Renderer Adapter
-- regression test
-- programmatic processing
+錯誤例：
+- HOLD 1 直接指向頁數／角色／風格
+- HOLD 2 直接指向 Slide Architecture
+- Gate A 直接宣告精確頁數
+- Gate B 未看代表頁就直接 Full Renderer
 
-但教師確認階段預設不展示，除非：
+錯誤碼：`WRONG_NEXT_STAGE_POINTER`。
 
-1. 教師明確要求看 JSON/YAML；或
-2. 正在做 schema/debug 測試。
+---
+
+## H. LKB Review Boundary
+
+LKB Review 不是要求老師重讀全部教材；AI 應主動摘要：
+- 來源是否齊全
+- 重複內容怎麼合併
+- 有哪些 source conflict / gap
+- Official / Teacher Knowledge 有無混線
+- 哪些項目尚未核准
+
+教師只需要確認例外。
+
+若 LKB Review 被當成新的教學設計會議，標記 `LKB_REVIEW_SCOPE_OVERREACH`。
+
+---
+
+## I. Teacher Effort Quality
+
+FAIL 指標：
+- 老師替 AI 補大量遺漏
+- 老師被迫看大段 machine payload 才能判斷
+- 每頁重新確認相同已鎖設計
+- AI 先鎖頁數再讓老師接受
+- 角色／風格／Scenario 在早期來源 HOLD 被提前決定
+
+錯誤碼：`TEACHER_EFFORT_FAIL / MISSING_INTERFACE`。
+
+---
+
+## J. TEST_FREEZE Compatibility
+
+在 `TEST_FREEZE` 中，若確認點沒有依本 policy 顯示或 transition 錯誤：
+- 記錄 failure code
+- 停在原 stage
+- 不自行修改 Core
+
+只有教師明確要求修正規則／GitHub 時才寫回。
 
 ---
 
@@ -225,10 +212,4 @@ Machine payload 是 downstream contract，不是 Teacher UI。
 
 > 資料結構給系統讀；確認卡給老師做決策。
 
-> HOLD 的價值是降低教師決策負擔，不是把內部資料格式丟給老師。
-
-> AI 要把判斷做重，把老師的操作做輕。
-
-> 一次確認，只往前走一關；不要飛站。
-
-> 教師確認的是方向與例外，不是替 AI 補完整套教學設計。
+> 前段一次確認只走一層；後段一旦鎖定，就不要把老師困在逐頁批准裡。
