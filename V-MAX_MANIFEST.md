@@ -1,17 +1,18 @@
-# V-MAX Manifest 2.5
+# V-MAX Manifest 2.6-draft
 
 ## 角色
-
-本檔是 V-MAX 的正式模組索引與版本裁決表。任何 AI 不得自行猜測哪一份檔案較新、哪個舊名稱仍可執行。
+本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ---
 
-## Current Canonical Files
+## Current Canonical / Candidate Files
 
 ```yaml
-vmax_manifest_version: 2.5
+vmax_manifest_version: 2.6-draft
 bootstrap: V-MAX_BOOTSTRAP.md
-runtime_contract: runtime/lesson-state.md
+runtime_contract:
+  path: runtime/lesson-state.md
+  current_version: 2.2-draft
 runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
@@ -20,10 +21,11 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.0
+  current_version: 2.1-draft
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.2
+  current_version: 1.3-draft
+
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
@@ -31,11 +33,23 @@ step1_source_anchor:
 recognition_only_character_policy:
   path: core/governance/recognition-only-character-policy.md
   current_version: 1.1
+lesson_knowledge_base:
+  path: core/knowledge/lesson-knowledge-base-policy.md
+  current_version: 1.0-draft
+
 hold_policy: core/governance/hold-teacher-interface-policy.md
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
   current_version: 1.6
+
+teaching_skill_selection:
+  path: core/pedagogy/teaching-skill-selection-policy.md
+  current_version: 1.0-draft
+lesson_budget:
+  path: core/governance/lesson-budget-policy.md
+  current_version: 1.0-draft
+
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.9
@@ -45,12 +59,16 @@ character_deep_teaching_focus:
 polyphonic_source_policy:
   path: core/director/polyphonic-source-policy.md
   current_version: 1.0
+prestudy_language_selection:
+  path: core/worksheet/prestudy-language-selection-policy.md
+  current_version: 1.1
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
-  current_version: 1.0
+  current_version: 1.1-draft
 character_teaching_regression:
   path: tests/character-teaching-regression-cases.md
   current_version: 1.0
+
 lesson_visual_map:
   path: core/visual/lesson-visual-map.md
   current_version: 1.1
@@ -63,9 +81,21 @@ text_embedded_language_skill:
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
   current_version: 1.0
-prestudy_language_selection:
-  path: core/worksheet/prestudy-language-selection-policy.md
+
+experience_layer:
+  path: core/experience/vmax-experience-layer.md
+  current_version: 1.0-draft
+extension_layer:
+  path: core/extension/extension-layer-policy.md
+  current_version: 1.0-draft
+
+typography_bridge:
+  path: vmax-typography-bridge/SKILL.md
+  current_version: 1.1-draft
+renderer_contract:
+  path: core/renderer/image-first-hybrid-renderer.md
   current_version: 1.1
+
 prestudy_worksheet:
   path: skills/prestudy-worksheet/SKILL.md
   current_version: 1.1
@@ -75,13 +105,19 @@ postlesson_short_writing_worksheet:
 worksheet_regression:
   path: tests/worksheet-regression-cases.md
   current_version: 1.1
+
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
   current_version: 1.3
 google_drive_lesson_archive:
   path: skills/google-drive-lesson-archive/SKILL.md
   current_version: 1.0
-renderer_contract: core/renderer/image-first-hybrid-renderer.md
+
+system_architecture:
+  path: core/governance/vmax-system-architecture.md
+  current_version: 1.0-draft
+  status: CANDIDATE_UNTIL_REGRESSION_PASS
+
 adapters:
   chatgpt: adapters/chatgpt.md
   codex: adapters/codex.md
@@ -93,24 +129,15 @@ adapters:
 ---
 
 ## Runtime Authority
-
-GitHub 保存規格；每一課即時 Runtime State 以 Google Drive 為權威。
-
-```text
-runtime/lesson-state.md
-→ Google Drive V-MAX_Runtime_Index
-→ V-MAX_State_{冊別}_{課次}_{課名}
-```
-
-不得以模型記憶、舊對話、舊簡報取代 Drive 最新 State。
+GitHub 保存規格；每一課即時 Runtime State 以 Google Drive 為權威。不得用模型記憶、舊對話或舊簡報取代 Drive 最新 State。
 
 ---
 
-## Canonical Golden Path
+## Canonical Golden Path Candidate 2.1
 
 ```text
 SOURCE 0
-→ STEP 1
+→ STEP 1 + Lesson Knowledge Base
 → HOLD 1
 → STEP 2
 → HOLD 2
@@ -123,177 +150,140 @@ SOURCE 0
 → Supplement / Framework Decision
 → Session Map
 → Lesson Visual Map Strategy
-→ Scenario Wrapper
-→ Character Topology / Cast
+→ GATE A Teaching Direction Lock
+→ Experience Decision
+→ Extension Check
 → Knowledge Lab
+→ Teaching Skill Selection Lock
 → Visual Grammar / Slide Architecture
-→ Page Estimate
-→ Style Recipe
+→ Lesson Budget / Page Ledger
+→ Storyboard
+→ GATE B Experience + Storyboard Lock
+→ Style Recipe / Typography Lock
 → Representative Validation
+→ GATE C Representative Visual Validation
 → Full Renderer
+→ Text QA / Typography QA
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery
 → Google Drive Archive Verification
 ```
 
-若無成語：STEP 2.6 明確記錄 `N/A_NO_IDIOM`。
+無成語：`N/A_NO_IDIOM`。無外掛：`EXTENSION_OFF`。
 
 ---
 
-## Recognition-only Character Resolution
+## Teacher Control Resolution
 
-認讀字 = 教材在本課生字系統中明確列為需要識讀、但不屬正式書寫生字的字。
+### Mandatory HOLD
+HOLD 1/2/2.5/2.6 採 single-stage advance，保護來源與教學範圍。
 
-固定雙來源核對：
-1. 課文頁下方小字生字標示
-2. 課文後方獨立生字表／生字教學頁
+### Production Gates
+- Gate A：Teaching Direction Lock
+- Gate B：Experience + Storyboard Lock
+- Gate C：Representative Visual Validation
 
-- 無方格只作線索，不等於認讀字。
-- 兩處不一致 → `SOURCE_CONFLICT`。
-- 來源無 → `N/A_SOURCE_NOT_PRESENT`。
-
-權威：`recognition-only-character-policy.md` v1.1、`step1-source-anchor-policy.md` v1.3。
+Gate C confirmed 後可批次 Renderer；不得逐頁重新建立同一決策確認。
 
 ---
 
-## Grade 3–4 Character Teaching Resolution
+## Character Teaching Resolution
 
+三、四年級：
 - 正式生字完整保留。
-- **AI 主動深教只有 `SHAPE_NEAR`、`POLYPHONIC`。**
-- 一般單字 = `BASIC_LITERACY_ONLY`。
-- 單一生字詳解只有教師指定 → `TEACHER_ADDED_SINGLE_CHARACTER`。
-- AI 只能提示 `AI_SUGGESTION_SINGLE_CHARACTER`，不得自動成頁。
-- 易錯／複雜／字源／評量／語義特殊皆不是 AI 第三入口。
+- AI 主動深教只有 `SHAPE_NEAR`、`POLYPHONIC`。
+- 一般單字 `BASIC_LITERACY_ONLY`。
+- 單一生字詳解只有教師指定。
 
-權威：`character-deep-teaching-focus-policy.md` v1.1、`knowledge-lab-ordering-policy.md` v1.9。
+多音字來源只有：TEXTBOOK／AI_RECOMMENDED_FROM_FORMAL_CHARACTER／TEACHER_ADDED。
 
-### Polyphonic Source
-合法來源只有：
-1. `TEXTBOOK_POLYPHONIC`
-2. `AI_RECOMMENDED_POLYPHONIC`：AI 只從本課正式生字推薦
-3. `TEACHER_ADDED_POLYPHONIC`
-
-形近補充字、比較字、認讀字、課文一般字不因本身多音而由 AI 自動升級。
+形近字／多音字頁遵循 `character-group-visual-comparison` 1.1-draft：主要字群原則一群一頁；簡單兩字群可一頁兩組；預習做過仍可 CORE_REINFORCE。
 
 ---
 
-## Character Group Visual Resolution
+## Text / Typography Resolution
 
-形近字／多音字學生可見頁遵循 `skills/character-group-visual-comparison/SKILL.md`。
+重要閱讀教學保留 Text Anchor；RETURN 為可選技能，不是固定頁。
 
-- 形近字：大字＋注音＋字義情境圖＋例詞＋像／不像＋辨認提示。
-- 多音字：同一大字＋不同讀音＋語意／情境＋例詞／例句＋課文判斷。
+圖文一體生成允許 AI 圖片引擎產生繁中草稿文字，但正式輸出必須經 Typography/Text QA。
+
+P0 逐字檢查：課文、生字、形近字、多音字、注音、學生辨識目標字、關鍵句／臺詞。
+
+字形本身是教學內容時，Teaching Glyph Rule 優先於藝術化變形。
 
 ---
 
-## Text-Embedded Language Resolution
+## Experience Resolution
 
-- 語詞隨段落：原文＋語詞＋學生易懂意義。
-- 句型帶原文：課文原句 → 結構 → 仿用。
-- 修辭從文本發現：原文 → 效果 → 命名。
-- 原文證據層不可在 Renderer 消失。
+同冊：Book DNA；同課：Lesson Skin；跨教材：Visual Identity Lock；不同用途：Material Mode。
 
-權威：`text-embedded-language-teaching-policy.md`、`skills/text-embedded-language-teaching/SKILL.md`。
+Guide Character 必須有教學功能；Learner Role／Scenario 可 OFF。每課原則 1 個 Surprise Signature，但不得為驚喜而驚喜。
+
+預習單、短文單、正式簡報共享同課角色、視覺世界與 Typography Lock，但依用途調整密度。
+
+---
+
+## Extension Resolution
+
+支援 DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM，模式 LIGHT / THEME_MODE。
+
+新增 Extension 必須重算 Lesson Budget，先問「它取代什麼？」；若牽強則降 PLUS 或不加入。
+
+---
+
+## Lesson Budget Resolution
+
+頁數只能在 Slide Architecture 後正式成立。
+
+- 一頁 = 一個完整認知場景
+- 同頁可兩個有層次問題
+- 新增頁必須有新增 learning_gain
+- 漂亮／額外例子／重複／趣味知識預設不獨立成 CORE 頁
 
 ---
 
 ## Lesson Visual Map Resolution
-
-若教師已選定整課圖像心智地圖，它成為 downstream invariant；簡報大綱、Slide Architecture、頁數估算、Renderer 都不得靜默刪除。
-
-權威：`core/visual/lesson-visual-map.md` v1.1。
-
----
-
-## Idiom Expression Resolution
-
-STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重點、視覺表達與是否獨立成頁。
+教師選定 LVM 後成為 downstream invariant；大綱、Slide Architecture、Page Ledger、Renderer 不得靜默刪除。
 
 ---
 
 ## Worksheet Resolution
-
-### Pre-study Worksheet
-權威：`skills/prestudy-worksheet/SKILL.md` v1.1。
-
-### Post-lesson Short Writing Worksheet
-權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.1。
-
-兩份學習單共同硬規格：
-
-> **A4 100% 實際列印時，所有學生需要閱讀、辨認、勾選或作答依據的文字不得低於 12 pt。**
-
-建議層級：
-- 正文／題幹／Bonus 項目：12–14 pt 以上
-- 區塊標題：14–18 pt 以上
-- 主標題：20 pt 以上
-
-班級／座號／姓名、勾選項、提示語、角色台詞與必要圖說，只要需要學生辨讀，同樣受 12 pt 下限約束。
-
-內容放不下時：`刪減 → 縮短 → 重排 → 必要時增加頁數`；**不得縮到 12 pt 以下**。
-
-圖片／PDF 輸出必須以 A4 實際列印尺寸檢查等效字級，避免畫布縮放造成假 PASS。
-
-預習單與短文單可共享視覺家族，但功能必須分開：
-- 預習單：探索／理解／預備
-- 短文單：素材啟動／語文 Bonus／創作遷移
-
-正式交付必須通過 `tests/worksheet-regression-cases.md` v1.1；若 `WORKSHEET_FONT_TOO_SMALL` 或 `WORKSHEET_EXPORT_SCALE_FAIL`，不得交付為 PASS。
+預習單與短文單維持既有 1.1 規則；A4 100% 實際列印時，所有學生需要閱讀、辨認、勾選或作答依據的文字不得低於 12 pt。
 
 ---
 
 ## Google Drive Lesson Archive Resolution
-
-固定根目錄：
-`V-MAX 教材庫` — folder_id `1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA`
-
-每課版本固定六類：
-```text
-01_教材整理
-02_逐頁腳本
-03_NotebookLM
-04_角色視覺
-05_簡報成品
-06_延伸教材
-```
-
-完整重做不覆蓋舊版，先讀 Drive 後建立 `_01 / _02 / _03...`。
-
-Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與版本的唯一權威。
-
-只有實際上傳並再次 list/search 驗證成功，才可 Archive PASS。
+固定六類：
+`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`。
+完整重做不覆蓋舊版；只有實際上傳並再次驗證成功才 Archive PASS。
 
 ---
 
-## Version Resolution
+## Draft / Version Resolution
+本分支 2.6-draft 將新增 v1 policies 登記為 candidate canonical。只有完成必要 regression 且教師確認封版後，才移除 `draft` 並視為 main canonical。
 
-若模組內版本與 Manifest 不一致：
-1. 重新 fetch 最新檔。
-2. Repo 最新已升版但 Manifest 未更新 → `MANIFEST_STALE`。
-3. 不得以舊 Manifest 覆蓋新 canonical file。
-4. 無法確認就停止高風險流程，不猜。
+若模組內版本與 Manifest 不一致：重新 fetch 最新檔；無法確認即停，不猜。
 
 ---
 
 ## Legacy / Conflict Rules
-
 以下一律視為舊規則：
 - STEP 3／STEP 4 舊主流程
-- AI 因易錯／特殊構形自行建立單字詳解
-- 形近補充字因多音被 AI 拉入多音字單元
+- AI 自動第三類單字深教
 - 無方格直接等於認讀字
 - 語詞／句型／修辭沒有原文證據
-- 已選整課圖像心智地圖卻在大綱消失
-- Drive 舊五類資料夾結構
-- A4 學習單靠縮字到 12 pt 以下塞內容
+- 從視覺工具反推教學目的
+- 每題一頁／固定每段模板
+- 每課強制相同 Scenario／角色／Style
+- 已選 LVM 後段消失
+- 圖片中文字未 QA 即交付
+- Drive 舊五類結構
+- A4 學習單縮到 12 pt 以下
 
 ---
 
 ## 核心金句
+> Manifest 決定現在誰是權威；Executor 必須真的載入。
 
-> Manifest 決定現在誰是權威；Executor 必須真的載入，而不是只靠模型記得。
-
-> 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
-
-> 學習單寧可少放內容，也不要讓學生真正印出來看到的字小於 12 pt。
+> 教學技能先於視覺工具；視覺融合優先，但正式文字必須校對到對。
