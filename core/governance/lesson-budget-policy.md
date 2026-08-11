@@ -1,170 +1,159 @@
-# V-MAX Lesson Budget / Page Ledger Policy 1.0-draft
+# V-MAX Lesson Budget / Page Ledger Policy 1.1-draft
 
 ## 定位
+Lesson Budget 分成兩個合法階段：
 
-本政策把既有 `Page Estimate / Page Ledger` 升級成真正的課程預算控制。頁數不是起點，而是 Teacher Intent、Lesson Map、Session Map、Knowledge Lab、Teaching Skill 與 Slide Architecture 完成後的結果。
+1. **Budget Draft**：在 Gate A 前控制課堂時間、MUST/SHOULD/COULD 與核心認知任務，尚不宣告精確頁數。
+2. **Budget Final / Page Ledger**：Slide Architecture 完成後，才把認知場景轉成正式頁數與逐頁 learning_gain。
 
-核心：
-
-> 不是問「這課還能做多少」，而是問「有限課堂時間裡，哪些理解最值得留下」。
+> 先控制要教多少，再決定要用幾頁。
 
 > 一頁 = 一個完整認知場景；可有兩個有層次問題，不採一題一頁。
 
 ---
 
-## 1. 啟動時機
+## 1. Phase A｜Lesson Budget Draft
 
-Lesson Budget 不得在 STEP 1 / STEP 2 / STEP 2.5 / STEP 2.6 先鎖死。
+### 啟動時機
+至少需要：
+- approved LKB
+- STEP 2 教學價值判讀
+- STEP 2.5 / 2.6 已確認範圍
+- Teacher Intent / Lesson Map / Session Map
+- Teaching Skill Selection Lock
 
-合法順序至少為：
+此時 Experience / Slide Architecture 尚未完成也沒關係。
 
-```text
-Teacher Intent Lock
-→ Lesson Map
-→ Session Map
-→ Teaching Skill Selection
-→ Experience Decision
-→ Knowledge Lab / Slide Architecture
-→ Lesson Budget / Page Ledger
-```
+### Draft 只決定
+- 可用課堂時間
+- MUST / SHOULD / COULD
+- 核心 reading / language / transfer tasks
+- 每個 task 大致時間需求
+- 哪些內容明確不做或降 PLUS
 
-若前段尚未成立就宣告完整總頁數，標記 `PREMATURE_PAGE_LOCK`。
+### Draft 不得決定
+- 精確總頁數
+- 每頁版型
+- 每個轉場是否獨立成頁
+- 因畫面漂亮而增加場景
+
+若 Gate A 前宣告完整總頁數：`PAGE_COUNT_BEFORE_ARCHITECTURE`。
 
 ---
 
-## 2. 教學優先級
+## 2. Phase B｜Budget Final / Page Ledger
 
-所有候選內容至少標：
+### 啟動時機
+
+```text
+Gate A confirmed
+→ Experience / Extension
+→ Knowledge Lab
+→ Visual Grammar / Slide Architecture
+→ Budget Final / Page Ledger
+```
+
+只有此時才可把 cognitive scenes 映射成正式頁數。
+
+---
+
+## 3. Priority Model
 
 - `MUST`：不懂就等於沒有真正讀懂本課
 - `SHOULD`：值得深化，但不是整課主軸
 - `COULD`：有趣或有價值，可轉 PLUS / EXTENSION
 
-Lesson Budget 優先保障 MUST，再配置 SHOULD；COULD 不得擠掉 MUST。
+先保障 MUST，再配置 SHOULD；COULD 不得擠掉 MUST。
 
 ---
 
-## 3. 預算單位
+## 4. Budget Units
 
-Lesson Budget 不是只看頁數，而是同時看：
-- 可用課堂時間
+Lesson Budget 同時看：
+- time budget
 - 核心認知任務數
 - 語文焦點數
 - 討論深度
-- 輸出／遷移任務
+- 產出／遷移負荷
 - 視覺場景切換成本
 
-一節課可優先抓：
-- 2–3 個核心閱讀任務
-- 1 個主要語文焦點
-- 1 個遷移／收束
-
-此為建議，不是固定模板。
+一節課可優先抓 2–3 個核心閱讀任務＋1 個主要語文焦點＋1 個遷移／收束；這是 heuristic，不是模板。
 
 ---
 
-## 4. Page Density Rule
+## 5. Page Density Rule
 
-### 4.1 一頁 = 一個完整認知場景
-同一頁可以有兩個問題，只要兩題都服務同一個理解場景，且形成層次，例如：
+### 一頁 = 一個完整認知場景
+同頁可以有兩個問題，只要形成同一理解的層次，例如：
 
-```text
-先觀察／找證據
-→ 再解釋／推論
-```
+`找證據 → 解釋 / 推論`
 
-### 4.2 不應合併
-若學生認知任務已切換，例如：
+### 應分場景
+若認知任務切換，例如：
 - 閱讀理解 → 創作遷移
-- 找證據 → 新的語文技能
-- 情節理解 → 跨領域研究
+- 找證據 → 新語文技能
+- 情節理解 → 跨域研究
 
-原則上應分頁或分場景。
-
-### 4.3 禁止
-- 機械式一題一頁。
-- 為省頁數把兩個不同認知任務硬塞同頁。
+### 禁止
+- 一題一頁
+- 為省頁數硬塞兩個無關任務
 
 ---
 
-## 5. Stop Rule
+## 6. Stop Rule
 
-每新增一頁，系統必須回答：
+每新增一頁都要回答：
 
 > 這張新增了什麼學生理解？
 
-若答案只是：
-- 更漂亮
-- 再舉一個類似例子
-- 再複習一次
-- 這個知識也很有趣
-- 只是為了角色轉場
-
-則預設：
-- 不新增；或
-- 合併進現有頁；或
-- 降為 `PLUS`。
+若答案只是更漂亮、再一個相似例子、再複習一次、只是有趣、純角色轉場，預設：不新增／合併／降 PLUS。
 
 ---
 
-## 6. CORE / PLUS
+## 7. CORE / PLUS
 
-正式簡報可在同一套中標記：
 - `CORE`：正常教學一定跑
 - `PLUS`：時間足夠才跑
 
-PLUS 不得破壞 CORE 的連續性；跳過 PLUS 後，課程仍能完整成立。
+跳過 PLUS 後，核心教學仍必須完整成立。
 
 ---
 
-## 7. 字群／多音字密度
+## 8. 字群／多音字密度
 
 沿用 `skills/character-group-visual-comparison/SKILL.md`：
-- 主要字群原則一群一頁。
-- 簡單兩字群可一頁放兩組。
-- 多音字同理。
+- 主要字群原則一群一頁
+- 簡單兩字群可一頁兩組
+- 多音字同理
 
-此規則屬認知負荷判斷，不得機械套用。
+這是認知負荷規則，不是死模板。
 
 ---
 
-## 8. Extension Budget
+## 9. Extension Rebalance
 
-加入 DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM 外掛時，必須先問：
+加入 DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM 時，必須先問：
 
 > 它取代什麼？
 
-新增 Extension 後需重算：
-- time_budget
-- core_task_count
-- page_count
-- student_output_load
-
-若會擠掉 MUST，系統應主動警告教師。
+重算：time budget、core task count、student output load；若會擠掉 MUST，主動警告。
 
 ---
 
-## 9. Experience Budget
+## 10. Experience Budget
 
-Guide Character、Context Wrapper、Surprise Signature 不得自動增加獨立頁。
+Scenario、Guide、Learner Role、Surprise Signature 不得自動增加獨立頁。
 
-只有當情境轉場本身具有：
-- 必要導航功能
-- 認知準備功能
-- 關鍵情節揭曉
-- 明確學習增益
-
-才可占頁。
-
-否則應融入原教學頁。
+只有當轉場／揭曉本身有導航、認知準備、關鍵情節或 learning_gain 時才可占頁；否則整合進既有 cognitive scene。
 
 ---
 
-## 10. Page Ledger 最低欄位
+## 11. Page Ledger Schema
 
 ```yaml
 page_ledger:
   lesson_time_budget_minutes:
+  budget_draft_ref:
   core_tasks: []
   pages:
     - page_id:
@@ -188,46 +177,42 @@ page_ledger:
     estimated_minutes:
 ```
 
-`learning_gain` 不得留空；留空代表該頁沒有合法存在理由。
+`learning_gain` 不得留空。
 
 ---
 
-## 11. Merge / Cut Check
+## 12. Merge / Cut Check
 
-完成 Page Ledger 後固定跑：
+### Merge
+- 兩頁是否其實同一 cognitive scene？
+- 兩個短問題是否可同頁完成？
+- 純轉場是否可融入下一頁？
 
-### Merge Check
-- 有沒有兩頁其實是同一認知場景？
-- 有沒有兩個短問題可在一頁完成？
-- 有沒有純轉場頁可融入下一頁？
-
-### Cut Check
-- 若時間少 10 分鐘，先砍哪幾頁？
-- 砍掉 PLUS 後，核心教學是否仍完整？
-- 是否有 COULD 偷偷變成 CORE？
+### Cut
+- 若少 10 分鐘先砍什麼？
+- 砍 PLUS 後 CORE 是否完整？
+- COULD 是否偷偷變 CORE？
 
 ---
 
-## 12. Quality Gate
+## 13. Quality Gate
 
 FAIL：
-- Slide Architecture 前就鎖完整頁數。
-- 一題一頁造成頁數爆炸。
-- 每新增頁無法說明 learning_gain。
-- PLUS 被拿掉後課程斷裂。
-- Extension 只增加、不替換。
-- 為角色、裝飾、驚喜無限制加頁。
-- 兩個不同認知任務為省頁數硬塞同頁。
+- Gate A 前鎖精確頁數
+- Slide Architecture 前形成 Final Page Ledger
+- 一題一頁
+- learning_gain 留空
+- PLUS 移除後課程斷裂
+- Extension 只增加、不替換
+- 角色／裝飾／驚喜無限加頁
 
 Failure codes：
-`PREMATURE_PAGE_LOCK / PAGE_GAIN_MISSING / ONE_QUESTION_ONE_PAGE_DRIFT / LESSON_BUDGET_OVERFLOW / PLUS_DEPENDENCY_FAIL / EXTENSION_BUDGET_FAIL / PAGE_MERGE_MISSED / PAGE_OVERMERGE`
+`PAGE_COUNT_BEFORE_ARCHITECTURE / PAGE_GAIN_MISSING / ONE_QUESTION_ONE_PAGE_DRIFT / LESSON_BUDGET_OVERFLOW / PLUS_DEPENDENCY_FAIL / EXTENSION_BUDGET_FAIL / PAGE_MERGE_MISSED / PAGE_OVERMERGE`
 
 ---
 
 ## 核心金句
 
-> 頁數是教學決策的結果，不是起點。
+> Gate A 鎖的是教學預算，不是投影片數。
 
-> 能在一個完整認知場景裡教完，就不要拆；需要學生換腦袋，就不要硬塞。
-
-> V-MAX 不只要會增加好內容，也要會停止。
+> 頁數是 Slide Architecture 的結果，不是教學設計的起點。
