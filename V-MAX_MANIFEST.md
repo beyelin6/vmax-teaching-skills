@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.7-draft
+# V-MAX Manifest 2.8-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
@@ -8,7 +8,7 @@
 ## Current Canonical / Candidate Files
 
 ```yaml
-vmax_manifest_version: 2.7-draft
+vmax_manifest_version: 2.8-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -47,11 +47,13 @@ lesson_knowledge_routing:
   current_version: 1.1-draft
   authority: DOWNSTREAM_ROUTING_AND_SPIRAL_ONLY
 
-hold_policy: core/governance/hold-teacher-interface-policy.md
+hold_policy:
+  path: core/governance/hold-teacher-interface-policy.md
+  current_version: 1.3-draft
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.6
+  current_version: 1.7-draft
 
 teaching_skill_selection:
   path: core/pedagogy/teaching-skill-selection-policy.md
@@ -148,7 +150,7 @@ integration_regression:
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
-  current_version: 1.0-draft
+  current_version: 1.1-draft
   status: CANDIDATE_UNTIL_REGRESSION_PASS
 
 adapters:
@@ -218,7 +220,7 @@ SOURCE 0
 → Google Drive Archive Verification
 ```
 
-無成語：`N/A_NO_IDIOM`。無外掛：`EXTENSION_OFF`。無外加情境：`SOURCE_WORLD` 或 `SCENARIO_OFF`。
+無成語：`N/A_NO_IDIOM`。無外掛：`EXTENSION_OFF`。無外加情境：`SOURCE_WORLD` 或 `OFF`。
 
 ---
 
@@ -296,7 +298,7 @@ Lesson Budget 分兩階段：
 ---
 
 ## Draft / Version Resolution
-本分支 2.7-draft 將 v1 policies 登記為 candidate canonical。只有完成 integration regression 且教師確認封版後，才移除 `draft`。
+本分支 2.8-draft 將 v1 policies 登記為 candidate canonical。只有完成 integration regression 且教師確認封版後，才移除 `draft`。
 
 若模組內版本與 Manifest 不一致：重新 fetch 最新檔；無法確認即停，不猜。
 
