@@ -1,95 +1,102 @@
 ---
 name: style-recommender
-description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teaching Strategy、角色設定與年級，推薦適合當課教材的 3 至 5 種視覺風格方案。每個方案必須說明適用理由、視覺 DNA、配色、紙張材質、插圖語言、章節標籤、版型方向與限制，並在教師確認前停止。不得固定套用上一課風格，也不得以風格壓過教材內容。
+description: V-MAX Style Recipe Candidate Helper。只依 canonical Style Recipe Families 產生少量風格候選，供 Gate B 後的 Style Recipe / Typography Lock 使用。不得自建第二套 Style Library，不得以風格反推教學技能、Scenario 或 Character。
 ---
 
 # Style Recommender
 
-版本：0.1.0
+版本：0.2.0-compat
 
-## 使命
+## Status
+`HELPER_NOT_STYLE_AUTHORITY`
 
-依每一課教材內容與教學需求，推薦最合適的視覺風格組合，並提供可供教師比較與確認的具體方案。
+風格權威：
+- `core/visual/style-recipe-families.md`
+- `libraries/styles/index.md` 僅作舊素材／變體來源
+- `vmax-typography-bridge/SKILL.md` 管 Typography
 
-## 前置條件
+---
 
-必須讀取：
+## 1. Preconditions
 
-- 已核准的 Lesson Knowledge Book
-- 已核准的 Learning Module Profile
-- 已核准的 Teaching Strategy Profile
-- 已確認或候選中的 Role Selection Profile
-- `libraries/styles/index.md`
-- `schemas/style-selection-profile.md`
+至少需要：
+- approved_lkb
+- Gate A confirmed
+- Scenario locked
+- Character locked
+- Gate B confirmed 或 Storyboard / Page Ledger 已達可供 style 判讀狀態
+- Visual Grammar / Slide Architecture 已知
 
-若角色尚未確認，可以提供角色與風格的配對建議，但不得直接鎖定最終風格。
+若 Character / Scenario 尚未鎖，不得把 style 當作前置選項反推角色或情境。
 
-## 分析維度
+---
 
-至少分析：
+## 2. Workflow
 
-- 文體與篇章結構
-- 課文主題與核心情緒
-- 故事場景或知識領域
-- 年級與閱讀習慣
-- 學習模組類型
-- 教學活動形式
-- 引導角色功能與外觀
-- 圖文密度
-- 是否需要流程圖、比較表、情境漫畫、心智圖或任務卡
+```text
+Locked Teaching Direction
++ Locked Scenario / Character
++ Visual Grammar / Storyboard
+→ choose Primary Style Family
+→ optional 0–3 Secondary Families
+→ define Lesson Skin variables
+→ Typography Bridge mapping
+→ Representative Visual
+→ Gate C
+```
 
-## 推薦數量
+---
 
-預設推薦 3 至 5 組方案。
+## 3. Candidate Rules
 
-每組方案必須包含：
+預設 1–3 個真正不同 Style Recipe 候選，不需要固定 3–5 組。
 
-- style_id
-- 方案名稱
-- 適用理由
-- 主要視覺語言
-- 配色方向
-- 背景與紙張材質
-- 插圖筆觸與情境規則
-- 章節標籤方式
-- 推薦版型
-- 與角色的協調方式
-- 適合的投影片類型
-- 可能限制
+每個候選包含：
+- primary_family
+- optional secondary_families
+- why_fit：文體／情緒／認知任務／Visual Grammar
+- material / palette / lighting / illustration notes
+- continuity with Character DNA
+- Typography direction
+- risk / avoid_when
 
-## 推薦原則
+不得只是換色或換材質冒充不同方案。
 
-- 風格必須服務教材，不得只因熱門或美觀而推薦。
-- 同一風格須能依課文類型動態調整。
-- 不得沿用上一課的背景、情境、圖像符號或章節命名。
-- 同一份教材可推薦不同方向，例如溫暖敘事、探險任務、清楚資訊圖，但必須說明差異。
-- Bee 老師可搭配多種風格，但其蜜蜂元素只能作為識別，不得主導整套教材視覺。
-- 學生可見文字必須清楚、大字、繁體中文。
-- 插圖須依內容重新生成，不以教材截圖代替情境插圖。
+---
 
-## 風格與角色配對
+## 4. Style vs Lesson Skin
 
-角色確認後，需檢查：
+- Style Recipe Family = canonical 美術家族。
+- Lesson Skin = 本課對已選 Family 的具體化。
+- Book DNA = 跨課熟悉感。
+- Material Mode = PRESTUDY / SHORT_READ / TEACHING_SLIDE / EXTENSION 適配。
 
-- 角色服裝與主色是否衝突
-- 角色辨識色是否過度搶焦
-- 角色出現頻率是否符合版面密度
-- 角色是否適合該課情緒與教學功能
-- 是否需要為該課調整角色配件，但不得改變核心角色 DNA
+不得把 Lesson Skin 另建成第二套 style taxonomy。
 
-## 輸出
+---
 
-建立：
+## 5. Typography
+Style 候選只能輸出 Typography DNA direction；正式字形／mapping／Safety Lock 交由 `vmax-typography-bridge`。
 
-- `working/style-recommendation.md`
-- `working/style-selection-profile.md`
+不得因風格可愛、漫畫、RPG 就把 BODY 改成裝飾字。
 
-推薦完成後必須停止，等待教師：
+---
 
-1. 選擇推薦方案
-2. 混合兩個方案
-3. 指定其他風格
-4. 關閉角色
-5. 調整配色、材質或插圖方向
+## 6. Teacher / Gate Behavior
+Style selection 不建立新的全課必經大 Gate；它屬 Gate B 後、Representative Visual 前的 production decision。
 
-未確認前，不得啟動 Presentation Engine 的最終產出。
+教師若需比較，可在代表頁階段看 1–2 個有意義版本；最終由 Gate C 鎖定可批次生成的視覺方向。
+
+---
+
+## 7. Failure Codes
+- `STYLE_RECOMMENDER_AS_STYLE_AUTHORITY`
+- `STYLE_BEFORE_SCENARIO_CHARACTER_LOCK`
+- `STYLE_DRIVES_TEACHING_SKILL`
+- `LESSON_SKIN_AS_SECOND_STYLE_LIBRARY`
+- `TYPOGRAPHY_SAFETY_BYPASS`
+
+---
+
+## 核心金句
+> Style Recommender 幫忙挑 Style Recipe；它不再自己發明另一套風格系統。
