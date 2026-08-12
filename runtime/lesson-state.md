@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.4-draft
+# V-MAX Runtime State Contract 2.5-draft
 
 ## 定位
 GitHub 保存 Runtime schema；Google Drive 保存每一課實際 Runtime State。不得把每次 HOLD 或 stage 前進變成 GitHub commit。
@@ -14,7 +14,7 @@ GitHub 保存 Runtime schema；Google Drive 保存每一課實際 Runtime State�
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.4-draft
+runtime_schema_version: 2.5-draft
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
@@ -66,8 +66,6 @@ locked_decisions:
     character_lock:
     learner_role:
     book_dna_ref:
-    lesson_skin:
-    style_recipe_ref:
     surprise_signature:
   extension:
     status: OFF | LIGHT | THEME_MODE
@@ -76,8 +74,12 @@ locked_decisions:
   lesson_budget_final:
   page_ledger:
   storyboard:
-  gate_b_experience_storyboard:
-  typography_lock:
+  visual_identity:
+    style_recipe_ref:
+    lesson_skin:
+    typography_lock:
+    status: PROPOSED | LOCKED
+  gate_b_experience_storyboard_visual_identity:
   representative_visual:
   gate_c_representative_visual:
 production:
@@ -95,8 +97,9 @@ runtime_rules:
   approved_lkb_required_for_step2: true
   scenario_lock_required_before_character_topology: true
   character_lock_required_before_character_dna: true
+  style_recipe_required_before_lesson_skin_final: true
+  visual_identity_required_before_gate_b: true
   mandatory_hold_single_stage_advance: true
-  production_gate_single_advance: true
   gate_c_allows_batch_renderer: true
   experience_must_reference_canonical_subsystems: true
   lesson_budget_has_draft_and_final: true
@@ -121,10 +124,7 @@ STEP_1
 → TEACHER_INTENT_LOCK
 ```
 
-規則：
-- HOLD 1 未確認，LKB_ASSEMBLY 不合法。
-- LKB status 未達 `APPROVED`，STEP_2 不合法。
-- 無成語：`STEP_2_6 = N/A_NO_IDIOM`。
+規則：HOLD 1 未確認不得建 LKB；LKB 未 APPROVED 不得進 STEP 2；無成語可 `N/A_NO_IDIOM`。
 
 ## 後段狀態鏈
 
@@ -146,8 +146,8 @@ LESSON_MAP
 → SLIDE_ARCHITECTURE
 → LESSON_BUDGET_FINAL_PAGE_LEDGER
 → STORYBOARD
-→ GATE_B_EXPERIENCE_STORYBOARD
-→ TYPOGRAPHY_STYLE_LOCK
+→ STYLE_RECIPE_LESSON_SKIN_TYPOGRAPHY_LOCK
+→ GATE_B_EXPERIENCE_STORYBOARD_VISUAL_IDENTITY
 → REPRESENTATIVE_VISUAL
 → GATE_C_REPRESENTATIVE_VISUAL
 → FULL_RENDERER
@@ -156,34 +156,27 @@ LESSON_MAP
 ```
 
 硬規則：
-- Scenario status 未 `LOCKED`，`CHARACTER_TOPOLOGY_CAST` 不合法。
-- Character status 未 `LOCKED`，正式 Character DNA / EXPERIENCE_COMPLETION 不合法。
-- Gate C confirmed 後可批次 Full Renderer，不逐頁重問。
+- Scenario 未 LOCKED，Character stage 不合法。
+- Character 未 LOCKED，正式 Character DNA / Experience completion 不合法。
+- Style Recipe 未選定，Lesson Skin 不可標 FINAL/LOCKED。
+- Visual Identity 未 LOCKED，Gate B 不合法。
+- Gate C confirmed 後可批次 Full Renderer。
 
 ## Experience Reference Rule
-Runtime 只保存 refs：Scenario → Registry / Selector；Character → topology / cast / DNA refs；Style → Style Recipe ref；Experience → orchestration state。
+Runtime 只保存 refs：Scenario → Registry/Selector；Character → topology/cast/DNA refs；Style → Style Recipe ref；Experience → orchestration state。
 
 ## Lesson Budget Rule
-- `lesson_budget_draft`：Gate A 前，時間／MUST/SHOULD/COULD／核心認知任務。
-- `lesson_budget_final / page_ledger`：Slide Architecture 後，正式頁數與每頁 learning_gain。
+- Draft：Gate A 前，時間／MUST/SHOULD/COULD／核心認知任務。
+- Final / Page Ledger：Slide Architecture 後，正式頁數與每頁 learning_gain。
 
-## 啟動與續跑
-1. 讀 Runtime Index。
-2. 找指定課程 State。
-3. 讀 `current_stage / next_allowed_stage / locked_decisions`。
-4. 只執行合法下一階段。
-5. 每次 HOLD／Review／Experience Lock／Gate 確認或 stage 完成後回寫 Drive State。
-
-若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得用模型記憶、GitHub 範例或舊對話猜進度。
-
-## 重新開啟規則
-若教師修改已鎖決策：明確指出 reopen point，將受影響 downstream 標 `NEEDS_REEVALUATION`；不清除無關 Source Truth。
-
-- Scenario reopen → Character / Experience / Storyboard downstream 需重評。
-- Character reopen → Character DNA / Storyboard / Representative downstream 需重評。
+## Reopen Rule
+- Scenario reopen → Character / Experience / Storyboard / Visual Identity downstream 重評。
+- Character reopen → Character DNA / Storyboard / Visual Identity / Representative downstream 重評。
+- Storyboard / Visual Grammar 大改 → Style Recipe / Lesson Skin / Gate B downstream 重評。
+- Style Recipe 改 → Lesson Skin / Typography / Gate B / Representative downstream 重評。
 - LKB node 變更 → 只重開引用該 node 的 outputs。
 
 ## 核心金句
-> GitHub 保存規則；Google Drive 保存每課真正進度。
+> GitHub 保存規則；Drive 保存每課進度。
 
-> Scenario 先鎖，Character 才能選；Character 先鎖，DNA 才能定。
+> Lesson Skin 不是憑空先鎖：先有認知架構與 Style Recipe，才有本課最終視覺皮膚。
