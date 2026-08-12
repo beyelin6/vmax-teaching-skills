@@ -1,34 +1,94 @@
 ---
 name: presentation-engine
-description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、Teaching Strategy Profile 與 Output Profile，轉換成可選格式的 NotebookLM 來源、Curated Briefing、教師版／學生版 Markdown、簡報腳本、講者備註、學習單來源與評量來源。不得重新分析教材或修改官方教材知識。
+description: V-MAX Output Mapping Helper。把 approved LKB、已鎖 Storyboard、Page Ledger、Experience refs、Style/Typography 與教師／學生分流轉成平台輸出來源。不得重新分析教材、重新決定頁數、Scenario、Character 或 Style；教學簡報正式視覺須服從 Gate B/C 與 Image-first Renderer。
 ---
 
 # Presentation Engine
 
-版本：0.1.0
+版本：0.2.0-compat
 
-## 使命
+## Status
+`OUTPUT_MAPPING_HELPER_NOT_PRESENTATION_WORKFLOW_AUTHORITY`
 
-把已核准的教材知識、學習延伸與教學策略，映射成不同平台可使用的呈現來源。此技能只負責「選取、排序、分流與呈現映射」，不重新解讀教材，也不新增未核准的教學知識。
+正式主流程與視覺 production 由：
+- Main Workflow
+- Golden Path Executor
+- Page Ledger / Storyboard
+- Style Recipe / Typography
+- Image-first Renderer
+- Gate C
 
-## 前置條件
+控制。
 
-執行前必須讀取並確認：
+---
 
-1. `lkb/lesson-knowledge-book.md`
-2. `learning/learning-module-profile.md`
-3. `teaching/teaching-strategy-profile.md`
-4. `config/output-profile.md`
-5. Repository 根目錄 `AGENTS.md`
-6. Style Library、Role Library 與 Layout Library 中當課已核准的設定
+## 1. Mission
+Presentation Engine 只做：
+- 選取
+- 排序
+- 教師／學生分流
+- source-node mapping
+- 平台輸出格式轉譯
 
-LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生最終輸出。
+不重新做課程設計。
 
-## 可選輸出
+---
 
-依 `output-profile.md` 產生下列一種或多種格式：
+## 2. Preconditions by Output Type
 
-- `lesson_knowledge_book`
+### NotebookLM / Curated Source
+至少需要：
+- approved LKB
+- 已核准 Learning Expansion / Teacher Strategy（若要包含）
+- 明確 output request
+
+可在完整 slide production 前產生，但不得把未核准候選寫成教材真值。
+
+### Slide Script / Teacher Notes / Student Slide Source
+至少需要：
+- approved LKB
+- Teaching Skill Lock
+- Experience locks
+- Slide Architecture
+- Budget Final / Page Ledger
+- Storyboard / Gate B confirmed
+
+### Final Visual Slide Package
+Presentation Engine 不直接取代 Renderer；必須等 Style/Typography + Representative Visual + Gate C，再交 Image-first Renderer / platform adapter。
+
+---
+
+## 3. Source Authority
+
+- Official / Teacher Knowledge → approved LKB
+- Learning Expansion → approved expansion nodes
+- Teaching sequence → locked Storyboard / Page Ledger
+- Scenario → locked scenario ref
+- Character → locked topology / cast / DNA refs
+- Style → canonical Style Recipe ref
+- Typography → Typography Lock
+
+缺任何必要 source 時標 `missing_approved_source`，不得自行補造。
+
+---
+
+## 4. Forbidden Decisions
+
+不得：
+- 新增未核准成語、句型、修辭、知識
+- 改寫課文原文／官方詞義
+- 重新決定主旨、文體或段落結構
+- 重新估頁數
+- 重新選 Scenario / Character / Style
+- 以 Layout Library 反推教學內容
+- 在 Gate C 前宣告 final visual approved
+
+---
+
+## 5. Optional Outputs
+
+依 request 產生一種或多種：
+- `lesson_knowledge_book_reference`
 - `curated_briefing`
 - `notebooklm_source`
 - `notebooklm_instruction`
@@ -41,139 +101,76 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - `assessment_source`
 - `output_manifest`
 
-不得自行產生未被選取的格式。
+不自動全產。
 
-## 核心原則
+---
 
-### 1. 唯一知識來源
+## 6. Slide Mapping Contract
 
-- 官方教材內容只能來自核准的 LKB。
-- 學習延伸只能來自核准的 Learning Module Profile。
-- 課堂流程只能來自核准的 Teaching Strategy Profile。
-- 視覺與版型只能來自已選取的 Style、Role 與 Layout 設定。
+每個 slide node 至少記錄：
 
-### 2. 不重新分析
+```yaml
+slide_id:
+section:
+lesson_stage:
+cognitive_scene:
+learning_gain:
+teaching_skill: []
+text_anchor:
+student_visible_content:
+teacher_notes:
+source_nodes: []
+experience_refs:
+layout_intent:
+illustration_requirement:
+answer_visibility:
+```
 
-本技能不得：
+這些欄位必須引用已鎖 Page Ledger / Storyboard，不由 Presentation Engine 自己發明。
 
-- 新增成語、修辭、句型或教材詞語
-- 改寫官方詞義、例句或課文原文
-- 重新判斷主旨、文體或段落結構
-- 擅自新增 DOK 題目、活動或答案
+---
 
-若所需內容不存在，標示 `missing_approved_source`，不得自行補寫。
+## 7. Teacher / Student Separation
 
-### 3. 教師與學生分流
+學生可見輸出不得包含：答案、source metadata、internal IDs、教師講解提示、validation message。
 
-學生可見輸出不得包含：
+教師輸出可保留：source nodes、答案、教學提示、差異化、speaker notes。
 
-- 教師答案
-- 參考答案
-- 來源 metadata
-- 內部節點 ID
-- 教師講解提示
-- 系統驗證訊息
+---
 
-教師輸出可保留：
+## 8. NotebookLM
+NotebookLM 目前沿用 adapter / output contract。Presentation Engine 可整理 source / instruction，但：
+- approved LKB 是唯一知識底座
+- 不建立分叉 Source Truth
+- 未來 Visual Source Pack / Audio Source Pack 規格另行討論，不阻塞 v1
 
-- 來源與節點 ID
-- 教學提示
-- 參考答案
-- 差異化支援
-- 誤用診斷
-- 講者備註
+---
 
-### 4. 動態頁數與模組
+## 9. Visual Mapping
 
-- 投影片頁數依核准內容、課堂時間與版面密度動態決定。
-- 不強迫每課使用固定章節或固定頁數。
-- 未啟用的 Learning Module 不得出現在輸出。
-- 同一知識節點可映射到不同輸出，但不得產生互相矛盾的版本。
+- Style 只能引用 Style Recipe Families 已選結果。
+- Character 只能引用 locked Character DNA。
+- Typography 交 Typography Bridge。
+- Final visual composition 交 Image-first Renderer。
 
-## NotebookLM 輸出規則
+Presentation Engine 可以寫 `visual_intent`，不能自行改畫風或角色身份。
 
-### NotebookLM Source
+---
 
-- 使用完整、連續、可單獨閱讀的 Markdown。
-- 完整內容集中於來源 MD。
-- 保留官方知識、學習延伸與教師策略的清楚分區。
-- 避免把大量操作規則混入來源文件。
+## 10. Quality Checks
 
-### NotebookLM Instruction
+- source trace 完整
+- student / teacher 分流正確
+- slide order 與 Storyboard 一致
+- page count 與 Page Ledger 一致
+- locked Scenario / Character / Style 未漂移
+- 未混入其他課次
+- 未把未核准 Extension 當 Core
 
-- 只保留生成操作規則、視覺要求、學生／教師分流與輸出限制。
-- 不重複貼入完整教材內容。
-- 不建立重複的 `slides` 節點。
-- 確認角色 DNA 變數已正確替換。
+Failure codes：
+`PRESENTATION_ENGINE_REDESIGNS_LESSON / PAGE_LEDGER_DRIFT / EXPERIENCE_LOCK_DRIFT / UNAPPROVED_SOURCE_IN_OUTPUT / GATE_C_BYPASS`
 
-## 簡報來源與腳本規則
+---
 
-每張投影片至少記錄：
-
-- slide_id
-- section
-- lesson_stage
-- title
-- student_visible_content
-- teacher_notes
-- source_nodes
-- learning_modules
-- strategy_step
-- layout_id
-- illustration_requirement
-- answer_visibility
-
-### 成語頁
-
-- 只使用來源教材中的官方成語。
-- 官方成語名稱、詞義、例句與對應生字不得改寫。
-- 可加入已核准的易誤用、近義辨析、情境練習與看圖判斷等 Learning Modules。
-- 插圖必須呈現成語實際語意，不得只畫字面。
-- 延伸內容與官方內容在教師資料中需可追溯區分。
-
-### 評量頁
-
-- 學生可見頁不得出現答案。
-- 答案寫入 speaker notes 或教師專用輸出。
-- 每題須能追溯到 LKB 或核准的 Learning Module。
-
-## 視覺映射規則
-
-- Style Library 決定色彩、材質、筆觸與整體視覺語言。
-- Role Library 決定角色外觀、語氣、表情與出現方式。
-- Layout Library 決定版面結構。
-- 每頁插圖必須依該頁教材句意或延伸任務生成，不以教材截圖取代。
-- 同一角色、服裝、比例與視覺 DNA 必須一致。
-- 版面可以依內容動態調整，不強迫所有頁面使用同一構圖。
-
-## 工作流程
-
-1. 驗證所有前置文件與核准狀態。
-2. 讀取 Output Profile，建立輸出清單。
-3. 建立內容選取表：LKB 節點、Learning Modules、Teaching Strategy 步驟。
-4. 執行教師／學生資訊分流。
-5. 執行視覺、角色與版型映射。
-6. 產生選取的輸出格式。
-7. 產生 `output-manifest.md`。
-8. 執行輸出驗證。
-9. 狀態設為 `ready_for_teacher_review`，停止等待教師確認。
-
-## 輸出驗證
-
-至少確認：
-
-- 所有官方內容可追溯到 LKB
-- 未加入來源中不存在的成語
-- 官方成語詞義與例句未被改寫
-- 未啟用模組未出現在輸出
-- 學生版沒有答案與內部標籤
-- 教師答案已正確分流
-- 投影片頁數為動態結果
-- 無重複 `slides` 節點
-- 無未替換角色變數
-- 插圖需求符合教材句意
-- 未混入其他課次內容
-
-## 完成條件
-
-只有所有選定輸出、manifest 與驗證報告均完成，且狀態為 `ready_for_teacher_review` 時，本技能才算完成。教師確認前不得標示為 approved。
+## 核心金句
+> Presentation Engine 負責把已鎖設計翻譯成輸出，不再偷偷重新設計一課。
