@@ -1,10 +1,10 @@
-# V-MAX Manifest 4.9-draft
+# V-MAX Manifest 5.0-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 4.9-draft
+vmax_manifest_version: 5.0-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -24,14 +24,14 @@ runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
-  index_title: V-MAX_Runtime_Index_v14
-  index_document_id: 1CZaqHTWmLDl4saMa6cjfzsWvIsofM3G8NXbpzO1RgOk
-  previous_index_title: V-MAX_Runtime_Index_v13
-  previous_index_document_id: 1g2HNuljuT7w8yfE1mTHcfMUySHO230_fv5mcaMPZa98
-  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_15
-  active_runtime_document_id: 1czs_ighUIv9IVXr0vCViBiI3JOzNU9cdwkqahrTpLTg
-  active_runtime_version: 15
-  active_runtime_stage: TYPOGRAPHY_LOCK
+  index_title: V-MAX_Runtime_Index_v15
+  index_document_id: 1GoLEvC-gBpU_9A6R08rZKTeb9P_1ZtNCkrNfDn9A5io
+  previous_index_title: V-MAX_Runtime_Index_v14
+  previous_index_document_id: 1CZaqHTWmLDl4saMa6cjfzsWvIsofM3G8NXbpzO1RgOk
+  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_16
+  active_runtime_document_id: 15hx-RWl60mq5ctkIa-IOLLTVDJal3FJBsy4FDIeiDEU
+  active_runtime_version: 16
+  active_runtime_stage: GATE_B_EXPERIENCE_STORYBOARD_VISUAL_IDENTITY
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
@@ -174,6 +174,10 @@ regression:
     path: tests/vmax-v1-live-runtime-lesson-skin-final-report.md
     current_version: 1.0-draft
     status: PASS_TO_TYPOGRAPHY_LOCK
+  live_runtime_typography_lock:
+    path: tests/vmax-v1-live-runtime-typography-lock-report.md
+    current_version: 1.0-draft
+    status: PASS_TO_GATE_B_CHECKPOINT_WITH_CHARACTER_ASSET_BLOCKER
   static_contract: PASS
   three_lesson_tabletop: PASS_RECHECKED_UNDER_PRODUCTION_MODE_SPLIT
   asset_persistence_regression: PASS_LIVE_DRIVE
@@ -184,14 +188,14 @@ regression:
   rollback_versioning_regression: PASS_LIVE_DRIVE
   live_runtime_read_audit: PASS_WITH_MIGRATION_COMPLETED_AND_RESUMED
   live_runtime_rerun:
-    status: PASS_TO_TYPOGRAPHY_LOCK
-    runtime_version: 15
-    current_stage: TYPOGRAPHY_LOCK
+    status: BLOCKED_GATE_B_CANONICAL_FACE
+    runtime_version: 16
+    current_stage: GATE_B_EXPERIENCE_STORYBOARD_VISUAL_IDENTITY
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.3-draft
-  status: TECHNICAL_PRESEAL_PASS_LESSON_SKIN_FINAL_COMPLETE
+  status: TECHNICAL_PRESEAL_PASS_TYPOGRAPHY_LOCK_COMPLETE
 
 compatibility_helpers:
   vmax_course_orchestrator:
@@ -274,6 +278,7 @@ Shared Front Path
 - `_13`：38 張 Storyboard v01 完成，逐頁目的／教師與學生動作／構圖／Reveal／Text Anchor 均落地 → `STYLE_RECIPE`
 - `_14`：Style Recipe v01 完成，F2 主家族＋F3/F8/F5 secondary 與 locked visual tokens 落地 → `LESSON_SKIN_FINAL`
 - `_15`：Lesson Skin Final v01 `L01-WATER-LAND-MOTION-FIELDNOTE-01 / 水陸慢動作觀察手帳` 完成，palette／lighting／material／motif／camera tendency／slide-specific visual grammar 落地 → `TYPOGRAPHY_LOCK`
+- `_16`：Typography Lock v01 完成；Teaching Glyph hard floor 72 pt、注音 hard floor 22 pt、P25 `陀／駝 + 躍／耀` = `PASS_KEEP_SINGLE_SLIDE` → `GATE_B_EXPERIENCE_STORYBOARD_VISUAL_IDENTITY` checkpoint，但先被小澄 isolated canonical face prerequisite 擋住。
 
 不得回問已鎖定的 HOLD 2 / 2.5 / 2.6、Scenario A、Character A、Learner Role A、Book DNA A、Surprise A 或 Extension selection，除非教師明確 reopen 或上游變更使其失效。
 
@@ -317,23 +322,24 @@ Book DNA 保存整冊熟悉感；Lesson Skin 保存每課的新鮮感；Surprise
 
 ---
 
-## Live Runtime 15 Resolution
+## Live Runtime 16 Resolution
 
 ```yaml
-title: V-MAX_State_四上_第一課_水陸小高手_15
-document_id: 1czs_ighUIv9IVXr0vCViBiI3JOzNU9cdwkqahrTpLTg
+title: V-MAX_State_四上_第一課_水陸小高手_16
+document_id: 15hx-RWl60mq5ctkIa-IOLLTVDJal3FJBsy4FDIeiDEU
 runtime_schema: 2.7-draft
 workflow: 2.6-draft
-manifest: 4.9-draft
+manifest: 5.0-draft
 executor: 1.8-draft
 production_mode: SINGLE_LESSON_BUILD
-current_stage: TYPOGRAPHY_LOCK
-last_completed_stage: LESSON_SKIN_FINAL
+current_stage: GATE_B_EXPERIENCE_STORYBOARD_VISUAL_IDENTITY
+last_completed_stage: TYPOGRAPHY_LOCK
+teacher_confirmation_status: BLOCKED_BY_CANONICAL_FACE_PREREQUISITE
 renderer_status: BLOCKED_UNTIL_GATE_C
 visual_seed_status: NOT_REQUIRED
 ```
 
-Runtime Index v14 已 active 指向 `_15`；v13 與更早 Index、Runtime 全部保留。
+Runtime Index v15 已 active 指向 `_16`；v14 與更早 Index、Runtime 全部保留。
 
 目前已鎖：
 - Gate A
@@ -364,6 +370,7 @@ Runtime Index v14 已 active 指向 `_15`；v13 與更早 Index、Runtime 全部
 - Storyboard v01: `1ir8B4xVh4bCeOURIEagyfO-Y_KXdPy7uAXkRdBacmSw`
 - Style Recipe v01: `1dvPF35mvyWKP4bp5nHDGGlkPPEfOiBgwq5H9-ensqfI`
 - Lesson Skin Final v01: `1tRRGkcnwH6QPn8G-EP2LjLR8_zK8HhH-bZQ2nR-r3sY`
+- Typography Lock v01: `1ciZL5YcL6eCq7IUm7aNygsUvfwJjFDicwCajFfUhRu8`
 
 ### Style Recipe
 
@@ -395,6 +402,23 @@ language_lab_rule: HIGH_SIGNAL_LOW_DECORATION
 character_presence: KEY_MOMENTS_ONLY
 ```
 
+### Typography Lock
+
+```yaml
+typography_ref: 1ciZL5YcL6eCq7IUm7aNygsUvfwJjFDicwCajFfUhRu8
+body_question_source_truth: T01_STANDARD_SANS
+h1_direction: T04_VERIFIED_ONLY_FALLBACK_T02
+teaching_glyph: T01_ONLY
+target_glyph_preferred_pt: 80_96
+target_glyph_hard_floor_pt: 72
+zhuyin_hard_floor_pt: 22
+slide_body_hard_floor_pt: 24
+worksheet_body_preferred_pt: 14
+worksheet_body_hard_floor_pt: 12
+p25_result: PASS_KEEP_SINGLE_SLIDE
+image_generated_text_source_truth: false
+```
+
 ### Final core budget
 
 ```yaml
@@ -410,9 +434,9 @@ physical_slide_distribution: [5, 5, 5, 7, 6, 5, 5]
 
 Storyboard v01 沒有增加任何裝飾頁；小澄只在 P01、P05、P07、P14、P22、P28、P33、P34、P38 九個 key moments 出現。
 
-P25 `陀／駝 + 躍／耀` 只有在 Typography Lock 能維持大字辨識時成立；若不成立，必須 reopen Page Ledger，不得縮字硬塞。
+P25 `陀／駝 + 躍／耀` 已通過 Typography Lock：目前保持一張。只有實際 font mapping 造成任一目標字 <72 pt、注音 <22 pt 或左右區互相干擾時，才 reopen Page Ledger；不得縮字硬塞。
 
-Lesson Skin Final 已將 Style Recipe 具體化為 palette、lighting、material、motif、camera tendency 與 slide-specific visual grammar；Typography 尚未執行，因此 Lesson Visual Identity Pack 仍不得宣告 FINAL_LOCKED。
+Lesson Skin Final、Typography Lock、Storyboard 與 Page Ledger 均已具備，但小澄 isolated canonical face asset 仍未核准，因此 Lesson Visual Identity Pack 維持 `PROPOSED`，Gate B 不得宣告完成。
 
 ---
 
@@ -448,9 +472,9 @@ page_ledger_live: PASS_38_PHYSICAL_SLIDES
 storyboard_live: PASS_38_SLIDES_NO_DRIFT
 style_recipe_live: PASS_F2_PRIMARY_F3_F8_F5_SECONDARY
 lesson_skin_final_live: PASS_WATER_LAND_MOTION_FIELDNOTE
-live_runtime_transition: PASS_TO_TYPOGRAPHY_LOCK
+typography_lock_live: PASS_WITH_P25_KEEP_SINGLE_SLIDE
+live_runtime_transition: PASS_TO_GATE_B_CHECKPOINT_BLOCKED_BY_CANONICAL_FACE
 remaining:
-  - TYPOGRAPHY_LOCK
   - ISOLATED_CANONICAL_FACE_ASSET_REQUIRED_BEFORE_GATE_B
   - GATE_B_AND_GATE_C
   - TEACHER_FINAL_V1_SEAL_APPROVAL
@@ -475,4 +499,4 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 
 > Book DNA 保存熟悉感；Lesson Skin 保存新鮮感；Surprise Signature 讓理解本身產生期待。
 
-> 第一課目前合法進入 Typography Lock；Gate B／Renderer 仍不得飛站。
+> 第一課目前合法停在 Gate B checkpoint；先完成小澄 isolated canonical face asset，再能 FINAL_LOCK Identity Pack 與正式跑 Gate B。
