@@ -1,44 +1,27 @@
-# V-MAX Google Drive Asset Authority Policy 1.0-draft
+# V-MAX Google Drive Asset Authority Policy 1.1-draft
 
 ## 定位
-
 本政策定義 V-MAX 的永久資產邊界：
 
 > GitHub 保存規則、技能、schema、模板與可重用文字規格；Google Drive 保存所有實際成品、半成品、核准過的視覺資產與每課 Runtime。
 
 任何不可重建、已經人工確認、或未來需要跨平台續用的資產，不得只存在於聊天、單一 AI 平台暫存或模型記憶中。
 
+所有更新遵循 `core/governance/lesson-upgrade-lifecycle-policy.md`：**新版另存、舊版保留、正式引用 pin 明確版本。**
+
 ---
 
 ## 1. Authority Split
 
 ### GitHub = System Brain
-保存：
-- Main Workflow / Executor / Runtime schema
-- Character System / Scenario / Style / Typography 規則
-- Role Library 的穩定文字規格與可重用 ID
-- 技能、policy、schema、regression、adapter
-
-GitHub 不保存每課大量實際教材圖像、簡報成品與日常半成品。
+保存：Main Workflow / Executor / Runtime schema、Character / Scenario / Style / Typography 規則、Role Library 穩定文字規格、技能／policy／schema／regression／adapter。
 
 ### Google Drive = Persistent Workspace
-保存：
-- 每課 Runtime State
-- Source Master / LKB 輸出
-- Storyboard / Page Ledger / Renderer Script
-- NotebookLM Source / Visual YAML / Curated Briefing
-- 角色基準圖、表情、姿勢、服裝變體
-- Lesson Visual Identity Pack
-- Style reference / Book DNA reference
-- 預習單、短文單、題庫、評量、Kahoot 匯出檔
-- PPTX / PDF / Google Slides / 代表頁樣張
-- 所有尚未完成但需要日後接續的半成品
+保存：每課 Runtime、Source Master / LKB 輸出、Storyboard / Page Ledger / Renderer Script、NotebookLM Source / Visual YAML、角色基準圖／表情／姿勢／服裝、Lesson Visual Identity Pack、Style / Book DNA reference、預習單／短文單／題庫／Kahoot、PPTX / PDF / Google Slides / 代表頁、所有需日後續跑的 WIP。
 
 ---
 
 ## 2. Shared Visual Asset Library
-
-固定根目錄：
 
 ```yaml
 shared_visual_asset_library:
@@ -46,8 +29,6 @@ shared_visual_asset_library:
   folder_id: 1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V
   parent_library_id: 1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
 ```
-
-固定子資料夾：
 
 ```text
 00_V-MAX_角色與視覺資產庫/
@@ -58,176 +39,121 @@ shared_visual_asset_library:
 └── 05_Lesson_Visual_Identity_Packs/
 ```
 
-已建立角色實例：
-
-```text
-01_角色庫/
-└── ROLE-BEE-001_Bee老師/
-    ├── 01_角色設定/
-    ├── 02_核准基準圖/
-    ├── 03_表情姿勢/
-    └── 04_服裝變體/
-```
-
 ---
 
 ## 3. Character Authority
 
-角色採雙層權威：
+### Stable Role Spec｜GitHub
+保存 role_id、角色定位、教學功能、人格／語氣、穩定文字 Visual DNA、使用頻率與禁則。
 
-### Stable Role Spec
-GitHub Role Library 保存：
-- role_id
-- 角色定位
-- 教學功能
-- 人格／語氣
-- Visual DNA 的穩定文字規格
-- 使用頻率與禁則
+### Approved Visual Assets｜Drive
+保存 canonical portrait / full body、核准基準圖、表情／姿勢、服裝變體與版本化資產，例如：
 
-### Approved Visual Asset
-Google Drive 保存：
-- canonical portrait / full-body reference
-- 核准基準圖
-- 表情／姿勢 sheet
-- 服裝變體
-- 角色視覺版本
-- 可供下次生成直接引用的圖像資產
+```text
+ROLE-BEE-001_canonical_v01.png
+ROLE-BEE-001_canonical_v02.png
+ROLE-BEE-001_expression_v01.png
+```
 
-若文字規格與已核准圖像發生衝突：
-- 教學功能與角色身分規則以 GitHub 為準。
-- 「角色實際長相」以 Drive 最新核准基準圖與其 asset_version 為準。
+### Pinning Rule
+「角色實際長相」**不是一律使用最新版本**，而是以該課 Runtime / Identity Pack 明確 pin 的 `asset_version` 為準。
 
-不得只靠 prompt 重新猜角色長相。
+例如：
+
+```yaml
+character_ref:
+  role_id: ROLE-BEE-001
+  asset_version: v02
+  drive_asset_ref: ...
+```
+
+即使共享角色庫後來出現 v03，舊課仍保持 v02。只有教師在 REFRESH 時明確選 `UPGRADE_TO_v03`，active ref 才改。
+
+若需要回退，直接把 active ref 指回舊 asset version；不改圖、不刪圖。
 
 ---
 
 ## 4. Lesson Visual Identity Pack
+每課一旦有跨教材視覺，建立版本化 Identity Pack：
 
-每課一旦開始產生跨教材視覺，必須建立可持久引用的 `Lesson Visual Identity Pack`，存於：
-
-`05_Lesson_Visual_Identity_Packs/`
-
-最低欄位：
-
-```yaml
-lesson_visual_identity:
-  lesson_id:
-  version:
-  status: PROPOSED | LOCKED
-  book_dna_ref:
-  scenario_ref:
-  character_refs:
-    - role_id:
-      asset_version:
-      drive_asset_ref:
-  style_recipe_ref:
-  lesson_skin:
-  style_reference_asset_ref:
-  typography_lock_ref:
-  material_modes:
-    prestudy:
-    short_read:
-    teaching_slide:
-    extension:
-  drift_guardrails: []
+```text
+L09_VisualIdentity_v01.yaml
+L09_VisualIdentity_v02.yaml
 ```
 
-此 Pack 是跨平台視覺引用層；NotebookLM Visual YAML、Canva、Gemini、Renderer prompt 等都由此轉譯，不得反過來成為視覺真值。
+最低欄位：lesson_id、version、status、Book DNA ref、Scenario ref、character role_id + asset_version + Drive ref、Style Recipe / Style asset version、Lesson Skin seed/final、Typography ref、Material Modes、drift guardrails。
+
+NotebookLM Visual YAML、Canva、Gemini、Renderer prompt 都由明確 Identity Pack version 轉譯，不得反過來成為視覺真值。
 
 ---
 
-## 5. Two Production Modes
+## 5. Production Modes
 
 ### SINGLE_LESSON_BUILD
-
-```text
-完整分析
-→ Teaching Direction
-→ Scenario / Character / Style / Storyboard
-→ 正式簡報與代表頁
-→ 簡報詳細說明 / Renderer Script
-→ Lesson Visual Identity Pack
-→ NotebookLM Visual YAML / Source
-→ 預習單 / 短文單
-→ Kahoot / 題庫 / 評量 / 其他附加文件
-```
-
-原則：正式簡報是單課最完整教學母體；後續教材繼承同一 Identity Pack，但依 Material Mode 降密度或改版面。
+完整分析 → Teaching Direction → Scenario / Character → Storyboard / Style → 正式簡報 → Renderer Script → Identity Pack → NotebookLM → 預習單／短文單 → 題庫／附件。
 
 ### BATCH_PREP_BUILD
-
-```text
-多課來源分析
-→ 批次確認各課重點知識與 Teaching Direction
-→ 批次確認 Scenario / Character / Style 方向
-→ 建立每課 Lesson Visual Identity Pack
-→ 批量產出預習單 / 短文單
-→ 全部寫入 Drive
-→ 未來正式上課時載回該課 Runtime + Identity Pack
-→ 再完成 Storyboard / 正式簡報 / NotebookLM / 題庫
-```
-
-批次模式不要求先做完整簡報，但不得在沒有 Identity Pack 或角色核准 reference 時生成需要跨期續用的視覺教材。
+多課分析 → Teaching Direction → Scenario / Character → Visual Seed Lock → Identity Pack `SEED_LOCKED` → 批量預習單／短文單 → Drive checkpoint；未來讀回同一 pinned assets 再做簡報。
 
 ---
 
-## 6. Save-on-Approval Rule
+## 6. Save-on-Approval / Save-on-Interrupt
+任何 APPROVED / LOCKED / USABLE_WIP 都要：
 
-任何下列事件成立，必須寫入 Google Drive：
-- 教師核准角色長相
-- 教師核准 Style reference / Lesson Skin
-- 代表頁通過 Gate C
-- Storyboard / Page Ledger 已達可續跑狀態
-- NotebookLM YAML / Source 已可使用
-- 預習單／短文單／題庫已有可用版本
-- 任何半成品因額度、平台、時間中斷而需要日後續跑
+```text
+SAVE AS NEW VERSION TO DRIVE
+→ VERIFY REF
+→ UPDATE ACTIVE REF ONLY AFTER APPROVAL
+```
 
-禁止：只在對話說「已鎖定」但 Drive 沒有可恢復的 reference。
+禁止：
+- 只在聊天說已鎖定。
+- 覆蓋舊檔。
+- 以 `latest` 取代明確版本。
 
-Failure code：`CHAT_ONLY_ASSET / APPROVED_ASSET_NOT_PERSISTED / VISUAL_REFERENCE_MISSING`。
+Failure：`CHAT_ONLY_ASSET / APPROVED_ASSET_NOT_PERSISTED / VISUAL_REFERENCE_MISSING / OVERWRITE_EXISTING_ASSET / FLOATING_LATEST_REFERENCE`。
 
 ---
 
 ## 7. Lesson Folder vs Shared Library
 
-### Shared Library 放「可重用資產」
-- 核准角色基準圖
-- 通用角色 DNA visual asset
-- Book DNA
-- Style reference
-- 共用圖示語彙
+Shared Library 放可重用、版本化資產：角色基準圖、Book DNA、Style Reference、共用視覺語彙。
 
-### 每課資料夾放「本課使用紀錄與本課變體」
-- 本課引用哪些 role_id / asset_version
-- 本課 Lesson Visual Identity Pack reference
-- 本課專用服裝／道具／姿勢
-- 本課代表頁與樣張
-- 本課全部成品與半成品
+每課資料夾放本課使用紀錄與變體：pin 的 role_id / asset_version、本課 Identity Pack active ref、本課特殊服裝／道具／姿勢、代表頁與全部成品／WIP。
 
-不要在每課複製同一角色原始資產；用 reference + lesson-specific variation。
+不要每課複製共享 canonical asset；使用 reference + lesson-specific variation。
 
 ---
 
-## 8. Platform Independence
+## 8. Upgrade / Rollback
+約每 24 個月可標 `REVIEW_DUE`。到期不自動升級。
 
-若 ChatGPT / NotebookLM / Gemini / Canva / 其他平台額度用完或更換：
+重新跑時每個資產可選：
+- `KEEP_PINNED`
+- `UPGRADE`
+- `FORK`
+- `RETIRE_FROM_NEW_VERSION`
+
+Rollback 只切 active ref，歷史資產一律保留，除非教師明確要求刪除。
+
+---
+
+## 9. Platform Independence
+若 ChatGPT / NotebookLM / Gemini / Canva / 其他平台中斷：
 
 ```text
-讀 Google Drive Runtime
-→ 讀 Lesson Visual Identity Pack
-→ 讀角色 reference assets
-→ 讀當前半成品
+讀 Drive Runtime
+→ 讀 active Identity Pack version
+→ 讀 pinned character / style assets
+→ 讀當前 WIP version
 → 從合法下一步續跑
 ```
 
-不得要求教師重新描述已確認過的角色與風格。
+不得要求教師重新描述已確認角色與風格。
 
 ---
 
 ## 核心金句
+> 角色的規則在 GitHub，角色的每一張臉都在 Drive；這一課用哪一張，由 pin 的版本決定。
 
-> GitHub 保存方法；Google Drive 保存工作。
-
-> 角色的「規則」在 GitHub，角色的「臉」在 Drive。
-
-> 任何已確認或未來要接著做的東西，都不能只活在聊天裡。
+> 最新版只是候選，不是命令。
