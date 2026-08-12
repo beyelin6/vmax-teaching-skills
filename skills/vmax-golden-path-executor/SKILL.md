@@ -3,7 +3,7 @@
 版本：1.8-draft
 
 ## 目的
-本技能是 V-MAX 國語教材工作流執行控制器。它依 Main Workflow、Manifest、Production Mode、Upgrade Lifecycle 與 Google Drive Runtime State 執行唯一合法下一步。
+本技能是 V-MAX 國語教材工作流執行控制器。它依 Main Workflow、Manifest、Production Mode、Upgrade Lifecycle、Migration Resume Policy 與 Google Drive Runtime State 執行唯一合法下一步。
 
 > 前段一次確認只走一個決策層；批次模式停在可安全續跑的 checkpoint；任何可續跑成果先存 Drive；任何更新另存新版本。
 
@@ -15,8 +15,9 @@
 5. `core/governance/production-mode-policy.md`
 6. `core/governance/google-drive-asset-authority-policy.md`
 7. `core/governance/lesson-upgrade-lifecycle-policy.md`
-8. `core/governance/hold-teacher-interface-policy.md`
-9. 當前 stage canonical policies / skills
+8. `core/governance/runtime-migration-resume-policy.md`（migration Runtime only）
+9. `core/governance/hold-teacher-interface-policy.md`
+10. 當前 stage canonical policies / skills
 
 不得用聊天記憶取代 Runtime / Drive refs。
 
@@ -114,7 +115,7 @@ load Runtime
 
 ## E. Transition Guard
 - HOLD 1 confirmed → LKB → 停 LKB REVIEW。
-- LKB REVIEW confirmed → STEP 2 → 停 HOLD 2。
+- 一般新課：LKB REVIEW confirmed → STEP 2 → 停 HOLD 2。
 - HOLD 2 confirmed → STEP 2.5 → 停 HOLD 2.5。
 - HOLD 2.5 confirmed → STEP 2.6 → 停 HOLD 2.6。
 - Gate A confirmed → Scenario candidates → 停 SCENARIO LOCK。
@@ -125,6 +126,32 @@ load Runtime
 - Gate C confirmed → batch Renderer。
 
 Failure：`FLYING_TRAIN / STAGE_LEAP / SCENARIO_LOCK_SKIPPED / CHARACTER_LOCK_SKIPPED / BATCH_VISUAL_SEED_MISSING`。
+
+### E2. Migration Evidence-aware Resume Guard
+若 Runtime：
+
+```yaml
+migration:
+  migration_status: REVIEWED
+migration_review:
+  explicitly_confirmed_legacy_fields: [...]
+```
+
+則 LKB Review 確認後不得機械把教師送回所有舊 HOLD。
+
+執行：
+1. 讀 `runtime-migration-resume-policy.md`。
+2. 從 LKB Review 往後逐節點掃描。
+3. `MIGRATED_CONFIRMED` 且有 evidence → 保留為已完成確認，不重問。
+4. `MIGRATED_CONFIRMED_EVIDENCE` 但新版 lock 語義不同 → 只保留 evidence，停在新版 lock。
+5. `NEEDS_REVIEW / NOT_RUN / missing Drive ref` → 立即停止。
+6. 若新 LKB 推翻舊 confirmation 所依賴的內容，該 migrated confirmation 失效並重開。
+
+對第一課 Runtime `_03`，若 migration LKB v01 核准且未推翻既有教師取捨，HOLD 2／2.5／2.6 與 Teacher Intent 不重問；第一個新未完成依賴是 `Teaching Skill Selection → Lesson Budget Draft → Gate A`。
+
+這是 `EVIDENCE_AWARE_RESUME`，不是 `STAGE_LEAP`。
+
+Failure：`REASKED_ALREADY_CONFIRMED_MIGRATION_HOLD / MIGRATION_STAGE_LEAP / MIGRATED_EVIDENCE_PROMOTED_TO_NEW_LOCK`。
 
 ---
 
@@ -156,7 +183,7 @@ Batch 模式必載入 Experience + Style Families + Asset Authority。
 ---
 
 ## I. Knowledge / Teaching Guards
-- approved LKB required before STEP 2。
+- approved LKB required before STEP 2 / migration resume scan。
 - Teaching Skill Lock before Gate A。
 - Budget Draft 不鎖頁數。
 - Shape-near / Polyphonic 可從 PREVIEW → CORE_REINFORCE。
@@ -239,6 +266,8 @@ Lesson folders：`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色�
 
 ## 核心金句
 > 單課做到底；批次做到安全 checkpoint。
+
+> Migration 不讓老師重做已做過的決定，也不讓系統把舊 evidence 冒充新 lock。
 
 > 角色的規則在 GitHub，角色的臉在 Drive；鎖定不落地，就不算真的鎖定。
 
