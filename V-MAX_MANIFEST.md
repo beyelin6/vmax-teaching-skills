@@ -1,15 +1,15 @@
-# V-MAX Manifest 3.0-draft
+# V-MAX Manifest 3.1-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 3.0-draft
+vmax_manifest_version: 3.1-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
   path: runtime/lesson-state.md
-  current_version: 2.4-draft
+  current_version: 2.5-draft
 runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
@@ -19,13 +19,13 @@ runtime_storage:
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.3-draft
+  current_version: 2.4-draft
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.5-draft
+  current_version: 1.6-draft
 hold_policy:
   path: core/governance/hold-teacher-interface-policy.md
-  current_version: 1.4-draft
+  current_version: 1.5-draft
 
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor: core/governance/step1-source-anchor-policy.md
@@ -62,7 +62,7 @@ lesson_visual_map: core/visual/lesson-visual-map.md
 
 experience_layer:
   path: core/experience/vmax-experience-layer.md
-  current_version: 1.2-draft
+  current_version: 1.3-draft
   authority: ORCHESTRATION_ONLY
 scenario_wrapper_teacher_lock:
   path: core/governance/scenario-wrapper-teacher-lock.md
@@ -114,6 +114,9 @@ regression:
   static_report:
     path: core/governance/vmax-v1-static-regression-report.md
     status: TO_BE_CREATED
+  three_lesson_tabletop:
+    path: tests/vmax-v1-three-lesson-regression-report.md
+    status: TO_BE_CREATED
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
@@ -163,6 +166,9 @@ Experience Layer 只 orchestration。
 硬相依：
 `Scenario Decision → SCENARIO LOCK → Character Topology/Cast → CHARACTER LOCK → Character DNA`
 
+Style / identity 相依：
+`Visual Grammar / Slide Architecture → Storyboard → Style Recipe → Lesson Skin Final → Typography Lock → Gate B → Representative → Gate C`
+
 Scenario 由 Registry/Selector；Character 由 Character System/Bridge；Style 由 Style Recipe Families；Typography 由 Typography Bridge。
 
 ### Compatibility Helpers
@@ -170,7 +176,7 @@ Helper skill 不得覆蓋 canonical。若衝突，立即停止 helper 的衝突�
 
 ---
 
-## Canonical Golden Path Candidate 2.3
+## Canonical Golden Path Candidate 2.4
 
 ```text
 SOURCE 0
@@ -196,14 +202,14 @@ SOURCE 0
 → SCENARIO LOCK
 → Character Topology / Cast Candidates
 → CHARACTER LOCK
-→ Experience Completion
+→ Character DNA / Learner Role / Book DNA / Surprise Signature
 → Extension Check
 → Knowledge Lab
 → Visual Grammar / Slide Architecture
 → Lesson Budget Final / Page Ledger
 → Storyboard
-→ GATE B Experience + Storyboard Lock
-→ Style Recipe / Typography Lock
+→ Style Recipe / Lesson Skin / Typography Lock
+→ GATE B Experience + Storyboard + Visual Identity Lock
 → Representative Validation
 → GATE C Representative Visual Validation
 → Full Renderer
@@ -219,13 +225,14 @@ Scenario：`SOURCE_WORLD / REGISTRY_WRAPPER / OFF`。無 Extension：`EXTENSION_
 ---
 
 ## Core Resolutions
-
 - Gate A 鎖 Teaching Direction + Budget Draft，不鎖精確頁數。
 - Slide Architecture 後才形成 Budget Final / Page Ledger。
+- Lesson Skin Final 必須晚於 Style Recipe；Gate B 必須晚於 Visual Identity direction。
+- Gate B 鎖「可描述的設計語言」；Gate C 用代表頁驗證。
 - 一頁 = 一個 cognitive scene；同頁可兩個有層次問題。
 - Text Anchor 保留；RETURN 可選。
 - 圖文一體繁中允許，但正式輸出必經 QA；P0 教學字逐字驗證。
-- 同課 PRESTUDY / SHORT_READ / TEACHING_SLIDE / EXTENSION 維持 Visual Identity continuity。
+- 同課跨 MATERIAL MODE 維持 Visual Identity continuity。
 - Extension 新增前先問「它取代什麼？」。
 - 已選 LVM 不得在 downstream 消失。
 - Drive 固定六類歸檔；上傳後需再次驗證。
@@ -237,6 +244,8 @@ Scenario：`SOURCE_WORLD / REGISTRY_WRAPPER / OFF`。無 Extension：`EXTENSION_
 - 第二套 LKB authority
 - 未 Scenario Lock 就選 Character
 - 未 Character Lock 就做正式 DNA／大量視覺
+- Lesson Skin Final 早於 Style Recipe
+- Gate B 在 Visual Identity 尚未成立時被確認
 - Experience 重建 Character / Scenario / Style canonical
 - Legacy Course Orchestrator 復活第二條 Full Build 主流程
 - Role Recommender 跳過 Scenario Lock
@@ -255,11 +264,11 @@ Scenario：`SOURCE_WORLD / REGISTRY_WRAPPER / OFF`。無 Extension：`EXTENSION_
 ## Draft Resolution
 目前狀態：`STATIC_CONTRACT_ALIGNMENT_IN_PROGRESS`。
 
-只有完成 static contract regression + 至少一輪 end-to-end lesson rerun 且教師確認封版後，才移除 `draft`。
+只有完成 static contract regression + three-lesson tabletop + 至少一輪 live/runtime lesson rerun 且教師確認封版後，才移除 `draft`。
 
 ---
 
 ## 核心金句
 > Manifest 決定誰是權威；Skill 是工具，Golden Path 是交通規則。
 
-> LKB 只有一本；先鎖舞台，再鎖卡司；教學技能先於視覺工具。
+> LKB 只有一本；先鎖舞台，再鎖卡司；先做認知架構，再鎖視覺語言。
