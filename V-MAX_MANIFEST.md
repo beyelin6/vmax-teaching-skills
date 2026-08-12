@@ -1,10 +1,10 @@
-# V-MAX Manifest 4.0-draft
+# V-MAX Manifest 4.1-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 4.0-draft
+vmax_manifest_version: 4.1-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -24,14 +24,14 @@ runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
-  index_title: V-MAX_Runtime_Index_v04
-  index_document_id: 1UCGgo6lTo_Fblq0JXguYeKHIII_LtZ9C4D2wheCONuE
-  previous_index_title: V-MAX_Runtime_Index_v03
-  previous_index_document_id: 1Sq3muBVTSLd9w7l5BUFWRPAd0PUVW68R-zBe3BUehJU
-  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_05
-  active_runtime_document_id: 1caRlvhI6SlLtOLpDY9njVmdWYTBZA5guLLsZD0QCQUw
-  active_runtime_version: 05
-  active_runtime_stage: SCENARIO_LOCK
+  index_title: V-MAX_Runtime_Index_v05
+  index_document_id: 1ysX2TEgaM0kJAVBWBsaIXo8hO20Ibn1VisrtlHdcdss
+  previous_index_title: V-MAX_Runtime_Index_v04
+  previous_index_document_id: 1UCGgo6lTo_Fblq0JXguYeKHIII_LtZ9C4D2wheCONuE
+  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_06
+  active_runtime_document_id: 1Y-kz_KdREqPmNYiSUBYXPsZ8bdpeGY2jNXRJ84xjtDQ
+  active_runtime_version: 06
+  active_runtime_stage: CHARACTER_LOCK
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
@@ -139,6 +139,10 @@ regression:
     path: tests/vmax-v1-live-runtime-scenario-transition-report.md
     current_version: 1.0-draft
     status: PASS_TO_SCENARIO_LOCK
+  live_runtime_character_transition:
+    path: tests/vmax-v1-live-runtime-character-transition-report.md
+    current_version: 1.0-draft
+    status: PASS_TO_CHARACTER_LOCK
   static_contract:
     status: PASS
   three_lesson_tabletop:
@@ -156,14 +160,14 @@ regression:
     path: core/governance/vmax-runtime-live-compatibility-audit.md
     status: PASS_WITH_MIGRATION_COMPLETED_AND_RESUMED
   live_runtime_rerun:
-    status: PASS_TO_SCENARIO_LOCK_AFTER_GATE_A
-    runtime_version: 05
-    current_stage: SCENARIO_LOCK
+    status: PASS_TO_CHARACTER_LOCK_AFTER_SCENARIO_A
+    runtime_version: 06
+    current_stage: CHARACTER_LOCK
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.3-draft
-  status: TECHNICAL_PRESEAL_PASS_AWAITING_SCENARIO_TEACHER_CHECKPOINT
+  status: TECHNICAL_PRESEAL_PASS_AWAITING_CHARACTER_TEACHER_CHECKPOINT
 
 compatibility_helpers:
   vmax_course_orchestrator:
@@ -241,9 +245,9 @@ Legacy migration 只有在 `migration_status: REVIEWED` 且欄位有明確 `MIGR
 - 重跑 Lesson Budget Draft；
 - 合法停在 Gate A。
 
-教師其後已核准 Gate A。Runtime `_05` 進一步完成 Scenario Decision，並依 Teacher Lock 規則停在 `SCENARIO_LOCK`；尚未進 Character Topology。
+教師其後已核准 Gate A，Runtime `_05` 完成 Scenario Decision；教師再明確選擇 Scenario A「WF-01 運動播報中心＋局部 WF-05 慢動作／特寫認知語彙」。Runtime `_06` 因而合法進入 Character Topology 與候選檢索，並停在 `CHARACTER_LOCK`。
 
-不得回問相同 HOLD 2 / 2.5 / 2.6，也不得在 Scenario 未鎖前跳 Character / Visual Grammar / Style / FULL_RENDERER。
+不得回問相同 HOLD 2 / 2.5 / 2.6，也不得在 Character 未鎖前跳 Final Character DNA / Visual Grammar / Style / FULL_RENDERER。
 
 ---
 
@@ -303,26 +307,26 @@ Drive folder id：`1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`。
 
 ---
 
-## Live Runtime 05 Resolution
+## Live Runtime 06 Resolution
 
-Legacy `_02`、migration checkpoint `_03` 與 Gate A checkpoint `_04` 均保留不動。
+Legacy `_02`、migration checkpoint `_03`、Gate A checkpoint `_04` 與 Scenario checkpoint `_05` 均保留不動。
 
 目前 active Runtime：
 
 ```yaml
-title: V-MAX_State_四上_第一課_水陸小高手_05
-document_id: 1caRlvhI6SlLtOLpDY9njVmdWYTBZA5guLLsZD0QCQUw
+title: V-MAX_State_四上_第一課_水陸小高手_06
+document_id: 1Y-kz_KdREqPmNYiSUBYXPsZ8bdpeGY2jNXRJ84xjtDQ
 runtime_schema: 2.7-draft
 workflow: 2.6-draft
-manifest: 4.0-draft
+manifest: 4.1-draft
 executor: 1.8-draft
 production_mode: SINGLE_LESSON_BUILD
-current_stage: SCENARIO_LOCK
-last_completed_stage: SCENARIO_DECISION
+current_stage: CHARACTER_LOCK
+last_completed_stage: CHARACTER_CANDIDATE_RETRIEVAL
 renderer_status: BLOCKED_UNTIL_GATE_C
 ```
 
-Runtime Index v04 已 active 指向 `_05`；v03 與更早 Index 都保留。
+Runtime Index v05 已 active 指向 `_06`；v04 與更早 Index 都保留。
 
 第一課新標準工作區：
 `四上康軒國語/03_分課教學簡報與教材/01_第一課_水陸小高手/`
@@ -337,14 +341,17 @@ Runtime Index v04 已 active 指向 `_05`；v03 與更早 Index 都保留。
 - `L01_teaching-skill-selection_v01` / `1Q4xcSBODkHVYGvUK6OUvrMRD_Z0N3R9T0LOi69PJWNQ`
 - `L01_lesson-budget-draft_v01` / `1IPRJ6DjkO-IEBg0pEAdmRqajJUWHMjSS-HZ18gwy0Kk`
 - `L01_gate-a-teaching-direction_v01` / `1ix9PQcdx6-nNKhIh36lVGiyGGEAGq0lPfY_nE3H3O6o` / `CONFIRMED_AND_LOCKED`
-- `L01_scenario-decision_v01` / `1FTQQyQozD3l8_IMHgSoieiLIir-w1SX3rqBv2Dfiux4` / `WAITING_SCENARIO_LOCK`
+- `L01_scenario-decision_v01` / `1FTQQyQozD3l8_IMHgSoieiLIir-w1SX3rqBv2Dfiux4` / `CONFIRMED_AND_LOCKED_A`
+- `L01_character-topology-and-candidates_v01` / `1rEeYJaRGn_VRBfVQlV1R3pW_OHqhy1mBoYL-CD36j0c` / `WAITING_CHARACTER_LOCK`
 
-Scenario 目前三選一：
-- A（推薦）：WF-01 運動播報中心＋局部 WF-05 慢動作／特寫語彙
-- B：WF-05 大導演拍片現場
-- C：OFF／不包裝
+Character 目前三選一：
+- A（推薦）：`SINGLE_GUIDE＋小澄主播`，role id `CUSTOM-WATER-LAND-YOUNG-ANCHOR`
+- B：`SINGLE_GUIDE＋節奏教練`，role id `CUSTOM-RHYTHM-COACH`
+- C：`NO_GUIDE`
 
-Scenario 尚未確認，因此 legacy Character / Style / Representative evidence 仍沒有被靜默升格成新版 Lock / Gate。
+舊 Runtime 有教師選擇小澄主播的明確 evidence，但小澄目前沒有 approved canonical Drive image asset；因此本次只作強候選證據，不自動升格成新版 Character Lock 或 canonical face。
+
+Character 尚未確認，因此 Final Character DNA / Visual Grammar / Style / Representative evidence 仍沒有被靜默升格成新版 Lock / Gate。
 
 ---
 
@@ -376,11 +383,14 @@ teaching_skill_selection_live: PASS
 lesson_budget_draft_live: PASS
 gate_a_teacher_confirmation: PASS
 scenario_decision_live: PASS
-live_runtime_transition_to_scenario_lock: PASS
-live_runtime_current_checkpoint: SCENARIO_LOCK
+scenario_teacher_confirmation: PASS_A
+character_topology_live: PASS
+character_candidate_retrieval_live: PASS
+live_runtime_transition_to_character_lock: PASS
+live_runtime_current_checkpoint: CHARACTER_LOCK
 remaining:
-  - TEACHER_CONFIRM_SCENARIO_LOCK_A_B_OR_C
-  - AFTER_SCENARIO_LOCK_VERIFY_CHARACTER_TOPOLOGY_TRANSITION
+  - TEACHER_CONFIRM_CHARACTER_LOCK_A_B_OR_C
+  - AFTER_CHARACTER_LOCK_VERIFY_CHARACTER_DNA_AND_CANONICAL_ASSET_PATH
   - TEACHER_FINAL_V1_SEAL_APPROVAL
 v1_sealed: false
 ```
@@ -399,4 +409,4 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 
 > 新版是新增，不是取代；Drive 留版本，Runtime 決定今天用哪一版。
 
-> 技術 pre-seal 已通過；Teacher Interface 不飛站，現在停在真實 Scenario Lock。
+> 技術 pre-seal 已通過；Teacher Interface 不飛站，現在停在真實 Character Lock。
