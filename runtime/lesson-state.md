@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.6-draft
+# V-MAX Runtime State Contract 2.7-draft
 
 ## 定位
 GitHub 保存 Runtime schema；Google Drive 保存每一課實際 Runtime State。不得把每次 HOLD 或 stage 前進變成 GitHub commit。
@@ -14,7 +14,7 @@ GitHub 保存 Runtime schema；Google Drive 保存每一課實際 Runtime State�
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.6-draft
+runtime_schema_version: 2.7-draft
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
@@ -108,6 +108,31 @@ persistence:
   approved_assets_persisted: true | false
   usable_wip_persisted: true | false
   drive_refs_verified: true | false
+  active_assets:
+    source_master_ref:
+    lkb_export_ref:
+    storyboard_ref:
+    page_ledger_ref:
+    renderer_script_ref:
+    identity_pack_ref:
+    teaching_slides_ref:
+    prestudy_ref:
+    short_read_ref:
+    notebooklm_source_ref:
+    notebooklm_visual_yaml_ref:
+    question_bank_ref:
+    character_asset_refs: []
+    style_asset_ref:
+  version_lineage:
+    package_version:
+    parent_package_ref:
+    change_class: PATCH | REFRESH | REBASE
+    reviewed_at:
+    next_review_due:
+    inherited_refs: []
+    upgraded_refs: []
+    retired_refs: []
+    change_summary: []
 language_focus:
   grade_3_4_character_deep_focus:
     - SHAPE_NEAR
@@ -122,6 +147,10 @@ runtime_rules:
   style_recipe_required_before_lesson_skin_final: true
   visual_identity_final_required_before_gate_b: true
   approved_or_usable_wip_must_persist_to_drive: true
+  saved_assets_must_not_be_overwritten: true
+  formal_refs_must_pin_explicit_version: true
+  newest_asset_is_not_automatically_active: true
+  rollback_changes_active_ref_only: true
   mandatory_hold_single_stage_advance: true
   gate_c_allows_batch_renderer: true
   lesson_budget_has_draft_and_final: true
@@ -157,8 +186,6 @@ STEP_1
 → CHARACTER_LOCK
 ```
 
----
-
 ## SINGLE_LESSON_BUILD State Chain
 
 ```text
@@ -181,8 +208,6 @@ CHARACTER_LOCK
 → OUTPUT_DERIVATIVES
 → DELIVERY
 ```
-
----
 
 ## BATCH_PREP_BUILD State Chain
 
@@ -242,23 +267,48 @@ FINAL_LOCKED:
 
 ---
 
-## Persistence Rule
+## Persistence / Version Rule
+任何 `APPROVED / LOCKED / USABLE_WIP` 產生後，必須另存新 Drive file version，不能覆蓋既有檔案。
 
-任何 `APPROVED / LOCKED / USABLE_WIP` 產生後，Runtime 必須記錄 Drive ref。
+正式引用必須 pin `_vNN` 或等價明確 asset version；禁止 `latest`。
+
+建立新版後，只有教師確認或合法 Gate / Lock 通過才更新 `persistence.active_assets`。
+
+因此 rollback 只需要：
+
+```text
+active_ref: v03
+→ rollback
+→ active_ref: v02
+```
+
+舊檔不變，新檔也不刪。
 
 若即將因額度、平台或時間中斷：
-- 寫入目前 WIP
+- WIP 另存新版本
 - 更新 `last_persistence_checkpoint`
 - 驗證 Drive ref
 - 才結束本輪
 
-若只有聊天內狀態，標記：
-`CHAT_ONLY_ASSET / APPROVED_ASSET_NOT_PERSISTED / DRIVE_REFERENCE_UNVERIFIED`。
+---
+
+## Refresh / Rebase Rule
+約每 24 個月可將課程標為 `REVIEW_DUE`，但不自動修改。
+
+### PATCH
+同一 package 內新 file version。
+
+### REFRESH
+同一 source baseline 下重新備課，建立新 Lesson Package folder，保留 parent package ref。
+
+### REBASE
+來源教材改版，建立新 Source Baseline，重新跑 Source Truth / LKB。
+
+共享角色或 Style 有新版時，不自動升級歷史課；必須明確記錄 KEEP_PINNED / UPGRADE / FORK / RETIRE_FROM_NEW_VERSION。
 
 ---
 
 ## Reopen Rule
-
 - Scenario reopen → Character / Visual Seed / Storyboard / Visual Identity downstream 重評。
 - Character reopen → asset refs / Visual Seed / Storyboard / Visual Identity downstream 重評。
 - Visual Seed reopen → 先前 PRESTUDY / SHORT_READ 標 `NEEDS_VISUAL_SYNC_REVIEW`。
@@ -269,7 +319,6 @@ FINAL_LOCKED:
 ---
 
 ## 核心金句
+> Drive 每一版都留著；Runtime 只決定現在採用哪一版。
 
-> GitHub 保存 schema；Drive 保存現在做到哪裡，以及真正做出來的東西。
-
-> Batch 先鎖 Visual Seed，Single 再長成 Final Identity；任何可續跑成果都必須有 Drive reference。
+> 新版不是覆蓋舊版，回退也不是重做舊版。
