@@ -1,10 +1,10 @@
-# V-MAX Manifest 3.8-draft
+# V-MAX Manifest 3.9-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 3.8-draft
+vmax_manifest_version: 3.9-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -24,14 +24,14 @@ runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
-  index_title: V-MAX_Runtime_Index_v02
-  index_document_id: 1bC3m1Y-hX1rP75-UGiEv_gH_FwwP0b9eQam0zKgH4Vw
-  previous_index_title: V-MAX_Runtime_Index
-  previous_index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
-  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_03
-  active_runtime_document_id: 1dNPyZfoHn-9L3jG5Cl_BPutuOxw3GCjei2TK0Im2z-Q
-  active_runtime_version: 03
-  active_runtime_stage: LKB_REVIEW
+  index_title: V-MAX_Runtime_Index_v03
+  index_document_id: 1Sq3muBVTSLd9w7l5BUFWRPAd0PUVW68R-zBe3BUehJU
+  previous_index_title: V-MAX_Runtime_Index_v02
+  previous_index_document_id: 1bC3m1Y-hX1rP75-UGiEv_gH_FwwP0b9eQam0zKgH4Vw
+  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_04
+  active_runtime_document_id: 1uN4ksPZVlB4Wws2RUvh_OcleZGDRY_A4D2aBak6deG4
+  active_runtime_version: 04
+  active_runtime_stage: GATE_A_TEACHING_DIRECTION
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
@@ -131,6 +131,10 @@ regression:
     path: tests/vmax-v1-preseal-regression-report.md
     current_version: 1.0-draft
     status: TECHNICAL_PRESEAL_PASS
+  live_runtime_gate_a_transition:
+    path: tests/vmax-v1-live-runtime-gate-a-transition-report.md
+    current_version: 1.0-draft
+    status: PASS_TO_GATE_A
   static_contract:
     status: PASS
   three_lesson_tabletop:
@@ -146,16 +150,16 @@ regression:
     status: PASS_LIVE_DRIVE
   live_runtime_read_audit:
     path: core/governance/vmax-runtime-live-compatibility-audit.md
-    status: PASS_WITH_MIGRATION_REQUIRED_COMPLETED_BY_RUNTIME_03
+    status: PASS_WITH_MIGRATION_COMPLETED_AND_RESUMED
   live_runtime_rerun:
-    status: PASS_TO_LEGAL_LKB_REVIEW_CHECKPOINT
-    runtime_version: 03
-    current_stage: LKB_REVIEW
+    status: PASS_TO_GATE_A_AFTER_TEACHER_LKB_APPROVAL
+    runtime_version: 04
+    current_stage: GATE_A_TEACHING_DIRECTION
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.3-draft
-  status: TECHNICAL_PRESEAL_PASS_AWAITING_TEACHER_CHECKPOINT
+  status: TECHNICAL_PRESEAL_PASS_AWAITING_GATE_A_TEACHER_CHECKPOINT
 
 compatibility_helpers:
   vmax_course_orchestrator:
@@ -227,10 +231,13 @@ Legacy migration 只有在 `migration_status: REVIEWED` 且欄位有明確 `MIGR
 - `MIGRATED_CONFIRMED_EVIDENCE` 但新版 lock 語義不同 → evidence 保留，停新版 lock。
 - `NEEDS_REVIEW / NOT_RUN / missing Drive ref` → 立刻停止。
 
-第一課 `_03` 在 migration LKB 核准且未推翻舊教師決策時，合法下一個新依賴是：
-`Teaching Skill Selection → Lesson Budget Draft → Gate A`。
+第一課已於 2026-08-12 核准 migration LKB source-ref 模式；Runtime `_04` 已依 evidence-aware resume：
+- carry forward HOLD 2 / 2.5 / 2.6 / Teacher Intent；
+- 重跑新版 Teaching Skill Selection；
+- 重跑 Lesson Budget Draft；
+- 合法停在 Gate A。
 
-不得回問相同 HOLD 2 / 2.5 / 2.6，也不得跳 FULL_RENDERER。
+不得回問相同 HOLD 2 / 2.5 / 2.6，也不得跳 Scenario / Character / FULL_RENDERER。
 
 ---
 
@@ -290,30 +297,42 @@ Drive folder id：`1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`。
 
 ---
 
-## Live Runtime 03 Resolution
+## Live Runtime 04 Resolution
 
-Legacy `_02` 保留不動。
+Legacy `_02` 與 migration checkpoint `_03` 均保留不動。
 
-新 Runtime：
+目前 active Runtime：
 
 ```yaml
-title: V-MAX_State_四上_第一課_水陸小高手_03
-document_id: 1dNPyZfoHn-9L3jG5Cl_BPutuOxw3GCjei2TK0Im2z-Q
+title: V-MAX_State_四上_第一課_水陸小高手_04
+document_id: 1uN4ksPZVlB4Wws2RUvh_OcleZGDRY_A4D2aBak6deG4
 runtime_schema: 2.7-draft
 workflow: 2.6-draft
+manifest: 3.9-draft
 executor: 1.8-draft
 production_mode: SINGLE_LESSON_BUILD
-current_stage: LKB_REVIEW
+current_stage: GATE_A_TEACHING_DIRECTION
+last_completed_stage: LESSON_BUDGET_DRAFT
 renderer_status: BLOCKED_UNTIL_GATE_C
 ```
 
-新 Runtime Index v02 已 active 指向 `_03`，舊 Index 保留。
+Runtime Index v03 已 active 指向 `_04`；v02 與最初 Index 都保留。
 
 第一課新標準工作區：
 `四上康軒國語/03_分課教學簡報與教材/01_第一課_水陸小高手/`
-並已建立六類正式資料夾。
 
-Migration LKB v01 已落 Drive，狀態 `READY_FOR_LKB_REVIEW`；未把 legacy `_02` 的 Scenario / Character / Style / Representative 靜默升格成新版 Gate/Lock。
+目前 active LKB：
+- `L01_lesson-knowledge-book_v02`
+- document id: `1osHATF7Cj05gB820LOrKn2Va_m7znjF3GgBrgmxaLuQ`
+- status: `approved_lkb`
+- text mode: `SOURCE_REF_ONLY`，教師已於 2026-08-12 接受；完整課文仍以官方 PDF 為權威。
+
+本輪新增並持久化：
+- `L01_teaching-skill-selection_v01` / `1Q4xcSBODkHVYGvUK6OUvrMRD_Z0N3R9T0LOi69PJWNQ`
+- `L01_lesson-budget-draft_v01` / `1IPRJ6DjkO-IEBg0pEAdmRqajJUWHMjSS-HZ18gwy0Kk`
+- `L01_gate-a-teaching-direction_v01` / `1ix9PQcdx6-nNKhIh36lVGiyGGEAGq0lPfY_nE3H3O6o`
+
+Gate A 尚未確認，因此 legacy Scenario / Character / Style / Representative evidence 仍沒有被靜默升格成新版 Gate/Lock。
 
 ---
 
@@ -340,11 +359,14 @@ single_mode: PASS
 batch_mode: PASS
 rollback: PASS
 migration_resume_guard: PASS
-live_runtime_schema_transition: PASS
-live_runtime_current_checkpoint: LKB_REVIEW
+teacher_lkb_approval: PASS
+teaching_skill_selection_live: PASS
+lesson_budget_draft_live: PASS
+live_runtime_transition_to_gate_a: PASS
+live_runtime_current_checkpoint: GATE_A_TEACHING_DIRECTION
 remaining:
-  - TEACHER_CONFIRM_MIGRATION_LKB_V01
-  - VERIFY_NEXT_LEGAL_TRANSITION_IN_NEW_TEACHING_DIRECTION_CHAIN
+  - TEACHER_CONFIRM_GATE_A
+  - AFTER_GATE_A_VERIFY_SCENARIO_DECISION_TO_SCENARIO_LOCK
   - TEACHER_FINAL_V1_SEAL_APPROVAL
 v1_sealed: false
 ```
@@ -363,4 +385,4 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 
 > 新版是新增，不是取代；Drive 留版本，Runtime 決定今天用哪一版。
 
-> 技術 pre-seal 已通過；Teacher Interface 不飛站，現在停在真實 LKB Review。
+> 技術 pre-seal 已通過；Teacher Interface 不飛站，現在停在真實 Gate A。
