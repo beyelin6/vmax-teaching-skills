@@ -1,15 +1,15 @@
-# V-MAX Manifest 3.6-draft
+# V-MAX Manifest 3.7-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 3.6-draft
+vmax_manifest_version: 3.7-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
   path: runtime/lesson-state.md
-  current_version: 2.6-draft
+  current_version: 2.7-draft
 runtime_migration_template:
   path: runtime/templates/runtime-state-migration-2.5.md
   current_version: 2.5-template
@@ -36,6 +36,14 @@ production_mode_policy:
   modes:
     - SINGLE_LESSON_BUILD
     - BATCH_PREP_BUILD
+
+upgrade_lifecycle_policy:
+  path: core/governance/lesson-upgrade-lifecycle-policy.md
+  current_version: 1.0-draft
+  authority: NON_DESTRUCTIVE_VERSIONING_AND_ROLLBACK
+  review_cadence_months: 24
+  never_overwrite: true
+  file_version_format: _vNN
 
 lesson_knowledge_builder:
   path: skills/chinese-lesson-knowledge-builder/SKILL.md
@@ -79,7 +87,7 @@ lesson_package_delivery:
   current_version: 1.4-draft
 google_drive_lesson_archive:
   path: skills/google-drive-lesson-archive/SKILL.md
-  current_version: 1.1-draft
+  current_version: 1.2-draft
 
 typography_bridge:
   path: vmax-typography-bridge/SKILL.md
@@ -116,6 +124,8 @@ regression:
   asset_persistence_regression:
     status: REQUIRED_BEFORE_V1_SEAL
   production_mode_regression:
+    status: REQUIRED_BEFORE_V1_SEAL
+  rollback_versioning_regression:
     status: REQUIRED_BEFORE_V1_SEAL
 
 system_architecture:
@@ -176,6 +186,27 @@ lesson_visual_identity_pack_status:
 
 ---
 
+## Upgrade / Rollback Resolution
+
+所有 Drive 成品與可續跑半成品採 non-destructive versioning：
+
+```text
+{base}_v01.ext
+{base}_v02.ext
+{base}_v03.ext
+```
+
+完整 REFRESH / REBASE 仍建立新的 Lesson Package folder；同一 package 內的 PATCH / WIP iteration 建立新 file version。
+
+硬規則：
+- 不覆蓋舊檔。
+- 不使用浮動 `latest` 作教材引用。
+- Runtime 保存 active refs；建立新版不代表自動採用新版。
+- rollback = 把 active ref 指回舊版，不刪檔、不覆蓋。
+- 每約 24 個月可標 `REVIEW_DUE`，但不得自動改課。
+
+---
+
 ## Drive / GitHub Authority Resolution
 
 ### GitHub
@@ -222,8 +253,9 @@ Drive folder id：`1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`。
 
 ```text
 任何 APPROVED / LOCKED / USABLE_WIP
-→ SAVE TO GOOGLE DRIVE
+→ SAVE AS NEW VERSION TO GOOGLE DRIVE
 → VERIFY DRIVE REFERENCE
+→ UPDATE ACTIVE REF ONLY AFTER APPROVAL
 → 才可跨平台／跨天續跑
 ```
 
@@ -239,12 +271,14 @@ three_lesson_tabletop_previous: PASS
 shared_visual_asset_library_created: PASS
 asset_authority_policy_registered: PASS
 production_mode_policy_registered: PASS
+upgrade_lifecycle_registered: PASS
 main_workflow_mode_split_wired: PASS
 executor_mode_split_wired: PASS
 runtime_mode_fields_wired: PASS
 visual_seed_lifecycle_registered: PASS
 asset_persistence_regression: PENDING
 production_mode_regression: PENDING
+rollback_versioning_regression: PENDING
 live_runtime_rerun: PENDING
 v1_sealed: false
 ```
@@ -255,8 +289,9 @@ v1_sealed: false
 封版前需補：
 1. asset persistence regression
 2. SINGLE / BATCH production mode regression
-3. 至少一輪新版本 Google Drive live runtime rerun
-4. 教師最後確認
+3. rollback / active-ref regression
+4. 至少一輪新版本 Google Drive live runtime rerun
+5. 教師最後確認
 
 NotebookLM Visual/Audio Source Pack 細節仍可 `DEFERRED_NON_BLOCKING`，但 NotebookLM 產物不得成為視覺 Source of Truth。
 
@@ -268,4 +303,4 @@ NotebookLM Visual/Audio Source Pack 細節仍可 `DEFERRED_NON_BLOCKING`，但 N
 
 > 角色的規則在 GitHub，角色的臉在 Drive。
 
-> 單課模式做到底；批次模式先安全停車。做完要存，做到一半也要存。
+> 新版是新增，不是取代；要後悔時，只要把 active ref 指回去。
