@@ -1,6 +1,6 @@
 ---
 name: presentation-engine
-description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、Teaching Strategy Profile 與 Output Profile，轉換成可選格式的 NotebookLM 來源、Curated Briefing、教師版／學生版 Markdown、簡報腳本、講者備註、學習單來源與評量來源。不得重新分析教材或修改官方教材知識。
+description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、Teaching Strategy Profile 與 Output Profile，轉換成可選格式的 NotebookLM 來源、簡報腳本、Render Request、講者備註、學習單與評量來源；要求實際圖片時必須路由至 vmax-image-renderer，不得只交提示詞。
 ---
 
 # Presentation Engine
@@ -40,6 +40,7 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - `worksheet_source`
 - `assessment_source`
 - `output_manifest`
+- `render_request`
 
 不得自行產生未被選取的格式。
 
@@ -154,9 +155,11 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 4. 執行教師／學生資訊分流。
 5. 執行視覺、角色與版型映射。
 6. 產生選取的輸出格式。
-7. 產生 `output-manifest.md`。
-8. 執行輸出驗證。
-9. 狀態設為 `ready_for_teacher_review`，停止等待教師確認。
+7. 對所有 `illustration_requirement` 建立符合 `skills/vmax-image-renderer/references/render-request-schema.md` 的 Render Request。
+8. 若 Output Profile 要求實際圖片，呼叫 `skills/vmax-image-renderer/SKILL.md`；只有實際資產通過重檢才記為 `RENDER_VERIFIED`。
+9. 產生 `output-manifest.md`。
+10. 執行輸出驗證。
+11. 腳本型輸出設為 `ready_for_teacher_review`；要求圖片但只有 handoff 時必須保留 `IMAGE_HANDOFF_READY`，不得宣稱圖片完成。
 
 ## 輸出驗證
 
@@ -173,6 +176,7 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - 無未替換角色變數
 - 插圖需求符合教材句意
 - 未混入其他課次內容
+- 每個圖片需求都有 Render Request；要求實際圖片時，每個必要資產均為 `RENDER_VERIFIED`
 
 ## 完成條件
 

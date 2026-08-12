@@ -1,4 +1,4 @@
-# V-MAX Image-first Hybrid Renderer 1.1
+# V-MAX Image-first Hybrid Renderer 1.2
 
 ## 定位
 
@@ -9,6 +9,8 @@ V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護�
 > 不要為了可編輯而犧牲整體構圖；也不要為了漂亮而犧牲中文字與教學內容的正確性。
 
 教師不需要手動後製。
+
+本檔定義渲染原則；實際工具選擇、能力探測、Render Request 與完成狀態由 `skills/vmax-image-renderer/SKILL.md` 執行。
 
 ---
 
@@ -90,6 +92,15 @@ Native Text 要成為畫面的一部分，可壓在天然留白、紙張、卡�
 ## 7. 教師交付原則
 
 最終 PPT 應已完成圖文合成。教師不需要自己搬字、對齊、遮 AI 錯字或重做版面。若 V-MAX 無法完成，該頁視為 Renderer 未完成。
+
+## 8. 執行與完成契約
+
+需要圖片時必須先建立 Render Request，再由共用圖片渲染技能探測當前平台能力並實際執行。完成判定以實際資產為準：
+
+- prompt、Renderer Script、Visual YAML、預覽描述都不是圖片成品。
+- 最終資產必須存在，並能以路徑、URL 或平台 asset ID 追蹤。
+- 必須重新檢視最終成品，核對教材真值、繁體中文、尺寸與裁切。
+- 只有 `RENDER_VERIFIED` 可進入正式交付；`IMAGE_HANDOFF_READY` 只代表已可轉交其他平台。
 
 ---
 

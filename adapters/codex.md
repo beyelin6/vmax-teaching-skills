@@ -1,4 +1,4 @@
-# V-MAX Adapter｜Codex 1.0
+# V-MAX Adapter｜Codex 1.1
 
 ## 目的
 
@@ -19,7 +19,7 @@ Codex 開始任何 V-MAX 任務前，先讀：
 
 ## Runtime 執行
 
-- `runtime/lesson-state.md` 是續跑位置真相。
+- `runtime/lesson-state.md` 是 schema；Google Drive 該課 Runtime State 才是續跑位置真相。
 - 每次只執行 `next_allowed_stage`。
 - 每完成 stage / HOLD 決策後先更新 Runtime State。
 - 不得根據舊 commit、local cache 或記憶自動恢復 legacy stage。
@@ -36,6 +36,7 @@ Codex 特別適合：
 - 建立／維護 platform adapter
 - 產生 PPTX / PDF / worksheet pipeline 程式
 - 驗證 Lesson Package 完整性
+- 當目前 Codex 工作階段暴露圖片工具時，依 `skills/vmax-image-renderer/SKILL.md` 實際生成／修改並重檢圖片；未暴露時產生可執行 handoff，不能把 prompt 當成圖片
 
 Codex 不因擅長程式化，就自行決定：
 - 教學主軸

@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.2
+# V-MAX Bootstrap 1.3
 
 ## 目的
 
@@ -95,6 +95,15 @@ V-MAX Core 不依賴：
 - 任一 Renderer 的頁數／批次／圖像限制
 
 平台差異只能由 `adapters/` 處理，不得反向改寫 Core、Teacher Intent、Lesson Map 或 Session Map。
+
+## 圖片能力與降級
+
+當任務要求產生或修改圖片時，必須載入 `skills/vmax-image-renderer/SKILL.md`，並依本次工作階段實際可用工具探測 `generate_image / edit_image / inspect_image / compose_verified_text / export_asset`。不得只因平台叫 ChatGPT、Codex、Gemini 或 Canva 就假設具備圖片能力。
+
+- 有可用圖片工具：實際生成／修改、重新檢查成品，再回報 `RENDER_VERIFIED`。
+- 沒有圖片工具：輸出 Render Request 與 handoff bundle，回報 `IMAGE_HANDOFF_READY` 或 `IMAGE_TOOL_BLOCKED`。
+- prompt、Renderer Script、Visual YAML 與 Render Request 都不是完成圖片。
+- 教學關鍵繁體中文預設採可控正式文字層，不交由圖片模型自由生成。
 
 ---
 

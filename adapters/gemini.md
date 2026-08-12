@@ -1,4 +1,4 @@
-# V-MAX Adapter｜Gemini 1.0
+# V-MAX Adapter｜Gemini 1.1
 
 ## 目的
 
@@ -19,10 +19,14 @@
 
 ## Runtime 執行
 
-- `runtime/lesson-state.md` 決定當前合法位置。
+- `runtime/lesson-state.md` 定義 schema；Google Drive 該課 State 決定當前合法位置。
 - 教師「確認」只解鎖 `next_allowed_stage`。
 - 不得恢復舊版 STEP 3 / STEP 4 或把角色／視覺提前。
-- 每次完成 stage 或 HOLD 決策後，應把狀態回寫到 GitHub Runtime State；若 Gemini 所在環境無法直接回寫，必須輸出精確 state patch / handoff，不得假裝已同步。
+- 每次完成 stage 或 HOLD 決策後，應把狀態回寫到 Google Drive 該課 Runtime State；若 Gemini 所在環境無法直接回寫，必須輸出精確 state patch / handoff，不得假裝已同步。
+
+## 圖片能力
+
+Gemini 必須依當前環境實際工具判斷能否生圖，不得把文字模型產生的 prompt 視為圖片。需要圖片時載入 `skills/vmax-image-renderer/SKILL.md`：有圖片生成／編輯與檢視能力才實際渲染並驗證；否則輸出 `IMAGE_HANDOFF_READY`，交給具備能力的 Gemini image/API、Canva 或其他 renderer 執行。
 
 ## Gemini 的主要責任
 

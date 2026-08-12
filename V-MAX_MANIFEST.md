@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.5
+# V-MAX Manifest 2.6
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.5
+vmax_manifest_version: 2.6
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -23,7 +23,7 @@ main_workflow:
   current_version: 2.0
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.2
+  current_version: 1.3
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
@@ -77,11 +77,17 @@ worksheet_regression:
   current_version: 1.1
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
-  current_version: 1.3
+  current_version: 1.4
 google_drive_lesson_archive:
   path: skills/google-drive-lesson-archive/SKILL.md
   current_version: 1.0
-renderer_contract: core/renderer/image-first-hybrid-renderer.md
+renderer_contract:
+  path: core/renderer/image-first-hybrid-renderer.md
+  current_version: 1.2
+image_renderer:
+  path: skills/vmax-image-renderer/SKILL.md
+  current_version: 1.0
+  request_schema: skills/vmax-image-renderer/references/render-request-schema.md
 adapters:
   chatgpt: adapters/chatgpt.md
   codex: adapters/codex.md
@@ -131,6 +137,7 @@ SOURCE 0
 → Style Recipe
 → Representative Validation
 → Full Renderer
+→ Actual Asset Verification
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery

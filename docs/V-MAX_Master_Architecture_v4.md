@@ -18,12 +18,16 @@ V-MAX 不是固定頁數的教材模板，而是一套依每課教材動態分�
 
 保存穩定的工作方法與驗證規則，不保存特定課文內容。
 
-初始核心技能：
+目前核心技能：
 
 1. `chinese-textbook-transcriber`
-2. `chinese-lesson-designer`
-3. `chinese-slide-architect`
-4. `chinese-extension-materials`
+2. `chinese-lesson-knowledge-builder`
+3. `learning-module-builder`
+4. `teaching-strategy-builder`
+5. `presentation-engine`
+6. `vmax-image-renderer`
+7. `vqs-quality-validator`
+8. `lesson-package-delivery`
 
 ### 2.2 Library Layer
 

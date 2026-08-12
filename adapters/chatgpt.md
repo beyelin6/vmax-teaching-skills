@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.0
+# V-MAX Adapter｜ChatGPT 1.1
 
 ## 目的
 
@@ -18,7 +18,7 @@
 
 ## Runtime 執行
 
-- 以 `runtime/lesson-state.md` 的 `current_stage` 為目前真實位置。
+- `runtime/lesson-state.md` 只提供 schema 與位置規則；以 Google Drive 該課 State 的 `current_stage` 為目前真實位置。
 - 使用者回覆「確認／好／可以／OK／沿用」時，只執行 `next_allowed_stage` 中的下一個合法 stage。
 - 不得以聊天記憶、舊對話、模型習慣自行補回舊版 STEP 3 / STEP 4。
 - 每完成正式 stage 或 HOLD 決策後，應更新 Runtime State，再繼續後續工作。
@@ -26,7 +26,8 @@
 
 ## GitHub / Drive 邊界
 
-- GitHub：V-MAX 規格、版本、Runtime State 的 Source of Truth。
+- GitHub：V-MAX 規格、版本與 Runtime schema 的 Source of Truth。
+- Google Drive `00_Runtime_State`：每一課實際 Runtime State 的 Source of Truth。
 - Google Drive Source Library：原始教師手冊／課本／習作來源。
 - Google Drive V-MAX 教材庫：完整 Lesson Package 歸檔。
 
@@ -48,9 +49,9 @@ ChatGPT 不得以「使用者先前上傳過」取代 Source Library 尋源規�
 ChatGPT 可負責：
 - 教師確認卡
 - Source Master / Script / Visual YAML MD
-- 圖像生成／教材檔案生成（若平台工具可用）
+- 依 `skills/vmax-image-renderer/SKILL.md` 探測工具後，實際生成／修改／驗證圖片；缺少圖片工具時只輸出 handoff，不宣稱完成
 - PPTX / PDF / Worksheet 產出
-- GitHub Runtime State 回寫
+- Google Drive Runtime State 回寫；無法連線時輸出精確 state handoff
 - Google Drive 歸檔驗證
 
 但所有輸出仍受 Core / Manifest / Runtime 約束。

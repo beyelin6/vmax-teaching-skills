@@ -1,3 +1,8 @@
+---
+name: postlesson-short-writing-worksheet
+description: 將已核准的課文知識、核心詞語、句型、修辭與學習目標轉換為課後短文、微寫作或童詩仿作學習單；教師要求課後寫作任務或可列印學習單時使用。
+---
+
 # V-MAX Post-lesson Short Writing Worksheet Skill
 
 版本：1.1

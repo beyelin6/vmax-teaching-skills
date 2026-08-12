@@ -28,6 +28,7 @@ description: 依 V-MAX Quality Standard（VQS）檢查 Baseline Lesson Package�
 - 教師版／學生版簡報與講者備註
 - 平板互動與紙本替代方案
 - 學習單與評量
+- 實際圖片、圖片式投影片與 Render Verification Report
 
 ## 驗證順序
 
@@ -93,6 +94,16 @@ AI 延伸不得混入 Official Knowledge。
 - 沒有未替換變數。
 - 編輯後仍維持角色與風格一致。
 
+### 7. 圖片渲染
+
+若交付物要求圖片，確認：
+
+- 每個必要資產都有 Render Request 與可追蹤的實際輸出。
+- 狀態為 `RENDER_VERIFIED`，不是 `RENDER_READY` 或 `IMAGE_HANDOFF_READY`。
+- 驗證針對實際圖片／匯出頁面執行，不是只檢查 prompt。
+- 教學關鍵繁體中文、注音、標點與教材內容逐字正確。
+- 關鍵文字無法由圖片模型可靠產生時，已使用可控正式文字層。
+
 ## 輸出
 
 建立：
@@ -124,6 +135,7 @@ AI 延伸不得混入 Official Knowledge。
 - 平板活動沒有替代方案。
 - Manifest 無法追溯。
 - 未替換變數、重複節點或嚴重溢出。
+- 必要圖片不存在、未重檢，或把 prompt／handoff 誤列為完成品。
 
 ## 完成規則
 

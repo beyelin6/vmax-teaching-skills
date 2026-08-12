@@ -1,4 +1,4 @@
-# V-MAX Canva / Visual Renderer Adapter 1.0
+# V-MAX Canva / Visual Renderer Adapter 1.1
 
 ## 定位
 
@@ -9,6 +9,8 @@ Canva 或其他視覺 Renderer 是 V-MAX 的輸出與編輯平台，不是課程
 > Renderer 可以改變呈現方式，不得改變學習目的、教材真值、Teacher Intent、Lesson / Session 結構或已確認的 Knowledge Selection。
 
 本 Adapter 以 Canva 為主要平台例，但其規則也可套用到其他視覺簡報 Renderer。
+
+Canva 只在本次環境確實提供設計建立／編輯、匯出與成品檢視能力時，才可作為 `vmax-image-renderer` 的執行 provider。只有版型說明或 Canva-ready prompt 時，狀態仍是 `IMAGE_HANDOFF_READY`。
 
 ---
 

@@ -1,3 +1,8 @@
+---
+name: director-designer
+description: 將已核准的教材 DNA、Lesson Intent、Learning Profile 與 Teacher Intent，轉譯成 Director Map、Shot Map、觀看路徑、節奏與視覺敘事。適用於進入 Visual Grammar、Slide Architecture 或 Renderer 前的導演設計，不直接產生圖片或改寫教材知識。
+---
+
 # Director Designer
 
 版本：2.3.0

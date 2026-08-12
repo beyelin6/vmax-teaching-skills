@@ -1,3 +1,8 @@
+---
+name: character-group-visual-comparison
+description: 將臺灣國小國語的形近字、字群比較與多音字，轉譯成清楚、可投影且可驗證的學生教學畫面。適用於需要比較部件、讀音、字義、例詞、語境與辨認提示時；不得自行擴充未核准的生字教學範圍。
+---
+
 # V-MAX Character Group Visual Comparison Skill
 
 版本：1.0
