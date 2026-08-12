@@ -1,10 +1,10 @@
-# V-MAX Manifest 4.5-draft
+# V-MAX Manifest 4.6-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 4.5-draft
+vmax_manifest_version: 4.6-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -24,14 +24,14 @@ runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
-  index_title: V-MAX_Runtime_Index_v09
-  index_document_id: 1cQZbwEUFeucnvnjQtCPW7v0OiWwbbO8wZUHmSCXRVFY
-  previous_index_title: V-MAX_Runtime_Index_v08
-  previous_index_document_id: 1euO6DZDFPl8B_rQGU3XjwBCJZW1iYvL6NTKIEMWWydY
-  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_10
-  active_runtime_document_id: 13kZSXfRobWj_rvs5WW5ftfvuFlAs4ZTPF5CgyyT4gDM
-  active_runtime_version: 10
-  active_runtime_stage: VISUAL_GRAMMAR_SLIDE_ARCHITECTURE
+  index_title: V-MAX_Runtime_Index_v11
+  index_document_id: 1Q1CQpSBtxpeD7tiocI2dbdskCclb_Ff9qr1XhMvFjlA
+  previous_index_title: V-MAX_Runtime_Index_v10
+  previous_index_document_id: 1TyTptsgAmeWqzr2PpP1PqGyNNKFHcvcSQkVd2mEKUuU
+  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_12
+  active_runtime_document_id: 1AddOj_Dz98zPazyE5Imm0lPCmCdg3F8ipfzVpo-P24c
+  active_runtime_version: 12
+  active_runtime_stage: STORYBOARD
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
@@ -159,6 +159,9 @@ regression:
   live_runtime_surprise_extension_knowledge_lab:
     path: tests/vmax-v1-live-runtime-surprise-extension-knowledge-lab-report.md
     status: PASS_TO_VISUAL_GRAMMAR_SLIDE_ARCHITECTURE
+  live_runtime_visual_grammar_budget_ledger:
+    path: tests/vmax-v1-live-runtime-visual-grammar-budget-ledger-report.md
+    status: PASS_TO_STORYBOARD
   static_contract: PASS
   three_lesson_tabletop: PASS_RECHECKED_UNDER_PRODUCTION_MODE_SPLIT
   asset_persistence_regression: PASS_LIVE_DRIVE
@@ -169,14 +172,14 @@ regression:
   rollback_versioning_regression: PASS_LIVE_DRIVE
   live_runtime_read_audit: PASS_WITH_MIGRATION_COMPLETED_AND_RESUMED
   live_runtime_rerun:
-    status: PASS_TO_VISUAL_GRAMMAR_SLIDE_ARCHITECTURE
-    runtime_version: 10
-    current_stage: VISUAL_GRAMMAR_SLIDE_ARCHITECTURE
+    status: PASS_TO_STORYBOARD
+    runtime_version: 12
+    current_stage: STORYBOARD
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.3-draft
-  status: TECHNICAL_PRESEAL_PASS_KNOWLEDGE_LAB_COMPLETE
+  status: TECHNICAL_PRESEAL_PASS_BUDGET_LEDGER_COMPLETE
 
 compatibility_helpers:
   vmax_course_orchestrator:
@@ -254,6 +257,8 @@ Shared Front Path
 - `_08`：Learner Role A `動作觀察員` / Final Transfer `水陸小詩人` → BOOK_DNA_CONFIRMATION
 - `_09`：Book DNA A `自由手繪探險手帳` → SURPRISE_SIGNATURE_CONFIRMATION
 - `_10`：Surprise A `文字變成慢動作軌跡` ＋ Extension `基礎包＋Kahoot` 鎖定；Knowledge Lab 完成 → `VISUAL_GRAMMAR_SLIDE_ARCHITECTURE`
+- `_11`：Visual Grammar / Slide Architecture 完成，43 cognitive scenes → `LESSON_BUDGET_FINAL_PAGE_LEDGER`
+- `_12`：Lesson Budget Final + Page Ledger 完成，43 cognitive scenes 合法收斂為 38 physical slides / 280 min → `STORYBOARD`
 
 不得回問已鎖定的 HOLD 2 / 2.5 / 2.6、Scenario A、Character A、Learner Role A、Book DNA A、Surprise A 或 Extension selection，除非教師明確 reopen 或上游變更使其失效。
 
@@ -297,23 +302,23 @@ Book DNA 保存整冊熟悉感；Lesson Skin 保存每課的新鮮感；Surprise
 
 ---
 
-## Live Runtime 10 Resolution
+## Live Runtime 12 Resolution
 
 ```yaml
-title: V-MAX_State_四上_第一課_水陸小高手_10
-document_id: 13kZSXfRobWj_rvs5WW5ftfvuFlAs4ZTPF5CgyyT4gDM
+title: V-MAX_State_四上_第一課_水陸小高手_12
+document_id: 1AddOj_Dz98zPazyE5Imm0lPCmCdg3F8ipfzVpo-P24c
 runtime_schema: 2.7-draft
 workflow: 2.6-draft
-manifest: 4.5-draft
+manifest: 4.6-draft
 executor: 1.8-draft
 production_mode: SINGLE_LESSON_BUILD
-current_stage: VISUAL_GRAMMAR_SLIDE_ARCHITECTURE
-last_completed_stage: KNOWLEDGE_LAB
+current_stage: STORYBOARD
+last_completed_stage: LESSON_BUDGET_FINAL_PAGE_LEDGER
 renderer_status: BLOCKED_UNTIL_GATE_C
 visual_seed_status: NOT_REQUIRED
 ```
 
-Runtime Index v09 已 active 指向 `_10`；v08 與更早 Index、Runtime 全部保留。
+Runtime Index v11 已 active 指向 `_12`；v10 與更早 Index、Runtime 全部保留。
 
 目前已鎖：
 - Gate A
@@ -338,8 +343,24 @@ Runtime Index v09 已 active 指向 `_10`；v08 與更早 Index、Runtime 全部
 - Extension Check v01: `1-uOq9Zoj_bFFB37pkocRPadGH-4rs4RZzAaWhzQbYMs`
 - Derivative Output Plan v01: `1gfJYGOO2Wl16_QIpffIvNgMiOmpIk0t8aXhMzOwwP8Y`
 - Knowledge Lab v01: `1fcAwJbcqfYS2nsO7ZohGL2ByqVFSGdDhq35ebF8iyjE`
+- Visual Grammar / Slide Architecture v01: `1PqHde5c0Hacah0eVQZK_c3dhXJFsx26LWr5cXLnT1c0`
+- Lesson Budget Final v01: `1gzSLZLyVW-QYUKgd_Il0mO0M9LDGOaK17vw8QZC8gJA`
+- Page Ledger v01: `1YALLfUv2HmxNwxi_bUjl-LGQxYO8s5rdcI2KfIzsmhg`
 
-Knowledge Lab 已正式排成七堂並保留：INFER / COMPARE / TRANSFER、STRUCTURE support、RETURN conditional、十組字群、溜兩音、轉、五個核心成語、排除要言不煩、詩的節奏與最後仿寫 Transfer。
+### Final core budget
+
+```yaml
+sessions: 7
+minutes_per_session: 40
+total_core_minutes: 280
+cognitive_scenes: 43
+physical_slides: 38
+physical_slide_distribution: [5, 5, 5, 7, 6, 5, 5]
+```
+
+43 → 38 是 5 組合法的同頁認知合併，不是刪除教學內容：Question / Reveal、Compare / Conclusion、兩個簡單 2 字組雙區，以及 Transfer planning。
+
+P25 `陀／駝 + 躍／耀` 只有在 Typography Lock 能維持大字辨識時成立；若不成立，必須 reopen Page Ledger，不得縮字硬塞。
 
 ---
 
@@ -369,10 +390,11 @@ surprise_signature_teacher_confirmation: PASS_A
 extension_check_teacher_confirmation: PASS_BASIC_PLUS_KAHOOT
 extension_budget_guard: PASS_NO_CORE_TIME_ADDED
 knowledge_lab_live: PASS_COMPLETE
-live_runtime_transition: PASS_TO_VISUAL_GRAMMAR_SLIDE_ARCHITECTURE
+visual_grammar_slide_architecture_live: PASS_COMPLETE
+lesson_budget_final_live: PASS_280_MINUTES
+page_ledger_live: PASS_38_PHYSICAL_SLIDES
+live_runtime_transition: PASS_TO_STORYBOARD
 remaining:
-  - VISUAL_GRAMMAR_AND_SLIDE_ARCHITECTURE
-  - LESSON_BUDGET_FINAL_AND_PAGE_LEDGER
   - STORYBOARD_STYLE_LESSON_SKIN_TYPOGRAPHY
   - ISOLATED_CANONICAL_FACE_ASSET_REQUIRED_BEFORE_GATE_B
   - GATE_B_AND_GATE_C
@@ -398,4 +420,4 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 
 > Book DNA 保存熟悉感；Lesson Skin 保存新鮮感；Surprise Signature 讓理解本身產生期待。
 
-> 第一課目前合法進入 Visual Grammar / Slide Architecture；Style／Gate B／Renderer 仍不得飛站。
+> 第一課目前合法進入 Storyboard；Style／Gate B／Renderer 仍不得飛站。
