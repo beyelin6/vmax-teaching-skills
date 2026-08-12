@@ -1,10 +1,10 @@
-# V-MAX Manifest 4.8-draft
+# V-MAX Manifest 4.9-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 4.8-draft
+vmax_manifest_version: 4.9-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -24,14 +24,14 @@ runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
-  index_title: V-MAX_Runtime_Index_v13
-  index_document_id: 1g2HNuljuT7w8yfE1mTHcfMUySHO230_fv5mcaMPZa98
-  previous_index_title: V-MAX_Runtime_Index_v12
-  previous_index_document_id: 1LWpukiDfA8DaC3ZKVrJx3VEU0GO9XbqO6caqmnD-9N4
-  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_14
-  active_runtime_document_id: 1Qu9NFc7nCsh9xYfsncbfMqmc5EgDTL0wFD9kcZj9CTQ
-  active_runtime_version: 14
-  active_runtime_stage: LESSON_SKIN_FINAL
+  index_title: V-MAX_Runtime_Index_v14
+  index_document_id: 1CZaqHTWmLDl4saMa6cjfzsWvIsofM3G8NXbpzO1RgOk
+  previous_index_title: V-MAX_Runtime_Index_v13
+  previous_index_document_id: 1g2HNuljuT7w8yfE1mTHcfMUySHO230_fv5mcaMPZa98
+  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_15
+  active_runtime_document_id: 1czs_ighUIv9IVXr0vCViBiI3JOzNU9cdwkqahrTpLTg
+  active_runtime_version: 15
+  active_runtime_stage: TYPOGRAPHY_LOCK
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
@@ -170,6 +170,10 @@ regression:
     path: tests/vmax-v1-live-runtime-style-recipe-report.md
     current_version: 1.0-draft
     status: PASS_TO_LESSON_SKIN_FINAL
+  live_runtime_lesson_skin_final:
+    path: tests/vmax-v1-live-runtime-lesson-skin-final-report.md
+    current_version: 1.0-draft
+    status: PASS_TO_TYPOGRAPHY_LOCK
   static_contract: PASS
   three_lesson_tabletop: PASS_RECHECKED_UNDER_PRODUCTION_MODE_SPLIT
   asset_persistence_regression: PASS_LIVE_DRIVE
@@ -180,14 +184,14 @@ regression:
   rollback_versioning_regression: PASS_LIVE_DRIVE
   live_runtime_read_audit: PASS_WITH_MIGRATION_COMPLETED_AND_RESUMED
   live_runtime_rerun:
-    status: PASS_TO_LESSON_SKIN_FINAL
-    runtime_version: 14
-    current_stage: LESSON_SKIN_FINAL
+    status: PASS_TO_TYPOGRAPHY_LOCK
+    runtime_version: 15
+    current_stage: TYPOGRAPHY_LOCK
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.3-draft
-  status: TECHNICAL_PRESEAL_PASS_STYLE_RECIPE_COMPLETE
+  status: TECHNICAL_PRESEAL_PASS_LESSON_SKIN_FINAL_COMPLETE
 
 compatibility_helpers:
   vmax_course_orchestrator:
@@ -269,6 +273,7 @@ Shared Front Path
 - `_12`：Lesson Budget Final + Page Ledger 完成，43 cognitive scenes 合法收斂為 38 physical slides / 280 min → `STORYBOARD`
 - `_13`：38 張 Storyboard v01 完成，逐頁目的／教師與學生動作／構圖／Reveal／Text Anchor 均落地 → `STYLE_RECIPE`
 - `_14`：Style Recipe v01 完成，F2 主家族＋F3/F8/F5 secondary 與 locked visual tokens 落地 → `LESSON_SKIN_FINAL`
+- `_15`：Lesson Skin Final v01 `L01-WATER-LAND-MOTION-FIELDNOTE-01 / 水陸慢動作觀察手帳` 完成，palette／lighting／material／motif／camera tendency／slide-specific visual grammar 落地 → `TYPOGRAPHY_LOCK`
 
 不得回問已鎖定的 HOLD 2 / 2.5 / 2.6、Scenario A、Character A、Learner Role A、Book DNA A、Surprise A 或 Extension selection，除非教師明確 reopen 或上游變更使其失效。
 
@@ -312,23 +317,23 @@ Book DNA 保存整冊熟悉感；Lesson Skin 保存每課的新鮮感；Surprise
 
 ---
 
-## Live Runtime 14 Resolution
+## Live Runtime 15 Resolution
 
 ```yaml
-title: V-MAX_State_四上_第一課_水陸小高手_14
-document_id: 1Qu9NFc7nCsh9xYfsncbfMqmc5EgDTL0wFD9kcZj9CTQ
+title: V-MAX_State_四上_第一課_水陸小高手_15
+document_id: 1czs_ighUIv9IVXr0vCViBiI3JOzNU9cdwkqahrTpLTg
 runtime_schema: 2.7-draft
 workflow: 2.6-draft
-manifest: 4.8-draft
+manifest: 4.9-draft
 executor: 1.8-draft
 production_mode: SINGLE_LESSON_BUILD
-current_stage: LESSON_SKIN_FINAL
-last_completed_stage: STYLE_RECIPE
+current_stage: TYPOGRAPHY_LOCK
+last_completed_stage: LESSON_SKIN_FINAL
 renderer_status: BLOCKED_UNTIL_GATE_C
 visual_seed_status: NOT_REQUIRED
 ```
 
-Runtime Index v13 已 active 指向 `_14`；v12 與更早 Index、Runtime 全部保留。
+Runtime Index v14 已 active 指向 `_15`；v13 與更早 Index、Runtime 全部保留。
 
 目前已鎖：
 - Gate A
@@ -358,6 +363,7 @@ Runtime Index v13 已 active 指向 `_14`；v12 與更早 Index、Runtime 全部
 - Page Ledger v01: `1YALLfUv2HmxNwxi_bUjl-LGQxYO8s5rdcI2KfIzsmhg`
 - Storyboard v01: `1ir8B4xVh4bCeOURIEagyfO-Y_KXdPy7uAXkRdBacmSw`
 - Style Recipe v01: `1dvPF35mvyWKP4bp5nHDGGlkPPEfOiBgwq5H9-ensqfI`
+- Lesson Skin Final v01: `1tRRGkcnwH6QPn8G-EP2LjLR8_zK8HhH-bZQ2nR-r3sY`
 
 ### Style Recipe
 
@@ -371,6 +377,22 @@ cinematic_scope: CORE_READING_COMPARE_ONLY
 clean_knowledge_scope: CHARACTER_PRONUNCIATION_CONTEXT_IDIOM
 visual_notebook_scope: NAVIGATION_EVIDENCE_TRANSFER
 bee_signature: EXCLUSIVE_TO_ROLE-BEE-001
+```
+
+### Lesson Skin Final
+
+```yaml
+skin_id: L01-WATER-LAND-MOTION-FIELDNOTE-01
+skin_name: 水陸慢動作觀察手帳
+primary_motif: 水陸動作線
+water_behavior: 水花弧線 / 波紋 / 方向線
+land_behavior: 輪跡弧線 / 轉向線 / 速度線
+base_material: 暖白紙張 + 細手繪墨線 + 淡水彩/色鉛筆
+water_palette: 水藍 / 青藍
+land_palette: 珊瑚橘 / 橘紅
+camera_rule: TEXT_FIRST + EVIDENCE_BEFORE_REVEAL + SAME_BASE_SCENE
+language_lab_rule: HIGH_SIGNAL_LOW_DECORATION
+character_presence: KEY_MOMENTS_ONLY
 ```
 
 ### Final core budget
@@ -390,7 +412,7 @@ Storyboard v01 沒有增加任何裝飾頁；小澄只在 P01、P05、P07、P14�
 
 P25 `陀／駝 + 躍／耀` 只有在 Typography Lock 能維持大字辨識時成立；若不成立，必須 reopen Page Ledger，不得縮字硬塞。
 
-Style Recipe 已鎖定紙張／手繪材質、藍＋珊瑚橘主方向、角色 DNA、文字層級方向與低密度播報 UI；精確 Lesson Skin token 留待下一階段，不提前假裝 Final。
+Lesson Skin Final 已將 Style Recipe 具體化為 palette、lighting、material、motif、camera tendency 與 slide-specific visual grammar；Typography 尚未執行，因此 Lesson Visual Identity Pack 仍不得宣告 FINAL_LOCKED。
 
 ---
 
@@ -425,9 +447,9 @@ lesson_budget_final_live: PASS_280_MINUTES
 page_ledger_live: PASS_38_PHYSICAL_SLIDES
 storyboard_live: PASS_38_SLIDES_NO_DRIFT
 style_recipe_live: PASS_F2_PRIMARY_F3_F8_F5_SECONDARY
-live_runtime_transition: PASS_TO_LESSON_SKIN_FINAL
+lesson_skin_final_live: PASS_WATER_LAND_MOTION_FIELDNOTE
+live_runtime_transition: PASS_TO_TYPOGRAPHY_LOCK
 remaining:
-  - LESSON_SKIN_FINAL
   - TYPOGRAPHY_LOCK
   - ISOLATED_CANONICAL_FACE_ASSET_REQUIRED_BEFORE_GATE_B
   - GATE_B_AND_GATE_C
@@ -453,4 +475,4 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 
 > Book DNA 保存熟悉感；Lesson Skin 保存新鮮感；Surprise Signature 讓理解本身產生期待。
 
-> 第一課目前合法進入 Lesson Skin Final；Typography／Gate B／Renderer 仍不得飛站。
+> 第一課目前合法進入 Typography Lock；Gate B／Renderer 仍不得飛站。
