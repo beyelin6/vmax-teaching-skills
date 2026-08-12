@@ -1,139 +1,260 @@
 # V-MAX Golden Path Executor
 
-版本：1.6-draft
+版本：1.7-draft
 
 ## 目的
-本技能是 V-MAX 國語教材工作流執行控制器。它不重新定義教學設計，只依 Main Workflow、Manifest 與 Google Drive Runtime State 執行合法下一步。
+本技能是 V-MAX 國語教材工作流執行控制器。它依 Main Workflow、Manifest、Production Mode 與 Google Drive Runtime State 執行唯一合法下一步。
 
-> 一次確認，只前進一個合法決策層；Gate C 後依已鎖 Storyboard 批次執行，不逐頁重問。
+> 前段一次確認只走一個決策層；批次模式停在可安全續跑的 checkpoint；任何可續跑成果先存 Drive。
 
 ## A. 啟動必讀
 1. `V-MAX_BOOTSTRAP.md`
 2. `V-MAX_MANIFEST.md`
 3. Google Drive 對應課程 Runtime State
 4. `core/governance/vmax-main-workflow.md`
-5. `core/governance/hold-teacher-interface-policy.md`
-6. 當前 stage canonical policies / skills
+5. `core/governance/production-mode-policy.md`
+6. `core/governance/google-drive-asset-authority-policy.md`
+7. `core/governance/hold-teacher-interface-policy.md`
+8. 當前 stage canonical policies / skills
 
-## B. 合法前進序列
+不得用聊天記憶取代 Runtime / Drive refs。
+
+---
+
+## B. Shared Front Path
 
 ```text
 SOURCE 0
 → STEP 1 Official Knowledge
-→ HOLD 1 Source Truth Confirm
+→ HOLD 1
 → LKB ASSEMBLY
-→ LKB REVIEW / approved_lkb
-→ STEP 2
-→ HOLD 2
-→ STEP 2.5
-→ HOLD 2.5
-→ STEP 2.6
-→ HOLD 2.6
-→ Teacher Intent Lock
-→ Lesson Map
-→ Supplement / Framework Decision
-→ Session Map
-→ Lesson Visual Map Strategy
+→ LKB REVIEW
+→ STEP 2 / HOLD 2
+→ STEP 2.5 / HOLD 2.5
+→ STEP 2.6 / HOLD 2.6
+→ Teacher Intent
+→ Lesson Map / Session Map / LVM
 → Teaching Skill Selection Lock
 → Lesson Budget Draft
-→ GATE A Teaching Direction Lock
-→ Scenario Decision / Candidates
+→ Gate A
+→ Scenario Decision
 → SCENARIO LOCK
-→ Character Topology / Cast Candidates
+→ Character Topology / Cast
 → CHARACTER LOCK
-→ Character DNA / Learner Role / Book DNA / Surprise Signature
-→ Extension Check
-→ Knowledge Lab
-→ Visual Grammar / Slide Architecture
-→ Lesson Budget Final / Page Ledger
-→ Storyboard
-→ Style Recipe / Lesson Skin / Typography Lock
-→ GATE B Experience + Storyboard + Visual Identity Lock
-→ Representative Validation
-→ GATE C Representative Visual Validation
-→ Full Renderer
-→ Text QA / Typography QA
-→ Quality Gate
-→ Lesson Learning
-→ Lesson Package Delivery
-→ Google Drive Archive Verification
 ```
 
-無成語：`N/A_NO_IDIOM`。無外掛：`EXTENSION_OFF`。Scenario mode 可 `SOURCE_WORLD / REGISTRY_WRAPPER / OFF`。
+到此讀 `production_mode` 分流。
 
-## C. Transition Guard
-- HOLD 1 confirmed → 建 LKB → 停 LKB REVIEW。
+---
+
+## C. SINGLE_LESSON_BUILD Route
+
+```text
+CHARACTER LOCK
+→ Experience Completion
+→ Extension Check
+→ Knowledge Lab
+→ Slide Architecture
+→ Budget Final / Page Ledger
+→ Storyboard
+→ Style Recipe
+→ Lesson Skin Final
+→ Typography Lock
+→ Gate B
+→ Representative Visual
+→ Gate C
+→ Renderer / QA
+→ Renderer Script / Slide Detail
+→ NotebookLM assets
+→ Prestudy / Short Read
+→ Question Bank / Kahoot / Other Outputs
+→ Delivery / Drive Verification
+```
+
+Gate C confirmed 後可批次 Renderer，不逐頁重問。
+
+---
+
+## D. BATCH_PREP_BUILD Route
+
+```text
+CHARACTER LOCK
+→ resolve character Drive asset ref
+→ Visual Seed proposal
+→ VISUAL SEED LOCK
+→ persist Lesson Visual Identity Pack = SEED_LOCKED
+→ generate PRESTUDY
+→ persist + verify
+→ generate SHORT_READ
+→ persist + verify
+→ BATCH_PREP_CHECKPOINT_COMPLETE
+→ STOP / NEXT LESSON
+```
+
+Batch checkpoint 不要求 Slide Architecture / Storyboard / Gate B / Gate C / Final Slides。
+
+### Batch Resume
+若某課從 Batch 轉正式簡報：
+
+```text
+load Runtime
+→ load Batch Checkpoint
+→ load Identity Pack SEED_LOCKED
+→ load shared character assets
+→ Knowledge Lab / Slide Architecture
+→ Page Ledger / Storyboard
+→ Style Recipe Finalization
+→ Lesson Skin Final
+→ Typography Lock
+→ Gate B / Gate C / Renderer
+```
+
+不得重新猜角色長相或跨 Style family 漂移。
+
+---
+
+## E. Transition Guard
+
+- HOLD 1 confirmed → LKB → 停 LKB REVIEW。
 - LKB REVIEW confirmed → STEP 2 → 停 HOLD 2。
 - HOLD 2 confirmed → STEP 2.5 → 停 HOLD 2.5。
 - HOLD 2.5 confirmed → STEP 2.6 → 停 HOLD 2.6。
-- HOLD 2.6 confirmed → Teacher Intent Lock。
 - Gate A confirmed → Scenario candidates → 停 SCENARIO LOCK。
-- SCENARIO LOCK confirmed → Character topology/cast candidates → 停 CHARACTER LOCK。
-- CHARACTER LOCK confirmed → Character DNA / Learner Role / Book DNA / Surprise，之後繼續架構。
-- Storyboard 完成 → Style Recipe / Lesson Skin / Typography direction → 停 Gate B。
-- Gate B confirmed → Representative Visual → 停 Gate C。
-- Gate C confirmed → Full Renderer 可批次執行。
+- SCENARIO LOCK confirmed → Character candidates → 停 CHARACTER LOCK。
+- CHARACTER LOCK confirmed：
+  - SINGLE → Experience Completion。
+  - BATCH → Visual Seed proposal → 停 VISUAL SEED LOCK。
+- VISUAL SEED LOCK confirmed → 寫 Drive Identity Pack → PRESTUDY / SHORT_READ。
+- Gate B confirmed → Representative Visual → Gate C。
+- Gate C confirmed → batch Renderer。
 
-違反：`FLYING_TRAIN / SKIPPED_DECISION_LAYER / STAGE_LEAP / SCENARIO_LOCK_SKIPPED / CHARACTER_LOCK_SKIPPED / LESSON_SKIN_BEFORE_STYLE_RECIPE`。
+Failure：
+`FLYING_TRAIN / STAGE_LEAP / SCENARIO_LOCK_SKIPPED / CHARACTER_LOCK_SKIPPED / BATCH_VISUAL_SEED_MISSING`。
 
-## D. STEP 1 / LKB Guard
-STEP 1 必載入 Source Anchor / Recognition policy。HOLD 1 後才執行 `chinese-lesson-knowledge-builder`；LKB 未 `approved_lkb` 不得進 STEP 2。
+---
 
-Routing policy 只處理 approved LKB 的 PREVIEW / SHORT_READ / CORE / PLUS / EXTENSION / TEACHER_ONLY 與 spiral，不得建第二套 LKB。
+## F. Production Mode Guard
 
-## E. Teaching Direction Guard
-必載入 Teaching Skill Selection + Lesson Budget。Teaching Skill Lock 在 Gate A 前；Budget Draft 只鎖時間、MUST/SHOULD/COULD、核心認知任務，不鎖精確頁數。
+Runtime 必須有：
 
-## F. STEP 2.5 / 2.6 Guard
-AI 主動生字深教只有 `SHAPE_NEAR / POLYPHONIC`；預習做過仍可 `CORE_REINFORCE`。成語需保留 meaning、life example、understanding goal、visual expression。
+```yaml
+production_mode: SINGLE_LESSON_BUILD | BATCH_PREP_BUILD
+```
 
-## G. Text Anchor Guard
-語詞、句型、修辭與重要閱讀教學保留原文證據。RETURN 只在必要時啟動。
+若未設定：
+- 單課互動式工作預設不得自行猜。
+- 若教師語意明確「一次做一課完整」可記 `SINGLE_LESSON_BUILD`。
+- 若教師語意明確「一次多課／批次備課」可記 `BATCH_PREP_BUILD`。
 
-## H. Experience Authority + Lock Guard
-Gate A 後必載入 Experience、Scenario Teacher Lock、Scenario Registry/Selector、Scenario Character Bridge、Character System、Style Recipe Families。
+模式改變不重做上游 Source/LKB；只從受影響 checkpoint 續跑。
 
-硬順序：
-`Scenario Decision → SCENARIO LOCK → Character Topology/Cast → CHARACTER LOCK → Character DNA`
+---
 
-Experience 只 orchestration；Scenario/Character/Style 規則由各自 canonical 管理。
+## G. Visual Seed Guard
 
-Character Lock 後可先形成 Book DNA / Surprise / Learner Role，但 **Lesson Skin Final 必須等 Style Recipe 選定**。
+Batch 模式必載入 Experience + Style Families + Asset Authority。
 
-## I. Extension Guard
-新增 DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM 必須重算 Budget，先問「取代什麼」。
+`VISUAL SEED LOCK` 至少需要：
+- Book DNA ref
+- Scenario ref
+- Character role_id / asset_version / Drive ref
+- Style family seed ref
+- Style reference asset ref（若需要新方向）
+- Lesson Skin Seed（palette/material/motif/tone only）
+- Typography base ref
+- PRESTUDY / SHORT_READ material mode
 
-## J. Budget / Storyboard / Style Guard
-- Budget Draft：Gate A 前。
-- Budget Final / Page Ledger：Slide Architecture 後。
-- Storyboard 後才選定 Style Recipe，形成 Lesson Skin，套 Typography Lock。
-- Gate B 一次鎖 Storyboard + Page Ledger + Visual Identity direction。
-- 一頁 = 一個 cognitive scene；同頁可兩個有層次問題；每頁必填 learning_gain。
+不得填 final slide layout / camera / cinematic language。
 
-## K. Gate B / Gate C Guard
-Gate B confirmed 後才做 1–2 張 Representative Visual；Gate C 用實際代表頁驗證 art direction。
+---
 
-Gate B 不能在 Style Recipe / Lesson Skin / Typography 尚未成立時宣告完整 Visual Identity Lock。
+## H. Character Asset Guard
 
-## L. Typography / Renderer Guard
-允許圖文一體繁中生成；正式輸出前跑 Text QA。P0：課文、生字、形近字、多音字、注音、目標字、關鍵句／臺詞。局部錯誤先局部修。
+角色：
+- stable role spec → GitHub Role Library。
+- approved visual appearance → Drive shared asset library。
 
-## M. LVM Guard
-已選 Lesson Visual Map 必須保留到大綱、Slide Architecture、Page Ledger、Renderer。
+若 `CHARACTER LOCK` 已成立但找不到 Drive canonical asset ref：
+- 若是 NEW_CHARACTER → 先產生／核准／保存基準圖，再繼續。
+- 若是 REUSE_CONFIRMED → 必須找到既有 asset_version。
 
-## N. Teacher Command Language
-- `繼續／好／可以`：依目前合法 decision layer 前進；Gate C 後直接工作。
+找不到即 `CHARACTER_REFERENCE_MISSING`，不得大量生成跨教材視覺。
+
+---
+
+## I. Knowledge / Teaching Guards
+
+- approved LKB required before STEP 2。
+- Teaching Skill Lock before Gate A。
+- Budget Draft 不鎖頁數。
+- Shape-near / Polyphonic 可從 PREVIEW → CORE_REINFORCE。
+- Text Anchor 保留；RETURN conditional。
+- Extension 先問「取代什麼」。
+
+---
+
+## J. Slide / Visual Finalization Guard
+
+正式簡報路徑必守：
+
+```text
+Slide Architecture
+→ Budget Final / Page Ledger
+→ Storyboard
+→ Style Recipe
+→ Lesson Skin Final
+→ Typography Lock
+→ Gate B
+→ Representative
+→ Gate C
+```
+
+`Lesson Skin Seed` 不得當 `Lesson Skin Final`。
+
+---
+
+## K. Save-on-Approval Guard｜硬規則
+
+任何 `APPROVED / LOCKED / USABLE_WIP` 先寫 Drive 並 verify：
+- character asset
+- Visual Seed / Identity Pack
+- Storyboard / Page Ledger
+- representative visual
+- NotebookLM Source / YAML
+- prestudy / short-read
+- question bank / Kahoot export
+- slide WIP / final
+
+若將離開平台、額度不足、時間中斷，也必須先 persistence checkpoint。
+
+Failure：`CHAT_ONLY_ASSET / APPROVED_ASSET_NOT_PERSISTED / DRIVE_REFERENCE_UNVERIFIED`。
+
+---
+
+## L. Teacher Command Language
+- `繼續／好／可以`：依目前合法 decision layer 前進。
 - `下一頁`：下一 cognitive scene，不重畫目前頁。
 - `換一個版本`：同內容重設計。
 - `重畫`：重生目前視覺。
-- `鎖定`：寫 downstream invariant。
+- `鎖定`：寫 downstream invariant + Drive persistence。
 - `回前面`：回指定決策點，重開受影響 downstream。
 
-## O. Delivery / Drive Guard
-固定六類：`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`。只有上傳後再次驗證可查到，才可 Archive PASS。
+---
 
-## P. Anti-duplication / Legacy Guard
-禁止第二套 LKB、Experience 自建 Character/Scenario/Style、未鎖舞台先選卡司、Lesson Skin 早於 Style Recipe、一題一頁、從視覺工具反推教學、圖片中文字未 QA、舊五類 Drive 結構。
+## M. Drive Layout Guard
+
+Shared asset root：
+`00_V-MAX_角色與視覺資產庫` / `1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`
+
+Lesson folders：
+`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`
+
+共享角色 canonical asset 不每課複製；每課只存 role_id / asset_version / variation refs。
+
+---
 
 ## 核心金句
-> 前段不飛站；先鎖舞台再鎖卡司；先做認知架構再鎖視覺語言；Gate C 後不要逐頁重新問。
+
+> 單課做到底；批次做到安全 checkpoint。
+
+> 角色的規則在 GitHub，角色的臉在 Drive；鎖定不落地，就不算真的鎖定。
