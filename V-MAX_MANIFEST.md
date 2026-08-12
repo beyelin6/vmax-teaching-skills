@@ -1,10 +1,10 @@
-# V-MAX Manifest 4.2-draft
+# V-MAX Manifest 4.3-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 4.2-draft
+vmax_manifest_version: 4.3-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -24,14 +24,14 @@ runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
-  index_title: V-MAX_Runtime_Index_v06
-  index_document_id: 1EUA_TdvifHfI4I0pTB-KRfSKiQ4bathaUx-iW-po9pQ
-  previous_index_title: V-MAX_Runtime_Index_v05
-  previous_index_document_id: 1ysX2TEgaM0kJAVBWBsaIXo8hO20Ibn1VisrtlHdcdss
-  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_07
-  active_runtime_document_id: 1-XMcdoriQDVMtw53RjEzcsHNtOQcagApvAMnIBHa_hs
-  active_runtime_version: 07
-  active_runtime_stage: CHARACTER_DNA
+  index_title: V-MAX_Runtime_Index_v07
+  index_document_id: 1bmUq6bmNSmHatVzDPjEHISJSs_Inu2swlxIzM-AsxOU
+  previous_index_title: V-MAX_Runtime_Index_v06
+  previous_index_document_id: 1EUA_TdvifHfI4I0pTB-KRfSKiQ4bathaUx-iW-po9pQ
+  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_08
+  active_runtime_document_id: 1wh3YUQR6YkFS7mqaQ9RLy_fPj7gWzLoz5ZeiP8nqHfk
+  active_runtime_version: 08
+  active_runtime_stage: BOOK_DNA_CONFIRMATION
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
@@ -98,6 +98,9 @@ google_drive_asset_authority:
   shared_visual_asset_library:
     title: 00_V-MAX_角色與視覺資產庫
     folder_id: 1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V
+  book_dna_root:
+    title: 02_整冊Book_DNA
+    folder_id: 1XXaBuiiB0l0D0-cn7i5IiE-VhX9vm0iZ
 
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
@@ -151,6 +154,10 @@ regression:
     path: tests/vmax-v1-live-runtime-character-lock-and-dna-report.md
     current_version: 1.0-draft
     status: PASS_TO_CHARACTER_DNA
+  live_runtime_learner_role_book_dna:
+    path: tests/vmax-v1-live-runtime-learner-role-book-dna-report.md
+    current_version: 1.0-draft
+    status: PASS_TO_BOOK_DNA_CONFIRMATION
   static_contract:
     status: PASS
   three_lesson_tabletop:
@@ -168,14 +175,14 @@ regression:
     path: core/governance/vmax-runtime-live-compatibility-audit.md
     status: PASS_WITH_MIGRATION_COMPLETED_AND_RESUMED
   live_runtime_rerun:
-    status: PASS_THROUGH_CHARACTER_LOCK_TO_DNA
-    runtime_version: 07
-    current_stage: CHARACTER_DNA
+    status: PASS_TO_BOOK_DNA_CONFIRMATION_AFTER_LEARNER_ROLE_A
+    runtime_version: 08
+    current_stage: BOOK_DNA_CONFIRMATION
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.3-draft
-  status: TECHNICAL_PRESEAL_PASS_CHARACTER_LOCK_AND_DNA_PERSISTENCE_VERIFIED
+  status: TECHNICAL_PRESEAL_PASS_AWAITING_BOOK_DNA_TEACHER_CHECKPOINT
 
 compatibility_helpers:
   vmax_course_orchestrator:
@@ -204,6 +211,7 @@ compatibility_helpers:
 ```text
 Shared Front Path
 → Character Lock
+→ Character DNA / Learner Role / Book DNA / Surprise Signature / Extension Check
 → Experience / Knowledge Lab / Slide Architecture
 → Page Ledger / Storyboard
 → Style Recipe / Lesson Skin Final / Typography
@@ -247,17 +255,15 @@ Legacy migration 只有在 `migration_status: REVIEWED` 且欄位有明確 `MIGR
 - `MIGRATED_CONFIRMED_EVIDENCE` 但新版 lock 語義不同 → evidence 保留，停新版 lock。
 - `NEEDS_REVIEW / NOT_RUN / missing Drive ref` → 立刻停止。
 
-第一課已於 2026-08-12 核准 migration LKB source-ref 模式；Runtime `_04` 先依 evidence-aware resume：
-- carry forward HOLD 2 / 2.5 / 2.6 / Teacher Intent；
-- 重跑新版 Teaching Skill Selection；
-- 重跑 Lesson Budget Draft；
-- 合法停在 Gate A。
+第一課已於 2026-08-12 核准 migration LKB source-ref 模式；Runtime `_04` 依 evidence-aware resume carry forward HOLD 2 / 2.5 / 2.6 / Teacher Intent，並重跑 Teaching Skill Selection / Lesson Budget Draft 後停 Gate A。
 
-教師其後已核准 Gate A，Runtime `_05` 完成 Scenario Decision；教師再明確選擇 Scenario A「WF-01 運動播報中心＋局部 WF-05 慢動作／特寫認知語彙」。Runtime `_06` 因而合法進入 Character Topology 與候選檢索，停在 `CHARACTER_LOCK`。
+後續 live chain：
+- `_05`：Gate A 核准後完成 Scenario Decision，停 `SCENARIO_LOCK`。
+- `_06`：教師選 Scenario A 後完成 Character Topology / candidates，停 `CHARACTER_LOCK`。
+- `_07`：教師選 Character A `SINGLE_GUIDE＋小澄主播`，完成 Character Lock，進 `CHARACTER_DNA`。
+- `_08`：教師選 Learner Role A `動作觀察員`，Final Transfer=`水陸小詩人`；Book DNA proposal + L01-L03 cross-lesson evidence 已持久化，停 `BOOK_DNA_CONFIRMATION`。
 
-教師再明確選擇 Character A：`SINGLE_GUIDE＋小澄主播`。Runtime `_07` 完成 Character Lock 並進入 `CHARACTER_DNA`；不得回問 Character A/B/C。
-
-不得回問相同 HOLD 2 / 2.5 / 2.6，也不得把舊 visual evidence 靜默升格成 canonical face。Visual Grammar / Style / FULL_RENDERER 仍須照 Golden Path 後續依賴執行。
+不得回問相同 HOLD 2 / 2.5 / 2.6、Scenario A、Character A 或 Learner Role A。不得把舊 visual evidence 靜默升格成 isolated canonical face。
 
 ---
 
@@ -281,7 +287,7 @@ Legacy migration 只有在 `migration_status: REVIEWED` 且欄位有明確 `MIGR
 - 建立新版不自動採用新版。
 - rollback 只把 active ref 指回舊版；不刪、不覆蓋、不重生。
 - 約 24 個月可標 `REVIEW_DUE`，不得自動改課。
-- shared character / style upgrade 必須明確 `KEEP_PINNED / UPGRADE / FORK / RETIRE_FROM_NEW_VERSION`。
+- shared character / style / Book DNA upgrade 必須明確 `KEEP_PINNED / UPGRADE / FORK / RETIRE_FROM_NEW_VERSION`。
 
 ---
 
@@ -291,7 +297,7 @@ Legacy migration 只有在 `migration_status: REVIEWED` 且欄位有明確 `MIGR
 規則、技能、schema、Role stable spec、Style / Scenario / Character System、regression。
 
 ### Google Drive
-所有實際成品、半成品、Runtime、核准角色長相、Style Reference、Lesson Visual Identity Pack、NotebookLM 檔、預習單、短文單、題庫、簡報與 WIP。
+所有實際成品、半成品、Runtime、核准角色長相、Style Reference、Book DNA evidence、Lesson Visual Identity Pack、NotebookLM 檔、預習單、短文單、題庫、簡報與 WIP。
 
 ### Character
 - role_id / personality / teaching function / stable textual Visual DNA → GitHub Role Library。
@@ -299,6 +305,11 @@ Legacy migration 只有在 `migration_status: REVIEWED` 且欄位有明確 `MIGR
 - 歷史課程讀 pinned asset_version，不自動抓 newest。
 - Bee signature 為 `ROLE-BEE-001` 專屬，不得跨角色借用。
 - 可沿用舊角色的 visual lineage，但必須區分「視覺意象沿用」與「角色身份合併」。
+
+### Book DNA
+- Book DNA 是整冊共通的筆觸、留白、導航、基礎圖文關係。
+- Lesson Skin 是每課自己的世界、色調、主題物件、鏡頭語言與 Surprise Signature。
+- Book DNA 不等於固定版型，不得把 Bee signature 或任何單課角色變成全冊共同裝飾。
 
 ---
 
@@ -315,65 +326,73 @@ V-MAX 教材庫/
     └── 99_System_Regression_Sandbox/
 ```
 
-Drive folder id：`1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`。
+Drive root：`1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`。
+Book DNA root：`1XXaBuiiB0l0D0-cn7i5IiE-VhX9vm0iZ`。
 
 ---
 
-## Live Runtime 07 Resolution
+## Live Runtime 08 Resolution
 
-Legacy `_02`、migration checkpoint `_03`、Gate A checkpoint `_04`、Scenario checkpoint `_05` 與 Character candidate checkpoint `_06` 均保留不動。
+Legacy `_02`、migration checkpoint `_03`、Gate A `_04`、Scenario `_05`、Character candidates `_06`、Character Lock `_07` 均保留不動。
 
 目前 active Runtime：
 
 ```yaml
-title: V-MAX_State_四上_第一課_水陸小高手_07
-document_id: 1-XMcdoriQDVMtw53RjEzcsHNtOQcagApvAMnIBHa_hs
+title: V-MAX_State_四上_第一課_水陸小高手_08
+document_id: 1wh3YUQR6YkFS7mqaQ9RLy_fPj7gWzLoz5ZeiP8nqHfk
 runtime_schema: 2.7-draft
 workflow: 2.6-draft
-manifest: 4.2-draft
+manifest: 4.3-draft
 executor: 1.8-draft
 production_mode: SINGLE_LESSON_BUILD
-current_stage: CHARACTER_DNA
-last_completed_stage: CHARACTER_LOCK
+current_stage: BOOK_DNA_CONFIRMATION
+last_completed_stage: LEARNER_ROLE
 renderer_status: BLOCKED_UNTIL_GATE_C
+visual_seed_status: NOT_REQUIRED
 ```
 
-Runtime Index v06 已 active 指向 `_07`；v05 與更早 Index 都保留。
+Runtime Index v07 已 active 指向 `_08`；v06 與更早 Index 都保留。
 
-第一課新標準工作區：
+第一課工作區：
 `四上康軒國語/03_分課教學簡報與教材/01_第一課_水陸小高手/`
 
 目前 active LKB：
 - `L01_lesson-knowledge-book_v02`
 - document id: `1osHATF7Cj05gB820LOrKn2Va_m7znjF3GgBrgmxaLuQ`
 - status: `approved_lkb`
-- text mode: `SOURCE_REF_ONLY`，教師已於 2026-08-12 接受；完整課文仍以官方 PDF 為權威。
+- text mode: `SOURCE_REF_ONLY`
 
-本輪已持久化：
-- `L01_teaching-skill-selection_v01` / `1Q4xcSBODkHVYGvUK6OUvrMRD_Z0N3R9T0LOi69PJWNQ`
-- `L01_lesson-budget-draft_v01` / `1IPRJ6DjkO-IEBg0pEAdmRqajJUWHMjSS-HZ18gwy0Kk`
-- `L01_gate-a-teaching-direction_v01` / `1ix9PQcdx6-nNKhIh36lVGiyGGEAGq0lPfY_nE3H3O6o` / `CONFIRMED_AND_LOCKED`
-- `L01_scenario-decision_v01` / `1FTQQyQozD3l8_IMHgSoieiLIir-w1SX3rqBv2Dfiux4` / `CONFIRMED_AND_LOCKED_A`
-- `L01_character-topology-and-candidates_v01` / `1rEeYJaRGn_VRBfVQlV1R3pW_OHqhy1mBoYL-CD36j0c` / historical WAITING checkpoint
-- `L01_character-topology-and-candidates_v02` / `1NIPbiE9L7pKLJVWiz054CGKvJ4u_SyuzULboptzi30c` / `CONFIRMED_AND_LOCKED_A`
-- 小澄角色資產根目錄 / `1TiFv2DDWLlo7GCePrYeIz24XPo1Av62K`
-- `CUSTOM-WATER-LAND-YOUNG-ANCHOR_character-dna_v01` / `1IORMhm1Q5m_PBJOQn5HDezUzsnPUm7RnBwjZcjJJ_OQ`
-- 小澄 legacy visual lineage copy / `1Kiyx8NpqrTG3L9Mo3gjiUkwT_LaZmIoM`
+已鎖定：
+- Gate A：`CONFIRMED_AND_LOCKED`
+- Scenario A：WF-01 運動播報中心＋局部 WF-05 慢動作／特寫語彙
+- Character A：`SINGLE_GUIDE＋小澄主播`
+- Learner Role A：`動作觀察員`
+- Final Transfer：`水陸小詩人`
 
-Character 已鎖定：
-- topology: `SINGLE_GUIDE`
-- character: `CUSTOM-WATER-LAND-YOUNG-ANCHOR`
-- name: `小澄主播`
-- frequency: `KEY_MOMENTS_ONLY`
-- dialogue: `LIGHT`
+小澄資產：
+- asset folder: `1TiFv2DDWLlo7GCePrYeIz24XPo1Av62K`
+- Character DNA v01: `1IORMhm1Q5m_PBJOQn5HDezUzsnPUm7RnBwjZcjJJ_OQ`
+- legacy visual lineage: `1Kiyx8NpqrTG3L9Mo3gjiUkwT_LaZmIoM`
+- isolated canonical face: `PENDING_BEFORE_GATE_B`
 
-小澄沿用第一課舊預習單右下角「深棕短亂髮、四年級運動男孩」視覺意象。第一課的藍色運動上衣、珊瑚橘護具與藍橘直排輪只屬 L01 variant，不是跨課固定服裝。
+Learner Role：
+- `L01_learner-role_v01`
+- ref: `165EI52vs2LmRFBflIQpPrZiT_ImfVapXNUjZVCBxlsQ`
+- status: `CONFIRMED_AND_LOCKED_A`
 
-身份界線：小澄只沿用舊男孩 visual lineage，不把既有角色「小樂」直接改名或合併。
+Book DNA proposal：
+- `四上國語_Book-DNA-proposal_v01`
+- ref: `1e-xQXDTcxuCCvYZgkyGex4PF6PNlTY32dlFOI4kDw0c`
+- evidence folder: `15J7dyZ02m5zg4jpAsrR2E8kZ-YHejVhn`
+- recommendation: A `ZH4A-HANDDRAWN-EXPLORER-01 / 自由手繪探險手帳`
+- status: `PROPOSED_WAITING_CONFIRMATION`
 
-Bee 界線：`ROLE-BEE-001` 的 Bee signature 為專屬；小澄與其他角色禁止借用蜂類頭飾、觸角、蜂類胸針、蜂巢 signature 或其他 Bee identity cues。
+Book DNA evidence 已另存：
+- L01 `1_xdvcsYYqwoQXFa7nOSJg-OMmRQFjAyJ`
+- L02 `19VOrC3o4AZ81OGiTcRxwLSfyt3ayMRTv`
+- L03 `11HbN8FIl_T_e9nt5w91O_l80NNHty_by`
 
-目前 canonical visual lineage 已確認；但 isolated canonical face／turnaround 尚未建立，因此 `canonical_face_status: PENDING_BEFORE_GATE_B`，不得誤標成已核准角色基準圖。
+Book DNA A 的核心共通語言：白底與留白、黑色手寫感標題、手繪分區線、藍色主結構線＋低密度功能輔色、膠帶／星號／小型手繪導航符號；每課主題物件與 Lesson Skin 可變。
 
 ---
 
@@ -412,10 +431,16 @@ character_teacher_confirmation: PASS_A
 character_asset_folder_persistence: PASS
 character_dna_direction_persistence: PASS
 bee_signature_exclusivity_rule: PASS
-live_runtime_transition_to_character_dna: PASS
-live_runtime_current_checkpoint: CHARACTER_DNA
+learner_role_teacher_confirmation: PASS_A
+learner_role_persistence: PASS
+book_dna_cross_lesson_evidence_persistence: PASS
+book_dna_proposal_live: PASS_READY_FOR_TEACHER_CONFIRMATION
+single_mode_visual_seed_guard: PASS_NOT_REQUIRED
+live_runtime_transition_to_book_dna_confirmation: PASS
+live_runtime_current_checkpoint: BOOK_DNA_CONFIRMATION
 remaining:
-  - CONTINUE_CHARACTER_DNA_LEARNER_ROLE_BOOK_DNA_SURPRISE_SIGNATURE
+  - TEACHER_CONFIRM_BOOK_DNA_A_B_OR_C
+  - AFTER_BOOK_DNA_RUN_SURPRISE_SIGNATURE_AND_EXTENSION_CHECK
   - ISOLATED_CANONICAL_FACE_ASSET_REQUIRED_BEFORE_GATE_B
   - TEACHER_FINAL_V1_SEAL_APPROVAL
 v1_sealed: false
@@ -437,4 +462,6 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 
 > Bee signature 只屬於 Bee 老師；角色可以沿用視覺 lineage，但不能偷換身份。
 
-> 技術 pre-seal 已通過；第一課目前合法進入 Character DNA，Visual／Style／Renderer 仍不飛站。
+> Book DNA 保存熟悉感；Lesson Skin 保存每一課的新鮮感。
+
+> 技術 pre-seal 已通過；第一課目前合法停在 Book DNA 確認點，Visual／Style／Renderer 仍不飛站。
