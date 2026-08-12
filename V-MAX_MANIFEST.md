@@ -1,10 +1,10 @@
-# V-MAX Manifest 4.6-draft
+# V-MAX Manifest 4.7-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 4.6-draft
+vmax_manifest_version: 4.7-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -24,14 +24,14 @@ runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
-  index_title: V-MAX_Runtime_Index_v11
-  index_document_id: 1Q1CQpSBtxpeD7tiocI2dbdskCclb_Ff9qr1XhMvFjlA
-  previous_index_title: V-MAX_Runtime_Index_v10
-  previous_index_document_id: 1TyTptsgAmeWqzr2PpP1PqGyNNKFHcvcSQkVd2mEKUuU
-  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_12
-  active_runtime_document_id: 1AddOj_Dz98zPazyE5Imm0lPCmCdg3F8ipfzVpo-P24c
-  active_runtime_version: 12
-  active_runtime_stage: STORYBOARD
+  index_title: V-MAX_Runtime_Index_v12
+  index_document_id: 1LWpukiDfA8DaC3ZKVrJx3VEU0GO9XbqO6caqmnD-9N4
+  previous_index_title: V-MAX_Runtime_Index_v11
+  previous_index_document_id: 1Q1CQpSBtxpeD7tiocI2dbdskCclb_Ff9qr1XhMvFjlA
+  active_runtime_title: V-MAX_State_四上_第一課_水陸小高手_13
+  active_runtime_document_id: 1D5bKaFNInGctynN988VxGSwMoVDV7S90xYf2PleUHAk
+  active_runtime_version: 13
+  active_runtime_stage: STYLE_RECIPE
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
@@ -162,6 +162,10 @@ regression:
   live_runtime_visual_grammar_budget_ledger:
     path: tests/vmax-v1-live-runtime-visual-grammar-budget-ledger-report.md
     status: PASS_TO_STORYBOARD
+  live_runtime_storyboard:
+    path: tests/vmax-v1-live-runtime-storyboard-report.md
+    current_version: 1.0-draft
+    status: PASS_TO_STYLE_RECIPE
   static_contract: PASS
   three_lesson_tabletop: PASS_RECHECKED_UNDER_PRODUCTION_MODE_SPLIT
   asset_persistence_regression: PASS_LIVE_DRIVE
@@ -172,14 +176,14 @@ regression:
   rollback_versioning_regression: PASS_LIVE_DRIVE
   live_runtime_read_audit: PASS_WITH_MIGRATION_COMPLETED_AND_RESUMED
   live_runtime_rerun:
-    status: PASS_TO_STORYBOARD
-    runtime_version: 12
-    current_stage: STORYBOARD
+    status: PASS_TO_STYLE_RECIPE
+    runtime_version: 13
+    current_stage: STYLE_RECIPE
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.3-draft
-  status: TECHNICAL_PRESEAL_PASS_BUDGET_LEDGER_COMPLETE
+  status: TECHNICAL_PRESEAL_PASS_STORYBOARD_COMPLETE
 
 compatibility_helpers:
   vmax_course_orchestrator:
@@ -259,6 +263,7 @@ Shared Front Path
 - `_10`：Surprise A `文字變成慢動作軌跡` ＋ Extension `基礎包＋Kahoot` 鎖定；Knowledge Lab 完成 → `VISUAL_GRAMMAR_SLIDE_ARCHITECTURE`
 - `_11`：Visual Grammar / Slide Architecture 完成，43 cognitive scenes → `LESSON_BUDGET_FINAL_PAGE_LEDGER`
 - `_12`：Lesson Budget Final + Page Ledger 完成，43 cognitive scenes 合法收斂為 38 physical slides / 280 min → `STORYBOARD`
+- `_13`：38 張 Storyboard v01 完成，逐頁目的／教師與學生動作／構圖／Reveal／Text Anchor 均落地 → `STYLE_RECIPE`
 
 不得回問已鎖定的 HOLD 2 / 2.5 / 2.6、Scenario A、Character A、Learner Role A、Book DNA A、Surprise A 或 Extension selection，除非教師明確 reopen 或上游變更使其失效。
 
@@ -302,23 +307,23 @@ Book DNA 保存整冊熟悉感；Lesson Skin 保存每課的新鮮感；Surprise
 
 ---
 
-## Live Runtime 12 Resolution
+## Live Runtime 13 Resolution
 
 ```yaml
-title: V-MAX_State_四上_第一課_水陸小高手_12
-document_id: 1AddOj_Dz98zPazyE5Imm0lPCmCdg3F8ipfzVpo-P24c
+title: V-MAX_State_四上_第一課_水陸小高手_13
+document_id: 1D5bKaFNInGctynN988VxGSwMoVDV7S90xYf2PleUHAk
 runtime_schema: 2.7-draft
 workflow: 2.6-draft
-manifest: 4.6-draft
+manifest: 4.7-draft
 executor: 1.8-draft
 production_mode: SINGLE_LESSON_BUILD
-current_stage: STORYBOARD
-last_completed_stage: LESSON_BUDGET_FINAL_PAGE_LEDGER
+current_stage: STYLE_RECIPE
+last_completed_stage: STORYBOARD
 renderer_status: BLOCKED_UNTIL_GATE_C
 visual_seed_status: NOT_REQUIRED
 ```
 
-Runtime Index v11 已 active 指向 `_12`；v10 與更早 Index、Runtime 全部保留。
+Runtime Index v12 已 active 指向 `_13`；v11 與更早 Index、Runtime 全部保留。
 
 目前已鎖：
 - Gate A
@@ -346,6 +351,7 @@ Runtime Index v11 已 active 指向 `_12`；v10 與更早 Index、Runtime 全部
 - Visual Grammar / Slide Architecture v01: `1PqHde5c0Hacah0eVQZK_c3dhXJFsx26LWr5cXLnT1c0`
 - Lesson Budget Final v01: `1gzSLZLyVW-QYUKgd_Il0mO0M9LDGOaK17vw8QZC8gJA`
 - Page Ledger v01: `1YALLfUv2HmxNwxi_bUjl-LGQxYO8s5rdcI2KfIzsmhg`
+- Storyboard v01: `1ir8B4xVh4bCeOURIEagyfO-Y_KXdPy7uAXkRdBacmSw`
 
 ### Final core budget
 
@@ -359,6 +365,8 @@ physical_slide_distribution: [5, 5, 5, 7, 6, 5, 5]
 ```
 
 43 → 38 是 5 組合法的同頁認知合併，不是刪除教學內容：Question / Reveal、Compare / Conclusion、兩個簡單 2 字組雙區，以及 Transfer planning。
+
+Storyboard v01 沒有增加任何裝飾頁；小澄只在 P01、P05、P07、P14、P22、P28、P33、P34、P38 九個 key moments 出現。
 
 P25 `陀／駝 + 躍／耀` 只有在 Typography Lock 能維持大字辨識時成立；若不成立，必須 reopen Page Ledger，不得縮字硬塞。
 
@@ -393,9 +401,12 @@ knowledge_lab_live: PASS_COMPLETE
 visual_grammar_slide_architecture_live: PASS_COMPLETE
 lesson_budget_final_live: PASS_280_MINUTES
 page_ledger_live: PASS_38_PHYSICAL_SLIDES
-live_runtime_transition: PASS_TO_STORYBOARD
+storyboard_live: PASS_38_SLIDES_NO_DRIFT
+live_runtime_transition: PASS_TO_STYLE_RECIPE
 remaining:
-  - STORYBOARD_STYLE_LESSON_SKIN_TYPOGRAPHY
+  - STYLE_RECIPE
+  - LESSON_SKIN_FINAL
+  - TYPOGRAPHY_LOCK
   - ISOLATED_CANONICAL_FACE_ASSET_REQUIRED_BEFORE_GATE_B
   - GATE_B_AND_GATE_C
   - TEACHER_FINAL_V1_SEAL_APPROVAL
@@ -420,4 +431,4 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 
 > Book DNA 保存熟悉感；Lesson Skin 保存新鮮感；Surprise Signature 讓理解本身產生期待。
 
-> 第一課目前合法進入 Storyboard；Style／Gate B／Renderer 仍不得飛站。
+> 第一課目前合法進入 Style Recipe；Lesson Skin Final／Typography／Gate B／Renderer 仍不得飛站。
