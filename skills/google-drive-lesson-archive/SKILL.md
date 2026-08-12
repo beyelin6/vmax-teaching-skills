@@ -1,9 +1,8 @@
 # V-MAX Google Drive Lesson Archive Skill
 
-版本：1.1-draft
+版本：1.2-draft
 
 ## 目的
-
 本技能定義 V-MAX 每課教材成果、半成品、核准視覺資產在 Google Drive 的正式保存位置、分類資料夾與版本管理規則。
 
 核心原則：
@@ -13,6 +12,10 @@
 > GitHub 管規則；Google Drive 管實際工作成果與可恢復資產。
 
 > 同一課完整重做時不覆蓋舊版；共享角色與 Style 不在每課重複複製，而以 asset reference 引用。
+
+> 更新檔案永遠另存新版本，不覆蓋舊檔；回退靠 active ref，不靠刪檔。
+
+Canonical upgrade policy：`core/governance/lesson-upgrade-lifecycle-policy.md`。
 
 ---
 
@@ -24,24 +27,17 @@ google_drive_archive_root:
   folder_id: 1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
 ```
 
-只要此根目錄可存取，就不得在 My Drive 另建第二個同名教材庫。
-
-`00_Runtime_State` 仍為每課執行狀態專用。
+`00_Runtime_State` 為每課執行狀態專用。
 
 ---
 
 ## A2. 共享角色與視覺資產庫
 
-共享可重用資產固定放：
-
 ```yaml
 shared_visual_asset_library:
   title: 00_V-MAX_角色與視覺資產庫
   folder_id: 1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V
-  parent_id: 1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
 ```
-
-固定結構：
 
 ```text
 00_V-MAX_角色與視覺資產庫/
@@ -63,61 +59,76 @@ shared_visual_asset_library:
     └── 04_服裝變體/
 ```
 
-### 共享資產規則
-
-- GitHub `libraries/roles/...` 保存 role_id、人格、教學功能與穩定文字 Visual DNA。
-- Drive `01_角色庫` 保存角色真正核准過的長相、基準圖、表情姿勢、服裝變體與 asset_version。
-- 未來再生成簡報、預習單、短文單時，必須讀既有角色 reference，不得只靠文字 prompt 猜回角色長相。
-- Book DNA / Style Reference / 共用視覺語彙同理，核准後必須持久保存。
+共享角色 canonical 圖像也必須版本化，例如：
+`ROLE-BEE-001_canonical_v01.png / v02.png / v03.png`。
 
 ---
 
 ## B. 冊別／教材層
-
-每課成果進入對應冊別資料夾，例如：
-
-```text
-V-MAX 教材庫/
-└── 四上康軒國語/
-```
-
-名稱以教師實際教材版本／冊別為準。
+每課成果進入對應冊別資料夾，例如 `V-MAX 教材庫/四上康軒國語/`。
 
 ---
 
 ## C. 課資料夾命名
 
-基礎格式：
-
 ```text
 {兩位數課次}_{課次中文}_{課名}
+```
+
+完整重跑時：
+
+```text
+09_第九課_請到我的家鄉來
+09_第九課_請到我的家鄉來_01
+09_第九課_請到我的家鄉來_02
+```
+
+建立新 folder version 前必須先讀 Drive，不能猜號。
+
+---
+
+## D. 檔案版本管理｜Never Overwrite
+
+同一課資料夾內，任何 PATCH、WIP 或成品更新都另存：
+
+```text
+{base_name}_v01.ext
+{base_name}_v02.ext
+{base_name}_v03.ext
 ```
 
 例如：
 
 ```text
-02_第二課_放學後
+L09_教學簡報_v01.pptx
+L09_教學簡報_v02.pptx
+L09_預習單_v01.pdf
+L09_預習單_v02.pdf
+L09_storyboard_wip_v01.md
+L09_storyboard_wip_v02.md
+L09_VisualIdentity_v01.yaml
+L09_VisualIdentity_v02.yaml
 ```
 
-第一個正式版本不加尾碼。
+### Folder vs File
+- 完整 `REFRESH / REBASE` → 新課版本資料夾。
+- 同課版本中的 `PATCH / WIP iteration` → 新 file version。
+- 禁止直接覆蓋同名檔案。
 
----
+### Active Pointer
+`最新建立` 不代表 `目前採用`。Runtime 必須保存 active file ref。
 
-## D. 重做版本管理
+新增 `v03` 後，若尚未核准，active ref 可繼續指向 `v02`。
 
-完整重做不得覆蓋舊版本：
+Rollback：
 
 ```text
-02_第二課_放學後
-02_第二課_放學後_01
-02_第二課_放學後_02
-...
+active_ref = v03
+→ teacher rollback
+→ active_ref = v02
 ```
 
-建立新版本前必須先讀 Drive 現況；不得依模型記憶猜版本號。
-
-- 完整重跑 Golden Path／另一套完整教材包 → 新版本資料夾。
-- 局部修一張圖、補一份文件、修同版文字 → 留在原版本。
+不改名、不刪除、不覆蓋。
 
 ---
 
@@ -133,116 +144,75 @@ V-MAX 教材庫/
 └── 06_延伸教材/
 ```
 
-### `01_教材整理`
-- Source Master / Official Knowledge / LKB 匯出
-- Lesson DNA / Teaching Direction
-- Lesson Visual Identity Pack reference
-- 可續跑的分析半成品
+### 01_教材整理
+Source Master、Official Knowledge、LKB 匯出、Lesson DNA、Teaching Direction、Identity Pack reference、分析 WIP。
 
-### `02_逐頁腳本`
-- Storyboard
-- Page Ledger
-- Renderer Script
-- 逐頁教學腳本／講者備註草稿
+### 02_逐頁腳本
+Storyboard、Page Ledger、Renderer Script、講者備註草稿。所有更新採 `_vNN`。
 
-### `03_NotebookLM`
-- NotebookLM Source / Curated Briefing
-- NotebookLM Visual YAML
-- NotebookLM 生成指令
+### 03_NotebookLM
+NotebookLM Source、Curated Briefing、Visual YAML、生成指令。NotebookLM YAML 是 adapter output，不是視覺真值。
 
-NotebookLM YAML 是 adapter output；不得取代 `Lesson Visual Identity Pack` 的跨平台權威。
+### 04_角色視覺
+本課使用的 role_id / asset_version / shared Drive reference，以及本課特殊服裝、道具、表情、角色樣張。
 
-### `04_角色視覺`
-只放本課使用紀錄與本課變體：
-- role_id / asset_version / shared Drive reference
-- 本課特殊服裝、道具、表情
-- 本課角色樣張
+### 05_簡報成品
+代表頁樣張、Image-first PDF、Teaching PPTX、Google Slides、簡報 WIP。每次更新另存 `_vNN`。
 
-共享角色的 canonical 基準圖留在 `00_V-MAX_角色與視覺資產庫/01_角色庫`，不要每課重複複製。
-
-### `05_簡報成品`
-- 代表頁樣張
-- Image-first PDF
-- Teaching PPTX
-- Google Slides（若建立）
-- 尚未完工但需保存的簡報半成品
-
-### `06_延伸教材`
-- 預習單
-- 短文單／微寫作／仿作單
-- Kahoot／題庫／評量匯出
-- 平板任務與其他延伸文件
+### 06_延伸教材
+預習單、短文單、Kahoot／題庫／評量匯出、平板任務與其他附件。每次更新另存 `_vNN`。
 
 ---
 
 ## F. Lesson Visual Identity Pack
+存於共享庫 `05_Lesson_Visual_Identity_Packs/`，並明確版本化：
 
-每課跨教材需要一致角色／風格時，建立：
+```text
+L09_VisualIdentity_v01.yaml
+L09_VisualIdentity_v02.yaml
+```
 
-`00_V-MAX_角色與視覺資產庫/05_Lesson_Visual_Identity_Packs/`
+每課 `01_教材整理` 只保存目前 active reference 與歷史 lineage。
 
-每課資料夾 `01_教材整理` 只保存 reference。
-
-最低需能追溯：
-- lesson_id / version
-- Book DNA ref
-- Scenario ref
-- role_id + asset_version + Drive asset ref
-- Style Recipe ref
-- Lesson Skin
-- approved style/reference image
-- Typography Lock ref
-- Material Mode rules
-- drift guardrails
-
-預習單、短文單、正式簡報、NotebookLM Visual YAML 都應讀同一 Pack。
+預習單、短文單、正式簡報、NotebookLM Visual YAML 都讀明確版本，不得讀浮動 `latest`。
 
 ---
 
 ## G. Save-on-Approval / Save-on-Interrupt
-
-以下事件一成立就必須落地 Drive，不等整課完成：
-
-- 教師核准角色長相
-- 教師核准 Style reference / Lesson Skin
-- Storyboard / Page Ledger 已可續跑
+以下事件一成立就落地 Drive 並建立新版本：
+- 核准角色長相
+- 核准 Style reference / Visual Seed / Lesson Skin
+- Storyboard / Page Ledger 可續跑
 - 代表頁通過
-- NotebookLM Source / YAML 已可用
+- NotebookLM Source / YAML 可用
 - 預習單、短文單、題庫已有可用版
-- 因額度、平台、時間中斷，任何半成品需要日後續跑
+- 因額度、平台、時間中斷，需要保存 WIP
 
-禁止只在對話中說「已鎖定」但 Drive 找不到可恢復資產。
-
-Failure：
-`CHAT_ONLY_ASSET / APPROVED_ASSET_NOT_PERSISTED / VISUAL_REFERENCE_MISSING`。
+禁止只在對話說「已鎖定」。
 
 ---
 
-## H. 兩種製作模式的 Drive 行為
+## H. 兩種製作模式
 
 ### SINGLE_LESSON_BUILD
-簡報可先完成，再由同一 Identity Pack 衍生預習單／短文單／題庫；每個正式階段與可續跑半成品都寫入本課資料夾。
+完整單課一路做到簡報與衍生輸出；每次更新保留歷史檔。
 
 ### BATCH_PREP_BUILD
-可先批次完成多課分析、角色／風格確認與 Lesson Visual Identity Pack，再批量生成預習單／短文單；未來正式做簡報時，直接讀回該課 Runtime + Identity Pack + shared character assets。
-
-批次模式不得因尚未做簡報而省略角色 reference／Style reference 的保存。
+批次先做 Identity Seed、預習單、短文單；未來讀 Runtime + 明確 Identity version + shared character asset version 繼續簡報。
 
 ---
 
-## I. 正式歸檔流程
+## I. 定期升級
+約每 24 個月可標 `REVIEW_DUE`，由教師決定是否 REFRESH。
 
-```text
-1. 讀 V-MAX 教材庫根目錄
-2. 找冊別資料夾
-3. 決定課版本名稱
-4. 建立／確認六類資料夾
-5. 寫入目前階段的成品與半成品
-6. 若有角色／Style 核准資產，寫入共享資產庫
-7. 每課保存 shared asset refs / Identity Pack refs
-8. 再次 list/search Drive 驗證
-9. 驗證成功才回報 Archive / Persistence PASS
-```
+重跑時要記錄：
+- parent package
+- 沿用哪些 refs
+- 升級哪些 refs
+- 哪些資產保持 pinned
+- change summary
+
+到期不代表自動升級角色或 Style。
 
 ---
 
@@ -253,32 +223,27 @@ google_drive_persistence:
   lesson_root_verified: true | false
   shared_visual_library_verified: true | false
   runtime_state_verified: true | false
-  lesson_visual_identity_ref_verified: true | false
-  role_asset_refs_verified: true | false
+  active_refs_verified: true | false
+  historical_versions_preserved: true | false
   current_stage_artifacts_verified: PASS | INCOMPLETE | BLOCKED
 ```
-
-完整 Lesson Package 另依 `skills/lesson-package-delivery/SKILL.md` 檢查。
 
 ---
 
 ## K. 禁止事項
-
-- 不得把已核准角色長相只留在 Chat。
-- 不得把 NotebookLM YAML 當成唯一視覺真值。
-- 不得每課複製一套共享角色基準圖造成多個互相漂移的版本。
-- 不得完整重做卻覆蓋舊課版本。
-- 不得宣稱已保存但未用 Drive Connector / API 再次驗證。
+- 覆蓋舊檔。
+- 用 `latest` 當正式教材引用。
+- 因為有新版就刪舊版。
+- 完整重做卻寫進舊課 folder。
+- 只存 Chat 不存 Drive。
+- 回退時重新生成舊檔取代真正舊版。
 
 Failure：
-`DRIVE_ARCHIVE_ROOT_DRIFT / LESSON_FOLDER_VERSION_COLLISION / DRIVE_ARCHIVE_UNVERIFIED / SHARED_ASSET_DUPLICATION / CHAT_ONLY_ASSET`。
+`OVERWRITE_EXISTING_ASSET / FLOATING_LATEST_REFERENCE / HISTORICAL_ASSET_DELETED_WITHOUT_APPROVAL / ACTIVE_POINTER_UNVERIFIED / CHAT_ONLY_ASSET / DRIVE_ARCHIVE_UNVERIFIED`。
 
 ---
 
 ## 核心金句
+> 新版永遠是新增，不是覆蓋。
 
-> GitHub 管方法，Drive 管工作。
-
-> 角色的規則在 GitHub；角色的臉在 Drive。
-
-> 做完要存，做到一半也要存；能從 Drive 接回來，才算 V-MAX 的成果。
+> Drive 裡每一版都留著；Runtime 決定今天要用哪一版。
