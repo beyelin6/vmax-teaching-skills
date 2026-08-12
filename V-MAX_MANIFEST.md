@@ -1,15 +1,15 @@
-# V-MAX Manifest 3.5-draft
+# V-MAX Manifest 3.6-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 3.5-draft
+vmax_manifest_version: 3.6-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
   path: runtime/lesson-state.md
-  current_version: 2.5-draft
+  current_version: 2.6-draft
 runtime_migration_template:
   path: runtime/templates/runtime-state-migration-2.5.md
   current_version: 2.5-template
@@ -22,10 +22,10 @@ runtime_storage:
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.4-draft
+  current_version: 2.5-draft
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.6-draft
+  current_version: 1.7-draft
 hold_policy:
   path: core/governance/hold-teacher-interface-policy.md
   current_version: 1.5-draft
@@ -101,7 +101,7 @@ regression:
   integration:
     path: tests/vmax-v1-integration-regression-cases.md
     current_version: 1.2-draft
-    contract_status: PASS
+    contract_status: PASS_BEFORE_PRODUCTION_MODE_UPDATE
   static_report:
     path: core/governance/vmax-v1-static-regression-report.md
     status: STATIC_CONTRACT_PASS_BEFORE_PRODUCTION_MODE_UPDATE
@@ -239,6 +239,9 @@ three_lesson_tabletop_previous: PASS
 shared_visual_asset_library_created: PASS
 asset_authority_policy_registered: PASS
 production_mode_policy_registered: PASS
+main_workflow_mode_split_wired: PASS
+executor_mode_split_wired: PASS
+runtime_mode_fields_wired: PASS
 visual_seed_lifecycle_registered: PASS
 asset_persistence_regression: PENDING
 production_mode_regression: PENDING
