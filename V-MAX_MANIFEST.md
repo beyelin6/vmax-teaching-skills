@@ -1,14 +1,10 @@
-# V-MAX Manifest 2.9-draft
+# V-MAX Manifest 3.0-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
----
-
-## Current Canonical / Candidate Files
-
 ```yaml
-vmax_manifest_version: 2.9-draft
+vmax_manifest_version: 3.0-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -27,33 +23,23 @@ main_workflow:
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
   current_version: 1.5-draft
+hold_policy:
+  path: core/governance/hold-teacher-interface-policy.md
+  current_version: 1.4-draft
 
 source_library_policy: core/governance/source-library-policy.md
-step1_source_anchor:
-  path: core/governance/step1-source-anchor-policy.md
-  current_version: 1.3
-recognition_only_character_policy:
-  path: core/governance/recognition-only-character-policy.md
-  current_version: 1.1
+step1_source_anchor: core/governance/step1-source-anchor-policy.md
+recognition_only_character_policy: core/governance/recognition-only-character-policy.md
 
 lesson_knowledge_builder:
   path: skills/chinese-lesson-knowledge-builder/SKILL.md
   current_version: 0.3.0
   authority: LKB_STRUCTURE_SOURCE_TRACE_VERSIONING
-lesson_knowledge_schema:
-  path: schemas/lesson-knowledge-book.md
+lesson_knowledge_schema: schemas/lesson-knowledge-book.md
 lesson_knowledge_routing:
   path: core/knowledge/lesson-knowledge-base-policy.md
   current_version: 1.1-draft
   authority: DOWNSTREAM_ROUTING_AND_SPIRAL_ONLY
-
-hold_policy:
-  path: core/governance/hold-teacher-interface-policy.md
-  current_version: 1.4-draft
-workflow_test_freeze: core/governance/workflow-test-freeze.md
-workflow_hold_regression:
-  path: tests/workflow-hold-regression-cases.md
-  current_version: 1.8-draft
 
 teaching_skill_selection:
   path: core/pedagogy/teaching-skill-selection-policy.md
@@ -62,37 +48,17 @@ lesson_budget:
   path: core/governance/lesson-budget-policy.md
   current_version: 1.1-draft
 
-knowledge_lab_ordering:
-  path: core/director/knowledge-lab-ordering-policy.md
-  current_version: 1.9
-character_deep_teaching_focus:
-  path: core/director/character-deep-teaching-focus-policy.md
-  current_version: 1.1
-polyphonic_source_policy:
-  path: core/director/polyphonic-source-policy.md
-  current_version: 1.0
-prestudy_language_selection:
-  path: core/worksheet/prestudy-language-selection-policy.md
-  current_version: 1.1
+knowledge_lab_ordering: core/director/knowledge-lab-ordering-policy.md
+character_deep_teaching_focus: core/director/character-deep-teaching-focus-policy.md
+polyphonic_source_policy: core/director/polyphonic-source-policy.md
+prestudy_language_selection: core/worksheet/prestudy-language-selection-policy.md
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
   current_version: 1.1-draft
-character_teaching_regression:
-  path: tests/character-teaching-regression-cases.md
-  current_version: 1.0
-
-lesson_visual_map:
-  path: core/visual/lesson-visual-map.md
-  current_version: 1.1
-text_embedded_language_policy:
-  path: core/pedagogy/text-embedded-language-teaching-policy.md
-  current_version: 1.0
-text_embedded_language_skill:
-  path: skills/text-embedded-language-teaching/SKILL.md
-  current_version: 1.0
-idiom_expression_visualization:
-  path: core/director/idiom-expression-visualization-policy.md
-  current_version: 1.0
+idiom_expression_visualization: core/director/idiom-expression-visualization-policy.md
+text_embedded_language_policy: core/pedagogy/text-embedded-language-teaching-policy.md
+text_embedded_language_skill: skills/text-embedded-language-teaching/SKILL.md
+lesson_visual_map: core/visual/lesson-visual-map.md
 
 experience_layer:
   path: core/experience/vmax-experience-layer.md
@@ -131,31 +97,50 @@ renderer_contract:
   path: core/renderer/image-first-hybrid-renderer.md
   current_version: 1.1
 
-prestudy_worksheet:
-  path: skills/prestudy-worksheet/SKILL.md
-  current_version: 1.1
-postlesson_short_writing_worksheet:
-  path: skills/postlesson-short-writing-worksheet/SKILL.md
-  current_version: 1.1
-worksheet_regression:
-  path: tests/worksheet-regression-cases.md
-  current_version: 1.1
+prestudy_worksheet: skills/prestudy-worksheet/SKILL.md
+postlesson_short_writing_worksheet: skills/postlesson-short-writing-worksheet/SKILL.md
+lesson_package_delivery: skills/lesson-package-delivery/SKILL.md
+google_drive_lesson_archive: skills/google-drive-lesson-archive/SKILL.md
 
-lesson_package_delivery:
-  path: skills/lesson-package-delivery/SKILL.md
-  current_version: 1.3
-google_drive_lesson_archive:
-  path: skills/google-drive-lesson-archive/SKILL.md
-  current_version: 1.0
-
-integration_regression:
-  path: tests/vmax-v1-integration-regression-cases.md
-  current_version: 1.1-draft
+regression:
+  workflow_hold:
+    path: tests/workflow-hold-regression-cases.md
+    current_version: 1.8-draft
+  character_teaching: tests/character-teaching-regression-cases.md
+  worksheet: tests/worksheet-regression-cases.md
+  integration:
+    path: tests/vmax-v1-integration-regression-cases.md
+    current_version: 1.1-draft
+  static_report:
+    path: core/governance/vmax-v1-static-regression-report.md
+    status: TO_BE_CREATED
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
   current_version: 1.2-draft
-  status: CANDIDATE_UNTIL_REGRESSION_PASS
+  status: CANDIDATE_UNTIL_END_TO_END_REGRESSION
+
+compatibility_helpers:
+  vmax_course_orchestrator:
+    path: skills/vmax-course-orchestrator/SKILL.md
+    current_version: 0.5.0-compat
+    role: PROJECT_VERSION_PATCH_VARIANT_ROUTER
+  vmax_decision_engine:
+    path: skills/vmax-decision-engine/SKILL.md
+    current_version: 0.2.0-compat
+    role: TEACHING_DIRECTION_HELPER
+  role_recommender:
+    path: skills/role-recommender/SKILL.md
+    current_version: 0.2.0-compat
+    role: CHARACTER_CANDIDATE_HELPER_AFTER_SCENARIO_LOCK
+  style_recommender:
+    path: skills/style-recommender/SKILL.md
+    current_version: 0.2.0-compat
+    role: STYLE_RECIPE_CANDIDATE_HELPER
+  presentation_engine:
+    path: skills/presentation-engine/SKILL.md
+    current_version: 0.2.0-compat
+    role: LOCKED_OUTPUT_MAPPING_HELPER
 
 adapters:
   chatgpt: adapters/chatgpt.md
@@ -170,23 +155,18 @@ adapters:
 ## Authority Resolution
 
 ### LKB
-- `chinese-lesson-knowledge-builder` = LKB 結構、來源、節點、版本、驗證唯一權威。
-- `lesson-knowledge-base-policy.md` = approved LKB 的 Content Routing / Spiral Learning。
-- 禁止兩套 LKB authority。
+`chinese-lesson-knowledge-builder` 是唯一 LKB 結構／來源／版本權威；Routing Policy 只負責 approved LKB 的 downstream routing / spiral。
 
 ### Experience
-- Experience Layer = orchestration。
-- Scenario confirmation order = Scenario Wrapper Teacher Lock。
-- Scenario content = Registry / Selector。
-- Character = Character System + Scenario Character Bridge。
-- Style = Style Recipe Families。
-- Typography = Typography Bridge。
+Experience Layer 只 orchestration。
 
 硬相依：
-
 `Scenario Decision → SCENARIO LOCK → Character Topology/Cast → CHARACTER LOCK → Character DNA`
 
-三個 Production Gates 不得刪除此依賴鎖。
+Scenario 由 Registry/Selector；Character 由 Character System/Bridge；Style 由 Style Recipe Families；Typography 由 Typography Bridge。
+
+### Compatibility Helpers
+Helper skill 不得覆蓋 canonical。若衝突，立即停止 helper 的衝突動作並回到 Golden Path Executor。
 
 ---
 
@@ -234,71 +214,21 @@ SOURCE 0
 → Google Drive Archive Verification
 ```
 
-無成語：`N/A_NO_IDIOM`。無外掛：`EXTENSION_OFF`。Scenario 可 `SOURCE_WORLD / REGISTRY_WRAPPER / OFF`。
+Scenario：`SOURCE_WORLD / REGISTRY_WRAPPER / OFF`。無 Extension：`EXTENSION_OFF`。無成語：`N/A_NO_IDIOM`。
 
 ---
 
-## Teacher Control Resolution
+## Core Resolutions
 
-### Source / Mandatory
-- HOLD 1 → LKB Assembly / Review。
-- LKB Review → approved_lkb → STEP 2。
-- HOLD 2/2.5/2.6 single-stage advance。
-
-### Experience Micro Locks
-- Scenario Lock：先鎖舞台。
-- Character Lock：再鎖卡司。
-
-### Production Gates
-- Gate A：Teaching Direction + Budget Draft。
-- Gate B：Experience + Storyboard + Page Ledger。
-- Gate C：Representative Visual。
-
-Gate C confirmed 後可批次 Renderer；不得逐頁重問同一決策。
-
----
-
-## Lesson Budget Resolution
-- Draft：Gate A 前，以時間、MUST/SHOULD/COULD、核心認知任務控制範圍。
-- Final / Page Ledger：Slide Architecture 後才定正式頁數與逐頁 learning_gain。
-
-一頁 = 一個完整 cognitive scene；同頁可兩個有層次問題。
-
----
-
-## Text / Typography Resolution
-重要閱讀教學保留 Text Anchor；RETURN 可選。
-
-圖片引擎可生成繁中整合式圖文；正式輸出必經 QA。P0：課文、生字、形近字、多音字、注音、目標字、關鍵句／臺詞。字形是教學內容時 Teaching Glyph Rule 優先。
-
----
-
-## Extension Resolution
-支援 DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM；模式 LIGHT / THEME_MODE。新增 Extension 先問「它取代什麼？」並重平衡 Budget。
-
----
-
-## Lesson Visual Map Resolution
-教師選定 LVM 後成為 downstream invariant；大綱、Slide Architecture、Page Ledger、Renderer 不得靜默刪除。
-
----
-
-## Worksheet Resolution
-預習單與短文單維持既有 1.1 規則；A4 100% 列印時學生需要閱讀／辨認／作答的文字不得低於 12 pt。
-
----
-
-## Google Drive Lesson Archive Resolution
-固定六類：
-`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`。
-完整重做不覆蓋舊版；只有實際上傳並再次驗證成功才 Archive PASS。
-
----
-
-## Draft / Version Resolution
-本分支 2.9-draft 只有完成 integration regression 且教師確認封版後，才移除 `draft`。
-
-若模組版本與 Manifest 不一致：重新 fetch 最新檔；無法確認即停，不猜。
+- Gate A 鎖 Teaching Direction + Budget Draft，不鎖精確頁數。
+- Slide Architecture 後才形成 Budget Final / Page Ledger。
+- 一頁 = 一個 cognitive scene；同頁可兩個有層次問題。
+- Text Anchor 保留；RETURN 可選。
+- 圖文一體繁中允許，但正式輸出必經 QA；P0 教學字逐字驗證。
+- 同課 PRESTUDY / SHORT_READ / TEACHING_SLIDE / EXTENSION 維持 Visual Identity continuity。
+- Extension 新增前先問「它取代什麼？」。
+- 已選 LVM 不得在 downstream 消失。
+- Drive 固定六類歸檔；上傳後需再次驗證。
 
 ---
 
@@ -308,19 +238,28 @@ Gate C confirmed 後可批次 Renderer；不得逐頁重問同一決策。
 - 未 Scenario Lock 就選 Character
 - 未 Character Lock 就做正式 DNA／大量視覺
 - Experience 重建 Character / Scenario / Style canonical
+- Legacy Course Orchestrator 復活第二條 Full Build 主流程
+- Role Recommender 跳過 Scenario Lock
+- Style Recommender 反推教學
+- Presentation Engine 重新決定 Page Ledger / Experience
 - STEP 3／STEP 4 舊主流程
 - AI 自動第三類單字深教
 - 無方格直接等於認讀字
 - 語詞／句型／修辭沒有原文證據
-- 從 visual tool 反推 Teaching Skill
 - 一題一頁／固定每段模板
-- 已選 LVM 後段消失
 - 圖片中文字未 QA
 - Drive 舊五類結構
 
 ---
 
+## Draft Resolution
+目前狀態：`STATIC_CONTRACT_ALIGNMENT_IN_PROGRESS`。
+
+只有完成 static contract regression + 至少一輪 end-to-end lesson rerun 且教師確認封版後，才移除 `draft`。
+
+---
+
 ## 核心金句
-> Manifest 決定誰是權威；Executor 必須真的載入。
+> Manifest 決定誰是權威；Skill 是工具，Golden Path 是交通規則。
 
 > LKB 只有一本；先鎖舞台，再鎖卡司；教學技能先於視覺工具。
