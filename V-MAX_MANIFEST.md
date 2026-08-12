@@ -1,10 +1,10 @@
-# V-MAX Manifest 3.4-draft
+# V-MAX Manifest 3.5-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
 
 ```yaml
-vmax_manifest_version: 3.4-draft
+vmax_manifest_version: 3.5-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
@@ -30,6 +30,13 @@ hold_policy:
   path: core/governance/hold-teacher-interface-policy.md
   current_version: 1.5-draft
 
+production_mode_policy:
+  path: core/governance/production-mode-policy.md
+  current_version: 1.0-draft
+  modes:
+    - SINGLE_LESSON_BUILD
+    - BATCH_PREP_BUILD
+
 lesson_knowledge_builder:
   path: skills/chinese-lesson-knowledge-builder/SKILL.md
   current_version: 0.3.0
@@ -49,7 +56,7 @@ lesson_budget:
 
 experience_layer:
   path: core/experience/vmax-experience-layer.md
-  current_version: 1.3-draft
+  current_version: 1.4-draft
   authority: ORCHESTRATION_ONLY
 scenario_wrapper_teacher_lock: core/governance/scenario-wrapper-teacher-lock.md
 scenario_wrapper_registry: core/visual/scenario-wrapper-registry.md
@@ -66,10 +73,6 @@ google_drive_asset_authority:
   shared_visual_asset_library:
     title: 00_V-MAX_角色與視覺資產庫
     folder_id: 1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V
-
-production_modes:
-  - SINGLE_LESSON_BUILD
-  - BATCH_PREP_BUILD
 
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
@@ -101,16 +104,18 @@ regression:
     contract_status: PASS
   static_report:
     path: core/governance/vmax-v1-static-regression-report.md
-    status: STATIC_CONTRACT_PASS_BEFORE_ASSET_AUTHORITY_UPDATE
+    status: STATIC_CONTRACT_PASS_BEFORE_PRODUCTION_MODE_UPDATE
   three_lesson_tabletop:
     path: tests/vmax-v1-three-lesson-regression-report.md
-    status: THREE_LESSON_TABLETOP_PASS_BEFORE_ASSET_AUTHORITY_UPDATE
+    status: THREE_LESSON_TABLETOP_PASS_BEFORE_PRODUCTION_MODE_UPDATE
   live_runtime_read_audit:
     path: core/governance/vmax-runtime-live-compatibility-audit.md
     status: LIVE_RUNTIME_READ_AUDIT_PASS_WITH_MIGRATION_REQUIRED
   live_runtime_rerun:
     status: PENDING
   asset_persistence_regression:
+    status: REQUIRED_BEFORE_V1_SEAL
+  production_mode_regression:
     status: REQUIRED_BEFORE_V1_SEAL
 
 system_architecture:
@@ -138,28 +143,36 @@ compatibility_helpers:
 
 ---
 
-## Canonical Golden Path Candidate 2.4
-
-主教學鏈維持既有 2.4，但所有可續跑成果新增持久化要求：
-
-```text
-任何 APPROVED / LOCKED / USABLE_WIP
-→ SAVE TO GOOGLE DRIVE
-→ VERIFY DRIVE REFERENCE
-→ 才可跨平台／跨天續跑
-```
-
----
-
 ## Production Mode Resolution
 
 ### SINGLE_LESSON_BUILD
-完整單課優先做完整教學設計與簡報，再由同一 Lesson Visual Identity Pack 衍生 NotebookLM、預習單、短文單、題庫與其他附件。
+完整單課一路做到正式簡報，再由同一 `Lesson Visual Identity Pack` 衍生 NotebookLM、預習單、短文單、題庫與其他附件。
 
 ### BATCH_PREP_BUILD
-可批次確認多課知識、Teaching Direction、Scenario、Character、Style，建立每課 Identity Pack，再批量做預習單／短文單；正式簡報日後讀回 Runtime + Identity Pack + shared character assets 繼續。
+多課先做到：
 
-兩種模式共用同一 canonical knowledge / character / style / typography 規則，不建立第二套 V-MAX。
+```text
+LKB / Teaching Direction
+→ Scenario Lock
+→ Character Lock
+→ VISUAL SEED LOCK
+→ Identity Pack = SEED_LOCKED
+→ PRESTUDY / SHORT_READ
+→ BATCH_PREP_CHECKPOINT_COMPLETE
+```
+
+未來正式做簡報時，讀回 Runtime + Identity Pack + shared character assets，再完成 Slide Architecture / Storyboard / Style Recipe / Lesson Skin Final / Gate B / Gate C。
+
+### Visual Identity State
+
+```yaml
+lesson_visual_identity_pack_status:
+  - PROPOSED
+  - SEED_LOCKED
+  - FINAL_LOCKED
+```
+
+`lesson_skin_seed` 不是 `Lesson Skin Final`；批次模式可先鎖 style family / palette / material / motif 方向，但不得提前鎖 slide camera / layout / cinematic language。
 
 ---
 
@@ -193,6 +206,29 @@ V-MAX 教材庫/
 
 Drive folder id：`1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`。
 
+現有角色資料夾：
+
+```text
+01_角色庫/ROLE-BEE-001_Bee老師/
+├── 01_角色設定/
+├── 02_核准基準圖/
+├── 03_表情姿勢/
+└── 04_服裝變體/
+```
+
+---
+
+## Save-on-Approval Rule
+
+```text
+任何 APPROVED / LOCKED / USABLE_WIP
+→ SAVE TO GOOGLE DRIVE
+→ VERIFY DRIVE REFERENCE
+→ 才可跨平台／跨天續跑
+```
+
+若角色、Style、Storyboard、代表頁、NotebookLM Source/YAML、學習單或題庫只留在 Chat，標記 `CHAT_ONLY_ASSET`。
+
 ---
 
 ## Regression Status
@@ -202,7 +238,10 @@ static_contract_previous: PASS
 three_lesson_tabletop_previous: PASS
 shared_visual_asset_library_created: PASS
 asset_authority_policy_registered: PASS
+production_mode_policy_registered: PASS
+visual_seed_lifecycle_registered: PASS
 asset_persistence_regression: PENDING
+production_mode_regression: PENDING
 live_runtime_rerun: PENDING
 v1_sealed: false
 ```
@@ -210,10 +249,11 @@ v1_sealed: false
 ---
 
 ## Draft Resolution
-新 Asset Authority / Production Mode 層已成為 candidate canonical；封版前需補：
+封版前需補：
 1. asset persistence regression
-2. 至少一輪新版本 Google Drive live runtime rerun
-3. 教師最後確認
+2. SINGLE / BATCH production mode regression
+3. 至少一輪新版本 Google Drive live runtime rerun
+4. 教師最後確認
 
 NotebookLM Visual/Audio Source Pack 細節仍可 `DEFERRED_NON_BLOCKING`，但 NotebookLM 產物不得成為視覺 Source of Truth。
 
@@ -225,4 +265,4 @@ NotebookLM Visual/Audio Source Pack 細節仍可 `DEFERRED_NON_BLOCKING`，但 N
 
 > 角色的規則在 GitHub，角色的臉在 Drive。
 
-> 做完要存，做到一半也要存；能從 Drive 接回來，才算真正完成。
+> 單課模式做到底；批次模式先安全停車。做完要存，做到一半也要存。
