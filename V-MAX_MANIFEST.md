@@ -16,6 +16,10 @@ runtime_migration_template:
 runtime_legacy_migration_template:
   path: runtime/templates/runtime-state-migration-2.5.md
   current_version: 2.5-template
+runtime_migration_resume_policy:
+  path: core/governance/runtime-migration-resume-policy.md
+  current_version: 1.0-draft
+  authority: EVIDENCE_AWARE_RESUME
 runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
@@ -119,6 +123,10 @@ regression:
     path: tests/vmax-v1-integration-regression-cases.md
     current_version: 1.3-draft
     contract_status: PASS
+  migration_resume:
+    path: tests/runtime-migration-resume-regression-cases.md
+    current_version: 1.0-draft
+    contract_status: PASS
   preseal_report:
     path: tests/vmax-v1-preseal-regression-report.md
     current_version: 1.0-draft
@@ -205,6 +213,24 @@ Shared Front Path
 之後可由 Runtime + Identity Seed + pinned character assets 恢復正式簡報流程。
 
 `lesson_skin_seed != Lesson Skin Final`。
+
+---
+
+## Migration Resume Resolution
+
+一般新課仍完整遵守 mandatory HOLD 鏈。
+
+Legacy migration 只有在 `migration_status: REVIEWED` 且欄位有明確 `MIGRATED_CONFIRMED + evidence` 時，才可 carry forward 原本教師已做過的確認。
+
+教師核准 migration 的最早 reopen checkpoint 後，Executor 逐節點掃描：
+- `MIGRATED_CONFIRMED` + evidence → 不重問。
+- `MIGRATED_CONFIRMED_EVIDENCE` 但新版 lock 語義不同 → evidence 保留，停新版 lock。
+- `NEEDS_REVIEW / NOT_RUN / missing Drive ref` → 立刻停止。
+
+第一課 `_03` 在 migration LKB 核准且未推翻舊教師決策時，合法下一個新依賴是：
+`Teaching Skill Selection → Lesson Budget Draft → Gate A`。
+
+不得回問相同 HOLD 2 / 2.5 / 2.6，也不得跳 FULL_RENDERER。
 
 ---
 
@@ -313,6 +339,7 @@ asset_persistence: PASS
 single_mode: PASS
 batch_mode: PASS
 rollback: PASS
+migration_resume_guard: PASS
 live_runtime_schema_transition: PASS
 live_runtime_current_checkpoint: LKB_REVIEW
 remaining:
@@ -329,6 +356,8 @@ NotebookLM Visual / Audio Source Pack 的更深設計仍為 `DEFERRED_NON_BLOCKI
 ## 核心金句
 
 > GitHub 保存方法；Google Drive 保存工作。
+
+> Migration 不讓老師重做已做過的決定，也不讓舊 evidence 冒充新 lock。
 
 > 單課模式做到底；批次模式先安全停車。
 
