@@ -1,11 +1,11 @@
 # V-MAX Golden Path Executor
 
-版本：1.7-draft
+版本：1.8-draft
 
 ## 目的
-本技能是 V-MAX 國語教材工作流執行控制器。它依 Main Workflow、Manifest、Production Mode 與 Google Drive Runtime State 執行唯一合法下一步。
+本技能是 V-MAX 國語教材工作流執行控制器。它依 Main Workflow、Manifest、Production Mode、Upgrade Lifecycle 與 Google Drive Runtime State 執行唯一合法下一步。
 
-> 前段一次確認只走一個決策層；批次模式停在可安全續跑的 checkpoint；任何可續跑成果先存 Drive。
+> 前段一次確認只走一個決策層；批次模式停在可安全續跑的 checkpoint；任何可續跑成果先存 Drive；任何更新另存新版本。
 
 ## A. 啟動必讀
 1. `V-MAX_BOOTSTRAP.md`
@@ -14,8 +14,9 @@
 4. `core/governance/vmax-main-workflow.md`
 5. `core/governance/production-mode-policy.md`
 6. `core/governance/google-drive-asset-authority-policy.md`
-7. `core/governance/hold-teacher-interface-policy.md`
-8. 當前 stage canonical policies / skills
+7. `core/governance/lesson-upgrade-lifecycle-policy.md`
+8. `core/governance/hold-teacher-interface-policy.md`
+9. 當前 stage canonical policies / skills
 
 不得用聊天記憶取代 Runtime / Drive refs。
 
@@ -94,8 +95,6 @@ CHARACTER LOCK
 Batch checkpoint 不要求 Slide Architecture / Storyboard / Gate B / Gate C / Final Slides。
 
 ### Batch Resume
-若某課從 Batch 轉正式簡報：
-
 ```text
 load Runtime
 → load Batch Checkpoint
@@ -114,76 +113,49 @@ load Runtime
 ---
 
 ## E. Transition Guard
-
 - HOLD 1 confirmed → LKB → 停 LKB REVIEW。
 - LKB REVIEW confirmed → STEP 2 → 停 HOLD 2。
 - HOLD 2 confirmed → STEP 2.5 → 停 HOLD 2.5。
 - HOLD 2.5 confirmed → STEP 2.6 → 停 HOLD 2.6。
 - Gate A confirmed → Scenario candidates → 停 SCENARIO LOCK。
 - SCENARIO LOCK confirmed → Character candidates → 停 CHARACTER LOCK。
-- CHARACTER LOCK confirmed：
-  - SINGLE → Experience Completion。
-  - BATCH → Visual Seed proposal → 停 VISUAL SEED LOCK。
+- CHARACTER LOCK confirmed：SINGLE → Experience；BATCH → Visual Seed proposal → 停 VISUAL SEED LOCK。
 - VISUAL SEED LOCK confirmed → 寫 Drive Identity Pack → PRESTUDY / SHORT_READ。
 - Gate B confirmed → Representative Visual → Gate C。
 - Gate C confirmed → batch Renderer。
 
-Failure：
-`FLYING_TRAIN / STAGE_LEAP / SCENARIO_LOCK_SKIPPED / CHARACTER_LOCK_SKIPPED / BATCH_VISUAL_SEED_MISSING`。
+Failure：`FLYING_TRAIN / STAGE_LEAP / SCENARIO_LOCK_SKIPPED / CHARACTER_LOCK_SKIPPED / BATCH_VISUAL_SEED_MISSING`。
 
 ---
 
 ## F. Production Mode Guard
-
 Runtime 必須有：
 
 ```yaml
 production_mode: SINGLE_LESSON_BUILD | BATCH_PREP_BUILD
 ```
 
-若未設定：
-- 單課互動式工作預設不得自行猜。
-- 若教師語意明確「一次做一課完整」可記 `SINGLE_LESSON_BUILD`。
-- 若教師語意明確「一次多課／批次備課」可記 `BATCH_PREP_BUILD`。
-
-模式改變不重做上游 Source/LKB；只從受影響 checkpoint 續跑。
+若教師語意明確「一次做一課完整」可記 `SINGLE_LESSON_BUILD`；若明確「一次多課／批次備課」可記 `BATCH_PREP_BUILD`。模式改變不重做上游 Source/LKB，只從受影響 checkpoint 續跑。
 
 ---
 
 ## G. Visual Seed Guard
-
 Batch 模式必載入 Experience + Style Families + Asset Authority。
 
-`VISUAL SEED LOCK` 至少需要：
-- Book DNA ref
-- Scenario ref
-- Character role_id / asset_version / Drive ref
-- Style family seed ref
-- Style reference asset ref（若需要新方向）
-- Lesson Skin Seed（palette/material/motif/tone only）
-- Typography base ref
-- PRESTUDY / SHORT_READ material mode
+`VISUAL SEED LOCK` 至少需要：Book DNA ref、Scenario ref、Character role_id / asset_version / Drive ref、Style family seed ref、Style reference asset ref、Lesson Skin Seed（palette/material/motif/tone only）、Typography base ref、PRESTUDY / SHORT_READ material mode。
 
 不得填 final slide layout / camera / cinematic language。
 
 ---
 
 ## H. Character Asset Guard
+角色 stable role spec → GitHub Role Library；approved visual appearance → Drive shared asset library。
 
-角色：
-- stable role spec → GitHub Role Library。
-- approved visual appearance → Drive shared asset library。
-
-若 `CHARACTER LOCK` 已成立但找不到 Drive canonical asset ref：
-- 若是 NEW_CHARACTER → 先產生／核准／保存基準圖，再繼續。
-- 若是 REUSE_CONFIRMED → 必須找到既有 asset_version。
-
-找不到即 `CHARACTER_REFERENCE_MISSING`，不得大量生成跨教材視覺。
+若 `CHARACTER LOCK` 已成立但找不到 Drive canonical asset ref：NEW_CHARACTER 先產生／核准／保存；REUSE_CONFIRMED 必須找到既有 asset_version。找不到即 `CHARACTER_REFERENCE_MISSING`，不得大量生成跨教材視覺。
 
 ---
 
 ## I. Knowledge / Teaching Guards
-
 - approved LKB required before STEP 2。
 - Teaching Skill Lock before Gate A。
 - Budget Draft 不鎖頁數。
@@ -194,7 +166,6 @@ Batch 模式必載入 Experience + Style Families + Asset Authority。
 ---
 
 ## J. Slide / Visual Finalization Guard
-
 正式簡報路徑必守：
 
 ```text
@@ -214,16 +185,7 @@ Slide Architecture
 ---
 
 ## K. Save-on-Approval Guard｜硬規則
-
-任何 `APPROVED / LOCKED / USABLE_WIP` 先寫 Drive 並 verify：
-- character asset
-- Visual Seed / Identity Pack
-- Storyboard / Page Ledger
-- representative visual
-- NotebookLM Source / YAML
-- prestudy / short-read
-- question bank / Kahoot export
-- slide WIP / final
+任何 `APPROVED / LOCKED / USABLE_WIP` 先寫 Drive 並 verify：character asset、Visual Seed / Identity Pack、Storyboard / Page Ledger、representative visual、NotebookLM Source / YAML、prestudy / short-read、question bank / Kahoot、slide WIP / final。
 
 若將離開平台、額度不足、時間中斷，也必須先 persistence checkpoint。
 
@@ -231,30 +193,53 @@ Failure：`CHAT_ONLY_ASSET / APPROVED_ASSET_NOT_PERSISTED / DRIVE_REFERENCE_UNVE
 
 ---
 
-## L. Teacher Command Language
-- `繼續／好／可以`：依目前合法 decision layer 前進。
-- `下一頁`：下一 cognitive scene，不重畫目前頁。
-- `換一個版本`：同內容重設計。
-- `重畫`：重生目前視覺。
-- `鎖定`：寫 downstream invariant + Drive persistence。
-- `回前面`：回指定決策點，重開受影響 downstream。
+## L. Version / Active Ref / Rollback Guard｜硬規則
+必讀 `lesson-upgrade-lifecycle-policy.md`。
+
+### 新版本
+- 所有已保存成果若內容要變，另建 `_vNN` 或等價明確版本。
+- 禁止 Drive in-place overwrite 作為教材更新策略。
+- 新版建立後不得自動成為 active。
+
+### Active ref
+只有教師確認、合法 Gate/Lock 或明確採用命令後，才更新 Runtime `persistence.active_assets.*`。
+
+### Rollback
+`rollback` 只把 active ref 指回已存在舊版；不刪新版、不覆蓋舊版、不重新生成舊版。
+
+### Pinning
+正式教材、角色、Identity Pack、Style 必須 pin explicit version；禁止 `latest`。
+
+### Refresh
+`REVIEW_DUE` 只提示可檢視；REFRESH / REBASE 必須建立新 Lesson Package folder 與 lineage。共享角色／Style 新版不自動改歷史課。
+
+Failure：`OVERWRITE_EXISTING_ASSET / FLOATING_LATEST_REFERENCE / ACTIVE_POINTER_UNVERIFIED / VERSION_LINEAGE_MISSING / HISTORICAL_ASSET_DELETED_WITHOUT_APPROVAL`。
 
 ---
 
-## M. Drive Layout Guard
+## M. Teacher Command Language
+- `繼續／好／可以`：依目前合法 decision layer 前進。
+- `下一頁`：下一 cognitive scene，不重畫目前頁。
+- `換一個版本`：同內容重設計，**另存新版本**。
+- `重畫`：重生目前視覺，**另存新版本**。
+- `鎖定`：寫 downstream invariant + Drive persistence。
+- `回前面`：回指定決策點，重開受影響 downstream。
+- `回退／用上一版`：只更新 active ref 到指定既有版本。
 
-Shared asset root：
-`00_V-MAX_角色與視覺資產庫` / `1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`
+---
 
-Lesson folders：
-`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`
+## N. Drive Layout Guard
+Shared asset root：`00_V-MAX_角色與視覺資產庫` / `1rooMvBzXHTr4IRbCm5YV6x-qgl-07k2V`。
+
+Lesson folders：`01_教材整理 / 02_逐頁腳本 / 03_NotebookLM / 04_角色視覺 / 05_簡報成品 / 06_延伸教材`。
 
 共享角色 canonical asset 不每課複製；每課只存 role_id / asset_version / variation refs。
 
 ---
 
 ## 核心金句
-
 > 單課做到底；批次做到安全 checkpoint。
 
 > 角色的規則在 GitHub，角色的臉在 Drive；鎖定不落地，就不算真的鎖定。
+
+> 新版先新增，採不採用看 active ref；要後悔就把 ref 指回去。
