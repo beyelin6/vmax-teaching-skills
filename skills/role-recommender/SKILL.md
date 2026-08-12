@@ -1,100 +1,130 @@
 ---
 name: role-recommender
-description: 根據已核准的國語教材知識書、學習延伸模組、教學策略、年級與候選視覺方向，推薦適合本課的引導角色。必須提出 3 至 5 個候選角色、說明教材依據與教學功能，並停下等待教師確認。可推薦或直接選用 Bee 老師，但不得在確認前生成角色基準圖或定稿簡報。
+description: V-MAX Character Candidate Helper。只在 Scenario 已鎖定後，依 Character System 與 Scenario Character Bridge 產生 1–3 個 topology / cast 候選，供 CHARACTER LOCK 使用。不得繞過 Scenario Lock、不得自建第二套角色規則、不得在確認前生成正式 Character DNA。
 ---
 
 # Role Recommender
 
-版本：0.1.0
+版本：0.2.0-compat
 
-## 使命
+## Status
+`HELPER_NOT_CHARACTER_AUTHORITY`
 
-根據每一課教材內容動態推薦引導角色，使角色服務教材與教學流程，而不是讓教材被迫套入固定角色。
+角色權威：
+- `core/character/character-system-2.md`
+- `core/character/scenario-character-bridge.md`
+- `core/character/character-registry.md`
 
-## 前置輸入
+本技能只負責 candidate retrieval / recommendation。
 
-必須讀取：
+---
 
-- 已核准的 Lesson Knowledge Book
-- 已核准的 Learning Module Profile
-- 已核准的 Teaching Strategy Profile
-- `schemas/role-selection-profile.md`
-- `libraries/roles/` 中的角色資料
+## 1. Preconditions
 
-若候選風格已產生，可一併讀取；未選風格時，不得假設最終視覺風格。
+必須存在：
+- `approved_lkb`
+- Gate A confirmed
+- Scenario status = `LOCKED`
+- Scenario mode / wrapper ref 已知
+- Teaching Skill Selection / Teacher Intent 已知
 
-## 工作流程
+若 Scenario 未鎖：`BLOCKED_BY_SCENARIO_LOCK`，不得推薦角色。
 
-1. 擷取教材文體、主題、場景、情緒與主要能力目標。
-2. 判斷本課角色應承擔的功能。
-3. 搜尋 Role Library 中符合條件的角色。
-4. 對候選角色評分並排序。
-5. 產生 3 至 5 個候選方案。
-6. 每個方案列出：
-   - 推薦理由
-   - 適合出現的段落
-   - 可使用的引導功能
-   - 可能限制
-7. 必須包含「不使用固定角色」選項。
-8. 若 Bee 老師適合，可列入推薦；即使未列入前三名，教師仍可改選 Bee 老師。
-9. 停下等待教師選擇。
+---
 
-## 推薦原則
+## 2. Workflow
 
-- 角色選擇以教材內容為優先。
-- 同一文體不必固定同一角色。
-- 角色不得取代課文人物。
-- 角色應支援教學活動，不只是裝飾。
-- 角色功能比角色造型優先。
-- 不因使用者曾選過某角色，就自動沿用到下一課。
-- 若教材本身人物非常鮮明，可推薦降低主持角色出現頻率。
-
-## Bee 老師規則
-
-Bee 老師的角色資料位於：
-
-`libraries/roles/bee-teacher/role.md`
-
-Bee 老師可以：
-
-- 作為通用教師主持人；
-- 在角色推薦結果合適時被推薦；
-- 由教師直接覆寫選用；
-- 與教材情境角色分工，但預設仍只保留一名主要引導角色。
-
-不得因名稱 Bee 自動將她設計成蜜蜂或昆蟲人物。
-
-## 標準輸出
-
-`working/role-recommendation.md`
-
-內容至少包含：
-
-```yaml
-role_recommendation:
-  lesson_id: ""
-  status: ready_for_teacher_review
-  content_summary:
-    genre: ""
-    topic: ""
-    emotional_tone: []
-    learning_goals: []
-  recommendations: []
-  teacher_options:
-    - choose_recommended
-    - choose_bee_teacher
-    - choose_other_role
-    - no_role
+```text
+Locked Scenario / Source World / OFF
+→ Character System 決定最小必要 topology
+→ Scenario Character Bridge 解析 role need
+→ Character Registry retrieval
+→ 1–3 candidate sets
+→ Teacher Confirmation Card
+→ CHARACTER LOCK
+→ downstream Character DNA
 ```
 
-## 停等關卡
+不得把 Wrapper 與角色綁成一組套餐讓教師一起選。
 
-教師必須確認：
+---
 
-- 主要角色
-- 角色功能
-- 使用頻率
-- 是否製作角色基準圖
-- 是否沿用 Bee 老師初版視覺 DNA，或另行修改
+## 3. Candidate Rules
 
-未確認前不得進入角色圖像生成與最終視覺定稿。
+候選數：1–3 組真正不同方案即可。
+
+每組至少說明：
+- topology
+- role slots / pedagogical function
+- candidate cast source：TEXT / REGISTRY / NEW / FALLBACK
+- why fit
+- risk / forcedness
+- Guide 可否 OFF
+- 是否會搶 Text Character 主體
+
+優先順序依 Bridge：
+1. 課文人物／文本內在角色
+2. 高匹配 reusable confirmed
+3. reusable candidate
+4. 本課新角色
+5. fallback guide
+
+不得因角色漂亮／最近常用／已有圖就優先。
+
+---
+
+## 4. Bee Teacher
+Bee 老師只是一個 Registry / fallback candidate，不是預設主角。
+
+可以被推薦，但需滿足：
+- 教師型 Guide 確實有教學功能
+- 不搶課文人物
+- Scenario / Learner Role 自然
+
+名稱 Bee 不代表蜜蜂／昆蟲角色。
+
+---
+
+## 5. Teacher Lock
+教師確認的是：
+- topology
+- cast
+- role relationship
+- Guide 是否啟用
+
+未 `CHARACTER LOCK` 前：
+- 不建立正式 Character DNA
+- 不生成角色基準圖
+- 不進大量角色視覺
+
+---
+
+## 6. Output
+
+```yaml
+character_cast_candidates:
+  scenario_ref:
+  topology_candidates:
+    - topology:
+      role_slots: []
+      cast: []
+      why_fit:
+      risk:
+      guide_off_possible: true|false
+  recommendation:
+  status: READY_FOR_CHARACTER_LOCK
+```
+
+---
+
+## 7. Failure Codes
+- `BLOCKED_BY_SCENARIO_LOCK`
+- `SCENARIO_CHARACTER_COUPLED_SELECTION`
+- `ROLE_RECOMMENDER_AS_CHARACTER_AUTHORITY`
+- `CHARACTER_DNA_BEFORE_LOCK`
+- `GUIDE_FORCED_BY_EXISTING_ASSET`
+
+---
+
+## 核心金句
+> Scenario 先鎖；Role Recommender 只幫忙找卡司，不決定角色宇宙的規則。
