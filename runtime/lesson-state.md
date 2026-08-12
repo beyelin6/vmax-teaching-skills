@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.3-draft
+# V-MAX Runtime State Contract 2.4-draft
 
 ## 定位
 GitHub 保存 Runtime schema；Google Drive 保存每一課實際 Runtime State。不得把每次 HOLD 或 stage 前進變成 GitHub commit。
@@ -14,7 +14,7 @@ GitHub 保存 Runtime schema；Google Drive 保存每一課實際 Runtime State�
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.3-draft
+runtime_schema_version: 2.4-draft
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
@@ -41,24 +41,29 @@ locked_decisions:
     validation_ref:
   lkb_routing:
   step2_teaching_value:
-  teaching_skill_selection:
   step2_5_language_scope:
   step2_6_idiom_expression:
   teacher_intent:
   lesson_map:
+  supplement_framework_decision:
   session_map:
   lesson_visual_map:
+  teaching_skill_selection:
   lesson_budget_draft:
   gate_a_teaching_direction:
   experience:
     scenario:
+      status: PROPOSED | LOCKED
       mode: SOURCE_WORLD | REGISTRY_WRAPPER | OFF
       wrapper_ref:
       selector_result_ref:
+    scenario_lock:
     character:
+      status: PROPOSED | LOCKED
       topology_ref:
       cast_ref:
       character_dna_refs: []
+    character_lock:
     learner_role:
     book_dna_ref:
     lesson_skin:
@@ -88,6 +93,8 @@ language_focus:
 runtime_rules:
   source_truth_must_precede_lkb_build: true
   approved_lkb_required_for_step2: true
+  scenario_lock_required_before_character_topology: true
+  character_lock_required_before_character_dna: true
   mandatory_hold_single_stage_advance: true
   production_gate_single_advance: true
   gate_c_allows_batch_renderer: true
@@ -119,14 +126,21 @@ STEP_1
 - LKB status 未達 `APPROVED`，STEP_2 不合法。
 - 無成語：`STEP_2_6 = N/A_NO_IDIOM`。
 
-## 後段 Gate 鏈
+## 後段狀態鏈
 
 ```text
-LESSON_MAP / SESSION_MAP / LVM
+LESSON_MAP
+→ SUPPLEMENT_FRAMEWORK_DECISION
+→ SESSION_MAP
+→ LVM
 → TEACHING_SKILL_SELECTION_LOCK
 → LESSON_BUDGET_DRAFT
 → GATE_A_TEACHING_DIRECTION
-→ EXPERIENCE_DECISION
+→ SCENARIO_DECISION
+→ SCENARIO_LOCK
+→ CHARACTER_TOPOLOGY_CAST
+→ CHARACTER_LOCK
+→ EXPERIENCE_COMPLETION
 → EXTENSION_CHECK
 → KNOWLEDGE_LAB
 → SLIDE_ARCHITECTURE
@@ -141,36 +155,35 @@ LESSON_MAP / SESSION_MAP / LVM
 → QUALITY_GATE
 ```
 
-Gate C confirmed 後可批次 Full Renderer；不得逐頁重新建立相同決策 HOLD。
+硬規則：
+- Scenario status 未 `LOCKED`，`CHARACTER_TOPOLOGY_CAST` 不合法。
+- Character status 未 `LOCKED`，正式 Character DNA / EXPERIENCE_COMPLETION 不合法。
+- Gate C confirmed 後可批次 Full Renderer，不逐頁重問。
 
 ## Experience Reference Rule
-Runtime 不保存第二套角色／情境／風格規則，只保存 refs：
-- Scenario → Registry / Selector result
-- Character → topology / cast / Character DNA refs
-- Style → Style Recipe ref
-- Experience → orchestration state
+Runtime 只保存 refs：Scenario → Registry / Selector；Character → topology / cast / DNA refs；Style → Style Recipe ref；Experience → orchestration state。
 
 ## Lesson Budget Rule
-- `lesson_budget_draft`：Gate A 前，控制時間、MUST/SHOULD/COULD、核心認知任務。
-- `lesson_budget_final / page_ledger`：Slide Architecture 後，才定正式頁數與每頁 learning_gain。
+- `lesson_budget_draft`：Gate A 前，時間／MUST/SHOULD/COULD／核心認知任務。
+- `lesson_budget_final / page_ledger`：Slide Architecture 後，正式頁數與每頁 learning_gain。
 
 ## 啟動與續跑
-1. 先讀 Runtime Index。
-2. 找到指定課程 State。
+1. 讀 Runtime Index。
+2. 找指定課程 State。
 3. 讀 `current_stage / next_allowed_stage / locked_decisions`。
 4. 只執行合法下一階段。
-5. 每次 HOLD／Review／Gate 確認或正式 stage 完成後回寫 Drive State。
+5. 每次 HOLD／Review／Experience Lock／Gate 確認或 stage 完成後回寫 Drive State。
 
-若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得以模型記憶、GitHub 範例或舊對話猜進度。
+若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得用模型記憶、GitHub 範例或舊對話猜進度。
 
 ## 重新開啟規則
-若教師修改已鎖決策：
-- 明確指出 reopen point。
-- 清除／標記該點之後受影響 downstream lock 為 `NEEDS_REEVALUATION`。
-- 不必清除無關上游 Source Truth。
-- LKB node 若變更，只重開引用該 node 的 downstream outputs。
+若教師修改已鎖決策：明確指出 reopen point，將受影響 downstream 標 `NEEDS_REEVALUATION`；不清除無關 Source Truth。
+
+- Scenario reopen → Character / Experience / Storyboard downstream 需重評。
+- Character reopen → Character DNA / Storyboard / Representative downstream 需重評。
+- LKB node 變更 → 只重開引用該 node 的 outputs。
 
 ## 核心金句
-> GitHub 保存規則；Google Drive 保存每一課現在真正跑到哪裡。
+> GitHub 保存規則；Google Drive 保存每課真正進度。
 
-> LKB 必須先核准；Experience 保存引用，不複製專門系統。
+> Scenario 先鎖，Character 才能選；Character 先鎖，DNA 才能定。
