@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.3-draft
+# V-MAX Main Workflow 2.4-draft
 
 ## 定位
 本檔定義 V-MAX 教材製作正式主流程、教師確認點與 canonical policy wiring。平台、Renderer、NotebookLM、Gemini、ChatGPT、Canva 不得反向改寫此核心順序。
@@ -87,14 +87,14 @@ SOURCE 0｜Google Drive Source Library 尋源
 → SCENARIO LOCK｜Teacher Confirm
 → Character Topology / Cast Candidates
 → CHARACTER LOCK｜Teacher Confirm
-→ Character DNA / Learner Role / Book DNA / Lesson Skin / Surprise Signature
+→ Character DNA / Learner Role / Book DNA / Surprise Signature
 → Extension Check（若有）
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
 → Lesson Budget Final / Page Ledger
 → Storyboard
-→ GATE B｜Experience + Storyboard Lock
-→ Style Recipe / Typography Lock
+→ Style Recipe / Lesson Skin / Typography Lock
+→ GATE B｜Experience + Storyboard + Visual Identity Lock
 → 代表頁驗證
 → GATE C｜Representative Visual Validation
 → 全量 Renderer
@@ -126,12 +126,12 @@ Scenario 可選 `SOURCE_WORLD / REGISTRY_WRAPPER / OFF`，三者都需在 Charac
 - `SCENARIO LOCK`：先鎖舞台，再進 Character Topology。
 - `CHARACTER LOCK`：鎖 topology / cast，之後才建立正式 Character DNA。
 
-這兩個 lock 來自既有 canonical teacher-lock / character workflow，不被三個 Production Gates 取代。
-
 ### 3 Production Gates
-- Gate A：Teaching Direction Lock
-- Gate B：Experience + Storyboard Lock
-- Gate C：Representative Visual Validation
+- Gate A：Teaching Direction + Budget Draft
+- Gate B：Experience + Storyboard + **Style Recipe / Lesson Skin / Typography direction**
+- Gate C：Representative Visual
+
+Gate B 鎖的是可用語言描述與 token 定義的視覺方向；Gate C 才用實際代表頁驗證它是否真的成立。
 
 Gate C confirmed 後批次 Renderer，不逐頁重問同一決策。
 
@@ -147,7 +147,9 @@ HOLD 2.5 confirmed → STEP 2.6 → HOLD 2.6
 HOLD 2.6 confirmed → Teacher Intent Lock
 Gate A confirmed → Scenario Decision → SCENARIO LOCK
 SCENARIO LOCK confirmed → Character Topology / Cast → CHARACTER LOCK
-CHARACTER LOCK confirmed → Complete Experience Decision → Extension / downstream
+CHARACTER LOCK confirmed → Experience Completion → downstream architecture
+Style / Lesson Skin / Typography prepared → Gate B
+Gate B confirmed → Representative Visual → Gate C
 ```
 
 一次確認只解鎖一個需要教師裁決的 decision layer。
@@ -163,9 +165,7 @@ STEP 1 只回答教材與來源裡有什麼。HOLD 1 後由 canonical LKB Builde
 
 ## F. STEP 2 / Skill / Budget Draft
 STEP 2 提出學生卡點、MUST/SHOULD/COULD、技能候選與理由。
-
 Teaching Skill Selection Lock 必須在 Gate A 前完成。
-
 Lesson Budget Draft 只控制時間與核心認知任務，不宣告精確頁數。
 
 ---
@@ -185,14 +185,14 @@ AI 主動單字深教只有 `SHAPE_NEAR / POLYPHONIC`；一般單字不自動獨
 ## I. Experience Ordering
 
 必守：
-
 `Scenario Candidates → SCENARIO LOCK → Character Topology/Cast → CHARACTER LOCK → Character DNA`
 
 Scenario：由 Registry / Selector；可 SOURCE_WORLD / OFF。
 Character：由 Character System + Bridge。
 Learner Role：有任務價值才開；若 Wrapper 已帶 student_role，優先沿用。
-Lesson Skin：是 canonical Style Recipe 的本課具體化，不是第二套 Style Library。
-Surprise Signature：0–1 個主要驚喜；無增益就 OFF。
+Book DNA / Surprise Signature 可在 Experience Completion 先成立。
+
+**Lesson Skin Final 不在 Character Lock 後提前鎖。**它必須等 Visual Grammar / Slide Architecture 與 Style Recipe 選擇後，和 Typography 一起在 Gate B 前形成。
 
 ---
 
@@ -201,10 +201,18 @@ Surprise Signature：0–1 個主要驚喜；無增益就 OFF。
 
 ---
 
-## K. Slide Architecture / Budget Final
+## K. Slide Architecture / Budget Final / Visual Identity
 Knowledge Lab 讀取已確認 LKB、Teacher Intent、語文範圍、Skill Lock 與 Experience locks。
 
-Visual Grammar / Slide Architecture 完成後，才能形成 Budget Final / Page Ledger：
+Visual Grammar / Slide Architecture 完成後：
+1. 建立 Budget Final / Page Ledger。
+2. 完成 Storyboard。
+3. 由 Style Recipe Families 選 Primary / Secondary Family。
+4. 將 Style Recipe 具體化為 Lesson Skin。
+5. 套 Typography Lock。
+6. 進 Gate B 一次確認 Storyboard + Page Ledger + Visual Identity direction。
+
+Page rules：
 - 一頁 = 一個完整 cognitive scene
 - 同頁可兩個有層次問題
 - 每頁有 learning_gain
@@ -212,10 +220,12 @@ Visual Grammar / Slide Architecture 完成後，才能形成 Budget Final / Page
 
 ---
 
-## L. Gate B / Style / Gate C
-Gate B 確認完整 Experience、Storyboard、Page Ledger；不重新打開已鎖 Scenario / Character，除非教師明確回前面。
+## L. Gate B / Gate C
+Gate B 確認：已鎖 Scenario / Character refs、Learner Role、Book DNA、Style Recipe / Lesson Skin、Typography direction、Storyboard、Page Ledger。
 
-Gate B 後選 Style Recipe / Typography，做 1–2 張代表頁；Gate C confirmed 後才批次 Renderer。
+若教師要改 Scenario / Character，使用「回前面」重開對應 lock，不在 Gate B 偷偷改。
+
+Gate B confirmed 後生成 1–2 張代表頁；Gate C 用實際畫面驗證 art direction。Gate C confirmed 後才批次 Renderer。
 
 ---
 
@@ -239,6 +249,7 @@ Drive 固定六類：
 - 第二套 LKB
 - 未 Scenario Lock 就進 Character Topology
 - 未 Character Lock 就正式建立角色 DNA／大量視覺
+- Lesson Skin 在 Style Recipe 尚未選定前被當成 final lock
 - Experience 重建 Character / Scenario / Style canonical
 - 從 visual tool 反推 Teaching Skill
 - 一題一頁／固定每段模板
@@ -250,6 +261,6 @@ Drive 固定六類：
 
 ## 核心金句
 
-> 先鎖舞台，再選卡司；先鎖卡司，再讓角色進入完整視覺世界。
+> 先鎖舞台，再選卡司；先做認知架構，再把 Style Recipe 長成本課 Lesson Skin。
 
-> LKB 只有一本；教學技能先於視覺工具。
+> Gate B 鎖設計語言，Gate C 用真實代表頁驗證。
