@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.8-draft
+# V-MAX Manifest 2.9-draft
 
 ## 角色
 本檔是 V-MAX 正式模組索引與版本裁決表。任何 AI 不得自行猜測哪份檔案較新、哪個舊名稱仍可執行。
@@ -8,12 +8,12 @@
 ## Current Canonical / Candidate Files
 
 ```yaml
-vmax_manifest_version: 2.8-draft
+vmax_manifest_version: 2.9-draft
 bootstrap: V-MAX_BOOTSTRAP.md
 
 runtime_contract:
   path: runtime/lesson-state.md
-  current_version: 2.3-draft
+  current_version: 2.4-draft
 runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
@@ -23,10 +23,10 @@ runtime_storage:
 
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.2-draft
+  current_version: 2.3-draft
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.4-draft
+  current_version: 1.5-draft
 
 source_library_policy: core/governance/source-library-policy.md
 step1_source_anchor:
@@ -49,18 +49,18 @@ lesson_knowledge_routing:
 
 hold_policy:
   path: core/governance/hold-teacher-interface-policy.md
-  current_version: 1.3-draft
+  current_version: 1.4-draft
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.7-draft
+  current_version: 1.8-draft
 
 teaching_skill_selection:
   path: core/pedagogy/teaching-skill-selection-policy.md
-  current_version: 1.0-draft
+  current_version: 1.1-draft
 lesson_budget:
   path: core/governance/lesson-budget-policy.md
-  current_version: 1.0-draft
+  current_version: 1.1-draft
 
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
@@ -96,8 +96,12 @@ idiom_expression_visualization:
 
 experience_layer:
   path: core/experience/vmax-experience-layer.md
-  current_version: 1.1-draft
+  current_version: 1.2-draft
   authority: ORCHESTRATION_ONLY
+scenario_wrapper_teacher_lock:
+  path: core/governance/scenario-wrapper-teacher-lock.md
+  current_version: 1.0
+  authority: SCENARIO_CONFIRMATION_ORDER
 scenario_wrapper_registry:
   path: core/visual/scenario-wrapper-registry.md
   current_version: 1.0
@@ -146,11 +150,11 @@ google_drive_lesson_archive:
 
 integration_regression:
   path: tests/vmax-v1-integration-regression-cases.md
-  current_version: 1.0-draft
+  current_version: 1.1-draft
 
 system_architecture:
   path: core/governance/vmax-system-architecture.md
-  current_version: 1.1-draft
+  current_version: 1.2-draft
   status: CANDIDATE_UNTIL_REGRESSION_PASS
 
 adapters:
@@ -166,21 +170,27 @@ adapters:
 ## Authority Resolution
 
 ### LKB
-- `chinese-lesson-knowledge-builder` 是 LKB 結構、來源、節點、版本與驗證唯一權威。
-- `lesson-knowledge-base-policy.md` 只負責 approved LKB 的 Content Routing 與 Spiral Learning。
-- 禁止兩套 LKB authority 並存。
+- `chinese-lesson-knowledge-builder` = LKB 結構、來源、節點、版本、驗證唯一權威。
+- `lesson-knowledge-base-policy.md` = approved LKB 的 Content Routing / Spiral Learning。
+- 禁止兩套 LKB authority。
 
 ### Experience
 - Experience Layer = orchestration。
-- Scenario = Scenario Wrapper Registry / Selector。
+- Scenario confirmation order = Scenario Wrapper Teacher Lock。
+- Scenario content = Registry / Selector。
 - Character = Character System + Scenario Character Bridge。
 - Style = Style Recipe Families。
 - Typography = Typography Bridge。
-- Experience 不得複製上述專門規則。
+
+硬相依：
+
+`Scenario Decision → SCENARIO LOCK → Character Topology/Cast → CHARACTER LOCK → Character DNA`
+
+三個 Production Gates 不得刪除此依賴鎖。
 
 ---
 
-## Canonical Golden Path Candidate 2.2
+## Canonical Golden Path Candidate 2.3
 
 ```text
 SOURCE 0
@@ -202,7 +212,11 @@ SOURCE 0
 → Teaching Skill Selection Lock
 → Lesson Budget Draft
 → GATE A Teaching Direction Lock
-→ Experience Decision
+→ Scenario Decision / Candidates
+→ SCENARIO LOCK
+→ Character Topology / Cast Candidates
+→ CHARACTER LOCK
+→ Experience Completion
 → Extension Check
 → Knowledge Lab
 → Visual Grammar / Slide Architecture
@@ -220,63 +234,47 @@ SOURCE 0
 → Google Drive Archive Verification
 ```
 
-無成語：`N/A_NO_IDIOM`。無外掛：`EXTENSION_OFF`。無外加情境：`SOURCE_WORLD` 或 `OFF`。
+無成語：`N/A_NO_IDIOM`。無外掛：`EXTENSION_OFF`。Scenario 可 `SOURCE_WORLD / REGISTRY_WRAPPER / OFF`。
 
 ---
 
 ## Teacher Control Resolution
 
-### Source / Mandatory Gates
-- HOLD 1 核准 Source Truth，之後才能建 LKB。
-- LKB REVIEW 核准 `approved_lkb`，之後才能進 STEP 2。
-- HOLD 2/2.5/2.6 採 single-stage advance。
+### Source / Mandatory
+- HOLD 1 → LKB Assembly / Review。
+- LKB Review → approved_lkb → STEP 2。
+- HOLD 2/2.5/2.6 single-stage advance。
+
+### Experience Micro Locks
+- Scenario Lock：先鎖舞台。
+- Character Lock：再鎖卡司。
 
 ### Production Gates
-- Gate A：Teaching Direction Lock，含核心技能與 Lesson Budget Draft。
-- Gate B：Experience + Storyboard Lock，含 canonical refs 與 Page Ledger。
-- Gate C：Representative Visual Validation。
+- Gate A：Teaching Direction + Budget Draft。
+- Gate B：Experience + Storyboard + Page Ledger。
+- Gate C：Representative Visual。
 
-Gate C confirmed 後可批次 Renderer；不得逐頁重新建立同一決策確認。
-
----
-
-## Character / Scenario / Style Resolution
-
-- Scenario Wrapper 預設可 OFF；SOURCE_WORLD 可直接延伸原文本世界。
-- 角色拓撲、功能、DNA、出場由 Character System 2.1 管理；Guide 非必要可 OFF。
-- Scenario Character Bridge 維持「先決定舞台需要什麼角色功能，再找誰來演」。
-- Style Recipe Families 是風格唯一 canonical；Lesson Skin 是本課具體化，不是第二套 Style Library。
-- 同課跨 PRESTUDY / SHORT_READ / TEACHING_SLIDE / EXTENSION 維持 Visual Identity Lock。
-
----
-
-## Text / Typography Resolution
-
-重要閱讀教學保留 Text Anchor；RETURN 為可選技能。
-
-圖文一體生成允許 AI 圖片引擎產生繁中草稿文字，但正式輸出必須經 Typography/Text QA。
-
-P0 逐字檢查：課文、生字、形近字、多音字、注音、學生辨識目標字、關鍵句／臺詞。
-
-字形本身是教學內容時，Teaching Glyph Rule 優先於藝術化變形。
+Gate C confirmed 後可批次 Renderer；不得逐頁重問同一決策。
 
 ---
 
 ## Lesson Budget Resolution
+- Draft：Gate A 前，以時間、MUST/SHOULD/COULD、核心認知任務控制範圍。
+- Final / Page Ledger：Slide Architecture 後才定正式頁數與逐頁 learning_gain。
 
-Lesson Budget 分兩階段：
-- Draft：Gate A 前，以時間、MUST/SHOULD/COULD、核心認知任務控制教學範圍。
-- Final / Page Ledger：Slide Architecture 後，才定正式頁數與逐頁 learning_gain。
+一頁 = 一個完整 cognitive scene；同頁可兩個有層次問題。
 
-一頁 = 一個完整認知場景；同頁可兩個有層次問題。
+---
+
+## Text / Typography Resolution
+重要閱讀教學保留 Text Anchor；RETURN 可選。
+
+圖片引擎可生成繁中整合式圖文；正式輸出必經 QA。P0：課文、生字、形近字、多音字、注音、目標字、關鍵句／臺詞。字形是教學內容時 Teaching Glyph Rule 優先。
 
 ---
 
 ## Extension Resolution
-
-支援 DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM，模式 LIGHT / THEME_MODE。
-
-新增 Extension 必須重算 Lesson Budget，先問「它取代什麼？」；若牽強則降 PLUS 或不加入。
+支援 DIGITAL / CROSS / THEME / PROJECT / REAL_WORLD / CUSTOM；模式 LIGHT / THEME_MODE。新增 Extension 先問「它取代什麼？」並重平衡 Budget。
 
 ---
 
@@ -286,7 +284,7 @@ Lesson Budget 分兩階段：
 ---
 
 ## Worksheet Resolution
-預習單與短文單維持既有 1.1 規則；A4 100% 實際列印時，所有學生需要閱讀、辨認、勾選或作答依據的文字不得低於 12 pt。
+預習單與短文單維持既有 1.1 規則；A4 100% 列印時學生需要閱讀／辨認／作答的文字不得低於 12 pt。
 
 ---
 
@@ -298,30 +296,31 @@ Lesson Budget 分兩階段：
 ---
 
 ## Draft / Version Resolution
-本分支 2.8-draft 將 v1 policies 登記為 candidate canonical。只有完成 integration regression 且教師確認封版後，才移除 `draft`。
+本分支 2.9-draft 只有完成 integration regression 且教師確認封版後，才移除 `draft`。
 
-若模組內版本與 Manifest 不一致：重新 fetch 最新檔；無法確認即停，不猜。
+若模組版本與 Manifest 不一致：重新 fetch 最新檔；無法確認即停，不猜。
 
 ---
 
 ## Legacy / Conflict Rules
-以下一律視為錯誤：
+錯誤：
 - 第二套 LKB authority
+- 未 Scenario Lock 就選 Character
+- 未 Character Lock 就做正式 DNA／大量視覺
 - Experience 重建 Character / Scenario / Style canonical
 - STEP 3／STEP 4 舊主流程
 - AI 自動第三類單字深教
 - 無方格直接等於認讀字
 - 語詞／句型／修辭沒有原文證據
-- 從視覺工具反推教學目的
-- 每題一頁／固定每段模板
+- 從 visual tool 反推 Teaching Skill
+- 一題一頁／固定每段模板
 - 已選 LVM 後段消失
-- 圖片中文字未 QA 即交付
+- 圖片中文字未 QA
 - Drive 舊五類結構
-- A4 學習單縮到 12 pt 以下
 
 ---
 
 ## 核心金句
-> Manifest 決定現在誰是權威；Executor 必須真的載入。
+> Manifest 決定誰是權威；Executor 必須真的載入。
 
-> LKB 只有一本；Experience 是總導演，不是第二套資料庫。
+> LKB 只有一本；先鎖舞台，再鎖卡司；教學技能先於視覺工具。
