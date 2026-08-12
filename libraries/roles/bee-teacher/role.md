@@ -1,7 +1,7 @@
 ---
 role_id: ROLE-BEE-001
 name: Bee 老師
-version: 0.1.0
+version: 0.2.0
 role_type: teacher_guide
 status: configurable
 suitable_grades:
@@ -92,6 +92,32 @@ visual_dna:
 - 蜜蜂元素只作為胸針、小圖示、章節徽章或低密度裝飾。
 - 不使用翅膀、觸角或全身黃黑條紋，除非教師另行指定。
 - 不讓蜜蜂裝飾干擾教材主題或視覺風格。
+
+## Bee Signature 專屬所有權
+
+教師已鎖定：**「Bee 感只留給 Bee 老師。」**
+
+```yaml
+signature_ownership:
+  owner_role_id: ROLE-BEE-001
+  exclusive: true
+  cross_role_reuse: FORBIDDEN
+  protected_markers:
+    - bee_antenna_or_bee_headpiece
+    - bee_hair_accessory
+    - bee_brooch_as_character_signature
+    - honeycomb_as_character_signature
+    - yellow_black_bee_stripe_signature
+    - bee_wings_or_insect_body_language
+    - intentional_bee_identity_cues
+```
+
+硬規則：
+- 其他 Guide、Learning Proxy、Text Character 或自訂角色不得借用 Bee 的蜂類辨識，包含「弱化版」「變形版」「只是小配件」的借用。
+- 蜂蜜黃可以作為一般場景色存在，但不得和蜂類圖樣／配件組合成其他角色的 identity signature。
+- Scenario、Style Recipe、Lesson Skin 不得把 Bee signature 當成全冊共用視覺語彙。
+- 若其他角色需要昆蟲／蜜蜂意象，必須是文本本身必要且明確另建 identity；不得看起來像 Bee 老師的變體。
+- Renderer 看到非 `ROLE-BEE-001` 角色時，Bee signature 預設列入 negative guardrail。
 
 ## 建議表情與姿勢
 
