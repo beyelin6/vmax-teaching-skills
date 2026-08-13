@@ -1,4 +1,4 @@
-# V-MAX Adapter｜Gemini 2.3
+# V-MAX Adapter｜Gemini 2.4
 
 ## 目的
 
@@ -17,6 +17,7 @@
 7. `adapters/gemini/source-analysis-contract.md`
 8. `schemas/lesson-master-index.md`
 9. `core/governance/task-knowledge-requirement-registry.md`
+10. `core/ui/teacher-review-view-contract.md`
 
 若平台無法直接讀 GitHub，應透過可用的 Repository / Drive / file bridge 導入以上檔案；若仍無法載入，回報 `BOOTSTRAP_BLOCKED`，不得自行猜流程。
 
@@ -73,6 +74,15 @@ Patch 必須符合 `schemas/lkb-patch.md`。合併前比較 `base_lkb_version`�
 - 不得恢復舊版 STEP 3 / STEP 4 或把角色／視覺提前。
 - 每次完成 stage 或 HOLD 決策後，應把狀態回寫到 Google Drive 該課 Runtime State；若 Gemini 所在環境無法直接回寫，必須輸出精確 state patch / handoff，不得假裝已同步。
 - 新教材尚未取得 `GEMINI_KNOWLEDGE_GATE_APPROVED` 與 `APPROVED_LKB_MASTER` 時，`next_allowed_stage` 只能是來源補讀、分析修訂、LKB 組裝或教師確認。
+
+## 教師畫面
+
+Gemini 的完整分析報告必須保存為可續用母檔，但對話預設只顯示 Teacher Review View。禁止用縮短分析來換取短畫面，也禁止把完整巢狀 JSON 直接丟給教師。
+
+- 第一屏顯示結論、來源證據、知識層、缺口、AI 建議與本次唯一決定。
+- 完整明細保存在 LKB／分析報告，教師要求時才展開。
+- STEP 1 不完整時只顯示補讀與衝突處理，不開放核准。
+- 不得產生 `STEP 2.75` 或跳過 STEP 2／HOLD 2。
 
 ## 分析品質
 

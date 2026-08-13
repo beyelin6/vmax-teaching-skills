@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.1
+# V-MAX Adapter｜ChatGPT 1.2
 
 ## 目的
 
@@ -13,6 +13,7 @@
 3. 讀取 `runtime/lesson-state.md`
 4. 依 Manifest 讀取 current main workflow 與 current executor
 5. 只載入當前 stage 直接需要的 policy / skill
+6. 任何教師審核或 HOLD 載入 `core/ui/teacher-review-view-contract.md`
 
 若 GitHub connector 無法讀取，回報 `BOOTSTRAP_BLOCKED`，不得假裝已載入。
 
@@ -43,6 +44,14 @@ ChatGPT 不得以「使用者先前上傳過」取代 Source Library 尋源規�
 若缺少必要 connector：
 - 明確標記 `CONNECTOR_BLOCKED`。
 - 不宣稱已同步、已上傳、已回寫。
+
+## 教師畫面
+
+- ChatGPT 對話預設先顯示 Teacher Review View；完整 JSON／YAML 保存為 Machine Payload，不直接鋪滿對話。
+- 第一屏先顯示結論、證據、知識層、缺口與本次唯一決定；教師要求時才展開完整母檔。
+- STEP 1 必要來源未核對完成時回報 `STEP1_INCOMPLETE`，不得要求核准完整定錨。
+- 使用 `[教材明載] / [教師補充] / [AI 延伸] / [待核對]`；外部字典不能證明某詞屬於教材。
+- 嚴格遵守 `HOLD 1 → STEP 2 → HOLD 2 → STEP 2.5 → HOLD 2.5 → STEP 2.6 → HOLD 2.6`；不得產生 `STEP 2.75`。
 
 ## 平台輸出
 

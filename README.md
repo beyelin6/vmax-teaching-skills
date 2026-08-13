@@ -50,6 +50,10 @@ V-MAX 是臺灣國小國語教材轉錄、課程設計、視覺渲染與交付�
 
 所有下游任務先讀取 Lesson Master Index 與核准 LKB，再執行任務 Coverage Diff。資料足夠就重用；不足時只增補帶來源的 LKB Patch，不重跑整份教冊。
 
+## 教師審核畫面
+
+完整 JSON／YAML 保存為可續跑的 Machine Payload；對話預設依 `core/ui/teacher-review-view-contract.md` 顯示精簡的 Teacher Review View。畫面先呈現結論、教材證據、知識層、缺口、這次唯一決定與唯一下一步，教師要求時才展開完整母檔。
+
 ## Repository 邊界
 
 - `core/`、`skills/`、`schemas/`：正式可執行規格。
