@@ -1,3 +1,8 @@
+---
+name: prestudy-worksheet
+description: 將教材鎖定主檔或已確認的預習題目製成國小國語課前預習學習單規格；教師要求預習單、課前任務或後續視覺渲染輸入時使用。
+---
+
 # V-MAX Pre-study Worksheet Skill
 
 版本：1.1

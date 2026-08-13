@@ -1,6 +1,11 @@
+---
+name: vmax-golden-path-executor
+description: Execute the V-MAX canonical workflow and approval gates from locked lesson sources through rendering and delivery. Use when producing a complete lesson package by the standard golden path.
+---
+
 # V-MAX Golden Path Executor
 
-版本：1.2
+版本：1.3
 
 ## 目的
 
@@ -183,6 +188,13 @@ STEP 2.5 必須同時載入：
 ---
 
 ## I. Delivery / Drive Guard
+
+進入 Full Renderer 時必須載入：
+
+- `core/renderer/image-first-hybrid-renderer.md`
+- `skills/vmax-image-renderer/SKILL.md`
+
+對每個必要圖片建立 Render Request，探測當前平台實際工具並執行。prompt、Renderer Script、Visual YAML 或 `IMAGE_HANDOFF_READY` 不等於圖片完成；只有實際資產通過重檢並標記 `RENDER_VERIFIED` 才能進入 Quality Gate。工具不可用時保留 handoff 並回報阻塞，不得跳過圖片需求。
 
 交付必須同時載入：
 - `skills/lesson-package-delivery/SKILL.md`

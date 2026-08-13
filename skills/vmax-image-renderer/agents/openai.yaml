@@ -1,0 +1,4 @@
+interface:
+  display_name: "V-MAX 圖片渲染器"
+  short_description: "將核准的教學視覺規格實際渲染並驗證為圖片資產"
+  default_prompt: "Use $vmax-image-renderer to render the approved V-MAX visual request into actual assets and verify the final images."

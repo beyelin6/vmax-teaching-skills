@@ -1,3 +1,8 @@
+---
+name: google-drive-lesson-archive
+description: 將已完成並核准的 V-MAX 單課教材包依正式六類結構歸檔至教師指定的 Google Drive，處理版本資料夾、同名檔案、上傳後搜尋與驗證。僅在具備 Drive 工具且使用者要求歸檔、上傳、取代或驗證教材包時使用。
+---
+
 # V-MAX Google Drive Lesson Archive Skill
 
 版本：1.0

@@ -18,13 +18,13 @@ description: 管理 V-MAX 單課教材專案的完整工作流、工作模式、
 
 Orchestrator 不產生教材內容；只負責建立專案骨架、記錄狀態、檢查前置條件、指定下一技能、管理版本與阻止不必要的重跑。
 
-## 唯一狀態檔
+## 狀態權威與本機鏡像
 
-每課必須有：
+每課工作目錄可維護：
 
 `project/project-status.md`
 
-不得只依聊天記憶判斷進度。
+此檔是本機工作鏡像與 handoff，不是跨平台唯一權威。跨 ChatGPT、Codex、Gemini 續跑時，以 Manifest 指定的 Google Drive 該課 Runtime State 為準；讀取後同步到本機檔，完成 HOLD 或 stage 後先回寫 Drive。Drive 無法讀取時標記 `RUNTIME_DRIVE_BLOCKED`，不得用本機舊檔猜測進度。
 
 ## 三種主要工作模式
 

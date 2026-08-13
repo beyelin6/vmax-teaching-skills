@@ -12,7 +12,7 @@ description: 依臺灣國小國語課文的生字相關詞語、核心詞語、�
 ## 搭配技能
 
 - 需要圖片版面時，同時使用 `vmax-chinese-preview-worksheet`，只借用其 A4 橫式、A／B 版面語言、角色一致性、逐字校對及版本規則；不要借用預習題型。
-- 生成或修改整頁圖片時使用 `imagegen`。
+- 生成或修改整頁圖片時使用 `vmax-image-renderer`；它會依當前平台能力選擇 ImageGen、Gemini、Canva 或 handoff。
 - 合併與回讀驗證時使用 `pdf`。
 - 使用者要求雲端歸檔時使用 `google-drive:google-drive`。
 
@@ -103,6 +103,8 @@ description: 依臺灣國小國語課文的生字相關詞語、核心詞語、�
 等待使用者確認後才進圖片。使用者明確要求批次完成時，可在第一課內容或第一張視覺通過後批次續作，但仍需逐課自行校核。
 
 ### 8. 視覺製作
+
+先建立 Render Request，再由 `vmax-image-renderer` 實際生成、合成正式繁體中文字層並重新檢查最終 PNG。若當前平台沒有圖片工具，只能回報 `IMAGE_HANDOFF_READY`，不能把 prompt 或版面描述列為成品。
 
 1. 採 A4 橫式、純白底、一課一張、四年級可讀尺寸。
 2. 沿用該課預習單的 A 或 B 模式，不混換版本。

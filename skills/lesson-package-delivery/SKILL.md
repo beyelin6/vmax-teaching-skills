@@ -1,6 +1,11 @@
+---
+name: lesson-package-delivery
+description: 組裝、檢查並交付 V-MAX 單課 Lesson Package，包括來源主檔、Renderer Script、Render Request、視覺設定、角色資產、實際圖片、PDF、PPTX 與學習單。適用於正式交付或歸檔前，不得將提示詞或未驗證圖片視為完成品。
+---
+
 # V-MAX Lesson Package Delivery
 
-版本：1.3
+版本：1.4
 
 ## 目的
 
@@ -14,17 +19,19 @@
 
 ---
 
-## A. 八項核心交付物
+## A. 十項核心交付物
 
 每課基本 Lesson Package：
 1. `Source Master MD`
 2. `Renderer Script MD`
-3. `Visual YAML MD`
-4. `Character Visual Assets`
-5. `Image-first Slide PDF`
-6. `Teaching Slides PPTX`
-7. `Pre-study Worksheet`
-8. `Post-lesson Short Writing Worksheet`
+3. `Render Request MD`
+4. `Visual YAML MD`
+5. `Character Visual Assets`
+6. `Verified Render Assets`
+7. `Render Verification Report`
+8. `Image-first Slide PDF / Teaching Slides PPTX`
+9. `Pre-study Worksheet`
+10. `Post-lesson Short Writing Worksheet`
 
 若教師明確不需要某項，可標 `N/A_BY_TEACHER`；AI 不得靜默省略。
 
@@ -40,6 +47,10 @@
 
 ### Visual YAML MD
 至少含：lesson_visual_identity、theme/style、palette、typography、Traditional Chinese text rules、hierarchy、image treatment、Character DNA、Lesson Visual Map、page-family visual intents、hybrid/native text rules、drift guardrails。
+
+### Render Request / Verified Render Assets
+
+Render Request 遵循 `skills/vmax-image-renderer/references/render-request-schema.md`。必要圖片必須有實際資產與 Render Verification Report；prompt、Visual YAML、handoff bundle 或未重檢圖片不得列為 PASS。
 
 ### Character Visual Assets
 角色功能、基準圖、表情／姿勢、immutable DNA、本課變體、drift guardrails。
@@ -121,10 +132,10 @@ V-MAX 教材庫/
 ### 檔案對應
 
 - `01_教材整理`：Source Master MD、教材定錨、結構化轉錄、Lesson DNA
-- `02_逐頁腳本`：Renderer Script MD、完整逐頁／逐 Shot 腳本
+- `02_逐頁腳本`：Renderer Script MD、Render Request MD、完整逐頁／逐 Shot 腳本
 - `03_NotebookLM`：Visual YAML MD、NotebookLM 驅動腳本／生成指令、Curated Briefing
 - `04_角色視覺`：Character Visual Assets
-- `05_簡報成品`：Image-first PDF、Teaching PPTX、Google Slides（若建立）
+- `05_簡報成品`：Verified Render Assets、Render Verification Report、Image-first PDF、Teaching PPTX、Google Slides（若建立）
 - `06_延伸教材`：Pre-study Worksheet、Post-lesson Short Writing Worksheet、其他延伸教材
 
 ### 版本規則
@@ -151,8 +162,11 @@ V-MAX 教材庫/
 lesson_package_delivery:
   source_master_md: PASS | N/A_BY_TEACHER
   renderer_script_md: PASS | N/A_BY_TEACHER
+  render_request_md: PASS | N/A_BY_TEACHER
   visual_yaml_md: PASS | N/A_BY_TEACHER
   character_visual_assets: PASS | N/A_BY_TEACHER
+  verified_render_assets: PASS | N/A_BY_TEACHER
+  render_verification_report: PASS | N/A_BY_TEACHER
   image_first_pdf: PASS | N/A_BY_TEACHER
   teaching_pptx: PASS | N/A_BY_TEACHER
   prestudy_worksheet: PASS | N/A_BY_TEACHER
@@ -177,7 +191,8 @@ Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 P
 - 冊別資料夾正確
 - 課版本號正確
 - 六個分類資料夾存在
-- 8 項交付物依類別實際存在
+- 10 項交付物依類別實際存在
+- 所有必要圖片均為 `RENDER_VERIFIED`，且可重新開啟檢查
 - 預習單與短文單通過 12 pt 字級與匯出縮放檢查
 - 檔名可辨識
 - Drive list/search 可重新查到
@@ -185,7 +200,7 @@ Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 P
 不得只建立空資料夾，也不得只說「已上傳」而沒有 Connector / API 驗證。
 
 失敗：
-`LESSON_PACKAGE_INCOMPLETE / DRIVE_ARCHIVE_STRUCTURE_DRIFT / DRIVE_ARCHIVE_UNVERIFIED / VERSION_FOLDER_COLLISION / WORKSHEET_FONT_TOO_SMALL / WORKSHEET_EXPORT_SCALE_FAIL`
+`LESSON_PACKAGE_INCOMPLETE / RENDER_ASSET_MISSING / RENDER_UNVERIFIED / DRIVE_ARCHIVE_STRUCTURE_DRIFT / DRIVE_ARCHIVE_UNVERIFIED / VERSION_FOLDER_COLLISION / WORKSHEET_FONT_TOO_SMALL / WORKSHEET_EXPORT_SCALE_FAIL`
 
 ---
 
