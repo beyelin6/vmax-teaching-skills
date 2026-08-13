@@ -5,7 +5,7 @@ description: 將已核准的課文知識、核心詞語、句型、修辭與學�
 
 # V-MAX Post-lesson Short Writing Worksheet Skill
 
-版本：1.1
+版本：1.2
 
 ## 目的
 
@@ -65,7 +65,7 @@ Bonus 的核心：**可選，不要求全部使用。**
 
 可依本課放入：
 
-1. 課文重要語詞／生字詞
+1. 固定八個可實際寫進本次文章的課文重要語詞／生字相關詞語
 2. 四字語詞／成語
 3. 句型
 4. 修辭／寫作手法
@@ -75,7 +75,7 @@ Bonus 的核心：**可選，不要求全部使用。**
 
 > 不用全部用，挑你喜歡、用得自然的就好。
 
-學生可勾選實際想使用的工具。
+學生可勾選實際想使用的工具。八個語詞不要求全部使用，頁面明示「選二至三個試試看」。
 
 若工具太多導致字級低於 12 pt，必須減少工具數量，不得縮字硬塞。
 
@@ -172,7 +172,39 @@ AI 依 Teacher Intent、Lesson Map、STEP 2.5、STEP 2.6 與本課寫作任務�
 
 ---
 
-## G. 最低輸出資料
+## G. 人物、書寫線與正式交付
+
+### G1. 人物與書寫區
+
+- 人物外觀與同課預習單一致，但短文單不受預習單小人物比例限制。
+- 頁面有真實留白且缺少故事焦點時，可依版面適度放大人物；逐頁判斷，不整批套用相同比例。
+- 人物不得跨入題幹、工具箱或正式書寫線，也不得減少必要書寫空間。
+- 正式創作區仍是頁面最大區域；人物與插圖只作引導及畫龍點睛。
+
+### G2. 書寫線
+
+- 四年級散文通常安排約十至十二條長線，行距以已確認的第二課、第六課為舒適基準。
+- 不以密集格線暗示 150～200 字；版面過密時先減少提示、Bonus 或線數，不縮窄行距。
+- 童詩依詩節分組，預設三節、每節三至四行，節與節之間保留明顯段距。
+
+### G3. 圖片、PDF 與命名
+
+- 正式 PNG 固定為 3508 × 2480；保持比例，以白邊補足，不拉伸、不裁切。
+- 單課檔名固定補零為兩位數：`四上國語_第NN課_課名_課後短文.png`；童詩使用 `_課後仿作.png`。
+- 合併範圍同樣使用兩位數，例如 `四上國語_第07至12課_課後短文_印刷版.pdf` 與 `四上國語_第07至12課_課後短文_分享版.pdf`。
+- 每批保留全部單課 PNG，並使用 `單課PNG／合併PDF／印刷版／分享版` 的資料夾結構。
+- 印刷版保留 300 dpi；分享版約 180–200 dpi，但八個語詞、句型、檢核文字與書寫線仍須清楚。
+- 兩版 PDF 都必須重新渲染全部頁面檢查；分享版若有模糊或鋸齒，即使檔案較小也不得通過。
+- PNG 必須完整解碼；轉檔先寫入不同暫存路徑，驗證後才取代正式檔。
+- 預習單、短文單、A／B 視覺版、印刷版與分享版皆分開保存，不得互相覆蓋。
+
+### G4. 歸檔安全
+
+GitHub 只保存平台中立的資料夾結構與命名規則。實際 Google Drive folder ID、文件 ID 與每課 Runtime State 不得寫入公開技能檔；依 `runtime/lesson-state.md` 與 Drive Runtime Index 取得。
+
+---
+
+## H. 最低輸出資料
 
 ```yaml
 postlesson_short_writing_worksheet:
@@ -202,7 +234,7 @@ postlesson_short_writing_worksheet:
 
 ---
 
-## H. Quality Gate
+## I. Quality Gate
 
 以下任一情況 FAIL：
 
@@ -217,8 +249,12 @@ postlesson_short_writing_worksheet:
 - 書寫空間不足。
 - 裝飾／角色干擾學生書寫。
 - 學生版出現完整示範答案。
+- 人物放大後侵入題幹、工具箱或書寫線。
+- 散文書寫線過密，或未保留中年級舒適行距。
+- 課次未補零、合併 PDF 課次範圍錯誤，或不同用途檔案互相覆蓋。
+- 單課 PNG 未保留、PNG 無法完整解碼，或分享版重新渲染後文字模糊。
 
-分類：`WRITING_WORKSHEET_LAYOUT_FAIL / BONUS_OVERLOAD / WRITING_SCAFFOLD_FAIL / WRITING_TOOL_DRIFT / ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL`
+分類：`WRITING_WORKSHEET_LAYOUT_FAIL / BONUS_OVERLOAD / WRITING_SCAFFOLD_FAIL / WRITING_TOOL_DRIFT / ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / WRITING_LINE_DENSITY_FAIL / WORKSHEET_FILENAME_FAIL / WORKSHEET_EXPORT_QUALITY_FAIL`
 
 ---
 
