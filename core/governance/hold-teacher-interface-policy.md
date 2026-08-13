@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.3
+# V-MAX HOLD Teacher Interface Policy 1.4
 
 ## 定位
 
@@ -49,6 +49,7 @@
 禁止：
 
 - 只輸出 JSON / YAML / vocabulary[] / schema。
+- 顯示內部狀態欄位、空白程式碼框或未經教師要求的 Machine Payload。
 - 先貼大段 machine payload，再要求教師確認。
 - 用 internal key 取代教師語言。
 - 因 downstream 需要結構化資料，就把結構化資料當 HOLD UI。
@@ -126,7 +127,17 @@ AI 應先完整分析，再降低教師輸入成本。
 
 ---
 
-## F. HOLD 不得跨階段｜Single-stage Advance
+## F. STEP 2.5 專用停等格式
+
+STEP 2.5 的 Teacher Confirmation Card 只包含形近字、多音字、教材詞語／成語審核表、待確認項目與 AI 推薦理由。每個項目須顯示 `[教材已確認] / [教育部辭典已核對] / [AI 建議，待教師確認] / [尚待教材來源核對]` 中適用的狀態。
+
+本階段最後固定停在：
+
+`⏸ HOLD 2.5｜請回覆「確認」或指出修改項目；確認後唯一下一步為 STEP 2.6。`
+
+不得在同一回覆展開各段／詩節教學，不得宣布進入其他階段。來源未完成或字形／讀音有疑點時停在 STEP 2.5，不得把項目標示為已鎖定。
+
+## G. HOLD 不得跨階段｜Single-stage Advance
 
 教師在某個 HOLD 說「確認／好／可以」時，只代表**當前決策被確認**，且只解鎖主流程中**緊接的一個正式階段**。
 
@@ -149,7 +160,7 @@ HOLD 1
 - HOLD 1 確認後，只做 STEP 2，然後停在 HOLD 2。
 - HOLD 2 確認後，只做 STEP 2.5，然後停在 HOLD 2.5。
 - HOLD 2.5 確認後，只做 STEP 2.6，然後停在 HOLD 2.6。
-HOLD 2.6 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Architecture。
+- HOLD 2.6 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Architecture。
 - Session Map 尚未成立前，不得宣告完整教學版總頁數。
 
 若一個「確認」後連續跑過兩個以上需教師介入的決策層，標記：
@@ -158,7 +169,7 @@ HOLD 2.6 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Archi
 
 ---
 
-## G. 下一步指向驗證
+## H. 下一步指向驗證
 
 每個 HOLD 最後一句「確認後下一步」必須和 `vmax-main-workflow.md` 完全一致。
 
@@ -173,7 +184,7 @@ HOLD 2.6 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Archi
 
 ---
 
-## H. 教師主權的實際判定
+## I. 教師主權的實際判定
 
 好的 HOLD 應讓教師感覺自己在「導演」：
 
@@ -195,7 +206,7 @@ HOLD 2.6 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Archi
 
 ---
 
-## I. TEST_FREEZE 相容
+## J. TEST_FREEZE 相容
 
 在 `TEST_FREEZE` 中，若某 HOLD 沒有依此政策顯示：
 
@@ -207,7 +218,7 @@ HOLD 2.6 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Archi
 
 ---
 
-## J. Machine Payload 原則
+## K. Machine Payload 原則
 
 Machine payload 是 downstream contract，不是 Teacher UI。
 

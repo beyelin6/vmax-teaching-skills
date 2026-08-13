@@ -1,4 +1,4 @@
-# V-MAX Polyphonic Source Policy 1.0
+# V-MAX Polyphonic Source Policy 1.1
 
 ## 定位
 
@@ -102,7 +102,15 @@ AI 是否判斷有明確教學價值？
 
 ---
 
-## D. 必填欄位
+## D. 讀音與例詞核對
+
+1. 本課使用讀音以課本生字欄、課文注音或教材明列辨音活動為第一來源。
+2. 教育部辭典用於補充、驗證讀音、詞義與例詞，不能取代本課教材身分。
+3. 每個多音字例詞必須逐詞查核；不得只確認單字有某讀音後，自行類推所有例詞。
+4. 課本與辭典不一致、詞條無法支持例詞、OCR 不清或語境無法判定時，標記 `PRONUNCIATION_SOURCE_CONFLICT / EXAMPLE_WORD_UNVERIFIED`，停在當前 STEP。
+5. 未完成核對的讀音、例詞與口訣不得標示 `CONFIRMED / LOCKED`。
+
+## E. 必填欄位
 
 ```yaml
 polyphonic_item:
@@ -111,7 +119,10 @@ polyphonic_item:
   official_lesson_character: true | false
   teacher_reason:
   textbook_evidence:
+  lesson_pronunciation_evidence: []
+  dictionary_entry_evidence: []
   readings: []
+  example_word_verification: []
   meaning_by_reading: []
   lesson_context:
   confusion_risk:
@@ -121,7 +132,7 @@ polyphonic_item:
 
 ---
 
-## E. 教學表達
+## F. 教學表達
 
 一旦正式納入多音字教學，仍遵守：
 
@@ -135,12 +146,15 @@ polyphonic_item:
 
 ---
 
-## F. Failure Codes
+## G. Failure Codes
 
 - `POLYPHONIC_SOURCE_LEAK`：從非法來源自動建立多音字單元
 - `SHAPE_NEAR_TO_POLYPHONIC_DRIFT`：形近補充字被錯誤升級為多音字
 - `TEACHER_POLYPHONIC_DROPPED`：教師指定多音字在後段被刪除
 - `POLYPHONIC_IDENTITY_MISSING`：未記錄來源身分
+- `PRONUNCIATION_SOURCE_CONFLICT`：教材讀音與補充來源衝突
+- `EXAMPLE_WORD_UNVERIFIED`：例詞未逐詞取得來源支持
+- `PRONUNCIATION_INFERENCE_DRIFT`：只查單字後自行類推例詞讀音
 
 ---
 

@@ -1,4 +1,4 @@
-# V-MAX Manifest 3.1
+# V-MAX Manifest 3.2
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.1
+vmax_manifest_version: 3.2
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -24,7 +24,7 @@ main_workflow:
   current_version: 2.1
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.4
+  current_version: 1.5
 source_library_policy: core/governance/source-library-policy.md
 lesson_master_preflight:
   path: core/governance/lesson-master-preflight.md
@@ -40,14 +40,14 @@ recognition_only_character_policy:
   current_version: 1.1
 hold_policy:
   path: core/governance/hold-teacher-interface-policy.md
-  current_version: 1.3
+  current_version: 1.4
 teacher_review_view:
   path: core/ui/teacher-review-view-contract.md
-  current_version: 1.0
+  current_version: 1.1
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.7
+  current_version: 1.8
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.9
@@ -56,13 +56,13 @@ character_deep_teaching_focus:
   current_version: 1.1
 polyphonic_source_policy:
   path: core/director/polyphonic-source-policy.md
-  current_version: 1.0
+  current_version: 1.1
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
-  current_version: 1.0
+  current_version: 1.1
 character_teaching_regression:
   path: tests/character-teaching-regression-cases.md
-  current_version: 1.0
+  current_version: 1.1
 lesson_visual_map:
   path: core/visual/lesson-visual-map.md
   current_version: 1.1
@@ -119,7 +119,7 @@ gemini_source_analysis:
   lkb_patch_schema: schemas/lkb-patch.md
   task_requirement_registry: core/governance/task-knowledge-requirement-registry.md
   regression: tests/gemini-source-analysis-regression-cases.md
-  adapter_version: 2.4
+  adapter_version: 2.5
 ```
 
 ---
@@ -234,6 +234,18 @@ SOURCE 0
 3. `TEACHER_ADDED_POLYPHONIC`
 
 形近補充字、比較字、認讀字、課文一般字不因本身多音而由 AI 自動升級。
+
+---
+
+## Character Form and Pronunciation Resolution
+
+- 課本生字欄、課文注音或教材辨音活動是本課讀音第一來源。
+- 教育部辭典只作補充與驗證，不取代教材身分。
+- 多音字例詞逐詞核對，不從單字讀音自行類推。
+- 部首、偏旁、部件、字形口訣逐字核對；口訣預設為 AI 建議，教師確認前不得鎖定。
+- 發現字形、讀音或例詞疑點時停在當前 STEP。
+
+權威：`core/director/polyphonic-source-policy.md` v1.1、`skills/character-group-visual-comparison/SKILL.md` v1.1。
 
 ---
 

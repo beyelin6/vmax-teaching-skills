@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.7
+# V-MAX Workflow HOLD Regression Cases 1.8
 
 ## 用途
 
@@ -125,6 +125,20 @@ FAIL：使用舊 `01_來源主檔 / 02_生成腳本 / 03_角色與視覺資產 /
 
 分類：`RAW_SCHEMA_DUMP / TEACHER_INTERFACE_OVERLOAD / STEP1_INCOMPLETE / KNOWLEDGE_LAYER_MIXED / PREMATURE_DESIGN_LOCK / TEMPLATE_FLATTENING / STAGE_LEAP / SKIPPED_HOLD / LEGACY_STAGE_ALIAS`
 
+## W-19｜STEP 2.5 必須以審核表停等
+
+### PASS
+- 只顯示形近字、多音字、教材詞語／成語審核表與待確認項目。
+- 每項顯示來源狀態、證據、核對結果、AI 建議與教師決定。
+- 最後停在 HOLD 2.5，等待「確認」或修改。
+
+### BLOCKER
+- 顯示 raw JSON、內部狀態欄位或空白程式碼框。
+- 未完成來源核對卻標成已鎖定。
+- 同一回覆提前展開六個詩節或其他教學流程。
+
+分類：`RAW_SCHEMA_DUMP / SOURCE_STATUS_MISSING / UNVERIFIED_ITEM_LOCKED / SKIPPED_HOLD`
+
 ---
 
 ## 整體 PASS
@@ -148,6 +162,9 @@ workflow_hold_regression:
   machine_payload_separated: PASS
   step1_incomplete_blocked: PASS
   no_step_2_75: PASS
+  step2_5_review_table: PASS
+  source_status_visible: PASS
+  unverified_not_locked: PASS
 ```
 
 任一 FAIL，不得宣告工作流回歸測試完成。

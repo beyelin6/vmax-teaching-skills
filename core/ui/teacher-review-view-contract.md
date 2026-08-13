@@ -1,4 +1,4 @@
-# V-MAX Teacher Review View Contract 1.0
+# V-MAX Teacher Review View Contract 1.1
 
 ## 定位
 
@@ -15,7 +15,7 @@
 1. `Machine Payload`：完整、可續跑、可回寫的結構化母檔，保存於指定 artifact／Drive 文件。
 2. `Teacher Review View`：對話中預設顯示的教師審核卡。
 
-除非教師明確要求查看 JSON／YAML或正在除錯 schema，對話不得展開完整 Machine Payload。不得把程式欄位名稱、巢狀陣列或大段 code block 當作審核卡。
+除非教師明確要求查看 JSON／YAML 或正在除錯 schema，對話不得展開完整 Machine Payload。不得把程式欄位名稱、內部狀態欄位、巢狀陣列、大段 code block 或空白程式碼框當作審核卡。需要另存 JSON／YAML 時才產生檔案，對話只提供檔名或連結。
 
 ## B. 審核卡固定順序
 
@@ -47,7 +47,18 @@ AI 建議與理由
 
 字典、網頁或一般常識只能支援讀音、詞義等外部查核；不能因此把項目標成教材明載。
 
-## D. STEP 1 完整性阻擋
+## D. 來源狀態標示
+
+教師審核表中的每個字、詞、讀音、例詞、口訣或教材焦點，至少標示一個可見狀態：
+
+- `[教材已確認]`：課本／教冊的本課來源與頁碼或區塊已核對。
+- `[教育部辭典已核對]`：讀音、詞義或例詞已逐項由教育部辭典核對；這不等於教材收錄。
+- `[AI 建議，待教師確認]`：教學延伸候選，尚未成為 locked decision。
+- `[尚待教材來源核對]`：教材身分、課內讀音或來源仍不完整。
+
+可同時顯示兩個狀態，例如 `[教材已確認] [教育部辭典已核對]`。未完成教材來源核對的項目不得使用「已鎖定／教材正式內容／確認完成」等字樣。
+
+## E. STEP 1 完整性阻擋
 
 若完整正式生字、認讀字雙來源、教材詞語聯集、課文結構或 provenance 等必要來源仍未核對：
 
@@ -58,7 +69,7 @@ AI 建議與理由
 
 STEP 1 不得出現 Mode、Scenario、角色、視覺、頁數、固定每段教學迴圈或已鎖定的教學主軸。
 
-## E. 階段與下一步
+## F. 階段與下一步
 
 前段合法鏈固定為：
 
@@ -70,7 +81,19 @@ STEP 1 → HOLD 1 → STEP 2 → HOLD 2 → STEP 2.5 → HOLD 2.5 → STEP 2.6 �
 - 教師一次「確認」只解鎖一個正式 stage，完成後停在緊接的 HOLD。
 - 審核卡最後只能列一個 `next_allowed_stage`，且須與 Runtime State 一致。
 
-## F. 不合格條件
+## G. STEP 2.5 停等畫面
+
+STEP 2.5 完成後只呈現：
+
+1. 形近字審核表。
+2. 多音字審核表。
+3. 教材詞語／成語候選審核表。
+4. 尚待來源核對或教師決定的項目。
+5. `⏸ HOLD 2.5｜請回覆「確認」或指出要修改的項目；確認後唯一下一步為 STEP 2.6。`
+
+審核表建議欄位：`項目｜來源狀態｜教材證據｜字形／讀音核對｜AI 建議與理由｜教師決定`。不得在同一回覆展開詩節教學、宣布新階段或預告 `STEP 2.75`。
+
+## H. 不合格條件
 
 任一成立即不得前進：
 
@@ -84,7 +107,7 @@ STEP 1 → HOLD 1 → STEP 2 → HOLD 2 → STEP 2.5 → HOLD 2.5 → STEP 2.6 �
 - `LEGACY_STAGE_ALIAS`
 - `WRONG_NEXT_STAGE_POINTER`
 
-## G. 最小完成紀錄
+## I. 最小完成紀錄
 
 ```yaml
 teacher_review_view:
@@ -98,6 +121,9 @@ teacher_review_view:
   decision_scope_single: true
   next_stage_pointer_valid: true
   raw_payload_hidden_by_default: true
+  internal_state_fields_hidden: true
+  source_status_visible: true
+  unverified_items_not_locked: true
   status: PASS | BLOCKED
   failure_codes: []
 ```
