@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.9
+# V-MAX Manifest 3.0
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.9
+vmax_manifest_version: 3.0
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -24,7 +24,7 @@ main_workflow:
   current_version: 2.0
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.3
+  current_version: 1.4
 source_library_policy: core/governance/source-library-policy.md
 lesson_master_preflight:
   path: core/governance/lesson-master-preflight.md
@@ -38,11 +38,13 @@ step1_source_anchor:
 recognition_only_character_policy:
   path: core/governance/recognition-only-character-policy.md
   current_version: 1.1
-hold_policy: core/governance/hold-teacher-interface-policy.md
+hold_policy:
+  path: core/governance/hold-teacher-interface-policy.md
+  current_version: 1.3
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.6
+  current_version: 1.7
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.9
