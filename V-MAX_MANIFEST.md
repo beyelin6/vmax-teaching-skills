@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.6
+# V-MAX Manifest 2.7
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.6
+vmax_manifest_version: 2.7
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -94,6 +94,14 @@ adapters:
   gemini: adapters/gemini.md
   notebooklm: adapters/notebooklm.md
   canva_renderer: adapters/canva.md
+gemini_source_analysis:
+  contract: adapters/gemini/source-analysis-contract.md
+  report_schema: schemas/gemini-source-analysis-report.md
+  lesson_master_index_schema: schemas/lesson-master-index.md
+  lkb_patch_schema: schemas/lkb-patch.md
+  task_requirement_registry: adapters/gemini/task-knowledge-requirement-registry.md
+  regression: tests/gemini-source-analysis-regression-cases.md
+  adapter_version: 2.3
 ```
 
 ---
