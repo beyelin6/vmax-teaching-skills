@@ -1,0 +1,4 @@
+interface:
+  display_name: "V-MAX 課後短文單"
+  short_description: "依核准母檔設計、渲染並驗證課後寫作學習單"
+  default_prompt: "Use $postlesson-short-writing-worksheet to verify the lesson master and create a rendered, validated writing worksheet."

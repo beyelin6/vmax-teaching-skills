@@ -105,6 +105,15 @@ V-MAX Core 不依賴：
 - prompt、Renderer Script、Visual YAML 與 Render Request 都不是完成圖片。
 - 教學關鍵繁體中文預設採可控正式文字層，不交由圖片模型自由生成。
 
+## Lesson Master Preflight
+
+任何平台在製作預習單、短文單、簡報、教案、評量、活動或圖片前，都必須執行 `core/governance/lesson-master-preflight.md`，並依 `core/governance/task-knowledge-requirement-registry.md` 做任務 Coverage Diff。
+
+- 有效且足夠的核准 LKB：直接重用。
+- 母檔不足：只補缺少節點，教師核准 Patch 後合併新版。
+- 沒有母檔：先完成教材轉錄、重要知識分析與 LKB 核准。
+- 此規則屬於 Core，不得只在 Gemini Adapter 執行。
+
 ---
 
 ## 核心金句
