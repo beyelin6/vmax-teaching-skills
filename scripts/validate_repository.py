@@ -139,6 +139,32 @@ def validate_repository_hygiene() -> None:
             fail(f"legacy audit/resource must not be packaged: {path.relative_to(ROOT)}")
 
 
+def validate_front_door() -> None:
+    launcher = ROOT / "chatgpt-work/vmax-teaching-skills/SKILL.md"
+    if not launcher.is_file():
+        fail("missing standalone ChatGPT Work launcher")
+    elif "不要將 GitHub repository 中 `skills/` 下的其他模組逐一轉存" not in launcher.read_text(encoding="utf-8"):
+        fail("ChatGPT Work launcher does not prohibit batch skill installation")
+
+    front_door = ROOT / "skills/vmax-teaching-skills/SKILL.md"
+    if not front_door.is_file():
+        fail("missing canonical V-MAX front-door skill")
+        return
+    text = front_door.read_text(encoding="utf-8")
+    required = (
+        "V-MAX LOAD",
+        "teacher-review-view-contract.md",
+        "vmax-golden-path-executor",
+        "LOAD_RECEIPT_MISSING",
+    )
+    for marker in required:
+        if marker not in text:
+            fail(f"front-door skill missing guard: {marker}")
+
+    orchestrator = (ROOT / "skills/vmax-course-orchestrator/SKILL.md").read_text(encoding="utf-8")
+    if "V-MAX_FRONT_DOOR_REQUIRED" not in orchestrator:
+        fail("course orchestrator can bypass canonical front door")
+
 def main() -> int:
     validate_versions()
     validate_skills()
@@ -147,6 +173,7 @@ def main() -> int:
     validate_drive_id_locations()
     validate_removed_skill_names()
     validate_repository_hygiene()
+    validate_front_door()
     if ERRORS:
         for error in ERRORS:
             print(f"ERROR: {error}")

@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.4
+# V-MAX Bootstrap 1.5
 
 ## 目的
 
@@ -11,6 +11,10 @@
 > 每一課的即時 Runtime State 不放 GitHub；正式保存在教師指定的 Google Drive `V-MAX 教材庫/00_Runtime_State`。
 
 ---
+
+## Front Door 與載入回條
+
+平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。第一個實質回應顯示 `V-MAX LOAD` 回條，列出本次實際讀取的 Plugin、Manifest、Executor、Runtime stage 與 Teacher Review View 版本。缺少回條或任一版本為 UNKNOWN 時停止，不得產生 STEP 1。
 
 ## 啟動順序
 

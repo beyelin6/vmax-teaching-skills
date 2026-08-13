@@ -5,7 +5,15 @@ description: 管理 V-MAX 單課教材專案的完整工作流、工作模式、
 
 # V-MAX Course Orchestrator
 
-版本：0.4.0
+版本：0.5.0
+
+## Canonical Entry Gate
+
+本技能不是 Golden Path 入口。任何「重新開始／繼續／完整建課／第一課」請求，必須先由 `vmax-teaching-skills` 讀取 Manifest、Runtime、Golden Path Executor 與 Teacher Review View，並顯示 `V-MAX LOAD` 回條。
+
+本技能的 Full Lesson Build 表只描述成果依賴與專案檔案路由，不是另一套 runtime stage machine。它不得產生 STEP 1 教材內容、不得選 Mode、不得顯示角色／視覺設定，也不得覆寫 `next_allowed_stage`。
+
+若尚未通過 Front Door：回報 `V-MAX_FRONT_DOOR_REQUIRED`，停止。
 
 ## 使命
 
@@ -151,7 +159,9 @@ Bee 老師可依四學切換角色：
 - 互學：比較主持者
 - 導學：統整與金句提示者
 
-## Full Lesson Build 標準流程
+## Full Lesson Build 成果依賴圖（非 Runtime Stage）
+
+下列只用於判斷專案成果缺少哪些檔案。正式執行順序、HOLD 與下一步一律依 `vmax-golden-path-executor`；不得把此圖顯示或執行為另一條教學流程。
 
 ```text
 sources_registered

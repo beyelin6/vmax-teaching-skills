@@ -1,0 +1,6 @@
+interface:
+  display_name: "V-MAX 專案管理器"
+  short_description: "管理 Baseline、Patch 與 Variant，不決定 Golden Path 階段"
+  default_prompt: "Use $vmax-course-orchestrator only after $vmax-teaching-skills has loaded the current V-MAX runtime and canonical workflow."
+policy:
+  allow_implicit_invocation: false

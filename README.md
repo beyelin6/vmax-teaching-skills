@@ -22,12 +22,20 @@ V-MAX 是臺灣國小國語教材轉錄、課程設計、視覺渲染與交付�
 
 完整模組以 `V-MAX_MANIFEST.md` 為準，不以本清單取代 Manifest。
 
+## ChatGPT Work 單技能安裝
+
+ChatGPT Work 不應把 `skills/` 下的所有模組逐一保存為個人技能。只安裝：
+
+`chatgpt-work/vmax-teaching-skills/SKILL.md`
+
+這個 Launcher 每次執行時從 GitHub `main` 按需載入 Manifest、Golden Path 與當前 stage 規則，可避免跨資料夾引用在個人技能轉存時失效，也避免批次保存造成 HTTP 422。
+
 ## 平台安裝與能力
 
 | 平台 | 安裝／載入方式 | 圖片執行 |
 |---|---|---|
 | Codex | 將 repository clone 為 Codex 可發現的 plugin／skills 目錄；本 repo 含 `.codex-plugin/plugin.json` | 當工作階段有圖片工具時直接渲染；否則 handoff |
-| ChatGPT | 將 repository 作為自訂 skill／plugin bundle 匯入，或以 GitHub 連線讀取；入口為 `V-MAX_BOOTSTRAP.md` | 只有目前 ChatGPT 工作階段提供圖片工具時直接渲染 |
+| ChatGPT Work | 只安裝 `chatgpt-work/vmax-teaching-skills/SKILL.md`；由 Launcher 透過 GitHub 按需載入現行規則 | 只有目前 ChatGPT 工作階段提供圖片工具時直接渲染 |
 | Gemini / Gemini CLI | 將 `skills/` 暴露給 Gemini 的 skills／檔案工作區，並把 Bootstrap 設為入口；如用 API，另行配置圖片模型與憑證 | 有 image tool/API 才直接渲染，文字模型只有 prompt 不算完成 |
 | Canva | 以 `adapters/canva.md` 與 Render Request 作為橋接 | 需有實際建立／編輯、匯出與重檢能力 |
 
