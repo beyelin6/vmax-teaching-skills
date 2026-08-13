@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.6
+# V-MAX Workflow HOLD Regression Cases 1.7
 
 ## 用途
 
@@ -106,6 +106,53 @@ FAIL：使用舊 `01_來源主檔 / 02_生成腳本 / 03_角色與視覺資產 /
 
 ---
 
+## W-18｜HOLD 不得外露機器格式或空白程式碼框
+PASS：
+- 教師確認卡使用正常中文標題、表格與條列。
+- JSON／YAML／schema 留在系統內，除非教師明確要求。
+- 輸出前移除空白程式碼框、重複 Markdown 圍欄與 internal key。
+- 一次只呈現當前階段內容。
+
+BLOCKER：
+- 大段 JSON 成為主要審核畫面。
+- 教師未要求卻顯示 machine payload。
+- 畫面出現空白灰框或空程式碼區塊。
+- STEP 2.5 確認卡同時展開 STEP 2.6 或六詩節後續教學。
+
+分類：`HOLD_MACHINE_PAYLOAD_LEAK / EMPTY_CODE_FENCE / STAGE_CONTENT_LEAK`
+
+## W-19｜語文字詞來源狀態必須明確
+PASS：
+- 每個生字、形近字、多音字、例詞、部首提示或成語標示教材確認／辭典核對／AI 建議待確認／尚待核對／來源衝突。
+- 課本生字欄為本課讀音第一來源。
+- 多音字例詞逐詞核對。
+- 部首、偏旁與辨形口訣逐字核對。
+
+BLOCKER：
+- 尚待核對內容宣告為已鎖定。
+- 只查單字條目就自行推定所有例詞讀音。
+- 為押韻編造錯誤部首或偏旁提示。
+- `SOURCE_CHECK_PENDING` 或 `SOURCE_CONFLICT` 尚存仍前進。
+
+分類：`SOURCE_STATUS_MISSING / UNVERIFIED_LANGUAGE_LOCK / COMPONENT_LABEL_ERROR`
+
+## W-20｜STEP 2.5 必須停在 HOLD 2.5
+PASS：
+- STEP 2.5 只呈現形近字、多音字與語文輻射審核。
+- 列出尚待核對項目。
+- 停在 HOLD 2.5。
+- 教師確認後只進 STEP 2.6，再停 HOLD 2.6。
+
+BLOCKER：
+- 同一回覆宣告或展開 STEP 2.75。
+- STEP 2.5 直接展開六詩節教學迴圈。
+- HOLD 2.5 直接跳 Teacher Intent Lock。
+- HOLD 2.5 指向角色、視覺、頁數或逐頁腳本。
+
+分類：`SKIPPED_HOLD / STAGE_LEAP / WRONG_NEXT_STAGE_POINTER`
+
+---
+
 ## 整體 PASS
 
 ```yaml
@@ -122,6 +169,9 @@ workflow_hold_regression:
   drive_archive_structure: PASS
   no_template_drift: PASS
   no_premature_page_lock: PASS
+  teacher_ui_no_machine_payload: PASS
+  language_source_status: PASS
+  step2_5_stops_at_hold: PASS
   single_stage_advance: PASS
 ```
 
