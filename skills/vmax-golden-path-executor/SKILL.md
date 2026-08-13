@@ -5,7 +5,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 # V-MAX Golden Path Executor
 
-版本：1.3
+版本：1.4
 
 ## 目的
 
@@ -86,7 +86,28 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ---
 
-## D. STEP 1 專用 Guard｜教材身分先讀對
+## D. 教師審核輸出 Guard
+
+每個 HOLD 只輸出教師可讀確認卡：
+
+- 使用正常中文標題、精簡表格與條列；不直接展示 JSON、YAML、schema、internal key 或空白程式碼框。
+- 一次只呈現當前階段需要確認的內容，不混入下一階段完整分析。
+- Machine payload 留在系統內；只有教師明確要求檢視資料格式或正在除錯時才顯示。
+- 輸出前檢查並移除空白 Markdown 圍欄、重複程式碼框與多餘的轉義網址參數。
+
+涉及生字、形近字、多音字、注音、部首／偏旁、教材詞語或成語時：
+
+1. 標示教材已確認、教育部辭典已核對、AI 建議待確認、尚待來源核對或來源衝突。
+2. 課本生字欄為本課讀音第一來源；教育部辭典負責補充與驗證。
+3. 多音字例詞逐詞核對，不從單字讀音自行類推。
+4. 部首、偏旁與辨形口訣逐字核對，不為求好記編造錯誤說法。
+5. 任何尚待核對或來源衝突項目不得宣告鎖定，也不得解鎖下一階段。
+
+違反：`HOLD_MACHINE_PAYLOAD_LEAK / EMPTY_CODE_FENCE / SOURCE_STATUS_MISSING / UNVERIFIED_LANGUAGE_LOCK`。
+
+---
+
+## E. STEP 1 專用 Guard｜教材身分先讀對
 
 STEP 1 必須載入：
 - `core/governance/step1-source-anchor-policy.md`
@@ -104,7 +125,7 @@ STEP 1 必須載入：
 
 ---
 
-## E. STEP 2.5 專用 Guard｜生字／多音字不得再跑回舊規則
+## F. STEP 2.5 專用 Guard｜生字／多音字不得再跑回舊規則
 
 STEP 2.5 必須同時載入：
 - `core/director/knowledge-lab-ordering-policy.md`
@@ -136,11 +157,11 @@ STEP 2.5 必須同時載入：
 - 形近字：大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示。
 - 多音字：同一大字＋不同讀音＋語意／情境＋例詞／例句＋回到課文判斷。
 
-完成後顯示 `HOLD 2.5`。
+完成後只顯示教師可讀的 `HOLD 2.5` 確認卡並停下。不得在同一回覆展開 STEP 2.6、Teacher Intent Lock、六詩節教學迴圈或其他後續分析。
 
 ---
 
-## F. STEP 2.6 專用 Guard｜成語表達不可掉落
+## G. STEP 2.6 專用 Guard｜成語表達不可掉落
 
 依 `core/director/idiom-expression-visualization-policy.md`。
 
@@ -158,7 +179,7 @@ STEP 2.5 必須同時載入：
 
 ---
 
-## G. Text-Embedded Language Guard
+## H. Text-Embedded Language Guard
 
 進 Lesson Map、Knowledge Lab、Slide Architecture 後，只要處理語詞／句型／修辭，必須載入：
 
@@ -173,7 +194,7 @@ STEP 2.5 必須同時載入：
 
 ---
 
-## H. Lesson Visual Map Guard
+## I. Lesson Visual Map Guard
 
 依 `core/visual/lesson-visual-map.md`。
 
@@ -187,7 +208,7 @@ STEP 2.5 必須同時載入：
 
 ---
 
-## I. Delivery / Drive Guard
+## J. Delivery / Drive Guard
 
 進入 Full Renderer 時必須載入：
 
@@ -211,7 +232,7 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 ---
 
-## J. Anti-template / Legacy Guard
+## K. Anti-template / Legacy Guard
 
 以下視為錯誤：
 - STEP 3／STEP 4 舊流程名稱復活
