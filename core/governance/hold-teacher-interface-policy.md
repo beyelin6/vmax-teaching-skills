@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.2
+# V-MAX HOLD Teacher Interface Policy 1.3
 
 ## 定位
 
@@ -53,6 +53,8 @@
 - 用 internal key 取代教師語言。
 - 因 downstream 需要結構化資料，就把結構化資料當 HOLD UI。
 - 在 HOLD 結尾列出多個後續階段，暗示一次確認可連跑。
+- 未經教師要求直接展示 JSON 物件、YAML payload、internal key 或空白程式碼框。
+- 同一張確認卡混入下一階段的完整分析結果。
 
 若違反上述規則，該 HOLD 狀態標記 `MISSING_INTERFACE`，不可直接往下一階段。
 
@@ -75,6 +77,21 @@
 若該步是 AI 教學價值判讀，不能只給分類結果；必須有足以讓教師判斷的理由、取捨與風險，並在 `HOLD 2` 停下來。
 
 ---
+
+
+### C1. 來源狀態標示
+
+涉及生字、形近字、多音字、注音、部首／偏旁、教材詞語或成語時，每一項至少標示下列狀態之一：
+
+- `TEXTBOOK_CONFIRMED`｜教材已確認
+- `MOE_DICTIONARY_VERIFIED`｜教育部辭典已逐詞核對
+- `AI_RECOMMENDATION_WAITING_TEACHER`｜AI 建議，待教師確認
+- `SOURCE_CHECK_PENDING`｜尚待教材來源核對
+- `SOURCE_CONFLICT`｜教材來源互相衝突
+
+教師可讀畫面使用中文狀態，不以 internal key 取代說明。任何 `SOURCE_CHECK_PENDING` 或 `SOURCE_CONFLICT` 項目不得寫成「已鎖定」，也不得據此前進下一階段。
+
+部首、偏旁及辨形口訣必須逐字核對；不得為押韻或易記而編造錯誤部件名稱。多音字例詞須逐詞核對，不能只查單字條目後自行類推。課本生字欄為本課讀音第一來源，教育部辭典用於補充與驗證。
 
 ## D. Recommendation-first｜推薦先完整，操作再簡化
 
@@ -138,6 +155,8 @@ HOLD 1
 → HOLD 2
 → STEP 2.5
 → HOLD 2.5
+→ STEP 2.6
+→ HOLD 2.6
 → Teacher Intent Lock
 → Lesson Map
 ```
@@ -146,7 +165,8 @@ HOLD 1
 
 - HOLD 1 確認後，只做 STEP 2，然後停在 HOLD 2。
 - HOLD 2 確認後，只做 STEP 2.5，然後停在 HOLD 2.5。
-- HOLD 2.5 確認後，才進 Teacher Intent Lock；不得直接開始 Slide Architecture。
+- HOLD 2.5 確認後，只做 STEP 2.6，然後停在 HOLD 2.6；不得跳到 Teacher Intent Lock 或 Slide Architecture。
+- HOLD 2.6 確認後，才進 Teacher Intent Lock。
 - Session Map 尚未成立前，不得宣告完整教學版總頁數。
 
 若一個「確認」後連續跑過兩個以上需教師介入的決策層，標記：
@@ -163,7 +183,8 @@ HOLD 1
 
 - HOLD 1 下一步只能是 `STEP 2 AI 教學價值判讀`。
 - HOLD 2 下一步只能是 `STEP 2.5 語文輻射分析與教師選擇`。
-- HOLD 2.5 下一步只能是 `Teacher Intent Lock`。
+- HOLD 2.5 下一步只能是 `STEP 2.6 成語表達與視覺化確認`。
+- HOLD 2.6 下一步只能是 `Teacher Intent Lock`。
 
 若文字把下一步寫成「課程結構與簡報模組配置」「頁數規劃」「逐頁腳本」，但正式流程尚未到該階段，標記 `WRONG_NEXT_STAGE_POINTER`。
 
