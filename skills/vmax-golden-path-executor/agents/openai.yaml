@@ -1,0 +1,6 @@
+interface:
+  display_name: "V-MAX Golden Path 執行器"
+  short_description: "依正式階段、HOLD 與教師審核契約執行單課流程"
+  default_prompt: "Use $vmax-golden-path-executor after $vmax-teaching-skills verifies versions, runtime state, and the teacher review contract."
+policy:
+  allow_implicit_invocation: true

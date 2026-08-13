@@ -1,4 +1,4 @@
-# V-MAX Manifest 3.2
+# V-MAX Manifest 3.3
 
 ## 角色
 
@@ -9,9 +9,12 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.2
+vmax_manifest_version: 3.3
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
+front_door:
+  path: skills/vmax-teaching-skills/SKILL.md
+  current_version: 1.0
 runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
@@ -25,6 +28,9 @@ main_workflow:
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
   current_version: 1.5
+course_orchestrator:
+  path: skills/vmax-course-orchestrator/SKILL.md
+  current_version: 0.5.0
 source_library_policy: core/governance/source-library-policy.md
 lesson_master_preflight:
   path: core/governance/lesson-master-preflight.md
@@ -47,7 +53,7 @@ teacher_review_view:
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.8
+  current_version: 1.9
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.9

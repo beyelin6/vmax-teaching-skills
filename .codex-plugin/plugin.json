@@ -1,6 +1,6 @@
 {
   "name": "vmax-teaching-skills",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "description": "V-MAX Taiwanese elementary Chinese teaching workflow and verified image rendering skills",
   "author": {
     "name": "beyelin6"
@@ -13,6 +13,6 @@
     "developerName": "beyelin6",
     "category": "Education",
     "capabilities": [],
-    "defaultPrompt": "Load V-MAX_BOOTSTRAP.md and help me build or continue a V-MAX lesson package."
+    "defaultPrompt": ["Use $vmax-teaching-skills to start or continue a lesson.", "Use $vmax-teaching-skills to verify V-MAX versions and runtime."]
   }
 }

@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.8
+# V-MAX Workflow HOLD Regression Cases 1.9
 
 ## 用途
 
@@ -139,6 +139,24 @@ FAIL：使用舊 `01_來源主檔 / 02_生成腳本 / 03_角色與視覺資產 /
 
 分類：`RAW_SCHEMA_DUMP / SOURCE_STATUS_MISSING / UNVERIFIED_ITEM_LOCKED / SKIPPED_HOLD`
 
+## W-20｜ChatGPT 更新後仍走舊 Orchestrator
+
+輸入情境：教師要求重新開始第一課。模型未顯示版本回條，直接宣布引導模式，STEP 1 顯示 raw JSON、Mode A、AI 教學主軸、visualStructureRecommendation 與保留角色 Bone。
+
+### PASS
+- 第一行顯示 `V-MAX LOAD`，版本來自實際讀取檔案。
+- 先由 `vmax-teaching-skills` 路由至 Golden Path Executor。
+- Course Orchestrator 只管理專案成果，不產生 STEP 1。
+- 角色 Bone 只記為 deferred input，不在 STEP 1 顯示。
+- STEP 1 只呈現教材真值、來源與缺口的 Teacher Review View。
+
+### BLOCKER
+- 沒有載入回條仍開始分析。
+- Course Orchestrator 的成果依賴圖被當成正式流程。
+- STEP 1 顯示 Mode、角色、視覺建議或 AI 教學主軸。
+
+分類：`LOAD_RECEIPT_MISSING / V-MAX_FRONT_DOOR_REQUIRED / WRONG_EXECUTOR_SELECTED / PREMATURE_DESIGN_LOCK / RAW_SCHEMA_DUMP`
+
 ---
 
 ## 整體 PASS
@@ -165,6 +183,9 @@ workflow_hold_regression:
   step2_5_review_table: PASS
   source_status_visible: PASS
   unverified_not_locked: PASS
+  front_door_loaded: PASS
+  load_receipt_rendered: PASS
+  course_orchestrator_not_stage_machine: PASS
 ```
 
 任一 FAIL，不得宣告工作流回歸測試完成。

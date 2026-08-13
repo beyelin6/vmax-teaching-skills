@@ -1,0 +1,6 @@
+interface:
+  display_name: "V-MAX 國語教材總入口"
+  short_description: "先驗證版本、母檔與階段，再執行完整 Golden Path"
+  default_prompt: "Use $vmax-teaching-skills to load the current V-MAX version and continue only the next approved lesson stage."
+policy:
+  allow_implicit_invocation: true
