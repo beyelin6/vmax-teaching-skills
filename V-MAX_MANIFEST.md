@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.8
+# V-MAX Manifest 2.9
 
 ## 角色
 
@@ -9,12 +9,13 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.8
+vmax_manifest_version: 2.9
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
+  location_authority: runtime/lesson-state.md
   root_folder_id: 1AOjYwALGVNWu99b-SnjBUSALEDrlReMt
   index_title: V-MAX_Runtime_Index
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
@@ -25,6 +26,12 @@ executor:
   path: skills/vmax-golden-path-executor/SKILL.md
   current_version: 1.3
 source_library_policy: core/governance/source-library-policy.md
+lesson_master_preflight:
+  path: core/governance/lesson-master-preflight.md
+  current_version: 1.0
+task_knowledge_requirement_registry:
+  path: core/governance/task-knowledge-requirement-registry.md
+  current_version: 1.0
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
   current_version: 1.3
@@ -68,16 +75,16 @@ prestudy_language_selection:
   current_version: 1.1
 prestudy_worksheet:
   path: skills/prestudy-worksheet/SKILL.md
-  current_version: 1.2
+  current_version: 1.3
 postlesson_short_writing_worksheet:
   path: skills/postlesson-short-writing-worksheet/SKILL.md
-  current_version: 1.2
+  current_version: 1.3
 worksheet_regression:
   path: tests/worksheet-regression-cases.md
   current_version: 1.2
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
-  current_version: 1.4
+  current_version: 1.5
 google_drive_lesson_archive:
   path: skills/google-drive-lesson-archive/SKILL.md
   current_version: 1.0
@@ -88,6 +95,12 @@ image_renderer:
   path: skills/vmax-image-renderer/SKILL.md
   current_version: 1.0
   request_schema: skills/vmax-image-renderer/references/render-request-schema.md
+typography_bridge:
+  path: skills/vmax-typography-bridge/SKILL.md
+  current_version: 1.1
+vqs_quality_validator:
+  path: skills/vqs-quality-validator/SKILL.md
+  current_version: 0.2.0
 adapters:
   chatgpt: adapters/chatgpt.md
   codex: adapters/codex.md
@@ -99,7 +112,7 @@ gemini_source_analysis:
   report_schema: schemas/gemini-source-analysis-report.md
   lesson_master_index_schema: schemas/lesson-master-index.md
   lkb_patch_schema: schemas/lkb-patch.md
-  task_requirement_registry: adapters/gemini/task-knowledge-requirement-registry.md
+  task_requirement_registry: core/governance/task-knowledge-requirement-registry.md
   regression: tests/gemini-source-analysis-regression-cases.md
   adapter_version: 2.3
 ```
@@ -117,6 +130,8 @@ runtime/lesson-state.md
 ```
 
 不得以模型記憶、舊對話、舊簡報取代 Drive 最新 State。
+
+固定 Drive ID 只允許出現在 Manifest、`runtime/lesson-state.md` 與 `skills/google-drive-lesson-archive/SKILL.md` 三個治理位置；一般內容技能必須引用治理文件，不得複製 ID。此 repository 若公開發布前要移除個人位置，應在這三個位置同步參數化。
 
 ---
 
@@ -230,10 +245,10 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 ## Worksheet Resolution
 
 ### Pre-study Worksheet
-權威：`skills/prestudy-worksheet/SKILL.md` v1.2。
+權威：`skills/prestudy-worksheet/SKILL.md` v1.3。
 
 ### Post-lesson Short Writing Worksheet
-權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.2。
+權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.3。
 
 兩份學習單共同硬規格：
 
@@ -252,11 +267,14 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 
 
 共同交付規格：
+- 先通過 Lesson Master Preflight 與任務 Coverage Diff；母檔不足時只增補核准 Patch。
+- 正式 PNG 必須經 `vmax-image-renderer` 實際生成與重檢，狀態為 `RENDER_VERIFIED`。
 - 形近字／多音字使用「短直式注音欄＋可寫二至三個國字的長造詞線」。
 - 單課與合併檔名課次固定補零為兩位數，例如 `第07課`、`第07至12課`。
 - 每批保留全部單課 PNG，並分設合併 PDF 的印刷版與分享版。
 - 分享版壓縮後仍須重新渲染全部頁面；可見模糊或鋸齒即 FAIL。
 - 短文單人物可依真實留白適度放大，但不得侵入題幹、工具箱或正式書寫線。
+- 年級、學期、科目、出版社與課次由 Output Profile 參數化，不把 `四上` 寫成通用固定值。
 
 預習單與短文單可共享視覺家族，但功能必須分開：
 - 預習單：探索／理解／預備

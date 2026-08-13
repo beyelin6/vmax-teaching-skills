@@ -5,7 +5,7 @@ description: 將已核准的課文知識、核心詞語、句型、修辭與學�
 
 # V-MAX Post-lesson Short Writing Worksheet Skill
 
-版本：1.2
+版本：1.3
 
 ## 目的
 
@@ -14,6 +14,14 @@ description: 將已核准的課文知識、核心詞語、句型、修辭與學�
 核心定位：
 
 > 短文單不是傳統作文稿紙；它是一張 A4 橫式、圖像化、可直接啟動寫作的任務單。先幫學生找到畫面與素材，再提供可自由選用的語文 Bonus，最後留下足夠空間完成短文或童詩。
+
+## 必讀與前置閘門
+
+1. 先執行 `core/governance/lesson-master-preflight.md`。
+2. 依 `core/governance/task-knowledge-requirement-registry.md` 的 Post-lesson Writing Worksheet 最低需求執行 Coverage Diff。
+3. 只有 `LKB_SUFFICIENT_FOR_TASK` 才進入寫作設計；有缺口時先建立並核准 LKB Patch。
+4. 完整讀取 `references/design-rules.md`，執行語詞評分、困難題材轉譯及內容檢核。
+5. 需要實際 PNG／PDF 時使用 `skills/vmax-image-renderer/SKILL.md`，並遵守 `skills/vmax-typography-bridge/SKILL.md`。
 
 ---
 
@@ -65,7 +73,7 @@ Bonus 的核心：**可選，不要求全部使用。**
 
 可依本課放入：
 
-1. 固定八個可實際寫進本次文章的課文重要語詞／生字相關詞語
+1. 依 Output Profile 設定數量的可入文課文重要語詞／生字相關詞語（Bee 老師目前預設 8 個）
 2. 四字語詞／成語
 3. 句型
 4. 修辭／寫作手法
@@ -75,7 +83,7 @@ Bonus 的核心：**可選，不要求全部使用。**
 
 > 不用全部用，挑你喜歡、用得自然的就好。
 
-學生可勾選實際想使用的工具。八個語詞不要求全部使用，頁面明示「選二至三個試試看」。
+學生可勾選實際想使用的工具。目前採用八個語詞時不要求全部使用，頁面明示「選二至三個試試看」。
 
 若工具太多導致字級低於 12 pt，必須減少工具數量，不得縮字硬塞。
 
@@ -183,15 +191,15 @@ AI 依 Teacher Intent、Lesson Map、STEP 2.5、STEP 2.6 與本課寫作任務�
 
 ### G2. 書寫線
 
-- 四年級散文通常安排約十至十二條長線，行距以已確認的第二課、第六課為舒適基準。
+- 四年級散文通常安排約十至十二條長線；實際行距依年級 Output Profile 與本系列核准基準頁決定，不把特定課次寫成通用標準。
 - 不以密集格線暗示 150～200 字；版面過密時先減少提示、Bonus 或線數，不縮窄行距。
 - 童詩依詩節分組，預設三節、每節三至四行，節與節之間保留明顯段距。
 
 ### G3. 圖片、PDF 與命名
 
-- 正式 PNG 固定為 3508 × 2480；保持比例，以白邊補足，不拉伸、不裁切。
-- 單課檔名固定補零為兩位數：`四上國語_第NN課_課名_課後短文.png`；童詩使用 `_課後仿作.png`。
-- 合併範圍同樣使用兩位數，例如 `四上國語_第07至12課_課後短文_印刷版.pdf` 與 `四上國語_第07至12課_課後短文_分享版.pdf`。
+- 正式 A4 橫式 300 dpi PNG 為 3508 × 2480；若 Output Profile 指定其他規格，保持實際尺寸與可讀性，不拉伸、不裁切。
+- 單課檔名由年級、學期、科目與課次參數產生：`{年級}{學期}_{科目}_第NN課_{課名}_課後短文.png`；童詩使用 `_課後仿作.png`。
+- 合併範圍使用兩位數，例如 `{年級}{學期}_{科目}_第07至12課_課後短文_印刷版.pdf` 與對應分享版。
 - 每批保留全部單課 PNG，並使用 `單課PNG／合併PDF／印刷版／分享版` 的資料夾結構。
 - 印刷版保留 300 dpi；分享版約 180–200 dpi，但八個語詞、句型、檢核文字與書寫線仍須清楚。
 - 兩版 PDF 都必須重新渲染全部頁面檢查；分享版若有模糊或鋸齒，即使檔案較小也不得通過。
@@ -200,7 +208,13 @@ AI 依 Teacher Intent、Lesson Map、STEP 2.5、STEP 2.6 與本課寫作任務�
 
 ### G4. 歸檔安全
 
-GitHub 只保存平台中立的資料夾結構與命名規則。實際 Google Drive folder ID、文件 ID 與每課 Runtime State 不得寫入公開技能檔；依 `runtime/lesson-state.md` 與 Drive Runtime Index 取得。
+學習單技能只保存平台中立規則；固定 Drive 位置僅由 Manifest、Runtime Contract 與 Archive Skill 管理，不在本技能重複維護。
+
+### G5. Render Contract
+
+- 每張正式頁面建立 Render Request，實際生成／合成並重新檢查最終 PNG。
+- 語詞、句型、題目與檢核文字使用可控正式繁體中文字層。
+- 只有 `RENDER_VERIFIED` 可进入 PDF 与交付；`IMAGE_HANDOFF_READY` 不是成品。
 
 ---
 
@@ -211,10 +225,17 @@ postlesson_short_writing_worksheet:
   format: A4_LANDSCAPE
   title:
   lesson_id:
+  source_lkb_version:
+  lesson_master_preflight: LKB_SUFFICIENT_FOR_TASK
+  grade:
+  semester:
+  subject:
+  publisher:
   writing_mode: SHORT_PROSE | POETRY | FLEXIBLE
   prompt:
   idea_starters: []
   bonus_toolbox:
+    vocabulary_target_count: 8
     vocabulary: []
     idioms_or_four_character_phrases: []
     sentence_patterns: []
@@ -253,8 +274,9 @@ postlesson_short_writing_worksheet:
 - 散文書寫線過密，或未保留中年級舒適行距。
 - 課次未補零、合併 PDF 課次範圍錯誤，或不同用途檔案互相覆蓋。
 - 單課 PNG 未保留、PNG 無法完整解碼，或分享版重新渲染後文字模糊。
+- 未通過母檔 Coverage Diff、使用未核准 Patch，或沒有 `RENDER_VERIFIED` 實際圖片。
 
-分類：`WRITING_WORKSHEET_LAYOUT_FAIL / BONUS_OVERLOAD / WRITING_SCAFFOLD_FAIL / WRITING_TOOL_DRIFT / ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / WRITING_LINE_DENSITY_FAIL / WORKSHEET_FILENAME_FAIL / WORKSHEET_EXPORT_QUALITY_FAIL`
+分類：`WRITING_WORKSHEET_LAYOUT_FAIL / BONUS_OVERLOAD / WRITING_SCAFFOLD_FAIL / WRITING_TOOL_DRIFT / ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / WRITING_LINE_DENSITY_FAIL / WORKSHEET_FILENAME_FAIL / WORKSHEET_EXPORT_QUALITY_FAIL / LKB_COVERAGE_INSUFFICIENT / RENDER_UNVERIFIED`
 
 ---
 

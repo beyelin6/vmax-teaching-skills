@@ -1,0 +1,4 @@
+interface:
+  display_name: "V-MAX 國語預習單"
+  short_description: "先驗證教材母檔，再製作並檢查可列印預習單"
+  default_prompt: "Use $prestudy-worksheet to verify the approved lesson master, design the worksheet, render the actual assets, and validate the final output."

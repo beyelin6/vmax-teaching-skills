@@ -75,7 +75,7 @@ lkb_coverage_diff:
 
 `LKB_ENRICHMENT_REQUIRED` 時只回讀與缺口相關的來源頁面，建立 `lkb-patch`。Patch 每個新增或修訂節點都要有來源定位、變更理由、影響的下游任務與原節點 ID；不得整份重跑。
 
-各任務的最低需求依 `adapters/gemini/task-knowledge-requirement-registry.md`；Patch 格式與 rebase 規則依 `schemas/lkb-patch.md`。
+各任務的最低需求依 `core/governance/task-knowledge-requirement-registry.md`；Patch 格式與 rebase 規則依 `schemas/lkb-patch.md`。
 
 Patch 狀態：
 

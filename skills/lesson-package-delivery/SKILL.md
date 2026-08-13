@@ -5,7 +5,7 @@ description: 組裝、檢查並交付 V-MAX 單課 Lesson Package，包括來源
 
 # V-MAX Lesson Package Delivery
 
-版本：1.4
+版本：1.5
 
 ## 目的
 
@@ -59,7 +59,7 @@ Render Request 遵循 `skills/vmax-image-renderer/references/render-request-sche
 學生可見內容正確、正式中文字／注音可驗證、學生頁無答案、PPTX 教師答案放講者備註、與 Teacher Intent / LVM / Text-Embedded rules 一致。
 
 ### Pre-study Worksheet
-遵循 `skills/prestudy-worksheet/SKILL.md` v1.1。
+遵循 `skills/prestudy-worksheet/SKILL.md` v1.3。
 
 最低交付檢查：
 - A4 橫式
@@ -67,9 +67,13 @@ Render Request 遵循 `skills/vmax-image-renderer/references/render-request-sche
 - 寫作／作答空間足夠
 - 不因塞內容縮字
 - 學生版無答案
+- Lesson Master Preflight 為 `LKB_SUFFICIENT_FOR_TASK`
+- 實際 PNG 為 `RENDER_VERIFIED`
+- 課次補零、單課 PNG、印刷版與分享版均符合命名及保存規則
+- 注音欄／造詞線比例與 PNG 完整解碼通過
 
 ### Post-lesson Short Writing Worksheet
-遵循 `skills/postlesson-short-writing-worksheet/SKILL.md` v1.1。
+遵循 `skills/postlesson-short-writing-worksheet/SKILL.md` v1.3。
 
 最低交付檢查：
 - A4 橫式
@@ -79,6 +83,10 @@ Render Request 遵循 `skills/vmax-image-renderer/references/render-request-sche
 - 學生可見必要閱讀文字在 A4 100% 列印時 **>= 12 pt**
 - 不因工具箱過多縮字
 - 學生版無完整示範答案
+- Lesson Master Preflight 為 `LKB_SUFFICIENT_FOR_TASK`
+- 實際 PNG 為 `RENDER_VERIFIED`
+- 語詞數量符合 Output Profile，人物不侵入書寫區
+- 單課 PNG、印刷版、分享版及重新渲染檢查均通過
 
 ### Worksheet Typography Gate
 
@@ -103,12 +111,7 @@ Drive 歸檔不得自行維護第二套資料夾結構；唯一權威：
 
 `skills/google-drive-lesson-archive/SKILL.md`
 
-固定根目錄：
-
-```text
-V-MAX 教材庫
-folder_id: 1d1vCEw-BzFiR_DyGYDM1f3aovrKODIaA
-```
+固定根目錄由 `skills/google-drive-lesson-archive/SKILL.md` 與 Manifest 取得，不在 Delivery Skill 複製 folder ID。
 
 冊別層依教師目前教材，例如：
 
@@ -171,8 +174,17 @@ lesson_package_delivery:
   teaching_pptx: PASS | N/A_BY_TEACHER
   prestudy_worksheet: PASS | N/A_BY_TEACHER
   postlesson_short_writing_worksheet: PASS | N/A_BY_TEACHER
+  worksheet_lkb_coverage: PASS
+  worksheet_render_verified: PASS
   worksheet_min_font_12pt: PASS
   worksheet_export_scale: PASS
+  worksheet_filename_and_range: PASS
+  worksheet_single_png_preserved: PASS
+  worksheet_print_share_separated: PASS
+  worksheet_share_render_quality: PASS
+  worksheet_png_decode: PASS
+  worksheet_zhuyin_word_space: PASS | N/A
+  writing_character_scale_safe: PASS | N/A
   worksheet_regression: PASS
   workflow_regression: PASS
   google_drive_archive: PASS | BLOCKED
@@ -180,7 +192,7 @@ lesson_package_delivery:
 
 Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 PASS 才能宣告完整交付。
 
-若 `worksheet_min_font_12pt` 或 `worksheet_export_scale` FAIL，不得把學習單列為 PASS。
+上述任一必要 worksheet gate FAIL 時，不得把學習單列為 PASS。
 
 ---
 
@@ -194,13 +206,15 @@ Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 P
 - 10 項交付物依類別實際存在
 - 所有必要圖片均為 `RENDER_VERIFIED`，且可重新開啟檢查
 - 預習單與短文單通過 12 pt 字級與匯出縮放檢查
+- 單課 PNG 全部保留；印刷版與分享版分開且課次範圍正確
+- 分享版及修改後的 PDF 已逐頁重新渲染檢查
 - 檔名可辨識
 - Drive list/search 可重新查到
 
 不得只建立空資料夾，也不得只說「已上傳」而沒有 Connector / API 驗證。
 
 失敗：
-`LESSON_PACKAGE_INCOMPLETE / RENDER_ASSET_MISSING / RENDER_UNVERIFIED / DRIVE_ARCHIVE_STRUCTURE_DRIFT / DRIVE_ARCHIVE_UNVERIFIED / VERSION_FOLDER_COLLISION / WORKSHEET_FONT_TOO_SMALL / WORKSHEET_EXPORT_SCALE_FAIL`
+`LESSON_PACKAGE_INCOMPLETE / RENDER_ASSET_MISSING / RENDER_UNVERIFIED / DRIVE_ARCHIVE_STRUCTURE_DRIFT / DRIVE_ARCHIVE_UNVERIFIED / VERSION_FOLDER_COLLISION / WORKSHEET_FONT_TOO_SMALL / WORKSHEET_EXPORT_SCALE_FAIL / WORKSHEET_FILENAME_FAIL / WORKSHEET_RANGE_FAIL / WORKSHEET_ARCHIVE_INCOMPLETE / WORKSHEET_PNG_TRUNCATED / ZHUYIN_WORD_SPACE_FAIL`
 
 ---
 

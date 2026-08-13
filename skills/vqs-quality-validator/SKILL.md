@@ -5,7 +5,7 @@ description: 依 V-MAX Quality Standard（VQS）檢查 Baseline Lesson Package�
 
 # VQS Quality Validator
 
-版本：0.1.0
+版本：0.2.0
 
 ## 使命
 
@@ -104,6 +104,17 @@ AI 延伸不得混入 Official Knowledge。
 - 教學關鍵繁體中文、注音、標點與教材內容逐字正確。
 - 關鍵文字無法由圖片模型可靠產生時，已使用可控正式文字層。
 
+### 8. 學習單母檔與交付
+
+若包含預習單或課後短文單，確認：
+
+- Lesson Master Index 與核准 LKB 可重新讀取，Coverage Diff 為 `LKB_SUFFICIENT_FOR_TASK`。
+- LKB Patch 若存在，已核准並合併成新版本。
+- 每張正式 PNG 為 `RENDER_VERIFIED`，不是 prompt 或 handoff。
+- A4 實際字級、安全邊界、課次補零、PDF 範圍與 PNG 解碼通過。
+- 單課 PNG 保留，印刷版與分享版分開；分享版逐頁重渲染仍清楚。
+- 預習單注音欄與造詞線比例正確；短文人物不侵入書寫區。
+
 ## 輸出
 
 建立：
@@ -136,6 +147,7 @@ AI 延伸不得混入 Official Knowledge。
 - Manifest 無法追溯。
 - 未替換變數、重複節點或嚴重溢出。
 - 必要圖片不存在、未重檢，或把 prompt／handoff 誤列為完成品。
+- 學習單繞過母檔、使用未核准 Patch，或任一正式交付 gate 未通過。
 
 ## 完成規則
 

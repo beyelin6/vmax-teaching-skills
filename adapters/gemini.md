@@ -16,7 +16,7 @@
 6. 當前 stage 需要的 policy / skill
 7. `adapters/gemini/source-analysis-contract.md`
 8. `schemas/lesson-master-index.md`
-9. `adapters/gemini/task-knowledge-requirement-registry.md`
+9. `core/governance/task-knowledge-requirement-registry.md`
 
 若平台無法直接讀 GitHub，應透過可用的 Repository / Drive / file bridge 導入以上檔案；若仍無法載入，回報 `BOOTSTRAP_BLOCKED`，不得自行猜流程。
 
@@ -55,7 +55,7 @@ Gemini 在此情境的第一個實質回應必須是來源盤點與分析進度�
 
 有效母檔存在時不得為了「重新分析得更完整」而自行重跑。先載入既有 LKB、保留核准決策，只處理 Runtime 指定的下一階段。若教師要求重做分析，或來源版本確實改變，才建立新版，不覆蓋舊版。
 
-但母檔有效不代表對每個下游任務都已足夠。開始預習單、簡報、教案、評量、活動或圖片前，先依 `adapters/gemini/task-knowledge-requirement-registry.md` 建立 `required_knowledge`，再和 LKB 做 Coverage Diff；Gemini 可增加該課特殊需求，不得刪除 Registry 最低要求。
+但母檔有效不代表對每個下游任務都已足夠。開始預習單、簡報、教案、評量、活動或圖片前，先依 `core/governance/task-knowledge-requirement-registry.md` 建立 `required_knowledge`，再和 LKB 做 Coverage Diff；Gemini 可增加該課特殊需求，不得刪除 Registry 最低要求。
 
 - 無缺口：`LKB_SUFFICIENT_FOR_TASK`，直接執行。
 - 有來源可補的缺口：`LKB_ENRICHMENT_REQUIRED`，只補查相關教冊頁面並建立 LKB Patch。

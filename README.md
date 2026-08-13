@@ -17,6 +17,7 @@ V-MAX 是臺灣國小國語教材轉錄、課程設計、視覺渲染與交付�
 - `learning-module-builder`、`teaching-strategy-builder`、`presentation-engine`：建立學習模組、教學策略與多平台輸出。
 - `vmax-image-renderer`：探測平台圖片能力，實際生圖／改圖／合成／重檢，或產生可執行 handoff。
 - `prestudy-worksheet`、`postlesson-short-writing-worksheet`：定義預習單與課後短文單。
+- `vmax-typography-bridge`：統一繁體中文字體 DNA、可讀性與 Canva 映射。
 - `vqs-quality-validator`、`lesson-package-delivery`：品質驗證與正式交付。
 
 完整模組以 `V-MAX_MANIFEST.md` 為準，不以本清單取代 Manifest。
@@ -44,3 +45,7 @@ V-MAX 是臺灣國小國語教材轉錄、課程設計、視覺渲染與交付�
 - `IMAGE_TOOL_BLOCKED`：本次環境沒有可用圖片工具。
 
 詳細契約見 `skills/vmax-image-renderer/SKILL.md`。
+
+## 教材母檔
+
+所有下游任務先讀取 Lesson Master Index 與核准 LKB，再執行任務 Coverage Diff。資料足夠就重用；不足時只增補帶來源的 LKB Patch，不重跑整份教冊。

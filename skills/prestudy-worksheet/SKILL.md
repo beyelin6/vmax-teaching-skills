@@ -5,7 +5,7 @@ description: 將教材鎖定主檔或已確認的預習題目製成國小國語�
 
 # V-MAX Pre-study Worksheet Skill
 
-版本：1.2
+版本：1.3
 
 ## 目的
 
@@ -14,6 +14,16 @@ description: 將教材鎖定主檔或已確認的預習題目製成國小國語�
 核心定位：
 
 > 預習單不是縮小版講義，也不是小考；它是一張 A4 橫式的「課前探索單」，讓學生先看見本課的重要語文線索、進入文本、留下可供課堂再利用的理解痕跡，並可在學後作為複習材料。
+
+## 必讀與前置閘門
+
+1. 先執行 `core/governance/lesson-master-preflight.md`。
+2. 依 `core/governance/task-knowledge-requirement-registry.md` 的 Pre-study Worksheet 最低需求執行 Coverage Diff。
+3. 只有 `LKB_SUFFICIENT_FOR_TASK` 才進入內容選擇；`LKB_ENRICHMENT_REQUIRED` 時先建立並核准 LKB Patch。
+4. 讀取 `references/worksheet-production-rules.md` 的雙版本、印刷安全與線性校對細則。
+5. 需要實際 PNG／PDF 時使用 `skills/vmax-image-renderer/SKILL.md`，並遵守 `skills/vmax-typography-bridge/SKILL.md`。
+
+沒有核准母檔、必要知識缺漏或 Patch 尚未核准時，不得直接憑上傳附件或聊天記憶製作預習單。
 
 ---
 
@@ -187,10 +197,10 @@ AI 不因易錯、複雜或字源有趣自行增加單一生字詳解；單字�
 
 ### H3. 圖片、PDF 與命名
 
-- 正式 PNG 固定為 3508 × 2480；保持比例，以白邊補足，不拉伸、不裁切。
+- 正式 A4 橫式 300 dpi PNG 為 3508 × 2480；若 Output Profile 指定其他紙張或 dpi，須保持實際尺寸與可讀性，不拉伸、不裁切。
 - 四邊實際非白內容至少保留 4.5 mm 安全白邊；不足時整頁等比例內縮並置中。
-- 單課檔名固定補零為兩位數：`四上國語_第NN課_課名_預習單.png`。
-- 合併範圍同樣使用兩位數，例如 `四上國語_第07至12課_課前預習單_印刷版.pdf` 與 `四上國語_第07至12課_課前預習單_分享版.pdf`。
+- 單課檔名由 `grade / semester / subject / lesson_number / lesson_title` 產生，課次固定補零為兩位數：`{年級}{學期}_{科目}_第NN課_{課名}_預習單.png`。
+- 合併範圍同樣使用兩位數，例如 `{年級}{學期}_{科目}_第07至12課_課前預習單_印刷版.pdf` 與對應分享版。
 - 每批保留全部單課 PNG，並使用 `單課PNG／合併PDF／印刷版／分享版` 的資料夾結構。
 - 印刷版保留 300 dpi 高品質；分享版約 180–200 dpi，但文字、注音、細框與書寫線仍須清楚。
 - 分享版壓縮後必須重新渲染全部頁面檢查；若出現模糊或鋸齒，即使檔案較小也不得通過。
@@ -200,6 +210,13 @@ AI 不因易錯、複雜或字源有趣自行增加單一生字詳解；單字�
 ### H4. 線性校對
 
 正式輸出前固定依序比對：課名與文體 → 形近字各組 → 多音字 → 句型 → 核心題與 Bonus → 角色與學生可見文字。局部錯字優先原位局部修正，不得因修一字而重生整頁；修正後重新核對字形、基線、括號、造詞線、背景接縫與全頁關鍵文字。
+
+### H5. Render Contract
+
+- 每張正式頁面建立 Render Request。
+- 必須實際生成／合成並重新檢查最終 PNG；prompt 或版面描述不是成品。
+- 教學關鍵繁體中文、注音、題幹與作答欄使用可控正式文字層。
+- 只有 `RENDER_VERIFIED` 可進入 PDF 與交付；無圖片工具時標記 `IMAGE_HANDOFF_READY`，不得宣稱完成。
 
 ---
 
@@ -211,6 +228,12 @@ prestudy_worksheet:
   use: PREVIEW_PLUS_REVIEW
   title:
   lesson_id:
+  source_lkb_version:
+  lesson_master_preflight: LKB_SUFFICIENT_FOR_TASK
+  grade:
+  semester:
+  subject:
+  publisher:
   module_selection: []
   language_items:
     shape_near: []
@@ -249,8 +272,9 @@ prestudy_worksheet:
 - 注音欄過長、造詞線不足二至三個國字，或兩者近似等長。
 - 課次未補零、合併 PDF 課次範圍錯誤，或不同用途檔案互相覆蓋。
 - PNG 無法完整解碼，或分享版重新渲染後文字模糊。
+- 未通過母檔 Coverage Diff、使用未核准 Patch，或沒有 `RENDER_VERIFIED` 實際圖片。
 
-分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / ZHUYIN_WORD_SPACE_FAIL / WORKSHEET_FILENAME_FAIL / WORKSHEET_EXPORT_QUALITY_FAIL`
+分類：`PRESTUDY_LAYOUT_FAIL / PRESTUDY_OVERLOAD / PRESTUDY_SCOPE_DRIFT / PRESTUDY_ANSWER_LEAK / WORKSHEET_FONT_TOO_SMALL / ZHUYIN_WORD_SPACE_FAIL / WORKSHEET_FILENAME_FAIL / WORKSHEET_EXPORT_QUALITY_FAIL / LKB_COVERAGE_INSUFFICIENT / RENDER_UNVERIFIED`
 
 ---
 
