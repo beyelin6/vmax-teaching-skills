@@ -1,4 +1,4 @@
-# V-MAX Worksheet Regression Cases 1.1
+# V-MAX Worksheet Regression Cases 1.2
 
 ## 用途
 
@@ -153,6 +153,93 @@
 
 ---
 
+## CASE WS-09｜直式注音欄與造詞線比例
+
+### PASS
+- 注音採直式書寫
+- 注音括號只保留一個完整直式注音欄所需寬度
+- 造詞線明顯較長，可寫二至三個國字
+- 同組形近字與欄位起點自然對齊
+
+### BLOCKER
+- 注音欄與造詞線近似等長
+- 注音括號橫向過長
+- 造詞線不足二至三個國字
+- 為容納欄位而縮小必要文字
+
+分類：`ZHUYIN_WORD_SPACE_FAIL / WORKSHEET_FONT_TOO_SMALL`
+
+---
+
+## CASE WS-10｜課次與檔名不得漂移
+
+### PASS
+- 單課課次補零為兩位數，例如 `第07課`
+- 合併範圍使用 `第07至12課`
+- 預習單、短文單、A／B 版、印刷版與分享版檔名可明確區分
+
+### BLOCKER
+- 同批混用 `第7課`、`第07課`、`第七課`
+- 第 07–12 課合併 PDF 誤標為第 01–06 課
+- 印刷版與分享版同名或互相覆蓋
+
+分類：`WORKSHEET_FILENAME_FAIL / WORKSHEET_RANGE_FAIL / WORKSHEET_VERSION_COLLISION`
+
+---
+
+## CASE WS-11｜分享版不得以模糊換取小檔案
+
+### PASS
+- 印刷版保留 300 dpi 高品質
+- 分享版壓縮後重新渲染全部頁面
+- 題目、注音、語詞、細框與書寫線仍清楚
+- PNG 完整解碼，沒有 truncated 或檔尾缺失
+
+### BLOCKER
+- 分享版雖較小但中文字模糊或有鋸齒
+- 只檢查檔案大小，未重新渲染
+- PNG 無法完整解碼
+- 來源與輸出使用同一路徑造成截斷
+
+分類：`WORKSHEET_EXPORT_QUALITY_FAIL / WORKSHEET_PNG_TRUNCATED`
+
+---
+
+## CASE WS-12｜短文人物放大不得侵入書寫區
+
+### PASS
+- 人物外觀與同課預習單一致
+- 短文單可依真實留白逐頁適度放大人物
+- 正式書寫區仍為最大區域
+- 人物不跨入題幹、工具箱或書寫線
+
+### BLOCKER
+- 因一課需要放大而整批套用相同比例
+- 人物遮住文字或書寫線
+- 放大人物後減少必要書寫空間
+
+分類：`WRITING_CHARACTER_SCALE_FAIL / WRITING_WORKSHEET_LAYOUT_FAIL`
+
+---
+
+## CASE WS-13｜單課 PNG 與雙版本 PDF 必須完整保存
+
+### PASS
+- 每課正式 PNG 全部保留，供日後抽換
+- 分設 `單課PNG／合併PDF／印刷版／分享版`
+- 預習單與課後短文分開歸檔
+- 上傳後回讀父資料夾、檔名、類型、大小與修改時間
+
+### BLOCKER
+- 只留下合併 PDF，刪除單課 PNG
+- 預習單與短文單混放
+- 印刷版與分享版互相取代
+- 未驗證實際上傳位置即宣告完成
+
+分類：`WORKSHEET_ARCHIVE_INCOMPLETE / WORKSHEET_VERSION_COLLISION`
+
+---
+
 ## 整體 PASS
 
 ```yaml
@@ -167,5 +254,12 @@ worksheet_regression:
   writing_space_sufficient: PASS
   min_student_visible_font_12pt: PASS
   export_scale_preserves_font_size: PASS
+  zhuyin_word_space_ratio: PASS
+  lesson_filename_zero_padded: PASS
+  merged_pdf_range_correct: PASS
+  share_pdf_render_quality: PASS
+  writing_character_scale_safe: PASS
+  single_lesson_png_preserved: PASS
+  print_share_archive_separated: PASS
   student_answer_leak: PASS
 ```
