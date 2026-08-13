@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.7
+# V-MAX Manifest 2.8
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.7
+vmax_manifest_version: 2.8
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -68,13 +68,13 @@ prestudy_language_selection:
   current_version: 1.1
 prestudy_worksheet:
   path: skills/prestudy-worksheet/SKILL.md
-  current_version: 1.1
+  current_version: 1.2
 postlesson_short_writing_worksheet:
   path: skills/postlesson-short-writing-worksheet/SKILL.md
-  current_version: 1.1
+  current_version: 1.2
 worksheet_regression:
   path: tests/worksheet-regression-cases.md
-  current_version: 1.1
+  current_version: 1.2
 lesson_package_delivery:
   path: skills/lesson-package-delivery/SKILL.md
   current_version: 1.4
@@ -230,10 +230,10 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 ## Worksheet Resolution
 
 ### Pre-study Worksheet
-權威：`skills/prestudy-worksheet/SKILL.md` v1.1。
+權威：`skills/prestudy-worksheet/SKILL.md` v1.2。
 
 ### Post-lesson Short Writing Worksheet
-權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.1。
+權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.2。
 
 兩份學習單共同硬規格：
 
@@ -250,11 +250,19 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 
 圖片／PDF 輸出必須以 A4 實際列印尺寸檢查等效字級，避免畫布縮放造成假 PASS。
 
+
+共同交付規格：
+- 形近字／多音字使用「短直式注音欄＋可寫二至三個國字的長造詞線」。
+- 單課與合併檔名課次固定補零為兩位數，例如 `第07課`、`第07至12課`。
+- 每批保留全部單課 PNG，並分設合併 PDF 的印刷版與分享版。
+- 分享版壓縮後仍須重新渲染全部頁面；可見模糊或鋸齒即 FAIL。
+- 短文單人物可依真實留白適度放大，但不得侵入題幹、工具箱或正式書寫線。
+
 預習單與短文單可共享視覺家族，但功能必須分開：
 - 預習單：探索／理解／預備
 - 短文單：素材啟動／語文 Bonus／創作遷移
 
-正式交付必須通過 `tests/worksheet-regression-cases.md` v1.1；若 `WORKSHEET_FONT_TOO_SMALL` 或 `WORKSHEET_EXPORT_SCALE_FAIL`，不得交付為 PASS。
+正式交付必須通過 `tests/worksheet-regression-cases.md` v1.2；若 `WORKSHEET_FONT_TOO_SMALL` 或 `WORKSHEET_EXPORT_SCALE_FAIL`，不得交付為 PASS。
 
 ---
 
