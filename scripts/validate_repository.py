@@ -140,6 +140,12 @@ def validate_repository_hygiene() -> None:
 
 
 def validate_front_door() -> None:
+    launcher = ROOT / "chatgpt-work/vmax-teaching-skills/SKILL.md"
+    if not launcher.is_file():
+        fail("missing standalone ChatGPT Work launcher")
+    elif "不要將 GitHub repository 中 `skills/` 下的其他模組逐一轉存" not in launcher.read_text(encoding="utf-8"):
+        fail("ChatGPT Work launcher does not prohibit batch skill installation")
+
     front_door = ROOT / "skills/vmax-teaching-skills/SKILL.md"
     if not front_door.is_file():
         fail("missing canonical V-MAX front-door skill")
