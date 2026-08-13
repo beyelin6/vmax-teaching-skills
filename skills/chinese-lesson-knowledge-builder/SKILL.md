@@ -5,7 +5,7 @@ description: 讀取已核准的 Official Knowledge、Teacher Knowledge 與來源
 
 # Chinese Lesson Knowledge Builder
 
-版本：0.3.0
+版本：0.3.3
 
 ## 核心定位
 
@@ -32,6 +32,7 @@ Transcriber 負責忠實擷取；本技能負責將已核准的官方知識與�
 可選讀取：
 
 - `knowledge/02_teacher-knowledge.md`
+- `schemas/gemini-source-analysis-report.md` 格式的 Gemini 分析報告
 
 未核准官方知識時不得執行。
 
@@ -45,6 +46,35 @@ Transcriber 負責忠實擷取；本技能負責將已核准的官方知識與�
 6. 建立課文、字詞、成語、修辭、句型、寫作特色、活動與題目之間的關聯。
 7. 組裝 LKB 主書與驗證報告。
 8. 為後續 Learning Modules、Teaching Strategy 與 Presentation 建立可引用的節點。
+9. 記錄來源集合的 `source_fingerprint`，讓下游判斷母檔能否直接重用。
+
+## 可重用母檔規則
+
+LKB 經教師核准為 `approved_lkb` 後，成為本課所有下游流程的唯一知識母檔。若由 Gemini 建立或續跑，必須保存 `source_fingerprint`；fingerprint 至少含 lesson_id、來源 stable ID／path、版本或修改時間、頁數／大小，以及可取得時的 checksum。
+
+- fingerprint 相符：重用既有 LKB，不重新轉錄或分析。
+- fingerprint 改變：標記舊 LKB `stale_by_source_change`，建立新版並保留舊版。
+- 無法判斷：標記 `SOURCE_FINGERPRINT_UNKNOWN`，等待來源確認，不可猜測。
+- 課次不符：標記 `LKB_MASTER_LESSON_MISMATCH`，不得誤用。
+
+### 下游需求驅動增補
+
+預習單、簡報、教案、評量、活動與圖片需要的知識切面不同。有效 LKB 對某任務 coverage 不足時，只建立局部 `lkb-patch`：
+
+1. 記錄下游 `task_type` 與 `required_knowledge`。
+2. 列出缺少或證據不足的既有節點。
+3. 只回讀相關來源頁面，不重跑無關內容。
+4. 新增節點保留 provenance；修訂節點保留原 ID、舊值與變更理由。
+5. 區分 Official Knowledge 增補與 AI Learning Extension。
+6. 教師核准 Patch 後合併為新 LKB 版本，舊版保留。
+7. 合併前依 `schemas/lkb-patch.md` 比對 base version 與 changed node IDs；衝突時停止並要求 rebase。
+8. 合併後更新 `schemas/lesson-master-index.md` 對應 entry，只重設受影響任務的 readiness。
+
+未核准 Patch 狀態為 `ready_for_lkb_patch_review`，不得提供給受影響的下游流程當正式依據。
+
+### Lesson Master Index
+
+每課核准、改版或合併 Patch 後，都必須更新唯一 Lesson Master Index：active LKB path／Drive ID、版本、核准狀態、source fingerprint、task readiness、open patches 與舊版索引。更新後重新開啟 Index 與 active LKB 驗證；只有對話文字而沒有持久化檔案不算完成。
 
 ## 本技能不得負責
 
@@ -143,5 +173,6 @@ lkb/
 - Teacher Knowledge 與 Official Knowledge 清楚分流
 - 尚未核准的 Learning Expansion、Teaching Strategy 或 Presentation Mapping 未被提前生成
 - 未混入其他課次內容
+- Gemini 建立的可重用母檔含可驗證的 `source_fingerprint`
 
 完成後必須停止等待教師確認。

@@ -10,6 +10,13 @@ lkb:
   updated_at: ""
   approved_by: ""
   source_files: []
+  source_fingerprint:
+    lesson_id: ""
+    sources: []
+    generated_at: ""
+  knowledge_coverage: []
+  applied_patches: []
+  node_revision: 1
 ---
 
 # Lesson Knowledge Book｜教材知識書
@@ -26,9 +33,25 @@ lkb:
 | 來源類型 | 檔名 | 頁面範圍 | 用途 | 狀態 |
 |---|---|---|---|---|
 
+### 0.2.1 Source Fingerprint
+
+記錄來源 stable ID／path、版本或修改時間、頁數／大小與可取得的 checksum。下游每次啟動先比對此區；相符即重用本 LKB，不重跑教材分析。
+
 ### 0.3 來源衝突與採用決策
 
 - 尚無／待填。
+
+### 0.4 知識覆蓋與增補紀錄
+
+| 任務類型 | 必要知識 | Coverage | Patch ID | 核准狀態 | 合併版本 |
+|---|---|---|---|---|---|
+
+### 0.5 Lesson Master Index
+
+- **Index path／Drive ID**：
+- **Active LKB version**：
+- **Task readiness**：
+- **Open patches**：
 
 ---
 
