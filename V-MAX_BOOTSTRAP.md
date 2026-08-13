@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.3
+# V-MAX Bootstrap 1.4
 
 ## 目的
 
@@ -95,6 +95,15 @@ V-MAX Core 不依賴：
 - 任一 Renderer 的頁數／批次／圖像限制
 
 平台差異只能由 `adapters/` 處理，不得反向改寫 Core、Teacher Intent、Lesson Map 或 Session Map。
+
+## 教師審核畫面
+
+所有需要教師閱讀、確認或修正的 stage／HOLD，必須載入 `core/ui/teacher-review-view-contract.md`。完整 JSON／YAML 保存為 Machine Payload；對話預設先顯示人類可讀的結論、教材證據、知識層、缺口、這次唯一決定與唯一下一步。
+
+- 不得以 raw schema dump 取代教師確認卡。
+- STEP 1 必要來源未核對完成時顯示 `STEP1_INCOMPLETE`，只要求補來源，不開放核准。
+- `[教材明載] / [教師補充] / [AI 延伸] / [待核對]` 不得混層。
+- `STEP 2.75` 不在 Golden Path，出現即視為 `LEGACY_STAGE_ALIAS`。
 
 ## 圖片能力與降級
 

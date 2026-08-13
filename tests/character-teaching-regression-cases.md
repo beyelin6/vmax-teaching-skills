@@ -1,4 +1,4 @@
-# V-MAX Character Teaching Regression Cases 1.0
+# V-MAX Character Teaching Regression Cases 1.1
 
 ## 用途
 
@@ -77,6 +77,33 @@ AI 若發現某正式生字可能容易寫錯，只能提出：
 - 教師指定 → `TEACHER_ADDED_POLYPHONIC`
 - 形近補充字即使有多音，不可因 AI 自動升級
 
+## CASE C-06｜字形口訣不得為押韻犧牲正確性
+
+### PASS
+- 部首、偏旁、部件與筆畫位置逐字核對。
+- 口訣標示為 AI 建議並等待教師確認。
+- 有疑點時停在當前 STEP。
+
+### BLOCKER
+- 為押韻編造錯誤部首、構形或字義關係。
+- 未核對就將口訣標成已確認。
+
+分類：`CHARACTER_FORM_UNVERIFIED / MNEMONIC_ACCURACY_RISK`
+
+## CASE C-07｜多音字例詞必須逐詞核對
+
+### PASS
+- 課本生字欄／課文注音是本課讀音第一來源。
+- 教育部辭典補充驗證各讀音、詞義與每一個例詞。
+- 每個例詞留下獨立核對紀錄。
+
+### BLOCKER
+- 只查單字後自行類推例詞讀音。
+- 教材與辭典衝突仍自行選一邊。
+- 未核對例詞卻標成已鎖定。
+
+分類：`PRONUNCIATION_SOURCE_CONFLICT / EXAMPLE_WORD_UNVERIFIED / PRONUNCIATION_INFERENCE_DRIFT`
+
 ---
 
 ## 整體 PASS
@@ -88,6 +115,9 @@ character_teaching_regression:
   single_character_requires_teacher: PASS
   error_prone_not_auto_entry: PASS
   polyphonic_source_gate_preserved: PASS
+  character_form_verified: PASS
+  mnemonic_accuracy_verified: PASS
+  example_words_individually_verified: PASS
 ```
 
 只要其中一項 FAIL，不得宣告生字教學規則通過。

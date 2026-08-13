@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.9
+# V-MAX Manifest 3.2
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.9
+vmax_manifest_version: 3.2
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -21,10 +21,10 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.0
+  current_version: 2.1
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.3
+  current_version: 1.5
 source_library_policy: core/governance/source-library-policy.md
 lesson_master_preflight:
   path: core/governance/lesson-master-preflight.md
@@ -34,15 +34,20 @@ task_knowledge_requirement_registry:
   current_version: 1.0
 step1_source_anchor:
   path: core/governance/step1-source-anchor-policy.md
-  current_version: 1.3
+  current_version: 1.4
 recognition_only_character_policy:
   path: core/governance/recognition-only-character-policy.md
   current_version: 1.1
-hold_policy: core/governance/hold-teacher-interface-policy.md
+hold_policy:
+  path: core/governance/hold-teacher-interface-policy.md
+  current_version: 1.4
+teacher_review_view:
+  path: core/ui/teacher-review-view-contract.md
+  current_version: 1.1
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.6
+  current_version: 1.8
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.9
@@ -51,13 +56,13 @@ character_deep_teaching_focus:
   current_version: 1.1
 polyphonic_source_policy:
   path: core/director/polyphonic-source-policy.md
-  current_version: 1.0
+  current_version: 1.1
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
-  current_version: 1.0
+  current_version: 1.1
 character_teaching_regression:
   path: tests/character-teaching-regression-cases.md
-  current_version: 1.0
+  current_version: 1.1
 lesson_visual_map:
   path: core/visual/lesson-visual-map.md
   current_version: 1.1
@@ -114,7 +119,7 @@ gemini_source_analysis:
   lkb_patch_schema: schemas/lkb-patch.md
   task_requirement_registry: core/governance/task-knowledge-requirement-registry.md
   regression: tests/gemini-source-analysis-regression-cases.md
-  adapter_version: 2.3
+  adapter_version: 2.5
 ```
 
 ---
@@ -132,6 +137,19 @@ runtime/lesson-state.md
 不得以模型記憶、舊對話、舊簡報取代 Drive 最新 State。
 
 固定 Drive ID 只允許出現在 Manifest、`runtime/lesson-state.md` 與 `skills/google-drive-lesson-archive/SKILL.md` 三個治理位置；一般內容技能必須引用治理文件，不得複製 ID。此 repository 若公開發布前要移除個人位置，應在這三個位置同步參數化。
+
+---
+
+## Repository Hygiene
+
+正式 repository 只保存跨課可重用規格、技能、schema、library、平台 adapter 與回歸測試。
+
+禁止加入：
+- `runtime/lessons/` 或任何單課即時 Runtime State；正式狀態只在 Google Drive。
+- 根目錄 `lessons/` 下的特定課程成品或單課鎖定檔。
+- `docs/legacy/`、migration audit、legacy resource 等只供歷史追溯的檔案。
+
+歷史內容由 Git commit、tag 與 release 保存，不得留在可安裝套件中影響模型選路。現行架構參考文件可以保留在 `docs/`，但不能覆寫 Manifest canonical files。
 
 ---
 
@@ -171,6 +189,17 @@ SOURCE 0
 
 ---
 
+## Teacher Review View Resolution
+
+所有 HOLD 與教師審核畫面以 `core/ui/teacher-review-view-contract.md` 為權威：完整 Machine Payload 留在母檔，對話預設顯示人類可讀的結論、證據、知識層、缺口、本次唯一決定與唯一下一步。
+
+- raw JSON／YAML 不得作為主要 UI。
+- STEP 1 必要來源未完成時標記 `STEP1_INCOMPLETE`，不得要求核准。
+- 重要項目標記 `[教材明載] / [教師補充] / [AI 延伸] / [待核對]`。
+- 前段只允許 STEP 1、STEP 2、STEP 2.5、STEP 2.6 與各自 HOLD；`STEP 2.75` 為非法別名。
+
+---
+
 ## Recognition-only Character Resolution
 
 認讀字 = 教材在本課生字系統中明確列為需要識讀、但不屬正式書寫生字的字。
@@ -205,6 +234,18 @@ SOURCE 0
 3. `TEACHER_ADDED_POLYPHONIC`
 
 形近補充字、比較字、認讀字、課文一般字不因本身多音而由 AI 自動升級。
+
+---
+
+## Character Form and Pronunciation Resolution
+
+- 課本生字欄、課文注音或教材辨音活動是本課讀音第一來源。
+- 教育部辭典只作補充與驗證，不取代教材身分。
+- 多音字例詞逐詞核對，不從單字讀音自行類推。
+- 部首、偏旁、部件、字形口訣逐字核對；口訣預設為 AI 建議，教師確認前不得鎖定。
+- 發現字形、讀音或例詞疑點時停在當前 STEP。
+
+權威：`core/director/polyphonic-source-policy.md` v1.1、`skills/character-group-visual-comparison/SKILL.md` v1.1。
 
 ---
 

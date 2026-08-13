@@ -5,7 +5,7 @@ description: 將臺灣國小國語的形近字、字群比較與多音字，轉�
 
 # V-MAX Character Group Visual Comparison Skill
 
-版本：1.0
+版本：1.1
 
 ## 目的
 
@@ -208,7 +208,14 @@ Style Recipe 可改媒材與畫風，但不得改掉比較關係。
 
 ---
 
-## F. AI 生成前必做判斷
+## F. 字形、部件與口訣防呆
+
+- 部首、偏旁、部件拆解、字形差異與筆畫位置必須逐字核對教材或權威字形資料。
+- 記憶口訣只能在字形與字義核對後提出，並標示 `[AI 建議，待教師確認]`。
+- 不得為了押韻、對仗或好記，編造錯誤部首、錯誤偏旁、錯誤構形或不存在的字義關係。
+- 有疑點時標記 `CHARACTER_FORM_UNVERIFIED / MNEMONIC_ACCURACY_RISK`，停在當前 STEP，不送入 Renderer。
+
+## G. AI 生成前必做判斷
 
 產生學生可見頁之前，AI 必須先有：
 
@@ -234,7 +241,7 @@ character_group_visual_plan:
 
 ---
 
-## G. Renderer Guardrails
+## H. Renderer Guardrails
 
 Renderer / NotebookLM / Canva / image model 必須保留：
 
@@ -253,7 +260,7 @@ Renderer / NotebookLM / Canva / image model 必須保留：
 
 ---
 
-## H. 禁止模式
+## I. 禁止模式
 
 以下任一情況視為 FAIL：
 
@@ -268,11 +275,11 @@ Renderer / NotebookLM / Canva / image model 必須保留：
 
 Failure codes：
 
-`CHARACTER_GROUP_VISUAL_FAIL / SEMANTIC_IMAGE_MISMATCH / CHARACTER_CATEGORY_CONFUSION / POLYPHONIC_CONTEXT_FAIL / TEXT_RENDERING_RISK`
+`CHARACTER_GROUP_VISUAL_FAIL / SEMANTIC_IMAGE_MISMATCH / CHARACTER_CATEGORY_CONFUSION / POLYPHONIC_CONTEXT_FAIL / TEXT_RENDERING_RISK / CHARACTER_FORM_UNVERIFIED / MNEMONIC_ACCURACY_RISK`
 
 ---
 
-## I. 核心金句
+## J. 核心金句
 
 > 形近字看「像在哪裡、差在哪裡」；多音字看「這個音在什麼意思與情境裡出現」。
 

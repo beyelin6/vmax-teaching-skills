@@ -49,3 +49,22 @@ V-MAX 是臺灣國小國語教材轉錄、課程設計、視覺渲染與交付�
 ## 教材母檔
 
 所有下游任務先讀取 Lesson Master Index 與核准 LKB，再執行任務 Coverage Diff。資料足夠就重用；不足時只增補帶來源的 LKB Patch，不重跑整份教冊。
+
+## 教師審核畫面
+
+完整 JSON／YAML 保存為可續跑的 Machine Payload；對話預設依 `core/ui/teacher-review-view-contract.md` 顯示精簡的 Teacher Review View。畫面先呈現結論、教材證據、知識層、缺口、這次唯一決定與唯一下一步，教師要求時才展開完整母檔。
+
+## Repository 邊界
+
+- `core/`、`skills/`、`schemas/`：正式可執行規格。
+- `adapters/`：平台差異，不得覆寫 Core。
+- `libraries/`：仍可被正式流程重用的資源。
+- `docs/`：現行架構說明與品質基準，只有被正式規格引用時才影響執行。
+- `tests/`、`scripts/`、`.github/`：回歸案例與自動驗證。
+- `runtime/lesson-state.md`：只保存 Runtime schema；單課即時狀態保存在 Google Drive。
+
+Repository 不保存：
+
+- `runtime/lessons/` 或其他單課即時狀態
+- `lessons/` 下的特定課程成品
+- `docs/legacy/`、migration audit 或 legacy resource

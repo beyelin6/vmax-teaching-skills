@@ -5,7 +5,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 # V-MAX Golden Path Executor
 
-版本：1.3
+版本：1.5
 
 ## 目的
 
@@ -28,7 +28,8 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 3. Google Drive 對應課程 Runtime State
 4. `core/governance/vmax-main-workflow.md`
 5. `core/governance/hold-teacher-interface-policy.md`
-6. 當前 stage 的 canonical policies / skills
+6. `core/ui/teacher-review-view-contract.md`
+7. 當前 stage 的 canonical policies / skills
 
 若舊技能、舊腳本、舊對話與 Manifest 衝突，一律以 Manifest 最新 canonical files 與 Drive Runtime State 為準。
 
@@ -86,7 +87,15 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ---
 
-## D. STEP 1 專用 Guard｜教材身分先讀對
+## D. Teacher Review View Guard
+
+任何 stage／HOLD 先保存完整 Machine Payload，再依 `core/ui/teacher-review-view-contract.md` 顯示教師審核卡。預設不得展開 raw JSON／YAML。
+
+審核卡必須顯示：結論、教材證據、知識層、缺口、AI 理由、本次唯一決定、唯一下一步。重要項目標示 `[教材明載] / [教師補充] / [AI 延伸] / [待核對]`。
+
+若 UI 未通過，標記 `RAW_SCHEMA_DUMP / TEACHER_INTERFACE_OVERLOAD / KNOWLEDGE_LAYER_MIXED`，停在原 stage。
+
+## E. STEP 1 專用 Guard｜教材身分先讀對
 
 STEP 1 必須載入：
 - `core/governance/step1-source-anchor-policy.md`
@@ -101,10 +110,12 @@ STEP 1 必須載入：
 - 認讀字必須由教材生字系統明確區分。
 - 兩處不一致 → `SOURCE_CONFLICT`，進 HOLD 1，不得靜默選一邊。
 - 來源未列 → `N/A_SOURCE_NOT_PRESENT`。
+- 完整正式生字、認讀字雙來源、教材詞語聯集、課文結構或 provenance 任一必要項未完成 → `STEP1_INCOMPLETE`；只要求補來源，不開放完整 STEP 1 核准。
+- STEP 1 不得鎖 Mode、教學主軸、固定詩節／段落迴圈、Scenario、角色、視覺或頁數。
 
 ---
 
-## E. STEP 2.5 專用 Guard｜生字／多音字不得再跑回舊規則
+## F. STEP 2.5 專用 Guard｜生字／多音字不得再跑回舊規則
 
 STEP 2.5 必須同時載入：
 - `core/director/knowledge-lab-ordering-policy.md`
@@ -136,11 +147,15 @@ STEP 2.5 必須同時載入：
 - 形近字：大字＋注音＋字義情境圖＋例詞＋哪裡像／哪裡不一樣＋辨認提示。
 - 多音字：同一大字＋不同讀音＋語意／情境＋例詞／例句＋回到課文判斷。
 
-完成後顯示 `HOLD 2.5`。
+完成後只顯示形近字、多音字、教材詞語／成語審核表與待確認項目。每個項目顯示來源狀態、教材證據、字形／讀音核對、AI 建議與理由、教師決定。
+
+部首、偏旁、字形口訣逐字核對；多音字以課本生字欄／課文注音為本課第一來源，教育部辭典只作補充驗證，例詞必須逐詞查核。任何疑點停在 STEP 2.5。
+
+完成後顯示 `HOLD 2.5`，等待教師確認；不得展開詩節教學或其他 stage。
 
 ---
 
-## F. STEP 2.6 專用 Guard｜成語表達不可掉落
+## G. STEP 2.6 專用 Guard｜成語表達不可掉落
 
 依 `core/director/idiom-expression-visualization-policy.md`。
 
@@ -158,7 +173,7 @@ STEP 2.5 必須同時載入：
 
 ---
 
-## G. Text-Embedded Language Guard
+## H. Text-Embedded Language Guard
 
 進 Lesson Map、Knowledge Lab、Slide Architecture 後，只要處理語詞／句型／修辭，必須載入：
 
@@ -173,7 +188,7 @@ STEP 2.5 必須同時載入：
 
 ---
 
-## H. Lesson Visual Map Guard
+## I. Lesson Visual Map Guard
 
 依 `core/visual/lesson-visual-map.md`。
 
@@ -187,7 +202,7 @@ STEP 2.5 必須同時載入：
 
 ---
 
-## I. Delivery / Drive Guard
+## J. Delivery / Drive Guard
 
 進入 Full Renderer 時必須載入：
 
@@ -211,10 +226,13 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 ---
 
-## J. Anti-template / Legacy Guard
+## K. Anti-template / Legacy Guard
 
 以下視為錯誤：
-- STEP 3／STEP 4 舊流程名稱復活
+- STEP 3／STEP 4／STEP 2.75 舊流程名稱復活
+- raw JSON／YAML 直接作為教師確認畫面
+- STEP 1 來源未完整就要求核准
+- 教材明載、教師補充與 AI 延伸未標記或混寫
 - 每段固定相同頁數／步驟
 - 所有生字固定同規格頁
 - AI 自動增加第三類單字深教入口

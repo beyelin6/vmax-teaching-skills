@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.6
+# V-MAX Workflow HOLD Regression Cases 1.8
 
 ## 用途
 
@@ -104,6 +104,41 @@ PASS：每課版本固定六類：
 完整重做依 Drive 現況建立 `_01 / _02...`，上傳後再 list/search 驗證。
 FAIL：使用舊 `01_來源主檔 / 02_生成腳本 / 03_角色與視覺資產 / 04_簡報成品 / 05_學習單` 結構。
 
+## W-18｜真實失敗：大段 JSON、STEP 1 未完整與 STEP 2.75
+
+輸入情境：STEP 1 以巢狀 JSON 顯示 Mode、教學主軸與固定每節迴圈，同時承認完整生字／認讀字尚未逐字核對；教師回覆「確認」後直接進 STEP 2.5，並宣告下一步 STEP 2.75。
+
+### PASS
+- 對話只顯示 Teacher Review View，完整 JSON 保存為 Machine Payload。
+- 因必要來源未完成，狀態為 `STEP1_INCOMPLETE`，不開放核准。
+- Mode、教學主軸、固定段落迴圈移出 STEP 1。
+- 教材項目明確標記知識層及 provenance。
+- 完整後遵守 `HOLD 1 → STEP 2 → HOLD 2`。
+- 明確拒絕不存在的 `STEP 2.75`。
+
+### BLOCKER
+- raw JSON 是主要教師畫面。
+- 一面承認來源未核對，一面要求核准 STEP 1。
+- 一次確認後跳到 STEP 2.5。
+- 把字典查核當作教材來源證明。
+- 下一步指向 STEP 2.75。
+
+分類：`RAW_SCHEMA_DUMP / TEACHER_INTERFACE_OVERLOAD / STEP1_INCOMPLETE / KNOWLEDGE_LAYER_MIXED / PREMATURE_DESIGN_LOCK / TEMPLATE_FLATTENING / STAGE_LEAP / SKIPPED_HOLD / LEGACY_STAGE_ALIAS`
+
+## W-19｜STEP 2.5 必須以審核表停等
+
+### PASS
+- 只顯示形近字、多音字、教材詞語／成語審核表與待確認項目。
+- 每項顯示來源狀態、證據、核對結果、AI 建議與教師決定。
+- 最後停在 HOLD 2.5，等待「確認」或修改。
+
+### BLOCKER
+- 顯示 raw JSON、內部狀態欄位或空白程式碼框。
+- 未完成來源核對卻標成已鎖定。
+- 同一回覆提前展開六個詩節或其他教學流程。
+
+分類：`RAW_SCHEMA_DUMP / SOURCE_STATUS_MISSING / UNVERIFIED_ITEM_LOCKED / SKIPPED_HOLD`
+
 ---
 
 ## 整體 PASS
@@ -123,6 +158,13 @@ workflow_hold_regression:
   no_template_drift: PASS
   no_premature_page_lock: PASS
   single_stage_advance: PASS
+  teacher_review_view: PASS
+  machine_payload_separated: PASS
+  step1_incomplete_blocked: PASS
+  no_step_2_75: PASS
+  step2_5_review_table: PASS
+  source_status_visible: PASS
+  unverified_not_locked: PASS
 ```
 
 任一 FAIL，不得宣告工作流回歸測試完成。

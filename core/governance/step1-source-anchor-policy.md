@@ -1,4 +1,4 @@
-# V-MAX STEP 1 Source Anchor Policy 1.3
+# V-MAX STEP 1 Source Anchor Policy 1.4
 
 ## 定位
 
@@ -164,7 +164,9 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 - no_style_lock: true
 - no_slide_architecture_lock: true
 
-否則標記 `STEP1_INCOMPLETE`。
+否則標記 `STEP1_INCOMPLETE`，只顯示缺口與補來源行動，不得要求教師核准完整 STEP 1，也不得把「教師確認方向」當作來源完整性核准。
+
+所有重要項目須依 `core/ui/teacher-review-view-contract.md` 標示 `[教材明載] / [教師補充] / [AI 延伸] / [待核對]`。外部字典查核不能取代教材 provenance。
 
 ---
 

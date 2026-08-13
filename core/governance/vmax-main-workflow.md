@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.0
+# V-MAX Main Workflow 2.1
 
 ## 定位
 
@@ -12,6 +12,10 @@
 ---
 
 ## A. Canonical Policy Wiring
+
+### Teacher Review / HOLD
+- `core/ui/teacher-review-view-contract.md`
+- `core/governance/hold-teacher-interface-policy.md`
 
 ### SOURCE / STEP 1
 - `core/governance/source-library-policy.md`
@@ -109,6 +113,8 @@ HOLD 2.6 確認 → Teacher Intent Lock
 2. 課文後方獨立生字表／生字教學頁
 
 無方格只作線索，不等於認讀字。兩處衝突 → `SOURCE_CONFLICT`。
+
+只有完整性條件 PASS 才進 HOLD 1；必要來源仍缺漏時回報 `STEP1_INCOMPLETE`，不得要求核准或前進。
 
 完成後 HOLD 1。
 
@@ -235,7 +241,9 @@ Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護�
 ## N. Legacy / Failure
 
 禁止：
-- STEP 3 / STEP 4 舊流程復活
+- STEP 3 / STEP 4 / STEP 2.75 舊流程復活
+- raw JSON／YAML 取代 Teacher Review View
+- 教材、教師補充與 AI 延伸混層
 - AI 自動第三類單字深教
 - 形近補充字被當多音字深教
 - 無方格直接等於認讀字
