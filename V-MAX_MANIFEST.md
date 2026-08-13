@@ -1,4 +1,4 @@
-# V-MAX Manifest 2.9
+# V-MAX Manifest 3.0
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 2.9
+vmax_manifest_version: 3.0
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_storage:
@@ -132,6 +132,19 @@ runtime/lesson-state.md
 不得以模型記憶、舊對話、舊簡報取代 Drive 最新 State。
 
 固定 Drive ID 只允許出現在 Manifest、`runtime/lesson-state.md` 與 `skills/google-drive-lesson-archive/SKILL.md` 三個治理位置；一般內容技能必須引用治理文件，不得複製 ID。此 repository 若公開發布前要移除個人位置，應在這三個位置同步參數化。
+
+---
+
+## Repository Hygiene
+
+正式 repository 只保存跨課可重用規格、技能、schema、library、平台 adapter 與回歸測試。
+
+禁止加入：
+- `runtime/lessons/` 或任何單課即時 Runtime State；正式狀態只在 Google Drive。
+- 根目錄 `lessons/` 下的特定課程成品或單課鎖定檔。
+- `docs/legacy/`、migration audit、legacy resource 等只供歷史追溯的檔案。
+
+歷史內容由 Git commit、tag 與 release 保存，不得留在可安裝套件中影響模型選路。現行架構參考文件可以保留在 `docs/`，但不能覆寫 Manifest canonical files。
 
 ---
 

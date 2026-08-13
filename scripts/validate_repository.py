@@ -119,6 +119,26 @@ def validate_removed_skill_names() -> None:
                 fail(f"legacy skill reference {name!r}: {path.relative_to(ROOT)}")
 
 
+def validate_repository_hygiene() -> None:
+    forbidden_paths = (
+        Path("runtime/lessons"),
+        Path("lessons"),
+        Path("docs/legacy"),
+    )
+    for relative in forbidden_paths:
+        if (ROOT / relative).exists():
+            fail(f"runtime or legacy content must not be packaged: {relative}")
+
+    forbidden_names = {
+        "scenario-wrapper-migration-audit.md",
+        "legacy-visual-metaphors.md",
+        "legacy-art-styles.md",
+    }
+    for path in ROOT.rglob("*"):
+        if path.is_file() and path.name in forbidden_names:
+            fail(f"legacy audit/resource must not be packaged: {path.relative_to(ROOT)}")
+
+
 def main() -> int:
     validate_versions()
     validate_skills()
@@ -126,6 +146,7 @@ def main() -> int:
     validate_manifest_module_versions()
     validate_drive_id_locations()
     validate_removed_skill_names()
+    validate_repository_hygiene()
     if ERRORS:
         for error in ERRORS:
             print(f"ERROR: {error}")
