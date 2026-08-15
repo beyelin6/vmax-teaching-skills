@@ -1,4 +1,4 @@
-# V-MAX Visual Drift Detector 1.0
+# V-MAX Visual Drift Detector 1.1
 
 ## 定位
 
@@ -45,6 +45,7 @@ Baseline 是一致性參考，不是固定版型。
 7. `COMPOSITION_DRIFT`：整套從圖像式觀看突然退化成機械模板，或反之。
 8. `PEDAGOGICAL_VISUAL_DRIFT`：畫面仍好看，但已不再服務原本的 Visual Grammar / Director Intent。
 9. `LVM_DRIFT`：Lesson Visual Map 與整課視覺世界、結構關係或 Reveal Policy 不一致。
+10. `IMAGE_COMPOSITION_REGRESSION`：非課文頁退回背景圖＋文字框、卡片牆、大量半透明框或純文字骨架，圖像不再承擔理解功能。
 
 ## C. 允許的變奏
 
@@ -78,6 +79,7 @@ Baseline 是一致性參考，不是固定版型。
 全量生成時至少在：
 - 代表頁後
 - 每一 Session 或生成批次結束
+- 每 5–8 頁小批次結束；發現 `IMAGE_COMPOSITION_REGRESSION` 立即停批
 - 最終 Quality Gate 前
 
 執行 Drift Check。

@@ -5,7 +5,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 # V-MAX Golden Path Executor
 
-版本：1.5
+版本：1.6
 
 ## 目的
 
@@ -209,6 +209,10 @@ STEP 2.5 必須同時載入：
 - `core/renderer/image-first-hybrid-renderer.md`
 - `skills/vmax-image-renderer/SKILL.md`
 
+Full Renderer 的前置條件不是「看過一張樣張」，而是跨頁型代表頁組均已核准：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。教師的「可以」只核准本次實際展示的頁型；未展示頁型不得自動通過。
+
+除課文閱讀頁外，學生可見頁預設為整頁圖片式合成。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。全量必須以 5–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION` 即停止，不得做完整套後才回頭驗收。
+
 對每個必要圖片建立 Render Request，探測當前平台實際工具並執行。prompt、Renderer Script、Visual YAML 或 `IMAGE_HANDOFF_READY` 不等於圖片完成；只有實際資產通過重檢並標記 `RENDER_VERIFIED` 才能進入 Quality Gate。工具不可用時保留 handoff 並回報阻塞，不得跳過圖片需求。
 
 交付必須同時載入：
@@ -240,6 +244,9 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 - 認讀字只靠「無方格」判定
 - 已選定整課圖像心智地圖卻在大綱消失
 - Drive 仍使用舊五類資料夾結構
+- 一張代表頁通過就直接全量生成
+- 非課文頁退化成背景圖＋文字框、卡片牆或大量半透明框
+- 圖片模型文字錯誤兩次後直接刪頁，而非改走可控排字合成
 
 ---
 

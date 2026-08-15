@@ -1,8 +1,8 @@
-# V-MAX Quality Gate 2.2
+# V-MAX Quality Gate 2.5
 
 ## 定位
 
-Quality Gate 2.2 是 V-MAX 在正式簡報渲染與交付前的最後一道檢查。
+Quality Gate 2.4 是 V-MAX 在正式簡報渲染與交付前的最後一道檢查。
 
 它同時檢查：
 - 教學結構是否成立
@@ -14,6 +14,7 @@ Quality Gate 2.2 是 V-MAX 在正式簡報渲染與交付前的最後一道檢�
 - 角色是否有功能
 - 整套視覺是否發生 Visual Drift
 - 圖文整合是否保留美感
+- 是否符合教師口述型圖像簡報，而非講義、學習單或考卷
 - 新版是否比舊版退步
 - 教師是否仍需替 AI 完成後製
 
@@ -39,6 +40,7 @@ Quality Gate 2.2 是 V-MAX 在正式簡報渲染與交付前的最後一道檢�
 - 生字、形近字、多音字、成語是否遵守 Teacher Selection 與教材來源。
 - Teacher Intent LOCKED 項是否完整保留。
 - 每頁是否有清楚的理解任務。
+- 學生頁是否只放學生此刻需要看見的內容，教師口述、答案與備課資訊是否已分流。
 - 是否存在不必要的重複頁。
 
 Fail：AI 擅自增加大量內容、語文知識脫離課文、固定模板覆蓋文本結構、學生不知道要理解什麼。
@@ -89,6 +91,18 @@ Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖�
 - 核心文字從教室後排應可辨識。
 - 比較頁相同欄位位置需穩定。
 - Lesson Visual Map 若資訊過量，刪減或拆分，不得縮小核心字。
+- 課文閱讀頁原則上不標注音；需要注音時只標識別字。
+- 學生可見標音不得出現拼音、英文標音、日文假名或不明亂碼。
+
+#### C5. Slide Density
+
+以下任一出現即 `REVISE`，嚴重時 `FAIL`：
+
+- 同頁同時塞入課文、語詞、修辭、句型、深究、練習、小提醒、小挑戰中的三類以上。
+- 一頁有兩個以上互相競爭的主要教學焦點。
+- 簡報頁出現書寫線、填空區或大面積作答空白。
+- 字縮小只是為了塞下更多內容。
+- 一般頁重複放大課名，排擠真正教學焦點。
 
 #### C4. Strange Chinese Character Scan
 逐頁檢查所有學生可見區域：假字、筆畫黏連／斷裂、偏旁錯位、簡體／日文漢字混入、同字不一致、背景亂碼、注音不符、課文被改字漏字增字。
@@ -109,6 +123,16 @@ Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖�
 - 老師需自己搬字、排圖、重打核心文字。
 - Native Text 像後貼標籤，破壞整體構圖。
 - 為可編輯而拆掉成功的圖像式設計。
+- 非課文頁只是背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。
+- 高風險文字雖正確，但以後貼文字框破壞圖文共同構圖，且未扁平化為整頁圖片。
+- 一張代表頁核准後就批次完成未驗證的其他頁型。
+
+#### Page-class Completion
+
+- `TEXT_READING_PAGE`：核對閱讀秩序、原文換行，以及目標語詞在原文與語詞標示的同色定位。
+- `IMAGE_COMPOSED_PAGE`：通過「移除完整文字仍看得出主要概念」與「移除插圖後不會只剩普通文字簡報」兩項測試。
+- 形近字、多音字、句型、修辭等高風險頁：精準排字須與畫面合成後扁平化；圖片模型連錯兩次時不得刪頁。
+- 教師口述型簡報：通過「不是講義／學習單／投影考卷」檢查；學生頁不得要求教師再自行刪字、拆頁或搬答案。
 
 #### Visual Drift Check
 正式交付前必須使用 `core/quality/visual-drift-detector.md`，以代表頁通過後的 Visual Baseline 檢查：
@@ -125,6 +149,16 @@ Fail：插圖只是背景、關係看不懂、每頁像不同 AI、文字與圖�
 任何 `unresolved_blockers` 不為空 → `FAIL`。
 
 合理的高潮對比、Knowledge Lab 精準頁、不同 Act Visual Grammar 或情緒變奏不算 Drift；關鍵是變化是否由教學理由產生。
+
+#### Approved Visual Benchmark Check
+若 Lesson Baseline 含核准樣張、樣品 PDF/PNG/PPTX 或教師指定的「樣品感」，正式交付前必須檢查 `Approved Visual Benchmark`：
+- 留白與呼吸感是否相近。
+- 文字密度是否維持教師口述型簡報，而非講義或學習單。
+- 插畫是否為局部主畫面，且有前景／中景／背景層次。
+- 角色是否有教學功能，沒有搶走閱讀焦點。
+- 是否避免卡片牆、三欄表格、滿版資訊整理與 Canva 模板感。
+
+Benchmark 是視覺品質基準，不是像素級複製。若內容正確但感覺漂移，狀態為 `VISUAL_BENCHMARK_DRIFT`，必須回到代表頁修正，不得以「已完成頁數」作為通過理由。
 
 #### Regression Check
 與 Bee Quality Benchmark 並排檢查：教學清楚度、畫面記憶、節奏、角色自然度、圖文整合、語文知識完整性。
@@ -179,6 +213,8 @@ Visual Drift 修正同樣優先局部處理，不因一頁漂移而整套重畫�
 
 若答案為「是，而且不是極少量例外」，Renderer 尚未完成。
 
+另問：教師是否還需把學生頁重新改成上課口述用簡報，例如刪除過多解說、移除書寫線、拆掉滿版表格或補回視覺焦點？若答案為「是」，Presentation Engine 尚未完成。
+
 ---
 
 ## 六、Pre-delivery Preflight
@@ -187,9 +223,11 @@ Visual Drift 修正同樣優先局部處理，不因一頁漂移而整套重畫�
 2. 執行 Strange Chinese Character Scan。
 3. 若有 Lesson Visual Map，執行 LVM Quality Gate。
 4. 執行 Visual Drift Detector，確認無 unresolved blocker。
+5. 若有 Approved Visual Benchmark，檢查 benchmark_alignment 並確認無 `VISUAL_BENCHMARK_DRIFT`。
 5. 對照生字、形近字、多音字、成語、課文與注音。
 6. 修正後重檢局部頁，避免修正造成新 Drift。
-7. 所有 BLOCKER 歸零才允許正式輸出。
+7. 核對代表頁核准紀錄涵蓋所有實際頁型，並核對每個 5–8 頁批次的 Drift Check。
+8. 所有 BLOCKER 歸零才允許正式輸出。
 
 ---
 
@@ -208,6 +246,10 @@ quality_gate:
       status: OFF | PASS | REVISE | BLOCKER
     visual_drift_check:
       status: PASS | REVISE | BLOCKER
+      unresolved_blockers: []
+    approved_visual_benchmark_check:
+      status: OFF | PASS | REVISE | BLOCKER
+      benchmark_refs: []
       unresolved_blockers: []
   text:
     status:

@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.1
+# V-MAX Main Workflow 2.3
 
 ## 定位
 
@@ -34,9 +34,18 @@
 ### Lesson / Knowledge / Slide
 - `core/pedagogy/text-embedded-language-teaching-policy.md`
 - `skills/text-embedded-language-teaching/SKILL.md`
+- `core/director/language-knowledge-placement-policy.md`
+- `core/ui/text-ui-system-2.md`
+- `core/character/character-system-2.md`
 - `core/visual/lesson-visual-map.md`
 
 ### Delivery
+- `skills/presentation-engine/SKILL.md`
+- `core/presentation/classroom-image-slide-policy.md`
+- `core/renderer/image-first-hybrid-renderer.md`
+- `skills/vmax-image-renderer/SKILL.md`
+- `core/quality/visual-drift-detector.md`
+- `core/quality/quality-gate-2.md`
 - `skills/lesson-package-delivery/SKILL.md`
 - `skills/google-drive-lesson-archive/SKILL.md`
 
@@ -216,9 +225,15 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 只有完成 Slide Architecture 後才可估頁數；頁數是結果，不是起點。
 
+教師口述型圖像簡報必須依 `core/presentation/classroom-image-slide-policy.md` 建立：學生頁只放學生此刻需要看見的內容；教師講稿、答案與來源細節分流到教師層。若當課已有核准 Lesson Baseline／施工總表，進入逐頁腳本、生圖、修圖或排版前必讀，並以小節／Act 為單位先規劃頁組，再逐頁施工。
+
 ---
 
 ## L. Delivery / Drive Archive
+
+代表頁驗證必須覆蓋課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類逐一核准，未展示頁型不得因教師對另一張說「可以」而連帶通過。
+
+除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；精準文字可控排字後扁平化，不得退化成背景圖＋文字框、卡片牆或大量半透明框。代表頁組全數通過後才可進全量 Renderer；全量以 5–8 頁小批次推進並逐批檢查 Visual Drift。
 
 Lesson Package 交付依 `skills/lesson-package-delivery/SKILL.md`。
 Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護第二套。
@@ -250,6 +265,11 @@ Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護�
 - 語詞／句型／修辭脫離原文
 - 已選 LVM 在簡報大綱消失
 - Drive 回到舊五類結構
+- 代表頁未覆蓋所有實際頁型就進全量 Renderer
+- 非課文頁以背景圖＋文字框冒充整頁圖片式構圖
+- 圖片模型錯字兩次後刪除必要頁，而非改走可控排字合成
+- 將教師口述型簡報做成學生講義、學習單、書寫單、投影考卷或滿版資訊表
+- 跳過已核准 Lesson Baseline，直接憑印象生圖或排版
 
 ---
 

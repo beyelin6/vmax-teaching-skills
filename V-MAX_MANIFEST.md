@@ -1,4 +1,4 @@
-# V-MAX Manifest 3.3
+# V-MAX Manifest 3.6
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.3
+vmax_manifest_version: 3.6
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door:
@@ -24,10 +24,10 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.1
+  current_version: 2.3
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.5
+  current_version: 1.6
 course_orchestrator:
   path: skills/vmax-course-orchestrator/SKILL.md
   current_version: 0.5.0
@@ -78,6 +78,18 @@ text_embedded_language_policy:
 text_embedded_language_skill:
   path: skills/text-embedded-language-teaching/SKILL.md
   current_version: 1.0
+language_knowledge_placement:
+  path: core/director/language-knowledge-placement-policy.md
+  current_version: 1.1
+text_ui_system:
+  path: core/ui/text-ui-system-2.md
+  current_version: 2.1
+character_system:
+  path: core/character/character-system-2.md
+  current_version: 2.2
+classroom_image_slide_policy:
+  path: core/presentation/classroom-image-slide-policy.md
+  current_version: 1.1
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
   current_version: 1.0
@@ -101,11 +113,20 @@ google_drive_lesson_archive:
   current_version: 1.0
 renderer_contract:
   path: core/renderer/image-first-hybrid-renderer.md
-  current_version: 1.2
+  current_version: 1.5
+presentation_engine:
+  path: skills/presentation-engine/SKILL.md
+  current_version: 0.3.0
 image_renderer:
   path: skills/vmax-image-renderer/SKILL.md
-  current_version: 1.0
+  current_version: 1.2
   request_schema: skills/vmax-image-renderer/references/render-request-schema.md
+visual_drift_detector:
+  path: core/quality/visual-drift-detector.md
+  current_version: 1.1
+quality_gate:
+  path: core/quality/quality-gate-2.md
+  current_version: 2.5
 typography_bridge:
   path: skills/vmax-typography-bridge/SKILL.md
   current_version: 1.1
@@ -385,3 +406,5 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 > 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
 
 > 學習單寧可少放內容，也不要讓學生真正印出來看到的字小於 12 pt。
+
+> 教師口述型圖像簡報不是講義；學生頁只放此刻需要看見的內容，完整說明留給老師說。

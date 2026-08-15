@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.3
+# V-MAX Adapter｜ChatGPT 1.5
 
 ## 目的
 
@@ -65,6 +65,10 @@ ChatGPT 可負責：
 - Google Drive 歸檔驗證
 
 但所有輸出仍受 Core / Manifest / Runtime 約束。
+
+製作簡報時，ChatGPT 必須實際載入 `skills/presentation-engine/SKILL.md`、`core/presentation/classroom-image-slide-policy.md`、`core/renderer/image-first-hybrid-renderer.md`、`skills/vmax-image-renderer/SKILL.md`、`core/quality/visual-drift-detector.md` 與 `core/quality/quality-gate-2.md`。除課文閱讀頁外，預設以整頁圖片式合成交付；高風險文字用可控排字合成後扁平化。不得把圖片模型連續錯字當作刪頁理由，也不得在跨頁型代表頁組全數核准前製作完整頁數。
+
+若 Google Drive 或對話中存在該課已核准的 Lesson Baseline／施工總表，ChatGPT 進入 slide_script、Render Request、修圖、生圖或排版前必讀。Baseline 的逐頁清單只約束該課；可抽象成全域規則的項目須先由教師明確要求更新技能。
 
 ## 核心金句
 

@@ -5,7 +5,7 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 
 # Presentation Engine
 
-版本：0.1.0
+版本：0.3.0
 
 ## 使命
 
@@ -21,6 +21,7 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 4. `config/output-profile.md`
 5. Repository 根目錄 `AGENTS.md`
 6. Style Library、Role Library 與 Layout Library 中當課已核准的設定
+7. `core/presentation/classroom-image-slide-policy.md`
 
 LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生最終輸出。
 
@@ -91,6 +92,16 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - 未啟用的 Learning Module 不得出現在輸出。
 - 同一知識節點可映射到不同輸出，但不得產生互相矛盾的版本。
 
+### 5. 教師口述型簡報
+- 若當課有已核准 Lesson Baseline／施工總表／代表頁／樣品 PDF/PNG/PPTX，先登錄為 `Approved Visual Benchmark`，再進入 slide_script、Render Request 或修圖。
+- Benchmark 用來控制留白、文字密度、局部插畫比例、角色干擾度與講義感；不得只當成模糊風格參考。
+- Benchmark 不得作為教材內容來源，不做像素級複製，不複製樣張中的課文、頁碼、角色姿勢或單課細節。
+
+- 簡報是教師上課口述用的圖像式投影片，不是學生講義、學習單、考卷或滿版資訊表。
+- 學生頁只放學生此刻需要看見的內容；詳細解說、答案、來源細節與備課資訊放入教師層、講者備註或母檔。
+- 一頁只承擔一個主要教學焦點；內容過量時拆頁、Reveal 或移到教師口述，不得縮字硬塞。
+- 若當課有已核准 Lesson Baseline／施工總表，進入 slide_script、Render Request 或修圖前必讀，並依當課小節逐組規劃。
+
 ## NotebookLM 輸出規則
 
 ### NotebookLM Source
@@ -123,6 +134,11 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - layout_id
 - illustration_requirement
 - answer_visibility
+- page_class: `TEXT_READING_PAGE | IMAGE_COMPOSED_PAGE`
+- composition_acceptance
+- term_color_map（課文頁適用）
+- visual_benchmark_refs（若有 Approved Visual Benchmark）
+- benchmark_alignment（若有 Approved Visual Benchmark）
 
 ### 成語頁
 
@@ -131,6 +147,14 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - 可加入已核准的易誤用、近義辨析、情境練習與看圖判斷等 Learning Modules。
 - 插圖必須呈現成語實際語意，不得只畫字面。
 - 延伸內容與官方內容在教師資料中需可追溯區分。
+
+### 國語頁型庫
+
+- 課文＋詞語頁：完整保留當前自然段、意義段或詩節原文；詞語回到原文位置理解，不同時塞修辭、句型、深究與練習。
+- 語文特色頁：一頁只處理一個句型、修辭、類疊、節奏或寫法；先讓學生感受效果，再由教師口述名稱。
+- 文意深究頁：一個主問題，最多一個追問；答案與詳細解說留在教師層。
+- 字詞頁：形近字一頁一組為優先，最多兩組；多音字一頁一字為優先；不做滿版字表或多欄背誦表。
+- 仿作／遷移頁：以口頭發想與圖像引導為主，不留書寫線。
 
 ### 評量頁
 
@@ -146,20 +170,32 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - 每頁插圖必須依該頁教材句意或延伸任務生成，不以教材截圖取代。
 - 同一角色、服裝、比例與視覺 DNA 必須一致。
 - 版面可以依內容動態調整，不強迫所有頁面使用同一構圖。
+- 除課文閱讀頁外，預設以 `IMAGE_COMPOSED_PAGE` 交付：文字、插圖、物件與動線共同構圖後扁平化為整頁圖片。
+- 非課文頁禁止以背景圖＋文字框、卡片牆、大量半透明框或純文字骨架冒充圖片式簡報。
+- 課文閱讀頁中的目標語詞，原文位置與語詞標示使用相同定位色；詞義使用同組較深或中性色。
 
 ## 工作流程
+
+若使用 Approved Visual Benchmark，先建立 `benchmark_alignment`：
+- 列出 `visual_benchmark_refs`。
+- 對齊五軸：留白與呼吸感、文字密度與教師口述比例、局部插畫與一頁一主畫面、角色功能與干擾度、講義感／卡片牆感／模板感。
+- 每個代表頁都需說明如何延續 Benchmark；未通過不得量產。
+- 全課小批次生成時持續檢查是否發生 `VISUAL_BENCHMARK_DRIFT`。
 
 1. 驗證所有前置文件與核准狀態。
 2. 讀取 Output Profile，建立輸出清單。
 3. 建立內容選取表：LKB 節點、Learning Modules、Teaching Strategy 步驟。
 4. 執行教師／學生資訊分流。
 5. 執行視覺、角色與版型映射。
-6. 產生選取的輸出格式。
-7. 對所有 `illustration_requirement` 建立符合 `skills/vmax-image-renderer/references/render-request-schema.md` 的 Render Request。
-8. 若 Output Profile 要求實際圖片，呼叫 `skills/vmax-image-renderer/SKILL.md`；只有實際資產通過重檢才記為 `RENDER_VERIFIED`。
-9. 產生 `output-manifest.md`。
-10. 執行輸出驗證。
-11. 腳本型輸出設為 `ready_for_teacher_review`；要求圖片但只有 handoff 時必須保留 `IMAGE_HANDOFF_READY`，不得宣稱圖片完成。
+6. 若有 Lesson Baseline，鎖定當前小節／Act，一次規劃該小節頁組，再逐頁施工。
+7. 產生選取的輸出格式。
+8. 對所有 `illustration_requirement` 建立符合 `skills/vmax-image-renderer/references/render-request-schema.md` 的 Render Request。
+9. 若 Output Profile 要求實際圖片，先建立跨頁型代表頁組並逐類取得教師核准；不得用一張樣張代表所有頁型。
+10. 代表頁組全數通過後，才呼叫 `skills/vmax-image-renderer/SKILL.md` 小批次生成；每批執行構圖與 Visual Drift 檢查。
+11. 只有實際資產通過重檢才記為 `RENDER_VERIFIED`。
+12. 產生 `output-manifest.md`。
+13. 執行輸出驗證。
+14. 腳本型輸出設為 `ready_for_teacher_review`；要求圖片但只有 handoff 時必須保留 `IMAGE_HANDOFF_READY`，不得宣稱圖片完成。
 
 ## 輸出驗證
 
@@ -177,6 +213,10 @@ LKB、Learning Modules 與 Teaching Strategy 任一未核准時，不得產生�
 - 插圖需求符合教材句意
 - 未混入其他課次內容
 - 每個圖片需求都有 Render Request；要求實際圖片時，每個必要資產均為 `RENDER_VERIFIED`
+- 代表頁核准覆蓋每個實際頁型，且未以單次「可以」推定未展示頁型
+- 若有 Approved Visual Benchmark，代表頁與全課批次已通過五軸 benchmark_alignment
+- 非課文頁均通過整頁圖片合成檢查，沒有背景圖＋文字框或卡片牆退化
+- 課文頁的原文語詞定位色與語詞標示一致
 
 ## 完成條件
 

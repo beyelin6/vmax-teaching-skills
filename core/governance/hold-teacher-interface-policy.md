@@ -218,7 +218,22 @@ HOLD 1
 
 ---
 
-## K. Machine Payload 原則
+## K. 代表頁 HOLD 專用規則
+
+代表頁確認卡必須列出本課所有實際頁型及各自狀態：
+
+- 課文閱讀頁
+- 一般圖片合成頁
+- 高風險語文頁
+- Lesson Visual Map（若啟用）
+
+每類只能是 `未展示／待修正／已核准`。教師回覆「可以」只把本次實際展示的頁型改為已核准；不得把其他頁型連帶核准。
+
+只有全部必要頁型均為已核准，確認卡才可顯示「確認後唯一下一步：全量 Renderer」。否則唯一下一步只能是補做或修正尚未核准的代表頁。
+
+若未滿足便開始完整頁數，標記 `REPRESENTATIVE_SET_INCOMPLETE / PREMATURE_FULL_RENDER`，立即停止。
+
+## L. Machine Payload 原則
 
 Machine payload 是 downstream contract，不是 Teacher UI。
 

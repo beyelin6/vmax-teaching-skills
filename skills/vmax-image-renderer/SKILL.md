@@ -5,6 +5,8 @@ description: 將已核准的 V-MAX Render Request 實際渲染為教學圖片或
 
 # V-MAX Image Renderer
 
+版本：1.2
+
 ## 目的
 
 把「視覺規格」推進為「實際且已驗證的圖片檔」。本技能是共用執行層；內容、教學決策、角色與版面仍由上游核准成果決定。
@@ -24,13 +26,16 @@ description: 將已核准的 V-MAX Render Request 實際渲染為教學圖片或
 2. `references/provider-routing.md`
 3. `references/verified-text-overlay.md`
 4. Repository 的 `core/renderer/image-first-hybrid-renderer.md`
-5. 對應平台的 `adapters/*.md`
+5. Repository 的 `core/presentation/classroom-image-slide-policy.md`（圖片式簡報時）
+6. 對應平台的 `adapters/*.md`
 
 ## 執行流程
 
 ### 1. 驗證輸入
 
 Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verified_text`、`visual_prompt`、`output_spec` 與 `acceptance_checks`。教材文字沒有來源或教師核准時，標記 `RENDER_INPUT_BLOCKED`，不得自行補寫。
+
+若 Render Request 含 `visual_benchmark_refs`，必須同時檢查 `benchmark_alignment`；缺少五軸對齊說明時標記 `RENDER_INPUT_BLOCKED`，不得自行把樣張降級為模糊風格參考。
 
 ### 2. 探測目前能力
 
@@ -52,7 +57,17 @@ Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verif
 
 ### 4. 實際渲染
 
-逐一建立可追蹤資產，保存 `request_id`、provider、模式、輸出路徑或資產 ID。批次工作先完成一張樣張並檢查；除非教師明確核准免樣張，否則不得直接大量生成。
+逐一建立可追蹤資產，保存 `request_id`、provider、模式、輸出路徑或資產 ID。
+
+批次簡報不得只驗證一張泛用樣張。先依頁型建立代表頁組：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類分別取得教師核准；未展示的類型不得視為核准。代表頁組未全數通過，不得開始全量 Renderer。
+
+全量生成採小批次，預設每批 5–8 頁；每批完成即檢查圖文共同構圖、圖片式扁平化與 Visual Drift。發現卡片牆、背景圖＋文字框、大量半透明框或純文字骨架時，標記 `COMPOSITION_REGRESSION` 並停批。
+
+若有 Approved Visual Benchmark，每批還要檢查留白、文字密度、局部插畫、角色干擾度與講義感；若漂移成講義感、卡片牆、文字堆疊或角色裝飾，標記 `VISUAL_BENCHMARK_DRIFT` 並停批。
+
+除課文閱讀頁外，學生可見文字需與插圖、物件及動線共同合成為整頁圖片。高風險繁體中文可先用可控文字層排版，但交付前須扁平化；不得把 PowerPoint 文字框堆疊當作圖片式設計。
+
+教師口述型簡報採「無字／少字底圖優先」：先生成情境、人物、物件、視覺關係與留白，再用可控繁體中文字層後製課文、字詞、注音、成語、題目與例句。若任務需要學生書寫線、填空區或大面積作答空白，應確認是否其實屬學習單，而非簡報頁。
 
 ### 5. 重新檢查成品
 
@@ -63,10 +78,20 @@ Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verif
 - 尺寸、比例、白邊、裁切、可讀性與安全區。
 - 角色、色彩、構圖與同批資產的一致性。
 - 不含未授權浮水印、品牌標誌或不適齡內容。
+- 投影片是否仍像教師口述用簡報，而非講義、考卷、學習單或滿版資訊表。
+- 是否只呈現學生此刻需要看見的內容；教師解說、答案與來源細節不得塞進學生頁。
 
 關鍵文字錯誤時，優先移除圖片中的文字並重建正式文字層；不得用「大致可讀」通過。
 
+圖片模型連續兩次產生錯誤注音、假字或改寫教材文字時，不得刪頁或暫時略過。固定改走：
+
+`無字／低字背景 → 可控繁體中文與注音排字 → 與畫面共同合成 → 扁平化 → 逐字重檢`。
+
+課文閱讀頁另檢查：原文中的目標語詞與語詞標示使用相同定位色；詞義使用同組較深或中性色，且不破壞原文行句與換行。
+
 ### 6. 回報狀態
+
+回報前追加檢查：非課文頁不得呈現背景圖＋文字框、卡片牆或可被移除而不影響理解的裝飾插圖；最終成品層級須符合頁型分流，課文閱讀頁可保留文字層，其他頁預設為圖文合成後的整頁圖片。
 
 只能使用下列狀態：
 
@@ -103,3 +128,6 @@ render_result:
 - 不得以圖像模型生成結果覆蓋已核准教材文字。
 - 不得因平台受限而靜默刪除圖片需求；必須留下可執行 handoff 與阻塞狀態。
 - 未重新檢查實際成品前，不得輸出 `RENDER_VERIFIED`。
+- 不得因一張樣張獲得「可以」就推定所有未展示頁型已核准。
+- 不得在代表頁組未通過前生成完整簡報；不得先做完全部頁數再詢問視覺方向。
+- 不得因修正文字錯誤而把整頁排回講義感或純文字骨架。
