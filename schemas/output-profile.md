@@ -20,6 +20,12 @@ output_profile:
   include_teacher_answers: true
   include_system_extensions: true
   include_idiom_teaching: true
+  presentation_delivery:
+    default: image_first_rendered_deck
+    formats:
+      - high_resolution_png
+      - pdf
+    editable_pptx: FORBIDDEN_UNLESS_TEACHER_REQUESTED
 ```
 
 ## 格式說明
@@ -40,3 +46,7 @@ output_profile:
 3. 修改知識時先修改 LKB，再重新輸出。
 4. 不同格式不得各自保存互相矛盾的教材內容。
 5. 教師答案在學生版中必須移除。
+
+## 圖片化簡報預設
+
+教師口述型簡報預設交付高畫質 PNG 與 PDF；圖片、正式文字層、角色與構圖共同扁平化為整頁視覺。可編輯 PPTX 不屬於預設成果，只有教師明確要求時才可另行派生。

@@ -72,6 +72,12 @@ character_teaching_regression:
 lesson_visual_map:
   path: core/visual/lesson-visual-map.md
   current_version: 1.1
+visual_reference_library:
+  path: core/visual/visual-reference-library.md
+  current_version: 1.0
+visual_text_dna:
+  path: core/visual/visual-text-dna.md
+  current_version: 1.0
 text_embedded_language_policy:
   path: core/pedagogy/text-embedded-language-teaching-policy.md
   current_version: 1.0

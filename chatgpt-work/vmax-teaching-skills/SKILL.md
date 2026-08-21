@@ -5,7 +5,7 @@ description: ChatGPT Work 專用的 V-MAX 唯一啟動技能。用於重新開�
 
 # V-MAX ChatGPT Work Launcher
 
-版本：1.0
+版本：1.1
 
 ## 安裝模型
 
@@ -30,6 +30,8 @@ GitHub Source of Truth：
    - hold policy
    - teacher review view
    - `adapters/chatgpt.md`
+   - `core/visual/visual-reference-library.md`
+   - `core/visual/visual-text-dna.md`
 4. 再按當前 stage 讀取需要的 policy／skill；不要一次下載或安裝全部技能。
 5. 無法實際讀取任一必要檔案時回報 `BOOTSTRAP_BLOCKED`，不得用對話記憶繼續。
 
@@ -54,6 +56,12 @@ GitHub Source of Truth：
 ## 教師畫面
 
 使用中文標題、精簡表格與條列。完整 Machine Payload 可另存，但對話不顯示 raw schema、內部欄位或空白程式碼框。每項來源顯示教材、教育部辭典、AI 建議或待核對狀態。
+
+製作簡報時，必須先讀取正向視覺範例與 Visual Text DNA。逐頁腳本、圖片底圖、正式文字層、角色／風格檢查與 PPTX／PNG 輸出必須分階段完成；不得從抽象教學主題直接套用通用簡報模板。正式中文只能由可驗證文字層渲染，文字感覺或圖文關係不像正向範例時標記 `VISUAL_TEXT_DNA_FAIL`，停等修正，不得量產。
+
+若目前 WORK 模式的插圖視覺已符合教師期待，視覺資產視為 `illustration_status: LOCKED`。之後文字表達、字體、斷行、位置或顯示失敗，只能重建文字層與排版，不得重新生成插圖或角色。
+
+WORK 模式的簡報預設交付為高畫質圖片化投影片（PNG）與 PDF。不得自行生成可編輯文字框的 PPTX；只有教師明確要求 PPTX 時，才另行派生。
 
 ## 更新方式
 
