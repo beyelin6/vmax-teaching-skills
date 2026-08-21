@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/revision-event.schema.json",
+  "title": "V-MAX Revision Event",
+  "type": "object",
+  "required": ["object_type", "revision_id", "lesson_id", "trigger", "changed_object", "affected_downstream", "recommended_return_phase", "unchanged_objects", "teacher_decision_required"],
+  "properties": {
+    "object_type": { "const": "REVISION_EVENT" },
+    "revision_id": { "type": "string" },
+    "lesson_id": { "type": "string" },
+    "trigger": { "enum": ["SOURCE_TEXT_CHANGE", "TEACHING_SELECTION_CHANGE", "LOCAL_PAGE_PATCH", "ROLE_STYLE_CHANGE", "SCHEMA_CHANGE", "TEACHER_REQUESTED_RECALCULATION"] },
+    "changed_object": { "type": "string" },
+    "changed_version": { "type": "string" },
+    "affected_downstream": { "type": "array", "items": { "type": "object" } },
+    "recommended_return_phase": { "enum": ["PHASE_1", "PHASE_2", "PHASE_3"] },
+    "unchanged_objects": { "type": "array", "items": { "type": "object" } },
+    "teacher_decision_required": { "type": "string" },
+    "teacher_decision_event": { "type": ["string", "null"] },
+    "status": { "enum": ["OPEN", "WAITING_TEACHER", "APPROVED", "CANCELLED"] }
+  },
+  "additionalProperties": false
+}

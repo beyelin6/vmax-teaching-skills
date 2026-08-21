@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/learning-module-profile.schema.json",
+  "title": "V-MAX Learning Module Profile",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "source_master_version", "approved_selection_version", "lkb_version", "version", "status", "teacher_confirmation_status", "modules", "derived_from"],
+  "properties": {
+    "object_type": { "const": "LEARNING_MODULE_PROFILE" },
+    "lesson_id": { "type": "string" },
+    "source_master_version": { "type": "string" },
+    "approved_selection_version": { "type": "string" },
+    "lkb_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["BATCH_DRAFT", "TEACHER_REVIEW", "CONFIRMED", "SUPERSEDED"] },
+    "teacher_confirmation_status": { "enum": ["NOT_REVIEWED", "WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "modules": { "type": "array", "items": { "$ref": "#/$defs/module" } },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "CONFIRMED" } } },
+      "then": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }
+    },
+    {
+      "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } },
+      "then": { "properties": { "status": { "const": "CONFIRMED" } } }
+    }
+  ],
+  "$defs": {
+    "module": {
+      "type": "object",
+      "required": ["module_id", "module_type", "source_node_refs", "content_layer", "student_content", "teacher_layer"],
+      "properties": {
+        "module_id": { "type": "string" },
+        "module_type": { "type": "string" },
+        "source_node_refs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "content_layer": { "const": "LEARNING_EXTENSION" },
+        "student_content": { "type": "object" },
+        "teacher_layer": { "type": "object" },
+        "answer_visibility": { "enum": ["HIDDEN", "TEACHER_ONLY", "VISIBLE_BY_TASK"] },
+        "enabled": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "derivedFrom": {
+      "type": "object",
+      "required": ["direct_parent", "lineage"],
+      "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

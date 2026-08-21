@@ -1,0 +1,31 @@
+{
+  "object_type": "STYLE_SELECTION_PROFILE",
+  "lesson_id": "grade4-book1-lesson1",
+  "source_master_version": "SM-001",
+  "approved_selection_version": "ATS-001",
+  "teaching_strategy_version": "TS-001",
+  "role_selection_version": "ROLESEL-001",
+  "version": "STYLESEL-001",
+  "status": "CONFIRMED",
+  "teacher_confirmation_status": "CONFIRMED",
+  "style_core": {
+    "style_core_id": "STYLE-WARM-001",
+    "palette": { "primary": "warm_cream", "accent": "muted_teal" },
+    "typography": { "body": "Source Han Sans TC", "title": "Source Han Sans TC" },
+    "page_ratio": "16:9",
+    "safe_boundary": { "top": "5%", "bottom": "5%", "left": "5%", "right": "5%" },
+    "text_hierarchy": { "title": "H1", "body": "BODY", "task": "TASK" },
+    "image_language": { "style": "warm_educational_illustration", "light": "soft" },
+    "character_rules": { "preserve_core_dna": true, "allow_context_variant": true },
+    "drift_guardrails": ["不得改變角色核心 DNA", "不得改變繁體字字形來源"]
+  },
+  "page_variants": [
+    { "variant_id": "STYLE-WARM-001:TEXT-READING", "page_family": "TEXT_READING_PAGE", "allowed_adjustments": ["文字密度", "插圖位置", "標色方式"] },
+    { "variant_id": "STYLE-WARM-001:CHARACTER-COMPARE", "page_family": "CHARACTER_COMPARISON_PAGE", "allowed_adjustments": ["比較區域比例", "角色位置"] }
+  ],
+  "teacher_confirmation_ref": "TEACHER_EVENT-STYLE-001",
+  "derived_from": {
+    "direct_parent": "ROLE_SELECTION_PROFILE:ROLESEL-001",
+    "lineage": ["SOURCE_MASTER:SM-001", "APPROVED_TEACHING_SELECTION:ATS-001", "TEACHING_STRATEGY_PROFILE:TS-001", "ROLE_SELECTION_PROFILE:ROLESEL-001", "STYLE_LIBRARY:STYLE-WARM-001"]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "object_type": "OUTPUT_MANIFEST",
+  "lesson_id": "grade4-book1-lesson1",
+  "slide_script_version": "SS-001",
+  "version": "OM-001",
+  "status": "TEACHER_REVIEW",
+  "teacher_confirmation_status": "WAITING_TEACHER",
+  "outputs": [
+    {
+      "output_id": "OUT-NOTEBOOKLM-001",
+      "format": "NOTEBOOKLM_SLIDE_AUDIO",
+      "status": "HANDOFF_READY",
+      "platform": "NotebookLM",
+      "asset_ref": null,
+      "derived_from": {
+        "direct_parent": "SLIDE_SCRIPT:SS-001",
+        "lineage": ["SOURCE_MASTER:SM-001", "SLIDE_SCRIPT:SS-001"]
+      },
+      "affected_slides": ["P01"],
+      "impact_note": null,
+      "teacher_confirmation_ref": null
+    }
+  ],
+  "derived_from": {
+    "direct_parent": "SLIDE_SCRIPT:SS-001",
+    "lineage": ["SOURCE_MASTER:SM-001", "SLIDE_SCRIPT:SS-001"]
+  }
+}

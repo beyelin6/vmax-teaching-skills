@@ -18,6 +18,8 @@ Canva 只在本次環境確實提供設計建立／編輯、匯出與成品檢�
 
 進入 Canva / Renderer 前，至少應具備：
 
+- Source Master 與 Approved Teaching Selection 版本參照
+- 已核准的逐頁 `SLIDE_SCRIPT`（簡報內容唯一主檔）
 - Renderer Script MD
 - Visual YAML MD
 - Character Visual Assets（若啟用角色）
@@ -39,6 +41,9 @@ Canva 只在本次環境確實提供設計建立／編輯、匯出與成品檢�
 Canva / Renderer 主要讀取：
 
 ### Renderer Script MD
+
+Renderer Script 只能作為 Canva 的執行衍生物。頁序、學生文字、教學焦點與核准內容以 `SLIDE_SCRIPT` 為準；其 portable contract 為 `core/schemas/vmax/slide-script.schema.json`。
+
 決定每頁：
 - page function
 - learning gain
@@ -78,7 +83,7 @@ Canva / Renderer 主要讀取：
 
 ### 關鍵文字
 
-以下內容優先以 Native / Verified Text 呈現：
+以下內容必須以 `Verified Teaching Text` 為唯一文字真值；圖片式輸出預設渲染為獨立 `VERIFIED_RASTER_TEXT_LAYERS`：
 
 - 課文原句
 - 生字
@@ -89,7 +94,7 @@ Canva / Renderer 主要讀取：
 - 學生任務
 - 評量文字
 
-生成圖片不能取代這些內容的真值。
+生成圖片不能取代這些內容的真值。只有教師指定 PPTX 或可編輯設計輸出時，才由同一份文字來源派生 Native Text。
 
 ---
 
@@ -145,7 +150,7 @@ Canva 不得自行：
 
 ## 6. PDF / PPTX 雙輸出
 
-V-MAX 成品層預設保留兩種簡報：
+V-MAX 成品層可保留高畫質渲染成果；可編修 PPTX 不屬預設必產物，只有教師明確要求時生成。
 
 ### Image-first PDF
 - 高完成度視覺版
@@ -157,6 +162,8 @@ V-MAX 成品層預設保留兩種簡報：
 - 關鍵文字 Native Text
 - 教師答案／引導放講者備註
 - Session / CORE / FLEX / BONUS 可調整
+- `pptx_requested_by_teacher: true`
+- 人工修改不回寫 `SLIDE_SCRIPT` 或 Source Master
 
 兩者應內容一致，但不要求技術結構完全相同。
 

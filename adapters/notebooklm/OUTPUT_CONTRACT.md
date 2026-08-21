@@ -56,14 +56,28 @@ Core 層不得依賴 NotebookLM 專屬語法。NotebookLM 特有操作、限制�
 
 ## 必要輸入
 
-每次生成至少提供：
+NotebookLM 輸入分成兩種用途，不得把兩者混成單一來源：
 
-1. `notebooklm-source.md`：完整且可追溯的教材與教學內容。
-2. `notebooklm-generation-instructions.md`：只保存生成規則，不重複堆疊全部教材文字。
-3. `visual-profile.md`：Theme、配色、插圖、角色、卡片、留白與字級。
-4. `guide-character-profile.md`：引導者角色 DNA、出場功能與禁止事項。
-5. `slide-script.md`：逐頁教學目的、學生可見文字、圖片意圖與講者備註。
-6. `output-manifest.md`：來源版本與輸出追溯。
+### A. Knowledge Source Package
+
+負責讓 NotebookLM 讀取完整、可追溯的教材與核准知識：
+
+- `source-master.md`：符合 `core/schemas/vmax/source-master.schema.json` 的來源主檔。
+- `approved-teaching-selection`：教師已確認的選教結果與版本。
+- `learning-modules`／`teaching-strategy`：已核准 companion objects 及其版本。
+- 來源層、證據位置、provenance 與教師／AI 分層。
+
+### B. Slide／Audio Package
+
+負責 NotebookLM 簡報工作室與語音／音訊流程：
+
+- `slide-script.md`：符合 `core/schemas/vmax/slide-script.schema.json` 的逐頁簡報內容主檔。
+- `visual-profile.md`：Theme、配色、插圖、角色、卡片、留白與字級。
+- `guide-character-profile.md`：引導者角色 DNA、出場功能與禁止事項。
+- `output-manifest.md`：來源版本、衍生關係與輸出追溯。
+- Renderer Script／Visual YAML：僅作執行衍生物，不得反向修改 Slide Script。
+
+生成指令只描述如何使用對應輸入包，不得重新決定課程順序、學生文字或教學焦點。
 
 ## 圖片式簡報規則
 

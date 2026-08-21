@@ -1,0 +1,15 @@
+{
+  "object_type": "STATUS_TRANSITION",
+  "transition_id": "TRANSITION-001",
+  "object_id": "SLIDE_SCRIPT:SS-001",
+  "from_status": "OUTPUT_QA",
+  "to_status": "APPROVED_OUTPUT",
+  "trigger": "教師確認輸出品質通過",
+  "actor_type": "TEACHER",
+  "teacher_confirmation_ref": "TEACHER_EVENT-OUTPUT-001",
+  "qa_gate_summary": {
+    "text_correctness": "PASS",
+    "visual_layout": "PASS",
+    "character_style_consistency": "PASS"
+  }
+}

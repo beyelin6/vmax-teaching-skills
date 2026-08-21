@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/teaching-strategy-profile.schema.json",
+  "title": "V-MAX Teaching Strategy Profile",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "source_master_version", "approved_selection_version", "lkb_version", "learning_module_version", "version", "status", "teacher_confirmation_status", "steps", "derived_from"],
+  "properties": {
+    "object_type": { "const": "TEACHING_STRATEGY_PROFILE" },
+    "lesson_id": { "type": "string" },
+    "source_master_version": { "type": "string" },
+    "approved_selection_version": { "type": "string" },
+    "lkb_version": { "type": "string" },
+    "learning_module_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["BATCH_DRAFT", "TEACHER_REVIEW", "CONFIRMED", "SUPERSEDED"] },
+    "teacher_confirmation_status": { "enum": ["NOT_REVIEWED", "WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "steps": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/step" } },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "CONFIRMED" } } },
+      "then": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }
+    },
+    {
+      "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } },
+      "then": { "properties": { "status": { "const": "CONFIRMED" } } }
+    }
+  ],
+  "$defs": {
+    "step": {
+      "type": "object",
+      "required": ["step_id", "lesson_stage", "source_node_refs", "learning_module_refs", "teacher_layer", "student_layer", "assessment"],
+      "properties": {
+        "step_id": { "type": "string" },
+        "lesson_stage": { "type": "string" },
+        "source_node_refs": { "type": "array", "items": { "type": "string" } },
+        "learning_module_refs": { "type": "array", "items": { "type": "string" } },
+        "teacher_layer": { "type": "object" },
+        "student_layer": { "type": "object" },
+        "assessment": { "type": "object" },
+        "duration_minutes": { "type": ["number", "null"], "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "derivedFrom": {
+      "type": "object",
+      "required": ["direct_parent", "lineage"],
+      "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

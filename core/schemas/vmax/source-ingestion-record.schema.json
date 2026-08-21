@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/source-ingestion-record.schema.json",
+  "title": "V-MAX Source Ingestion Record",
+  "type": "object",
+  "required": ["object_type", "record_id", "lesson_id", "version", "source_refs", "page_regions", "extracted_segments", "coverage_check", "extraction_status", "teacher_confirmation_status", "fingerprints", "derived_from"],
+  "properties": {
+    "object_type": { "const": "SOURCE_INGESTION_RECORD" },
+    "record_id": { "type": "string" },
+    "lesson_id": { "type": "string" },
+    "version": { "type": "string" },
+    "source_refs": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/sourceRef" } },
+    "page_regions": { "type": "array", "items": { "$ref": "#/$defs/pageRegion" } },
+    "extracted_segments": { "type": "array", "items": { "$ref": "#/$defs/extractedSegment" } },
+    "coverage_check": { "$ref": "#/$defs/coverageCheck" },
+    "extraction_status": { "enum": ["DRAFT", "NEEDS_REVIEW", "EXTRACTED", "EXTRACTION_VERIFIED"] },
+    "teacher_confirmation_status": { "enum": ["NOT_REVIEWED", "WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "uncertainties": { "type": "array", "items": { "type": "object" } },
+    "conflicts": { "type": "array", "items": { "type": "object" } },
+    "fingerprints": { "$ref": "#/$defs/fingerprints" },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "required": ["source_ref", "source_kind", "file_name"],
+      "properties": {
+        "source_ref": { "type": "string" },
+        "source_kind": { "enum": ["TEXTBOOK", "TEACHER_GUIDE", "WORKBOOK", "PUBLISHER_RESOURCE", "TEACHER_UPLOAD"] },
+        "file_name": { "type": "string" },
+        "file_fingerprint": { "type": ["string", "null"] },
+        "page_range": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "pageRegion": {
+      "type": "object",
+      "required": ["region_id", "pdf_page", "printed_page", "region_ref", "crop_ref", "extraction_method", "visual_check", "extracted_segment_ids"],
+      "properties": {
+        "region_id": { "type": "string" },
+        "pdf_page": { "type": ["integer", "null"] },
+        "printed_page": { "type": ["string", "null"] },
+        "region_ref": { "type": "string" },
+        "crop_ref": { "type": ["string", "null"] },
+        "extraction_method": { "enum": ["TEXT_LAYER", "OCR", "MANUAL_TRANSCRIPTION", "IMAGE_REVIEW"] },
+        "visual_check": { "enum": ["NOT_CHECKED", "CHECKED", "REQUIRED"] },
+        "extracted_segment_ids": { "type": "array", "items": { "type": "string" } },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "extractedSegment": {
+      "type": "object",
+      "required": ["segment_id", "text", "source_layer", "content_category", "region_id"],
+      "properties": {
+        "segment_id": { "type": "string" },
+        "text": { "type": "string" },
+        "source_layer": { "enum": ["OFFICIAL_TEXT", "TEXTBOOK_MARKUP", "PUBLISHER_TEACHER_RESOURCE", "TEACHER_KNOWLEDGE", "AI_SUGGESTION", "EXTENSION"] },
+        "content_category": { "enum": ["MAIN_TEXT", "CHARACTER_LIST", "RADICAL_MARKUP", "VOCABULARY", "IDIOM", "SHAPE_NEAR", "POLYPHONIC", "SENTENCE_PATTERN", "RHETORIC", "READING_STRATEGY", "ACTIVITY", "ANSWER", "PUBLISHER_NOTE", "IMAGE_OR_DIAGRAM", "OTHER"] },
+        "region_id": { "type": "string" },
+        "text_status": { "enum": ["EXACT", "OCR_UNCERTAIN", "TEACHER_CORRECTED", "CONFLICTED"] }
+      },
+      "additionalProperties": false
+    },
+    "coverageCheck": {
+      "type": "object",
+      "required": ["main_text", "bottom_margin", "small_text_area", "radical_markup", "vocabulary_box", "sentence_pattern_box", "publisher_note"],
+      "properties": {
+        "main_text": { "$ref": "#/$defs/coverageStatus" },
+        "bottom_margin": { "$ref": "#/$defs/coverageStatus" },
+        "small_text_area": { "$ref": "#/$defs/coverageStatus" },
+        "radical_markup": { "$ref": "#/$defs/coverageStatus" },
+        "vocabulary_box": { "$ref": "#/$defs/coverageStatus" },
+        "sentence_pattern_box": { "$ref": "#/$defs/coverageStatus" },
+        "publisher_note": { "$ref": "#/$defs/coverageStatus" },
+        "workbook_activity": { "$ref": "#/$defs/coverageStatus" },
+        "teacher_answer": { "$ref": "#/$defs/coverageStatus" }
+      },
+      "additionalProperties": false
+    },
+    "coverageStatus": { "enum": ["FOUND", "NOT_FOUND", "UNCERTAIN", "NOT_APPLICABLE"] },
+    "fingerprints": {
+      "type": "object",
+      "required": ["file_fingerprints", "page_fingerprints", "crop_fingerprints"],
+      "properties": {
+        "file_fingerprints": { "type": "object" },
+        "page_fingerprints": { "type": "object" },
+        "crop_fingerprints": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "derivedFrom": {
+      "type": "object",
+      "required": ["direct_parent", "lineage"],
+      "properties": {
+        "direct_parent": { "type": ["string", "null"] },
+        "lineage": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

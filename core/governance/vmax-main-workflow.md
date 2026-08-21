@@ -9,6 +9,10 @@
 - `V-MAX_MANIFEST.md`
 - Google Drive 該課 Runtime State
 
+Machine-readable workflow objects use the portable contracts in `core/schemas/vmax/`.
+
+The teacher-facing workflow remains Phase／STEP／HOLD based; schemas do not replace the confirmation card. A status transition must follow `status-transition.schema.json`, and an upstream change must create a `revision-event` before any downstream recalculation.
+
 ---
 
 ## A. Canonical Policy Wiring
@@ -21,6 +25,7 @@
 - `core/governance/source-library-policy.md`
 - `core/governance/step1-source-anchor-policy.md`
 - `core/governance/recognition-only-character-policy.md`
+- `core/schemas/vmax/source-ingestion-record.schema.json`
 
 ### STEP 2.5
 - `core/director/knowledge-lab-ordering-policy.md`
@@ -131,6 +136,8 @@ HOLD 2.6 確認 → Teacher Intent Lock
 
 ## E. STEP 2｜AI 教學價值判讀
 
+STEP 2 先建立 `CANDIDATE_INVENTORY`：完整列出教材中可供判讀的教學候選，保留原文、來源證據與 AI 分析。候選物件不得寫入教師決定。
+
 AI 主動提出：
 - 哪些文本值得深讀／朗讀／推論／比較／聯想／遷移
 - 哪些可短帶／Bonus／降權
@@ -138,6 +145,8 @@ AI 主動提出：
 - 哪些地方要保留學生發現空間
 
 完成後 HOLD 2。
+
+HOLD 2 只確認教學價值判讀與候選範圍，不等於確認正式教學清單；正式選教另由 `APPROVED_TEACHING_SELECTION` 保存。
 
 ---
 
@@ -157,6 +166,8 @@ AI 主動提出：
 3. `TEACHER_ADDED_POLYPHONIC`
 
 形近補充字／比較字／認讀字／課文一般字不得被 AI 因本身多音而自動拉入。
+
+STEP 2.5 將教師對候選的 `MUST_TEACH／OPTIONAL／DO_NOT_TEACH／EXTENSION／HOLD` 決定寫入 `APPROVED_TEACHING_SELECTION`；每筆必須有教師確認事件。未寫入該物件前，只能稱為 AI 建議或 HOLD。
 
 ### 形近字
 先做真正辨析：共同／差異部件、字義、混淆點、辨認提示，再推薦。

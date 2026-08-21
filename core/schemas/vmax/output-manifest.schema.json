@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/output-manifest.schema.json",
+  "title": "V-MAX Output Manifest",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "slide_script_version", "version", "status", "outputs", "derived_from"],
+  "properties": {
+    "object_type": { "const": "OUTPUT_MANIFEST" },
+    "lesson_id": { "type": "string" },
+    "slide_script_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["DRAFT", "TEACHER_REVIEW", "OUTPUT_QA", "APPROVED", "SUPERSEDED", "BLOCKED"] },
+    "teacher_confirmation_status": { "enum": ["NOT_REVIEWED", "WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["output_id", "format", "status", "derived_from", "affected_slides"],
+        "properties": {
+          "output_id": { "type": "string" },
+          "format": { "enum": ["NOTEBOOKLM_KNOWLEDGE_SOURCE", "NOTEBOOKLM_SLIDE_AUDIO", "GOOGLE_SLIDES_IMPORT", "CANVA_IMPORT", "PNG", "PDF", "PPTX"] },
+          "status": { "enum": ["HANDOFF_READY", "RENDER_VERIFIED", "BLOCKED", "SUPERSEDED"] },
+          "platform": { "type": ["string", "null"] },
+          "asset_ref": { "type": ["string", "null"] },
+          "derived_from": { "$ref": "#/$defs/derivedFrom" },
+          "affected_slides": { "type": "array", "items": { "type": "string" } },
+          "impact_note": { "type": ["string", "null"] },
+          "teacher_confirmation_ref": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "$defs": {
+    "derivedFrom": {
+      "type": "object",
+      "required": ["direct_parent", "lineage"],
+      "properties": {
+        "direct_parent": { "type": "string" },
+        "lineage": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

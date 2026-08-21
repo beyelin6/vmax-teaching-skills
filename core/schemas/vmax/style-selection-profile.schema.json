@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/style-selection-profile.schema.json",
+  "title": "V-MAX Style Selection Profile",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "source_master_version", "approved_selection_version", "teaching_strategy_version", "role_selection_version", "version", "status", "teacher_confirmation_status", "style_core", "page_variants", "derived_from"],
+  "properties": {
+    "object_type": { "const": "STYLE_SELECTION_PROFILE" },
+    "lesson_id": { "type": "string" },
+    "source_master_version": { "type": "string" },
+    "approved_selection_version": { "type": "string" },
+    "teaching_strategy_version": { "type": "string" },
+    "role_selection_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["TEACHER_REVIEW", "CONFIRMED", "SUPERSEDED"] },
+    "teacher_confirmation_status": { "enum": ["WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "style_core": {
+      "type": "object",
+      "required": ["style_core_id", "palette", "typography", "page_ratio", "safe_boundary", "text_hierarchy", "image_language", "character_rules", "drift_guardrails"],
+      "properties": {
+        "style_core_id": { "type": "string" },
+        "palette": { "type": "object" },
+        "typography": { "type": "object" },
+        "page_ratio": { "const": "16:9" },
+        "safe_boundary": { "type": "object" },
+        "text_hierarchy": { "type": "object" },
+        "image_language": { "type": "object" },
+        "character_rules": { "type": "object" },
+        "drift_guardrails": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "page_variants": { "type": "array", "items": { "type": "object", "required": ["variant_id", "page_family", "allowed_adjustments"], "properties": { "variant_id": { "type": "string" }, "page_family": { "type": "string" }, "allowed_adjustments": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
+    "teacher_confirmation_ref": { "type": ["string", "null"] },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "const": "CONFIRMED" } } }, "then": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } } },
+    { "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }, "then": { "properties": { "status": { "const": "CONFIRMED" } } } }
+  ],
+  "$defs": { "derivedFrom": { "type": "object", "required": ["direct_parent", "lineage"], "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
+  "additionalProperties": false
+}

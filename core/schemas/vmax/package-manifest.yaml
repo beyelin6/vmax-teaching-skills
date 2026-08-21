@@ -1,0 +1,60 @@
+package:
+  name: vmax-cross-ai-schema-package
+  version: 0.1.0
+  json_schema_draft: 2020-12
+  encoding: UTF-8
+  human_readable_contract: README.md
+  migration_policy: migrations/README.md
+
+compatibility:
+  platforms:
+    - Codex
+    - ChatGPT
+    - Gemini
+    - Antigravity
+    - Spark
+  transport_formats:
+    - JSON
+    - YAML
+    - Markdown
+
+objects:
+  - object_type: SOURCE_MASTER
+    schema: source-master.schema.json
+  - object_type: SOURCE_INGESTION_RECORD
+    schema: source-ingestion-record.schema.json
+  - object_type: CANDIDATE_INVENTORY
+    schema: candidate-inventory.schema.json
+  - object_type: APPROVED_TEACHING_SELECTION
+    schema: approved-teaching-selection.schema.json
+  - object_type: HOLD_EVENT
+    schema: hold-event.schema.json
+  - object_type: REVISION_EVENT
+    schema: revision-event.schema.json
+  - object_type: STATUS_TRANSITION
+    schema: status-transition.schema.json
+  - object_type: SLIDE_SCRIPT
+    schema: slide-script.schema.json
+  - object_type: OUTPUT_MANIFEST
+    schema: output-manifest.schema.json
+  - object_type: LEARNING_MODULE_PROFILE
+    schema: learning-module-profile.schema.json
+  - object_type: TEACHING_STRATEGY_PROFILE
+    schema: teaching-strategy-profile.schema.json
+  - object_type: ROLE_SELECTION_PROFILE
+    schema: role-selection-profile.schema.json
+  - object_type: STYLE_SELECTION_PROFILE
+    schema: style-selection-profile.schema.json
+
+examples:
+  - examples/source-ingestion-record.example.json
+  - examples/candidate-inventory.example.json
+  - examples/approved-teaching-selection.example.json
+  - examples/learning-module-profile.example.json
+  - examples/teaching-strategy-profile.example.json
+  - examples/role-selection-profile.example.json
+  - examples/style-selection-profile.example.json
+  - examples/status-transition.example.json
+  - examples/hold-event.example.json
+  - examples/slide-script.example.json
+  - examples/output-manifest.example.json

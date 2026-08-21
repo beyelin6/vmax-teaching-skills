@@ -1,0 +1,25 @@
+{
+  "object_type": "ROLE_SELECTION_PROFILE",
+  "lesson_id": "grade4-book1-lesson1",
+  "source_master_version": "SM-001",
+  "approved_selection_version": "ATS-001",
+  "teaching_strategy_version": "TS-001",
+  "version": "ROLESEL-001",
+  "status": "CONFIRMED",
+  "teacher_confirmation_status": "CONFIRMED",
+  "base_character_id": "ROLE-XIAOLE-001",
+  "role_function": ["evidence_prompt", "transition"],
+  "usage_frequency": "MEDIUM",
+  "core_dna_ref": "ROLE-XIAOLE-001:CORE-DNA",
+  "context_variant": {
+    "variant_id": "ROLE-XIAOLE-001:HIKING",
+    "costume_or_props": ["登山服", "小背包"],
+    "allowed_changes": ["服裝", "道具", "姿勢", "位置", "半身／全身比例"],
+    "preserved_core_dna": ["臉型", "髮型", "年齡感", "配色關係", "畫風"]
+  },
+  "teacher_confirmation_ref": "TEACHER_EVENT-ROLE-001",
+  "derived_from": {
+    "direct_parent": "TEACHING_STRATEGY_PROFILE:TS-001",
+    "lineage": ["SOURCE_MASTER:SM-001", "APPROVED_TEACHING_SELECTION:ATS-001", "TEACHING_STRATEGY_PROFILE:TS-001", "ROLE_LIBRARY:ROLE-XIAOLE-001"]
+  }
+}

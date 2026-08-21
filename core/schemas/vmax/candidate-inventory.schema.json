@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/candidate-inventory.schema.json",
+  "title": "V-MAX Candidate Inventory",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "source_master_version", "version", "status", "candidates"],
+  "properties": {
+    "object_type": { "const": "CANDIDATE_INVENTORY" },
+    "lesson_id": { "type": "string" },
+    "source_master_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["BATCH_DRAFT", "TEACHER_REVIEW", "SUPERSEDED"] },
+    "teacher_confirmation_status": { "enum": ["NOT_REVIEWED", "WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "candidates": { "type": "array", "items": { "type": "object", "required": ["candidate_id", "category", "raw_content", "source_refs", "candidate_status"], "properties": { "candidate_id": { "type": "string" }, "category": { "type": "string" }, "raw_content": { "type": "string" }, "source_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 }, "candidate_status": { "enum": ["DISCOVERED", "AI_ANALYZED", "SOURCE_CONFLICT", "HOLD"] }, "ai_analysis": { "type": ["object", "null"] } }, "additionalProperties": false } },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "$defs": { "derivedFrom": { "type": "object", "required": ["direct_parent", "lineage"], "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
+  "additionalProperties": false
+}

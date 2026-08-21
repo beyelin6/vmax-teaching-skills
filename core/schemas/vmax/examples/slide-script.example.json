@@ -1,0 +1,66 @@
+{
+  "object_type": "SLIDE_SCRIPT",
+  "lesson_id": "grade4-book1-lesson1",
+  "source_master_version": "SM-001",
+  "approved_selection_version": "ATS-001",
+  "version": "SS-001",
+  "status": "TEACHER_REVIEW",
+  "teacher_confirmation_status": "WAITING_TEACHER",
+  "presentation_rendering_policy": {
+    "student_visual_default": "VERIFIED_RASTER_TEXT_LAYERS",
+    "source_text_authority": "VERIFIED_TEACHING_TEXT",
+    "editable_text_output": "DERIVED_ONLY",
+    "local_text_repair": true,
+    "canvas_aspect_ratio": "16:9",
+    "orientation": "LANDSCAPE"
+  },
+  "slides": [
+    {
+      "slide_id": "P01",
+      "sequence": 1,
+      "source_refs": ["LKB:pending_teacher_confirmation"],
+      "layout_direction": "TEXT_LEFT_IMAGE_RIGHT",
+      "visual_layer": {
+        "page_purpose": "本頁主要教學焦點（待教師確認）",
+        "background": "依核准 Visual Profile 生成無字或低字背景",
+        "role_refs": [],
+        "safety_boundary": "classroom_projection"
+      },
+      "text_rendering": {
+        "mode": "VERIFIED_RASTER_TEXT_LAYERS",
+        "layers": [
+          {
+            "layer_id": "P01-T01",
+            "text": "請找一找畫面中的線索。",
+            "visibility": "STUDENT",
+            "source_ref": "TEACHER_CONFIRMED_TASK:pending",
+            "position": {"anchor": "visual_lower_left"},
+            "style": {"semantic_role": "student_task"},
+            "repair_scope": "LOCAL_LAYER_ONLY"
+          }
+        ]
+      },
+      "student_layer": {
+        "title": "課文觀察",
+        "student_visible_text": "請找一找畫面中的線索。",
+        "answer_visibility": "HIDDEN"
+      },
+      "teacher_layer": {
+        "speaker_notes": "僅供教師層，不出現在學生頁。"
+      },
+      "qa_layer": {
+        "text_gate": "PENDING",
+        "visual_gate": "PENDING",
+        "character_style_gate": "PENDING"
+      }
+    }
+  ],
+  "derived_from": {
+    "direct_parent": "APPROVED_TEACHING_SELECTION:ATS-001",
+    "lineage": [
+      "SOURCE_MASTER:SM-001",
+      "CANDIDATE_INVENTORY:CI-001",
+      "APPROVED_TEACHING_SELECTION:ATS-001"
+    ]
+  }
+}

@@ -47,6 +47,11 @@ recognition_only_character_policy:
 hold_policy:
   path: core/governance/hold-teacher-interface-policy.md
   current_version: 1.4
+cross_ai_schema_package:
+  path: core/schemas/vmax/README.md
+  manifest_path: core/schemas/vmax/package-manifest.yaml
+  current_version: 0.1.0
+  migration_policy: core/schemas/vmax/migrations/README.md
 teacher_review_view:
   path: core/ui/teacher-review-view-contract.md
   current_version: 1.1
@@ -65,7 +70,7 @@ polyphonic_source_policy:
   current_version: 1.1
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
-  current_version: 1.1
+  current_version: 1.2
 character_teaching_regression:
   path: tests/character-teaching-regression-cases.md
   current_version: 1.1
@@ -139,12 +144,14 @@ typography_bridge:
 vqs_quality_validator:
   path: skills/vqs-quality-validator/SKILL.md
   current_version: 0.2.0
-adapters:
-  chatgpt: adapters/chatgpt.md
-  codex: adapters/codex.md
-  gemini: adapters/gemini.md
-  notebooklm: adapters/notebooklm.md
-  canva_renderer: adapters/canva.md
+  adapters:
+    chatgpt: adapters/chatgpt.md
+    codex: adapters/codex.md
+    gemini: adapters/gemini.md
+    spark: adapters/spark.md
+    notebooklm: adapters/notebooklm.md
+    canva_renderer: adapters/canva.md
+    google_slides: adapters/google-slides.md
 gemini_source_analysis:
   contract: adapters/gemini/source-analysis-contract.md
   report_schema: schemas/gemini-source-analysis-report.md

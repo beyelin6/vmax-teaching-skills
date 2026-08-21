@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/status-transition.schema.json",
+  "title": "V-MAX Status Transition",
+  "type": "object",
+  "required": ["object_type", "transition_id", "object_id", "from_status", "to_status", "trigger", "actor_type"],
+  "properties": {
+    "object_type": { "const": "STATUS_TRANSITION" },
+    "transition_id": { "type": "string" },
+    "object_id": { "type": "string" },
+    "from_status": { "enum": ["BATCH_DRAFT", "TEACHER_REVIEW", "LESSON_LOCKED", "OUTPUT_DRAFT", "OUTPUT_QA", "APPROVED_OUTPUT", "SUPERSEDED"] },
+    "to_status": { "enum": ["BATCH_DRAFT", "TEACHER_REVIEW", "LESSON_LOCKED", "OUTPUT_DRAFT", "OUTPUT_QA", "APPROVED_OUTPUT", "SUPERSEDED"] },
+    "trigger": { "type": "string" },
+    "actor_type": { "enum": ["AGENT", "TEACHER", "SYSTEM"] },
+    "teacher_confirmation_ref": { "type": ["string", "null"] },
+    "qa_gate_summary": { "type": ["object", "null"] }
+  },
+  "oneOf": [
+    { "properties": { "from_status": { "const": "BATCH_DRAFT" }, "to_status": { "const": "TEACHER_REVIEW" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
+    { "properties": { "from_status": { "const": "TEACHER_REVIEW" }, "to_status": { "const": "BATCH_DRAFT" }, "actor_type": { "const": "TEACHER" } } },
+    { "properties": { "from_status": { "const": "TEACHER_REVIEW" }, "to_status": { "const": "LESSON_LOCKED" }, "actor_type": { "const": "TEACHER" }, "teacher_confirmation_ref": { "type": "string" } } },
+    { "properties": { "from_status": { "const": "LESSON_LOCKED" }, "to_status": { "const": "OUTPUT_DRAFT" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
+    { "properties": { "from_status": { "const": "OUTPUT_DRAFT" }, "to_status": { "const": "OUTPUT_QA" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
+    { "properties": { "from_status": { "const": "OUTPUT_QA" }, "to_status": { "const": "OUTPUT_DRAFT" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
+    { "properties": { "from_status": { "const": "OUTPUT_QA" }, "to_status": { "const": "APPROVED_OUTPUT" }, "actor_type": { "const": "TEACHER" }, "teacher_confirmation_ref": { "type": "string" }, "qa_gate_summary": { "type": "object" } } },
+    { "properties": { "from_status": { "const": "APPROVED_OUTPUT" }, "to_status": { "const": "SUPERSEDED" }, "actor_type": { "enum": ["TEACHER", "SYSTEM"] } } }
+  ],
+  "additionalProperties": false
+}

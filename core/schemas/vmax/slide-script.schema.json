@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/slide-script.schema.json",
+  "title": "V-MAX Slide Script",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "source_master_version", "approved_selection_version", "version", "slides", "derived_from"],
+  "properties": {
+    "object_type": { "const": "SLIDE_SCRIPT" },
+    "lesson_id": { "type": "string" },
+    "source_master_version": { "type": "string" },
+    "approved_selection_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["BATCH_DRAFT", "TEACHER_REVIEW", "LESSON_LOCKED", "OUTPUT_DRAFT", "OUTPUT_QA", "APPROVED_OUTPUT", "SUPERSEDED"] },
+    "teacher_confirmation_status": { "enum": ["NOT_REVIEWED", "WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "slides": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["slide_id", "sequence", "student_layer", "teacher_layer", "qa_layer"], "properties": { "slide_id": { "type": "string" }, "sequence": { "type": "integer", "minimum": 1 }, "student_layer": { "type": "object" }, "teacher_layer": { "type": "object" }, "qa_layer": { "type": "object" }, "source_refs": { "type": "array", "items": { "type": "string" } }, "layout_direction": { "enum": ["TEXT_LEFT_IMAGE_RIGHT", "IMAGE_LEFT_TEXT_RIGHT", "OTHER_CONFIRMED_LAYOUT"] }, "visual_layer": { "type": "object" }, "text_rendering": { "type": "object", "properties": { "mode": { "enum": ["VERIFIED_RASTER_TEXT_LAYERS", "NATIVE_TEXT_DERIVED_PPTX"] }, "layers": { "type": "array", "items": { "type": "object", "required": ["layer_id", "text", "visibility", "source_ref"], "properties": { "layer_id": { "type": "string" }, "text": { "type": "string" }, "visibility": { "enum": ["STUDENT", "TEACHER", "QA", "HIDDEN"] }, "source_ref": { "type": "string" }, "position": { "type": "object" }, "style": { "type": "object" }, "repair_scope": { "const": "LOCAL_LAYER_ONLY" } }, "additionalProperties": false } } } }, "render_request": { "type": "object" } }, "additionalProperties": false } },
+    "derived_from": { "type": "object", "required": ["direct_parent", "lineage"], "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false },
+    "presentation_rendering_policy": { "type": "object", "properties": { "student_visual_default": { "const": "VERIFIED_RASTER_TEXT_LAYERS" }, "source_text_authority": { "const": "VERIFIED_TEACHING_TEXT" }, "editable_text_output": { "const": "DERIVED_ONLY" }, "local_text_repair": { "const": true }, "canvas_aspect_ratio": { "const": "16:9" }, "orientation": { "const": "LANDSCAPE" } }, "additionalProperties": false }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,25 @@
+{
+  "object_type": "CANDIDATE_INVENTORY",
+  "lesson_id": "grade4-book1-lesson1",
+  "source_master_version": "SM-001",
+  "version": "CI-001",
+  "status": "TEACHER_REVIEW",
+  "teacher_confirmation_status": "WAITING_TEACHER",
+  "candidates": [
+    {
+      "candidate_id": "CAND-SHAPE-001",
+      "category": "SHAPE_NEAR",
+      "raw_content": "課本列出的形近字組",
+      "source_refs": ["TEXT_SEGMENT:SEG-001", "EVIDENCE:E-001"],
+      "candidate_status": "AI_ANALYZED",
+      "ai_analysis": {
+        "reason": "共同部件與差異部件可從教材證據核對",
+        "recommendation": "等待教師選教"
+      }
+    }
+  ],
+  "derived_from": {
+    "direct_parent": "SOURCE_MASTER:SM-001",
+    "lineage": ["SOURCE_INGESTION_RECORD:SIR-001", "SOURCE_MASTER:SM-001"]
+  }
+}

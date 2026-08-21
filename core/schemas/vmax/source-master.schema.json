@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/source-master.schema.json",
+  "title": "V-MAX Source Master",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "book_id", "version", "status", "teacher_confirmation_status", "source_layers", "text_segments", "evidence_index", "fingerprints", "derived_from"],
+  "properties": {
+    "object_type": { "const": "SOURCE_MASTER" },
+    "lesson_id": { "type": "string" },
+    "book_id": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["BATCH_DRAFT", "TEACHER_REVIEW", "LESSON_LOCKED", "SUPERSEDED"] },
+    "teacher_confirmation_status": { "enum": ["NOT_REVIEWED", "WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "source_layers": { "$ref": "#/$defs/sourceLayers" },
+    "text_segments": { "type": "array", "items": { "$ref": "#/$defs/textSegment" } },
+    "evidence_index": { "type": "array", "items": { "$ref": "#/$defs/evidence" } },
+    "ocr_uncertainties": { "type": "array", "items": { "type": "object" } },
+    "teacher_corrections": { "type": "array", "items": { "type": "object" } },
+    "source_conflicts": { "type": "array", "items": { "type": "object" } },
+    "fingerprints": { "$ref": "#/$defs/fingerprints" },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" },
+    "ingestion_record_refs": { "type": "array", "items": { "type": "string" } },
+    "companion_objects": { "type": "array", "items": { "$ref": "#/$defs/companionRef" } }
+  },
+  "$defs": {
+    "sourceLayers": {
+      "type": "object",
+      "required": ["OFFICIAL_TEXT", "TEXTBOOK_MARKUP", "PUBLISHER_TEACHER_RESOURCE", "TEACHER_KNOWLEDGE", "AI_SUGGESTION", "EXTENSION"],
+      "properties": {
+        "OFFICIAL_TEXT": { "type": "array", "items": { "type": "object" } },
+        "TEXTBOOK_MARKUP": { "type": "array", "items": { "type": "object" } },
+        "PUBLISHER_TEACHER_RESOURCE": { "type": "array", "items": { "type": "object" } },
+        "TEACHER_KNOWLEDGE": { "type": "array", "items": { "type": "object" } },
+        "AI_SUGGESTION": { "type": "array", "items": { "type": "object" } },
+        "EXTENSION": { "type": "array", "items": { "type": "object" } }
+      },
+      "additionalProperties": false
+    },
+    "textSegment": {
+      "type": "object",
+      "required": ["segment_id", "text", "source_refs"],
+      "properties": { "segment_id": { "type": "string" }, "text": { "type": "string" }, "source_refs": { "type": "array", "items": { "type": "string" } } },
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["evidence_id", "source_ref", "pdf_page", "printed_page", "region_ref", "crop_ref"],
+      "properties": { "evidence_id": { "type": "string" }, "source_ref": { "type": "string" }, "pdf_page": { "type": ["integer", "null"] }, "printed_page": { "type": ["string", "null"] }, "region_ref": { "type": ["string", "null"] }, "crop_ref": { "type": ["string", "null"] }, "ocr_confidence": { "type": ["number", "null"] } },
+      "additionalProperties": false
+    },
+    "fingerprints": {
+      "type": "object",
+      "required": ["file_fingerprint", "page_fingerprints", "crop_fingerprints"],
+      "properties": { "file_fingerprint": { "type": "string" }, "page_fingerprints": { "type": "object" }, "crop_fingerprints": { "type": "object" } },
+      "additionalProperties": false
+    },
+    "derivedFrom": {
+      "type": "object",
+      "required": ["direct_parent", "lineage"],
+      "properties": { "direct_parent": { "type": ["string", "null"] }, "lineage": { "type": "array", "items": { "type": "string" } } },
+      "additionalProperties": false
+    },
+    "companionRef": {
+      "type": "object",
+      "required": ["object_type", "object_id", "version", "approved"],
+      "properties": { "object_type": { "type": "string" }, "object_id": { "type": "string" }, "version": { "type": "string" }, "approved": { "type": "boolean" } },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/hold-event.schema.json",
+  "title": "V-MAX HOLD Event",
+  "type": "object",
+  "required": ["object_type", "hold_id", "lesson_id", "phase", "hold_type", "status", "evidence", "downstream_impact", "teacher_decision_required"],
+  "properties": {
+    "object_type": { "const": "HOLD_EVENT" },
+    "hold_id": { "type": "string" },
+    "lesson_id": { "type": "string" },
+    "phase": { "enum": ["PHASE_1", "PHASE_2", "PHASE_3"] },
+    "hold_type": { "enum": ["SOURCE_CONFLICT", "SCOPE_UNDECIDED", "DESIGN_UNDECIDED", "OUTPUT_UNDECIDED", "VERSION_UNDECIDED", "BLOCKED_QUALITY"] },
+    "status": { "enum": ["OPEN", "TEACHER_DECIDED", "RESOLVED", "CANCELLED"] },
+    "evidence": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "conflict_summary": { "type": "string" },
+    "ai_options": { "type": "array", "items": { "type": "object" } },
+    "downstream_impact": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "teacher_decision_required": { "type": "string" },
+    "teacher_decision_event": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

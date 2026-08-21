@@ -134,6 +134,23 @@ V-MAX 教材庫
 
 不得假裝已讀取。
 
+## H. Cross-AI Source Record
+
+Structured source records MUST use the portable contracts under `core/schemas/vmax/`.
+
+The six source layers are kept distinct:
+
+- `OFFICIAL_TEXT`
+- `TEXTBOOK_MARKUP`
+- `PUBLISHER_TEACHER_RESOURCE`
+- `TEACHER_KNOWLEDGE`
+- `AI_SUGGESTION`
+- `EXTENSION`
+
+Source evidence should preserve `pdf_page`, `printed_page`, `region_ref`, and `crop_ref` where available. File, page, and important crop fingerprints should be retained so downstream agents can reuse locked extracts without rereading an entire PDF.
+
+Same-field conflicts are not resolved by the source library policy; they become a HOLD for teacher decision.
+
 ---
 
 ## 核心金句

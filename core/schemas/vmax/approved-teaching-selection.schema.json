@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/approved-teaching-selection.schema.json",
+  "title": "V-MAX Approved Teaching Selection",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "source_master_version", "candidate_inventory_version", "version", "status", "selections"],
+  "properties": {
+    "object_type": { "const": "APPROVED_TEACHING_SELECTION" },
+    "lesson_id": { "type": "string" },
+    "source_master_version": { "type": "string" },
+    "candidate_inventory_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["TEACHER_REVIEW", "LESSON_LOCKED", "SUPERSEDED"] },
+    "teacher_confirmation_status": { "enum": ["WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "selections": { "type": "array", "items": { "type": "object", "required": ["candidate_id", "decision", "student_visible", "confirmed_by_teacher"], "properties": { "candidate_id": { "type": "string" }, "decision": { "enum": ["MUST_TEACH", "OPTIONAL", "DO_NOT_TEACH", "EXTENSION", "HOLD"] }, "teacher_note": { "type": ["string", "null"] }, "student_visible": { "type": "boolean" }, "extension_student_approved": { "type": "boolean" }, "confirmed_by_teacher": { "const": true }, "teacher_confirmation_ref": { "type": ["string", "null"] } }, "additionalProperties": false } },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "LESSON_LOCKED" } } },
+      "then": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }
+    },
+    {
+      "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } },
+      "then": { "properties": { "status": { "const": "LESSON_LOCKED" } } }
+    }
+  ],
+  "$defs": { "derivedFrom": { "type": "object", "required": ["direct_parent", "lineage"], "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
+  "additionalProperties": false
+}

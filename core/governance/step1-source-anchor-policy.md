@@ -12,6 +12,7 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 
 - `core/governance/source-library-policy.md`
 - `core/governance/recognition-only-character-policy.md`
+- `core/schemas/vmax/source-ingestion-record.schema.json`
 
 ---
 
@@ -19,6 +20,7 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 
 教師可讀確認卡應整理：
 
+- Source Ingestion Record 狀態與掃描範圍
 - 課名
 - 作者
 - 年級／冊別
@@ -31,6 +33,22 @@ STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍�
 - 教材正式語文活動
 - 教材明列修辭／句型／文體焦點（若來源有）
 - source provenance / 不確定處
+
+### A2. Source Ingestion Record 先於教材判讀
+
+STEP 1 先建立 `SOURCE_INGESTION_RECORD`，逐頁記錄正文、底欄、側欄、圖表、圖片下方小字與教材框線區塊的掃描結果。至少要明確標示：
+
+- `main_text`
+- `bottom_margin`
+- `small_text_area`
+- `radical_markup`
+- `vocabulary_box`
+- `sentence_pattern_box`
+- `publisher_note`
+
+每個 `FOUND` 區塊必須保存完整擷取文字與 `pdf_page`、`printed_page`、`region_ref`、`crop_ref`；`UNCERTAIN` 區塊必須保存原因與證據位置。`NOT_FOUND` 只表示該區塊已被檢查且未發現，不能由 Agent 用推測補成內容。
+
+Source Ingestion Record 是「掃描與證據記錄」，不包含教學取捨、角色、風格、頁數或答案裁決。它完成後才可組裝 Source Master；Source Master 以 `ingestion_record_refs` 回指本記錄。
 
 可加入「初步教材觀察」，但必須明確標示為 AI observation，不得冒充教材來源。
 
@@ -151,6 +169,9 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 - teacher_readable_card_rendered: true
 - machine_payload_not_primary_ui: true
 - source_library_checked_if_configured: true
+- source_ingestion_record_created: true
+- source_region_coverage_recorded: true
+- source_uncertainties_named: true
 - recognition_only_character_presence_checked: true
 - recognition_footer_checked: true
 - recognition_posttext_character_table_checked: true

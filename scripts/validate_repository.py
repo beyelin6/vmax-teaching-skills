@@ -24,6 +24,59 @@ def validate_versions() -> None:
         fail(f"VERSION {version!r} != plugin version {plugin.get('version')!r}")
 
 
+def validate_vmax_schemas() -> None:
+    schema_root = ROOT / "core/schemas/vmax"
+    required = (
+        "source-master.schema.json",
+        "source-ingestion-record.schema.json",
+        "candidate-inventory.schema.json",
+        "approved-teaching-selection.schema.json",
+        "learning-module-profile.schema.json",
+        "teaching-strategy-profile.schema.json",
+        "role-selection-profile.schema.json",
+        "style-selection-profile.schema.json",
+        "hold-event.schema.json",
+        "revision-event.schema.json",
+        "status-transition.schema.json",
+        "slide-script.schema.json",
+    )
+    required_supporting_files = (
+        "README.md",
+        "package-manifest.yaml",
+        "examples/hold-event.example.json",
+        "examples/slide-script.example.json",
+        "examples/source-ingestion-record.example.json",
+        "examples/candidate-inventory.example.json",
+        "examples/approved-teaching-selection.example.json",
+        "examples/learning-module-profile.example.json",
+        "examples/teaching-strategy-profile.example.json",
+        "examples/role-selection-profile.example.json",
+        "examples/style-selection-profile.example.json",
+        "examples/status-transition.example.json",
+        "migrations/README.md",
+    )
+    for filename in required_supporting_files:
+        if not (schema_root / filename).is_file():
+            fail(f"missing V-MAX schema package file: {schema_root / filename}")
+    for filename in required:
+        path = schema_root / filename
+        if not path.is_file():
+            fail(f"missing V-MAX schema: {path.relative_to(ROOT)}")
+            continue
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            fail(f"invalid JSON schema {path.relative_to(ROOT)}: {exc}")
+            continue
+        if payload.get("$schema") != "https://json-schema.org/draft/2020-12/schema":
+            fail(f"schema is not Draft 2020-12: {path.relative_to(ROOT)}")
+        if not isinstance(payload.get("title"), str) or not payload["title"].startswith("V-MAX"):
+            fail(f"schema title missing V-MAX prefix: {path.relative_to(ROOT)}")
+        object_type = payload.get("properties", {}).get("object_type", {}).get("const")
+        if not isinstance(object_type, str):
+            fail(f"schema missing object_type const: {path.relative_to(ROOT)}")
+
+
 def validate_skills() -> None:
     skills_root = ROOT / "skills"
     for child in sorted(skills_root.iterdir()):
@@ -167,6 +220,7 @@ def validate_front_door() -> None:
 
 def main() -> int:
     validate_versions()
+    validate_vmax_schemas()
     validate_skills()
     validate_manifest_paths()
     validate_manifest_module_versions()

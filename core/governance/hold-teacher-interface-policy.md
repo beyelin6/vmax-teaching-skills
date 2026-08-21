@@ -261,4 +261,19 @@ Machine payload 是 downstream contract，不是 Teacher UI。
 
 > 一次確認，只往前走一關；不要飛站。
 
+## M. Cross-AI HOLD Contract
+
+HOLD machine records MUST conform to `core/schemas/vmax/hold-event.schema.json`.
+
+The machine record must preserve:
+
+- evidence from every conflicting source
+- the current Phase and HOLD type
+- AI options as options, never as a teacher decision
+- at least one downstream impact item
+- the smallest teacher decision required
+- the teacher decision event and resolution status
+
+The schema is a downstream contract. The teacher-facing confirmation card remains the required interface described above.
+
 > 教師確認的是方向與例外，不是替 AI 補完整套教學設計。

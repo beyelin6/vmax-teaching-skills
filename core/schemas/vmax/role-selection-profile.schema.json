@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/role-selection-profile.schema.json",
+  "title": "V-MAX Role Selection Profile",
+  "type": "object",
+  "required": ["object_type", "lesson_id", "source_master_version", "approved_selection_version", "teaching_strategy_version", "version", "status", "teacher_confirmation_status", "base_character_id", "role_function", "usage_frequency", "core_dna_ref", "context_variant", "derived_from"],
+  "properties": {
+    "object_type": { "const": "ROLE_SELECTION_PROFILE" },
+    "lesson_id": { "type": "string" },
+    "source_master_version": { "type": "string" },
+    "approved_selection_version": { "type": "string" },
+    "teaching_strategy_version": { "type": "string" },
+    "version": { "type": "string" },
+    "status": { "enum": ["TEACHER_REVIEW", "CONFIRMED", "SUPERSEDED", "OFF"] },
+    "teacher_confirmation_status": { "enum": ["WAITING_TEACHER", "CONFIRMED", "CHANGES_REQUESTED"] },
+    "base_character_id": { "type": ["string", "null"] },
+    "role_function": { "type": "array", "items": { "type": "string" } },
+    "usage_frequency": { "enum": ["LOW", "MEDIUM", "HIGH", "OFF"] },
+    "core_dna_ref": { "type": ["string", "null"] },
+    "context_variant": {
+      "type": "object",
+      "required": ["variant_id", "costume_or_props", "allowed_changes", "preserved_core_dna"],
+      "properties": {
+        "variant_id": { "type": ["string", "null"] },
+        "costume_or_props": { "type": "array", "items": { "type": "string" } },
+        "allowed_changes": { "type": "array", "items": { "type": "string" } },
+        "preserved_core_dna": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "teacher_confirmation_ref": { "type": ["string", "null"] },
+    "derived_from": { "$ref": "#/$defs/derivedFrom" }
+  },
+  "allOf": [
+    { "if": { "properties": { "status": { "const": "CONFIRMED" } } }, "then": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } } },
+    { "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }, "then": { "properties": { "status": { "const": "CONFIRMED" } } } }
+  ],
+  "$defs": { "derivedFrom": { "type": "object", "required": ["direct_parent", "lineage"], "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
+  "additionalProperties": false
+}

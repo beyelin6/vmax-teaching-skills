@@ -1,0 +1,61 @@
+{
+  "object_type": "SOURCE_INGESTION_RECORD",
+  "record_id": "SIR-LESSON-001",
+  "lesson_id": "grade4-book1-lesson1",
+  "version": "SIR-001",
+  "source_refs": [
+    {
+      "source_ref": "drive://source-library/grade4-book1-teacher-guide.pdf",
+      "source_kind": "TEACHER_GUIDE",
+      "file_name": "grade4-book1-teacher-guide.pdf",
+      "file_fingerprint": "sha256:example",
+      "page_range": "12-18"
+    }
+  ],
+  "page_regions": [
+    {
+      "region_id": "R-12-bottom-margin",
+      "pdf_page": 12,
+      "printed_page": "9",
+      "region_ref": "bottom_margin",
+      "crop_ref": "crop://R-12-bottom-margin",
+      "extraction_method": "IMAGE_REVIEW",
+      "visual_check": "CHECKED",
+      "extracted_segment_ids": ["SEG-radical-001"]
+    }
+  ],
+  "extracted_segments": [
+    {
+      "segment_id": "SEG-radical-001",
+      "text": "部首標示：氵",
+      "source_layer": "TEXTBOOK_MARKUP",
+      "content_category": "RADICAL_MARKUP",
+      "region_id": "R-12-bottom-margin",
+      "text_status": "EXACT"
+    }
+  ],
+  "coverage_check": {
+    "main_text": "FOUND",
+    "bottom_margin": "FOUND",
+    "small_text_area": "FOUND",
+    "radical_markup": "FOUND",
+    "vocabulary_box": "UNCERTAIN",
+    "sentence_pattern_box": "NOT_FOUND",
+    "publisher_note": "NOT_FOUND",
+    "workbook_activity": "NOT_APPLICABLE",
+    "teacher_answer": "NOT_APPLICABLE"
+  },
+  "extraction_status": "EXTRACTION_VERIFIED",
+  "teacher_confirmation_status": "WAITING_TEACHER",
+  "uncertainties": [],
+  "conflicts": [],
+  "fingerprints": {
+    "file_fingerprints": { "grade4-book1-teacher-guide.pdf": "sha256:example" },
+    "page_fingerprints": { "12": "sha256:page-example" },
+    "crop_fingerprints": { "crop://R-12-bottom-margin": "sha256:crop-example" }
+  },
+  "derived_from": {
+    "direct_parent": null,
+    "lineage": ["SOURCE_LIBRARY:grade4-book1-teacher-guide.pdf"]
+  }
+}

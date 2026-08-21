@@ -1,0 +1,24 @@
+{
+  "object_type": "APPROVED_TEACHING_SELECTION",
+  "lesson_id": "grade4-book1-lesson1",
+  "source_master_version": "SM-001",
+  "candidate_inventory_version": "CI-001",
+  "version": "ATS-001",
+  "status": "LESSON_LOCKED",
+  "teacher_confirmation_status": "CONFIRMED",
+  "selections": [
+    {
+      "candidate_id": "CAND-SHAPE-001",
+      "decision": "MUST_TEACH",
+      "teacher_note": "教師確認納入本課",
+      "student_visible": true,
+      "extension_student_approved": false,
+      "confirmed_by_teacher": true,
+      "teacher_confirmation_ref": "TEACHER_EVENT-001"
+    }
+  ],
+  "derived_from": {
+    "direct_parent": "CANDIDATE_INVENTORY:CI-001",
+    "lineage": ["SOURCE_MASTER:SM-001", "CANDIDATE_INVENTORY:CI-001"]
+  }
+}

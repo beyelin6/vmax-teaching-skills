@@ -1,0 +1,29 @@
+{
+  "object_type": "HOLD_EVENT",
+  "hold_id": "HOLD-LESSON-001",
+  "lesson_id": "grade4-book1-lesson1",
+  "phase": "PHASE_1",
+  "hold_type": "SOURCE_CONFLICT",
+  "status": "OPEN",
+  "evidence": [
+    {
+      "source_layer": "OFFICIAL_TEXT",
+      "pdf_page": 12,
+      "printed_page": 9,
+      "region_ref": "main_text",
+      "claim": "兩個來源對同一詞語的字形不一致"
+    }
+  ],
+  "conflict_summary": "同一欄位存在不同教材證據，Agent 不得自行選邊。",
+  "ai_options": [
+    { "option_id": "A", "description": "採用版本一", "requires_teacher_decision": true },
+    { "option_id": "B", "description": "採用版本二", "requires_teacher_decision": true }
+  ],
+  "downstream_impact": [
+    { "object_type": "SOURCE_MASTER", "action": "BLOCK" },
+    { "object_type": "CANDIDATE_INVENTORY", "action": "BLOCK" },
+    { "object_type": "SLIDE_SCRIPT", "action": "BLOCK" }
+  ],
+  "teacher_decision_required": "請教師確認採用哪一個來源版本，或指定列為待查。",
+  "teacher_decision_event": null
+}

@@ -1,0 +1,27 @@
+{
+  "object_type": "TEACHING_STRATEGY_PROFILE",
+  "lesson_id": "grade4-book1-lesson1",
+  "source_master_version": "SM-001",
+  "approved_selection_version": "ATS-001",
+  "lkb_version": "LKB-001",
+  "learning_module_version": "LM-001",
+  "version": "TS-001",
+  "status": "TEACHER_REVIEW",
+  "teacher_confirmation_status": "WAITING_TEACHER",
+  "steps": [
+    {
+      "step_id": "TS-STEP-001",
+      "lesson_stage": "TEXT_READING",
+      "source_node_refs": ["LKB:NODE-TEXT-001"],
+      "learning_module_refs": ["LM-SHAPE-001"],
+      "teacher_layer": { "guidance": "教師口述引導" },
+      "student_layer": { "task": "找出課文中的線索" },
+      "assessment": { "type": "evidence_finding" },
+      "duration_minutes": 10
+    }
+  ],
+  "derived_from": {
+    "direct_parent": "LEARNING_MODULE_PROFILE:LM-001",
+    "lineage": ["SOURCE_MASTER:SM-001", "APPROVED_TEACHING_SELECTION:ATS-001", "LKB:LKB-001", "LEARNING_MODULE_PROFILE:LM-001"]
+  }
+}
