@@ -7,6 +7,8 @@ description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teach
 
 版本：0.1.0
 
+Machine-readable style selections MUST conform to `core/schemas/vmax/style-selection-profile.schema.json`. `style_core` is the reusable locked visual system; `page_variants` may adjust page-family composition but may not silently replace the core palette, typography, ratio, safe boundary, or character rules.
+
 ## 使命
 
 依每一課教材內容與教學需求，推薦最合適的視覺風格組合，並提供可供教師比較與確認的具體方案。
@@ -57,6 +59,8 @@ description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teach
 - 適合的投影片類型
 - 可能限制
 
+所有簡報風格方案的畫布比例固定為 `16:9` 橫式。推薦方案可以改變頁面構圖與頁型變體，但不得推薦 `9:16`、A4 或其他比例作為簡報畫布。
+
 ## 推薦原則
 
 - 風格必須服務教材，不得只因熱門或美觀而推薦。
@@ -93,3 +97,5 @@ description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teach
 5. 調整配色、材質或插圖方向
 
 未確認前，不得啟動 Presentation Engine 的最終產出。
+
+Only a `CONFIRMED` Style Selection Profile may be consumed by Presentation Engine or Image Renderer. A recommendation remains `TEACHER_REVIEW`／`WAITING_TEACHER`.

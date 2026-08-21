@@ -126,18 +126,22 @@ lesson_folder_versioning:
 ### E1. `01_教材整理`
 放置：
 - Source Master MD
+- Source Ingestion Record JSON／頁面區塊擷取記錄
 - 教材定錨／結構化轉錄
 - Lesson DNA / 教材整理成果
 - 必要的來源整理檔
 
 ### E2. `02_逐頁腳本`
 放置：
-- 完整逐頁／逐 Shot 教學腳本
+- 已核准的逐頁 `Slide Script`（簡報內容唯一主檔）
+- Google Slides／Canva 平台匯入腳本（由 Slide Script 單向派生）
 - Renderer Script MD
 - 頁面結構與教師講稿
 
 ### E3. `03_NotebookLM`
 放置：
+- Knowledge Source Package
+- Slide／Audio Package
 - NotebookLM 驅動腳本
 - NotebookLM 生成指令
 - Visual YAML MD

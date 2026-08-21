@@ -11,6 +11,10 @@ description: 讀取已核准的 Lesson Knowledge Book 與教師選定的能力�
 
 將已確認的教材知識轉換為可選、可組合、可依年級與能力目標調整的學習延伸模組。所有模組都必須明確追溯至 LKB 中的知識節點，且不得修改官方教材內容。
 
+Machine-readable module records must preserve the upstream `APPROVED_TEACHING_SELECTION` version and may only use teacher-confirmed selections. The portable source and selection contracts are defined in `core/schemas/vmax/`.
+
+Machine-readable Learning Module Profiles MUST conform to `core/schemas/vmax/learning-module-profile.schema.json`. The profile is an approved companion object, not a second Source Master.
+
 ## 前置條件
 
 必須存在並讀取：
@@ -152,6 +156,10 @@ LKB 狀態必須為 `approved`。若尚未核准，停止並要求教師先確�
 6. 執行品質檢查。
 7. 產生 module manifest。
 8. 停下等待教師確認，不得直接生成簡報。
+
+If a candidate has not been resolved in `APPROVED_TEACHING_SELECTION`, keep it as a recommendation or HOLD. Do not silently promote it into a learning module.
+
+The profile remains `TEACHER_REVIEW`／`WAITING_TEACHER` until the teacher confirms it. Only a `CONFIRMED` profile may be consumed by Teaching Strategy or Presentation Engine.
 
 ## 品質檢查
 

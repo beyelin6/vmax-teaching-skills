@@ -13,6 +13,8 @@ description: 讀取已核准的 Official Knowledge、Teacher Knowledge 與來源
 
 Transcriber 負責忠實擷取；本技能負責將已核准的官方知識與教師知識進行去重、關聯、節點化與版本管理，建立本課唯一可信的 Lesson Knowledge Book。
 
+When a portable Source Master is present, read it through `core/schemas/vmax/source-master.schema.json`. Preserve its six source layers and evidence links; LKB integration must not flatten source authority or replace the locked text with an AI summary.
+
 主要成果：
 
 `lkb/{課次}_{課名}_lesson-knowledge-book.md`
@@ -47,6 +49,8 @@ Transcriber 負責忠實擷取；本技能負責將已核准的官方知識與�
 7. 組裝 LKB 主書與驗證報告。
 8. 為後續 Learning Modules、Teaching Strategy 與 Presentation 建立可引用的節點。
 9. 記錄來源集合的 `source_fingerprint`，讓下游判斷母檔能否直接重用。
+
+10. Preserve the distinction between `CANDIDATE_INVENTORY` and `APPROVED_TEACHING_SELECTION`; LKB may link candidates, but it must not turn an AI recommendation into a teacher-approved selection.
 
 ## 可重用母檔規則
 
@@ -87,6 +91,8 @@ LKB 經教師核准為 `approved_lkb` 後，成為本課所有下游流程的唯
 - 直接生成 Curated Briefing、NotebookLM、簡報或學習單
 
 若發現官方知識漏列，應退回 Transcriber 階段，不得在 LKB Builder 中靜默補抄。
+
+若發現來源層衝突，建立 `HOLD_EVENT` using `core/schemas/vmax/hold-event.schema.json`; do not resolve the conflict by deduplication.
 
 ## 正式知識層名稱
 

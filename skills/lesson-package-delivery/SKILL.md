@@ -19,31 +19,51 @@ description: 組裝、檢查並交付 V-MAX 單課 Lesson Package，包括來源
 
 ---
 
-## A. 十項核心交付物
+## A. Lesson Package 交付物
 
-每課基本 Lesson Package：
+每課交付清單依 Output Profile 與教師確認狀態決定。下列是可追蹤的成果類別；未選取項目必須明確標示，不得靜默省略：
+
 1. `Source Master MD`
-2. `Renderer Script MD`
-3. `Render Request MD`
-4. `Visual YAML MD`
-5. `Character Visual Assets`
-6. `Verified Render Assets`
-7. `Render Verification Report`
-8. `Image-first Slide PDF / Teaching Slides PPTX`
-9. `Pre-study Worksheet`
-10. `Post-lesson Short Writing Worksheet`
+2. `Source Ingestion Record`
+3. `Candidate Inventory`
+4. `Approved Teaching Selection`
+5. `Learning Modules`
+6. `Teaching Strategy`
+7. `Role / Style approved companion objects`
+8. `Slide Script MD`
+9. `Renderer Script MD / platform import scripts`
+10. `Render Request MD`
+11. `Visual YAML MD`
+12. `Character Visual Assets`
+13. `Verified Render Assets`
+14. `Render Verification Report`
+15. `Image-first Slide PDF / high-resolution PNG`
+16. `Teaching Slides PPTX`（僅教師明確要求時）
+17. `Pre-study Worksheet`
+18. `Post-lesson Short Writing Worksheet`
 
 若教師明確不需要某項，可標 `N/A_BY_TEACHER`；AI 不得靜默省略。
+
+### 上游與衍生物邊界
+
+- `Source Master` 只保存來源、課文原文、教材標記、證據與 provenance；不得把完整教學設計或簡報腳本回填進去。
+- `Source Ingestion Record` 保存逐頁／逐區塊掃描、完整擷取文字、覆蓋狀態與 fingerprints；它是證據記錄，不是教學判讀。
+- `Candidate Inventory` 與 `Approved Teaching Selection` 必須分開保存；未確認候選不可進入下游正式教材。
+- `Learning Modules`、`Teaching Strategy`、角色與視覺設定是獨立且有版本的 approved companion objects。
+- `Slide Script` 是簡報內容唯一主檔；`Renderer Script`、NotebookLM 套件、Google Slides／Canva 匯入腳本、PPTX、PNG／PDF 都是衍生物。
+- PPTX 只有在教師明確要求時才列為必要交付物；PPTX 的人工改字不得回寫 `Slide Script`。
 
 ---
 
 ## B. 內容最低要求
 
 ### Source Master MD
-至少含：課名／作者／冊別／文體、課文原文與段落、provenance、正式生字、認讀字 status、教材語詞、成語、形近字／多音字、句型／修辭、文本證據、閱讀理解、AI 教學判讀、Teacher Intent、Lesson Map / Session Map。
+至少含：課名／作者／冊別／文體、課文原文與段落、來源層、provenance、正式生字、認讀字 status、教材語詞、成語、形近字／多音字、句型／修辭、文本證據，以及對應的 companion object ID／版本。AI 教學判讀、Teacher Intent、Lesson Map / Session Map 不得冒充 Source Master 核心內容；應以獨立且可追蹤的核准物件保存。Source Master 另以 `ingestion_record_refs` 回指 Source Ingestion Record。
 
-### Renderer Script MD
-每 Shot 至少含：page_id、session、page_function、learning_gain、student_visible_text、source_text/evidence、core_question、student_action、teacher_guidance、answer/rubric、reveal、knowledge_chunk、image_requirement、visual_grammar、visual_sequence、layout_intent、character role、renderer_must_preserve。
+### Slide Script / Renderer Script
+`Slide Script` 必須符合 `core/schemas/vmax/slide-script.schema.json`，並保存 Source Master、Approved Teaching Selection 與核准 companion object 版本。它是簡報內容唯一主檔。
+
+`Renderer Script` 是執行衍生物，每 Shot 至少含：page_id、session、page_function、learning_gain、student_visible_text、source_text/evidence、core_question、student_action、teacher_guidance、answer/rubric、reveal、knowledge_chunk、image_requirement、visual_grammar、visual_sequence、layout_intent、character role、renderer_must_preserve；不得改寫 Slide Script。
 
 ### Visual YAML MD
 至少含：lesson_visual_identity、theme/style、palette、typography、Traditional Chinese text rules、hierarchy、image treatment、Character DNA、Lesson Visual Map、page-family visual intents、hybrid/native text rules、drift guardrails。
@@ -56,7 +76,7 @@ Render Request 遵循 `skills/vmax-image-renderer/references/render-request-sche
 角色功能、基準圖、表情／姿勢、immutable DNA、本課變體、drift guardrails。
 
 ### Image-first Slide PDF / Teaching PPTX
-學生可見內容正確、正式中文字／注音可驗證、學生頁無答案、PPTX 教師答案放講者備註、與 Teacher Intent / LVM / Text-Embedded rules 一致。
+學生可見內容正確、正式中文字／注音可驗證、學生頁無答案，並與核准 Slide Script、Teacher Intent / LVM / Text-Embedded rules 一致。簡報畫布必須為 `16:9` 橫式；圖片式輸出正式文字必須使用可追溯的獨立文字圖片層。PPTX 僅在教師要求時生成；若生成，教師答案可放講者備註，但不得出現在學生可見頁。
 
 ### Pre-study Worksheet
 遵循 `skills/prestudy-worksheet/SKILL.md` v1.3。
@@ -134,9 +154,9 @@ V-MAX 教材庫/
 
 ### 檔案對應
 
-- `01_教材整理`：Source Master MD、教材定錨、結構化轉錄、Lesson DNA
-- `02_逐頁腳本`：Renderer Script MD、Render Request MD、完整逐頁／逐 Shot 腳本
-- `03_NotebookLM`：Visual YAML MD、NotebookLM 驅動腳本／生成指令、Curated Briefing
+- `01_教材整理`：Source Ingestion Record、Source Master MD、教材定錨、結構化轉錄、Lesson DNA
+- `02_逐頁腳本`：核准 Slide Script、Google Slides／Canva 匯入腳本、Renderer Script MD、Render Request MD、完整逐頁／逐 Shot 腳本
+- `03_NotebookLM`：Knowledge Source Package、Slide／Audio Package、Visual YAML MD、NotebookLM 驅動腳本／生成指令、Curated Briefing
 - `04_角色視覺`：Character Visual Assets
 - `05_簡報成品`：Verified Render Assets、Render Verification Report、Image-first PDF、Teaching PPTX、Google Slides（若建立）
 - `06_延伸教材`：Pre-study Worksheet、Post-lesson Short Writing Worksheet、其他延伸教材
@@ -164,14 +184,25 @@ V-MAX 教材庫/
 ```yaml
 lesson_package_delivery:
   source_master_md: PASS | N/A_BY_TEACHER
+  source_ingestion_record: PASS | N/A_BY_TEACHER
+  candidate_inventory: PASS | N/A_BY_TEACHER
+  approved_teaching_selection: PASS | N/A_BY_TEACHER
+  approved_companion_objects: PASS | N/A_BY_TEACHER
+  slide_script: PASS | N/A_BY_TEACHER
   renderer_script_md: PASS | N/A_BY_TEACHER
+  platform_import_scripts: PASS | N/A_BY_TEACHER
+  notebooklm_knowledge_source_package: PASS | N/A_BY_TEACHER
+  notebooklm_slide_audio_package: PASS | N/A_BY_TEACHER
   render_request_md: PASS | N/A_BY_TEACHER
   visual_yaml_md: PASS | N/A_BY_TEACHER
   character_visual_assets: PASS | N/A_BY_TEACHER
   verified_render_assets: PASS | N/A_BY_TEACHER
+  presentation_canvas_16_9: PASS | N/A_BY_TEACHER
+  verified_raster_text_layers: PASS | N/A_BY_TEACHER
   render_verification_report: PASS | N/A_BY_TEACHER
   image_first_pdf: PASS | N/A_BY_TEACHER
   teaching_pptx: PASS | N/A_BY_TEACHER
+  pptx_teacher_request_recorded: PASS | N/A_BY_TEACHER
   prestudy_worksheet: PASS | N/A_BY_TEACHER
   postlesson_short_writing_worksheet: PASS | N/A_BY_TEACHER
   worksheet_lkb_coverage: PASS
@@ -193,6 +224,8 @@ lesson_package_delivery:
 Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 PASS 才能宣告完整交付。
 
 上述任一必要 worksheet gate FAIL 時，不得把學習單列為 PASS。
+
+若 `teaching_pptx` 為 `PASS`，`pptx_teacher_request_recorded` 必須同時為 `PASS`，並可追溯 `pptx_requested_by_teacher: true`；未經教師要求不得以 PPTX 作為預設完成條件。
 
 ---
 

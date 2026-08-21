@@ -9,14 +9,26 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 
 ## 核心定位
 
-本技能是「忠實擷取器」，不是教材分析器，也不是 LKB 組裝器。
+本技能是「忠實擷取器」，不是教材分析器，也不是 LKB 組裝器。它先建立 `SOURCE_INGESTION_RECORD`，再輸出可供 Source Master 使用的文字與證據；擷取記錄與教學判讀分開保存。
 
 它只負責將來源教材中的官方內容依原始來源、頁碼與區塊完整轉錄，建立可供 Lesson Knowledge Book Builder 使用的官方知識來源檔。
+
+Machine-readable source records MUST conform to `core/schemas/vmax/source-master.schema.json` where a Source Master is being assembled. The legacy file name `01_official-knowledge.md` may remain as a human-readable extraction output, but it must preserve the source layer and provenance of every item.
+
+The label `Official Knowledge` is an output grouping, not a single authority that flattens all evidence. Preserve these source layers separately:
+
+- `OFFICIAL_TEXT`
+- `TEXTBOOK_MARKUP`
+- `PUBLISHER_TEACHER_RESOURCE`
+- `TEACHER_KNOWLEDGE`
+- `AI_SUGGESTION`
+- `EXTENSION`
 
 ## 標準輸出
 
 - `knowledge/01_official-knowledge.md`
 - `knowledge/source-map.md`
+- `knowledge/source-ingestion-record.json`
 - `knowledge/official-knowledge-validation.md`
 
 不得再建立以下舊檔名：
@@ -68,6 +80,18 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 - `workbook`
 - `publisher_resource`
 
+For cross-AI records, also write the canonical `source_layer` value from `core/schemas/vmax/`. Same-field conflicts are preserved and sent to HOLD; the transcriber does not choose a winner.
+
+每個可供下游使用的來源項目都必須保存可回看的證據定位：
+
+- `pdf_page`
+- `printed_page`
+- `region_ref`
+- `crop_ref`
+- `file_fingerprint`／`page_fingerprints`／`crop_fingerprints`（可取得時）
+
+課文原文、教材列出的字詞與版面小字區必須在本次整理資料中保存完整文字內容，不只保存 PDF 路徑或摘要。後續 LKB、候選清單與輸出技能應優先讀取已保存的 Source Master／文字片段；只有證據衝突、OCR 不確定或教師要求重查時，才重新開啟原始 PDF。
+
 並盡可能記錄：
 
 - 來源檔名
@@ -82,20 +106,37 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 ## 防漏工作流
 
 1. 建立來源清單與頁碼範圍。
-2. 依頁面順序掃描正文、底欄、側欄、圖表與活動區。
-3. 再依類別核對課文、生字、認讀字、詞語、成語、修辭、句型、活動與答案。
-4. 核心詞語必須全部收錄，不得只挑代表性詞語。
-5. 認讀字與習寫生字必須分流。
-6. 官方成語名稱、詞義與例句必須逐項核對。
-7. 直排、分欄、表格或圖像內容若解析順序不可靠，必須以頁面圖像核對。
-8. 完成 `official-knowledge-validation.md` 後停止等待教師確認。
+2. 建立 `SOURCE_INGESTION_RECORD`，逐頁登錄區塊覆蓋與證據定位。
+3. 依頁面順序掃描正文、底欄、側欄、圖表與活動區。
+4. 再依類別核對課文、生字、認讀字、詞語、成語、修辭、句型、活動與答案。
+5. 核心詞語必須全部收錄，不得只挑代表性詞語。
+6. 認讀字與習寫生字必須分流。
+7. 官方成語名稱、詞義與例句必須逐項核對。
+8. 直排、分欄、表格或圖像內容若解析順序不可靠，必須以頁面圖像核對。
+9. 若任何必要區塊為 `UNCERTAIN`，列出缺口與受影響下游，建立 HOLD，不得繼續組裝正式教學資料。
+10. 完成 `official-knowledge-validation.md` 後停止等待教師確認；轉錄完成狀態與教師確認狀態分開保存。
+
+Do not convert a complete extraction into a teaching decision. Candidate discovery and teacher selection are separate downstream objects: `CANDIDATE_INVENTORY` and `APPROVED_TEACHING_SELECTION`.
 
 ## 狀態
 
+轉錄狀態與教師確認狀態必須分開保存：
+
+```yaml
+extraction_status: NEEDS_REVIEW | EXTRACTED | EXTRACTION_VERIFIED
+teacher_confirmation_status: NOT_REVIEWED | WAITING_TEACHER | CONFIRMED | CHANGES_REQUESTED
+```
+
+對外顯示的舊狀態名稱只能作為相容別名：
+
 - 有缺漏、順序錯亂或來源不明：`needs_review`
 - 官方知識轉錄完成但未經教師確認：`ready_for_official_knowledge_review`
-- 只有教師明確確認後：`approved_official_knowledge`
+- 教師明確確認來源整理：`approved_official_knowledge`
+
+相容別名不得取代 machine-readable Source Master 的兩個獨立欄位。
 
 ## 完成條件
 
 三份標準輸出均存在，課文、生字、認讀字、全部核心詞語、官方成語、官方修辭句型、語文活動及教材答案均已完成防漏核對，且沒有教師補充、系統延伸或教學設計混入官方知識檔。
+
+另須確認：`source-ingestion-record.json` 存在、所有必要區塊均有 `FOUND`／`NOT_FOUND`／`NOT_APPLICABLE` 結果，所有 `UNCERTAIN` 與衝突均已列出且未被 Agent 自行解決。

@@ -22,8 +22,9 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。當使用者要�
 5. `skills/vmax-golden-path-executor/SKILL.md`
 6. `core/governance/hold-teacher-interface-policy.md`
 7. `core/ui/teacher-review-view-contract.md`
-8. 對應平台 adapter
-9. 當前 stage 的 canonical policy／skill
+8. `core/schemas/vmax/README.md`
+9. 對應平台 adapter
+10. 當前 stage 的 canonical policy／skill
 
 任一必要檔案無法實際讀取，回報 `BOOTSTRAP_BLOCKED`，不得用模型記憶、舊對話或先前安裝版本繼續。
 
@@ -66,6 +67,7 @@ front_door_gate:
   canonical_files_loaded: true
   runtime_loaded: true
   teacher_review_contract_loaded: true
+  cross_ai_schema_package_loaded: true
   only_next_allowed_stage_executed: true
   raw_payload_hidden: true
   status: PASS

@@ -11,6 +11,8 @@ description: 執行課文脈絡內的語文教學政策，將詞語、句型、�
 
 本技能是 `core/pedagogy/text-embedded-language-teaching-policy.md` 的執行摘要，供 AI／Agent 在課文、Knowledge Lab、預習單、寫作單與 Renderer 階段快速載入。
 
+This skill consumes only locked source text and teacher-confirmed `APPROVED_TEACHING_SELECTION`. It may embed approved language items in context, but it does not select unresolved candidates or promote `AI_SUGGESTION` into student content.
+
 核心口訣：
 
 > 語詞隨段落，句型帶原文，修辭從文本發現。

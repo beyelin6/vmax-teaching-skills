@@ -11,6 +11,10 @@ description: 讀取已核准的 Lesson Knowledge Book 與 Learning Module Profil
 
 將已核准的教材知識與學習延伸模組，安排成符合年級、課堂時間、能力目標與教師偏好的實際教學流程。
 
+Teaching Strategy is an approved companion object. It must record the Source Master, `APPROVED_TEACHING_SELECTION`, and Learning Modules versions it uses; it must not become a second source of truth for textbook content.
+
+Machine-readable Teaching Strategy Profiles MUST conform to `core/schemas/vmax/teaching-strategy-profile.schema.json`. The profile stores how to teach approved content; it does not own or rewrite Source Master text.
+
 本技能負責「怎麼教」，不負責重新解讀教材，也不負責決定視覺風格或製作簡報。
 
 ## 前置條件
@@ -22,8 +26,11 @@ description: 讀取已核准的 Lesson Knowledge Book 與 Learning Module Profil
 - 當課設定檔
 - 根目錄 `AGENTS.md`
 - `schemas/teaching-strategy-profile.md`
+- `core/schemas/vmax/teaching-strategy-profile.schema.json`
 
 若 LKB 或 Learning Module Profile 尚未核准，必須停止。
+
+若 `APPROVED_TEACHING_SELECTION` 尚未確認，必須停止或只輸出待教師決定的策略建議，不得建立正式教學流程。
 
 ## 標準輸出
 
@@ -34,6 +41,8 @@ description: 讀取已核准的 Lesson Knowledge Book 與 Learning Module Profil
 - `working/strategy-validation-report.md`
 
 完成後停下等待教師確認，不得直接進入 Presentation Engine。
+
+正式 machine payload 的 `status` 必須保持 `TEACHER_REVIEW`，直到教師確認；只有 `CONFIRMED` 的 Teaching Strategy Profile 可供 Presentation Engine 使用。
 
 ## 教學流程結構
 

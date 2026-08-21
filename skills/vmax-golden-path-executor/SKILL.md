@@ -29,9 +29,12 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 4. `core/governance/vmax-main-workflow.md`
 5. `core/governance/hold-teacher-interface-policy.md`
 6. `core/ui/teacher-review-view-contract.md`
-7. 當前 stage 的 canonical policies / skills
+7. `core/schemas/vmax/README.md`
+8. 當前 stage 的 canonical policies / skills
 
 若舊技能、舊腳本、舊對話與 Manifest 衝突，一律以 Manifest 最新 canonical files 與 Drive Runtime State 為準。
+
+Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selection, HOLD, Revision, Status Transition, and Slide Script MUST conform to the matching schema in `core/schemas/vmax/`. Schema validation does not replace the teacher-facing confirmation card.
 
 ---
 
@@ -100,6 +103,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 STEP 1 必須載入：
 - `core/governance/step1-source-anchor-policy.md`
 - `core/governance/recognition-only-character-policy.md`
+- `core/schemas/vmax/source-ingestion-record.schema.json`
 
 認讀字必須做雙來源核對：
 1. 課文頁下方的小字生字標示
@@ -110,8 +114,19 @@ STEP 1 必須載入：
 - 認讀字必須由教材生字系統明確區分。
 - 兩處不一致 → `SOURCE_CONFLICT`，進 HOLD 1，不得靜默選一邊。
 - 來源未列 → `N/A_SOURCE_NOT_PRESENT`。
+- 未建立 `SOURCE_INGESTION_RECORD`、必要區塊未完成覆蓋記錄，或存在未命名 `UNCERTAIN` → `STEP1_INCOMPLETE`；不得直接組裝 Source Master。
 - 完整正式生字、認讀字雙來源、教材詞語聯集、課文結構或 provenance 任一必要項未完成 → `STEP1_INCOMPLETE`；只要求補來源，不開放完整 STEP 1 核准。
 - STEP 1 不得鎖 Mode、教學主軸、固定詩節／段落迴圈、Scenario、角色、視覺或頁數。
+
+---
+
+## E2. STEP 2／STEP 2.5 Selection Object Guard
+
+STEP 2 必須輸出符合 `core/schemas/vmax/candidate-inventory.schema.json` 的 `CANDIDATE_INVENTORY`。候選項目只保存教材內容、來源證據與 AI 分析，不保存教師選教決定。
+
+STEP 2.5 完成教師確認後，才建立或更新符合 `core/schemas/vmax/approved-teaching-selection.schema.json` 的 `APPROVED_TEACHING_SELECTION`。只有其中 `confirmed_by_teacher: true` 的項目，才能供 Learning Modules、Teaching Strategy 或學生輸出使用。
+
+若候選尚未進入 Approved Teaching Selection，保持 `AI_SUGGESTION`／`PENDING`／`HOLD`，列出受影響下游並停止，不得自行轉成 `MUST_TEACH`。
 
 ---
 
@@ -211,7 +226,7 @@ STEP 2.5 必須同時載入：
 
 Full Renderer 的前置條件不是「看過一張樣張」，而是跨頁型代表頁組均已核准：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。教師的「可以」只核准本次實際展示的頁型；未展示頁型不得自動通過。
 
-除課文閱讀頁外，學生可見頁預設為整頁圖片式合成。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。全量必須以 5–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION` 即停止，不得做完整套後才回頭驗收。
+簡報畫布固定為 `16:9` 橫式。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。全量必須以 5–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION` 即停止，不得做完整套後才回頭驗收。
 
 對每個必要圖片建立 Render Request，探測當前平台實際工具並執行。prompt、Renderer Script、Visual YAML 或 `IMAGE_HANDOFF_READY` 不等於圖片完成；只有實際資產通過重檢並標記 `RENDER_VERIFIED` 才能進入 Quality Gate。工具不可用時保留 handoff 並回報阻塞，不得跳過圖片需求。
 

@@ -7,6 +7,8 @@ description: 根據已核准的國語教材知識書、學習延伸模組、教�
 
 版本：0.1.0
 
+Machine-readable role selections MUST conform to `core/schemas/vmax/role-selection-profile.schema.json`. A recommendation is not a confirmed role selection; core DNA and context variants become reusable only after teacher confirmation.
+
 ## 使命
 
 根據每一課教材內容動態推薦引導角色，使角色服務教材與教學流程，而不是讓教材被迫套入固定角色。
@@ -98,3 +100,5 @@ role_recommendation:
 - 是否沿用 Bee 老師初版視覺 DNA，或另行修改
 
 未確認前不得進入角色圖像生成與最終視覺定稿。
+
+`base_character_id` and `core_dna_ref` remain stable across lessons. A `variant_id` may change costume, props, pose, scale, or position only; it must record which core DNA fields are preserved.

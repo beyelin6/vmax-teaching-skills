@@ -9,6 +9,8 @@ description: 依教材內容、學習目標、學生條件與教師意圖推薦�
 
 依課文內容、學習目標、班級學習樣貌、教師意圖與 Director Intent，推薦適合的教學策略。此 Skill 不直接決定唯一做法，也不以新奇活動為優先。
 
+Recommendations are `AI_SUGGESTION` until the teacher confirms them. The recommender must not lock a Teaching Strategy, alter Source Master text, or bypass `APPROVED_TEACHING_SELECTION`.
+
 ## Inputs
 
 Required:

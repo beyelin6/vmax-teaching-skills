@@ -11,6 +11,8 @@ description: 將已核准的教材 DNA、Lesson Intent、Learning Profile 與 Te
 
 Director Designer 是 V-MAX 的導演技能。它把 Text DNA、Knowledge Network、Lesson Intent、Learning Profile 與 Teacher Intent 轉譯成可執行的 `Director Map` 與 `Shot Map`。
 
+Director outputs are design recommendations or approved companion objects, not Source Master content. They must reference the locked Source Master and approved teaching selection versions, and must not lock a new role, style, wrapper, or page architecture without the required teacher confirmation.
+
 完整規則以：
 
 - `core/director/director-engine.md`
