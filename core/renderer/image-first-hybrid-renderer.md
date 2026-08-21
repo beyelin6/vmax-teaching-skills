@@ -18,6 +18,12 @@ V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護�
 
 ## 1. Render Mode
 
+### Default Text Rendering Contract
+
+圖片式學生頁的正式文字預設採 `VERIFIED_RASTER_TEXT_LAYERS`：每個標題、課文片段、任務、注音與標籤都是可追溯的獨立文字圖片層，最後再與視覺層合成。`SLIDE_SCRIPT` 中的 Verified Teaching Text 仍是唯一文字真值；文字圖片層只是渲染產物。可編輯 Native Text 僅作 PPTX 等教師指定輸出的下游派生物。
+
+錯字、缺字、位置或樣式問題時，修復範圍預設為 `LOCAL_LAYER_ONLY`，不得重做未受影響的整頁。
+
 ### Mode 1｜Image-composed Slide
 適合除課文閱讀頁以外的學生頁。插圖、文字、動線、物件與裝飾必須先共同構圖，再輸出為單一整頁圖片；學生看到的文字不得只是 PowerPoint 文字框貼在背景圖上。
 

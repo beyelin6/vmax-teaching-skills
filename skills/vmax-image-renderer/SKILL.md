@@ -11,6 +11,8 @@ description: 將已核准的 V-MAX Render Request 實際渲染為教學圖片或
 
 把「視覺規格」推進為「實際且已驗證的圖片檔」。本技能是共用執行層；內容、教學決策、角色與版面仍由上游核准成果決定。
 
+Render input must identify the approved Slide Script version when rendering presentation pages. The renderer is a downstream executor, not a presentation author.
+
 ## 啟動條件
 
 遇到下列任一需求即啟動：
@@ -33,7 +35,7 @@ description: 將已核准的 V-MAX Render Request 實際渲染為教學圖片或
 
 ### 1. 驗證輸入
 
-Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verified_text`、`visual_prompt`、`output_spec` 與 `acceptance_checks`。教材文字沒有來源或教師核准時，標記 `RENDER_INPUT_BLOCKED`，不得自行補寫。
+Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verified_text`、`visual_prompt`、`output_spec`、`acceptance_checks` 與適用的上游版本參照。教材文字沒有來源或教師核准時，標記 `RENDER_INPUT_BLOCKED`，不得自行補寫。
 
 若 Render Request 含 `visual_benchmark_refs`，必須同時檢查 `benchmark_alignment`；缺少五軸對齊說明時標記 `RENDER_INPUT_BLOCKED`，不得自行把樣張降級為模糊風格參考。
 
@@ -62,12 +64,14 @@ Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verif
 批次簡報不得只驗證一張泛用樣張。先依頁型建立代表頁組：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類分別取得教師核准；未展示的類型不得視為核准。代表頁組未全數通過，不得開始全量 Renderer。
 
 全量生成採小批次，預設每批 5–8 頁；每批完成即檢查圖文共同構圖、圖片式扁平化與 Visual Drift。發現卡片牆、背景圖＋文字框、大量半透明框或純文字骨架時，標記 `COMPOSITION_REGRESSION` 並停批。
+若成品看起來只是把文字像打字一樣放在背景圖上，即使文字正確，也必須標記 `TYPED_TEXT_LAYOUT_FAIL`；這不符合圖片化教材視覺，不得交付。
 
 若有 Approved Visual Benchmark，每批還要檢查留白、文字密度、局部插畫、角色干擾度與講義感；若漂移成講義感、卡片牆、文字堆疊或角色裝飾，標記 `VISUAL_BENCHMARK_DRIFT` 並停批。
 
-除課文閱讀頁外，學生可見文字需與插圖、物件及動線共同合成為整頁圖片。高風險繁體中文可先用可控文字層排版，但交付前須扁平化；不得把 PowerPoint 文字框堆疊當作圖片式設計。
+除課文閱讀頁外，學生可見文字需與插圖、物件及動線共同合成為整頁圖片。圖片式簡報預設採 `VERIFIED_RASTER_TEXT_LAYERS`：每個標題、課文片段、注音、任務與標籤都先以可追溯的獨立文字圖片層排版，再與視覺層合成並扁平化；不得把 PowerPoint 文字框堆疊當作圖片式設計。可編輯 Native Text 僅供教師指定的 PPTX 等下游輸出。
 
 教師口述型簡報採「無字／少字底圖優先」：先生成情境、人物、物件、視覺關係與留白，再用可控繁體中文字層後製課文、字詞、注音、成語、題目與例句。若任務需要學生書寫線、填空區或大面積作答空白，應確認是否其實屬學習單，而非簡報頁。
+文字層不是一般文件排版；必須依頁型完成視覺構圖，與插圖、色塊、標籤、角色視線及留白共同形成整頁畫面。不得使用預設 PowerPoint／文件文字框堆疊取代構圖。
 
 ### 5. 重新檢查成品
 
@@ -81,7 +85,7 @@ Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verif
 - 投影片是否仍像教師口述用簡報，而非講義、考卷、學習單或滿版資訊表。
 - 是否只呈現學生此刻需要看見的內容；教師解說、答案與來源細節不得塞進學生頁。
 
-關鍵文字錯誤時，優先移除圖片中的文字並重建正式文字層；不得用「大致可讀」通過。
+關鍵文字錯誤時，優先移除圖片中的文字並重建對應的正式文字圖片層；修復範圍預設為 `LOCAL_LAYER_ONLY`，不得用「大致可讀」通過，也不得因單一錯字重做未受影響的整頁。
 
 圖片模型連續兩次產生錯誤注音、假字或改寫教材文字時，不得刪頁或暫時略過。固定改走：
 
@@ -104,6 +108,8 @@ Render Request 至少要有 `request_id`、`asset_type`、`source_refs`、`verif
 - `RENDER_VERIFICATION_FAILED`：實際成品存在，但尚未通過檢查。
 
 只有 `RENDER_VERIFIED` 可被下游視為完成圖片。
+
+Renderer must report the three delivery gates separately: text correctness, visual/layout quality, and character/style consistency. Any failed gate blocks delivery.
 
 ## 輸出
 

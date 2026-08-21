@@ -53,6 +53,8 @@ teacher_policy:
 slide_policy:
   count_mode: dynamic
   fixed_count: null
+  canvas_aspect_ratio: 16:9
+  orientation: LANDSCAPE
   answer_location: speaker_notes
   regenerate_illustrations_by_meaning: true
   use_source_screenshots_as_main_visual: false

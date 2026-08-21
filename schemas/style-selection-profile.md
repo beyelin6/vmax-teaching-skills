@@ -55,6 +55,9 @@ style_selection:
     layout_ids: []
     role_integration_rules: []
     lesson_specific_adaptations: []
+    presentation_canvas:
+      aspect_ratio: "16:9"
+      orientation: landscape
 
   approval:
     teacher_approved: false
@@ -76,3 +79,4 @@ style_selection:
 - 混合風格時需指定主風格與輔助風格，不得把多套規則無限制堆疊。
 - 角色辨識色只能作為輔助色，不得覆蓋教材主題色。
 - 學生可見文字對比與字級優先於裝飾效果。
+- 簡報風格的 `presentation_canvas` 固定為 `16:9` 橫式；不得以風格推薦改成其他比例。非簡報輸出依自己的 Output Profile。

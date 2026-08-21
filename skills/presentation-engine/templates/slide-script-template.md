@@ -11,6 +11,11 @@ learning_module_version: ""
 teaching_strategy_version: ""
 style_id: ""
 role_id: ""
+presentation_rendering_policy: VERIFIED_RASTER_TEXT_LAYERS
+source_text_authority: VERIFIED_TEACHING_TEXT
+editable_text_output: DERIVED_ONLY
+canvas_aspect_ratio: 16:9
+orientation: LANDSCAPE
 slide_count_mode: dynamic
 slide_count: null
 ```
@@ -24,11 +29,15 @@ slide_id: S001
 section: opening
 lesson_stage: motivation
 title: ""
+layout_direction: TEXT_LEFT_IMAGE_RIGHT
 source_nodes: []
 learning_modules: []
 strategy_step: ""
 layout_id: ""
 answer_visibility: none
+text_rendering:
+  mode: VERIFIED_RASTER_TEXT_LAYERS
+  layers: []
 ```
 
 #### 學生可見內容
@@ -47,6 +56,12 @@ answer_visibility: none
 - 必須呈現：
 - 禁止誤畫：
 - 是否需要文字入圖：否
+
+#### 視覺層與文字層
+
+- 視覺層：背景、角色、物件、動線與留白；不得承載未驗證教材文字。
+- 文字層：每段正式文字獨立渲染；錯字或版面問題只重建該文字圖層。
+- PPTX 可編輯文字：僅由本頁文字來源派生，不回寫本腳本。
 
 #### 互動或評量
 

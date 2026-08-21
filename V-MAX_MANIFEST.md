@@ -127,7 +127,19 @@ renderer_contract:
   current_version: 1.5
 presentation_engine:
   path: skills/presentation-engine/SKILL.md
-  current_version: 0.3.0
+  current_version: 0.4.0
+  image_renderer:
+    path: skills/vmax-image-renderer/SKILL.md
+    current_version: 1.2
+    request_schema: skills/vmax-image-renderer/references/render-request-schema.md
+  presentation_schema:
+    path: core/schemas/vmax/slide-script.schema.json
+    example: core/schemas/vmax/examples/slide-script.example.json
+  output_manifest_schema:
+    path: core/schemas/vmax/output-manifest.schema.json
+    example: core/schemas/vmax/examples/output-manifest.example.json
+    migration: core/schemas/vmax/migrations/presentation-canvas-16-9.md
+# Backward-compatible top-level aliases for readers that do not traverse nested entries.
 image_renderer:
   path: skills/vmax-image-renderer/SKILL.md
   current_version: 1.2
@@ -152,6 +164,15 @@ vqs_quality_validator:
     notebooklm: adapters/notebooklm.md
     canva_renderer: adapters/canva.md
     google_slides: adapters/google-slides.md
+# Backward-compatible top-level adapter index.
+adapters:
+  chatgpt: adapters/chatgpt.md
+  codex: adapters/codex.md
+  gemini: adapters/gemini.md
+  spark: adapters/spark.md
+  notebooklm: adapters/notebooklm.md
+  canva_renderer: adapters/canva.md
+  google_slides: adapters/google-slides.md
 gemini_source_analysis:
   contract: adapters/gemini/source-analysis-contract.md
   report_schema: schemas/gemini-source-analysis-report.md

@@ -12,6 +12,9 @@ layout:
   name: ""
   version: "1.0.0"
   status: active
+  presentation_canvas:
+    aspect_ratio: "16:9"
+    orientation: landscape
 
   purpose: ""
   suitable_content_types: []
