@@ -5,7 +5,7 @@ description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teach
 
 # Style Recommender
 
-版本：0.1.0
+版本：0.2.0
 
 Machine-readable style selections MUST conform to `core/schemas/vmax/style-selection-profile.schema.json`. `style_core` is the reusable locked visual system; `page_variants` may adjust page-family composition but may not silently replace the core palette, typography, ratio, safe boundary, or character rules.
 
@@ -54,12 +54,13 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 - 背景與紙張材質
 - 插圖筆觸與情境規則
 - 章節標籤方式
+- 頁碼系統：位置、格式、字體角色、顏色與特殊頁顯示規則
 - 推薦版型
 - 與角色的協調方式
 - 適合的投影片類型
 - 可能限制
 
-所有簡報風格方案的畫布比例固定為 `16:9` 橫式。推薦方案可以改變頁面構圖與頁型變體，但不得推薦 `9:16`、A4 或其他比例作為簡報畫布。
+風格推薦不得決定簡報畫布比例。方案必須承接教師已核准的 `canvas_lock`，僅允許 `4:3` 或 `16:9` 橫式；推薦方案可以改變頁面構圖與頁型變體，但不得推薦 `9:16`、A4、3:2 或其他比例，也不得在缺少或衝突的 `canvas_lock` 時繼續，應停在 `CANVAS_SPEC_BLOCKED`。
 
 ## 推薦原則
 

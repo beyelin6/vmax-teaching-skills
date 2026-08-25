@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.1
+# V-MAX Runtime State Contract 2.2
 
 ## 定位
 
@@ -41,7 +41,7 @@ V-MAX_State_{冊別}_{課次}_{課名}
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.1
+runtime_schema_version: 2.2
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
@@ -80,6 +80,38 @@ runtime_rules:
   teacher_confirmation_advances_one_stage_only: true
   legacy_stage_aliases_forbidden: true
   model_memory_cannot_override_runtime: true
+  continuation_state_sync_required: true
+  teacher_decision_must_be_persisted_before_advance: true
+  candidate_outputs_do_not_advance_stage: true
+  canvas_ratio_locked_before_render: true
+  asset_ratio_must_not_stretch: true
+  output_profile_conflict_blocks_render: true
+output_profile:
+  product: TEACHER_IMAGE_SLIDE
+  canvas_profile: lesson_presentation_16_9_v1 | lesson_presentation_4_3_v1
+  canvas_ratio: 16:9 | 4:3
+  width_px:
+  height_px:
+  orientation: LANDSCAPE
+  safe_area: locked_reference
+  fit_mode: PRESERVE_ASPECT_CONTAIN_OR_APPROVED_CROP
+  output_formats: [PNG, PDF]
+  pptx_requested_by_teacher: false
+  teacher_decision_ref:
+  status: LOCKED | WAITING_TEACHER | BLOCKED
+continuation:
+  state_sync_status: PASS | BLOCKED | CONFLICT
+  runtime_revision:
+  last_sync_receipt:
+  active_work_item:
+  pending_teacher_decision:
+  source_master_version:
+  slide_script_version:
+  visual_benchmark_version:
+  role_style_version:
+  candidate_outputs: []
+  conflicts: []
+  downstream_impact: []
 notes: []
 ```
 
@@ -112,9 +144,10 @@ HOLD_2_5 confirmed
 1. 先讀 `V-MAX_Runtime_Index`。
 2. 依教師指定課次找到對應 State；若教師說「繼續目前這課」，才使用 Index 的 active lesson。
 3. 讀取該課 `current_stage / next_allowed_stage / locked_decisions / language_focus`。
-4. 只執行合法下一階段。
-5. 每次 HOLD 確認或正式 stage 完成後，回寫該課 Google Drive State。
-6. 必要時同步更新 Runtime Index 的 active lesson 與狀態摘要。
+4. 讀取並通過 `core/governance/continuation-state-gate.md` 的 State Sync；未通過時不得執行下一階段或開始製作。
+5. 只執行合法下一階段。
+6. 每次 HOLD 確認或正式 stage 完成後，先回寫該課 Google Drive State，再允許派生下游。
+7. 必要時同步更新 Runtime Index 的 active lesson 與狀態摘要。
 
 若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得以 GitHub 範例狀態、模型記憶或舊對話猜測目前進度。
 

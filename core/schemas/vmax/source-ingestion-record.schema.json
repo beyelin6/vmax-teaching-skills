@@ -58,7 +58,8 @@
         "source_layer": { "enum": ["OFFICIAL_TEXT", "TEXTBOOK_MARKUP", "PUBLISHER_TEACHER_RESOURCE", "TEACHER_KNOWLEDGE", "AI_SUGGESTION", "EXTENSION"] },
         "content_category": { "enum": ["MAIN_TEXT", "CHARACTER_LIST", "RADICAL_MARKUP", "VOCABULARY", "IDIOM", "SHAPE_NEAR", "POLYPHONIC", "SENTENCE_PATTERN", "RHETORIC", "READING_STRATEGY", "ACTIVITY", "ANSWER", "PUBLISHER_NOTE", "IMAGE_OR_DIAGRAM", "OTHER"] },
         "region_id": { "type": "string" },
-        "text_status": { "enum": ["EXACT", "OCR_UNCERTAIN", "TEACHER_CORRECTED", "CONFLICTED"] }
+        "text_status": { "enum": ["EXACT", "OCR_UNCERTAIN", "TEACHER_CORRECTED", "CONFLICTED"] },
+        "extraction_confidence": { "enum": ["HIGH", "MEDIUM", "LOW"] }
       },
       "additionalProperties": false
     },

@@ -161,6 +161,6 @@ BLOCKER：平台限制導致內容靜默縮水、錯字未修、頁面重排或�
 
 ## S-24｜簡報畫布比例
 
-PASS：所有 presentation `STYLE_SELECTION_PROFILE`、Slide Script 與 slide Render Request 使用 `16:9` 橫式；worksheet 等非簡報輸出仍依自己的 Output Profile。
+PASS：首次建立 presentation 時，教師在 `4:3` 與 `16:9` 中選定一個；核准的 `canvas_lock` 持續寫入 `STYLE_SELECTION_PROFILE`、Slide Script、slide Render Request、Runtime State 與 Output Manifest，且所有實際輸出尺寸一致。worksheet 等非簡報輸出仍依自己的 Output Profile。
 
-BLOCKER：AI 將簡報改成 `9:16`、A4 或其他比例；自動重算既有歷史成品；或把學習單的 A4 比例套用到簡報。
+BLOCKER：缺少教師核准的 `canvas_lock`；任一 payload 互相衝突；AI 將簡報改成 `9:16`、`3:2`、A4 或其他比例；採用平台預設比例；自動重算既有歷史成品；或把學習單的 A4 比例套用到簡報。

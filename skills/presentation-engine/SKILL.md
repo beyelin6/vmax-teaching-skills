@@ -7,7 +7,7 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 
 The page-by-page `SLIDE_SCRIPT` is the single presentation source of truth. Its portable contract is `core/schemas/vmax/slide-script.schema.json`. NotebookLM, Google Slides, Canva, PPTX, and rendered PNG/PDF are downstream derivatives and must not write back to the Slide Script or Source Master.
 
-版本：0.4.0
+版本：0.9.0
 
 ## 使命
 
@@ -24,8 +24,10 @@ The page-by-page `SLIDE_SCRIPT` is the single presentation source of truth. Its 
 5. Repository 根目錄 `AGENTS.md`
 6. Style Library、Role Library 與 Layout Library 中當課已核准的設定
 7. `core/presentation/classroom-image-slide-policy.md`
-8. `core/visual/visual-reference-library.md`
-9. `core/visual/visual-text-dna.md`
+8. `core/presentation/canvas-lock-policy.md`
+9. `core/presentation/text-layer-construction-policy.md`
+10. `core/visual/visual-reference-library.md`
+11. `core/visual/visual-text-dna.md`
 
 Machine-readable companion objects must conform to `core/schemas/vmax/learning-module-profile.schema.json` and `core/schemas/vmax/teaching-strategy-profile.schema.json`.
 Role and style selections must conform to `core/schemas/vmax/role-selection-profile.schema.json` and `core/schemas/vmax/style-selection-profile.schema.json`; only confirmed selections may control presentation output.
@@ -124,9 +126,61 @@ Every Slide Script must record the Source Master, `APPROVED_TEACHING_SELECTION`,
 - Benchmark 不得作為教材內容來源，不做像素級複製，不複製樣張中的課文、頁碼、角色姿勢或單課細節。
 
 - 簡報是教師上課口述用的圖像式投影片，不是學生講義、學習單、考卷或滿版資訊表。
+- 插圖佔比不得視為固定模板：依教學焦點、文字量與圖片功能，在局部插圖、半頁插圖、雙物件構圖或近滿版情境圖之間選擇；不得因追求視覺效果讓每頁都接近滿版。
+- 課文閱讀頁可讓課文成為主要畫面物件（例如書頁、練習本、航海日誌或手繪閱讀紙），插圖維持約局部至半頁的主視覺比例；若圖片超過半頁，必須說明其對理解的必要性。
 - 學生頁只放學生此刻需要看見的內容；詳細解說、答案、來源細節與備課資訊放入教師層、講者備註或母檔。
 - 一頁只承擔一個主要教學焦點；內容過量時拆頁、Reveal 或移到教師口述，不得縮字硬塞。
 - 若當課有已核准 Lesson Baseline／施工總表，進入 slide_script、Render Request 或修圖前必讀，並依當課小節逐組規劃。
+
+### 5.1 代表頁先行門檻
+
+需要實際圖片式簡報時，不得直接批次製作。必須先建立 `representative_page_set`，至少覆蓋本課實際啟用的下列頁型；未啟用的頁型也要記錄 `N/A_NOT_IN_LESSON`，不得默認省略：
+
+- `TEXT_READING`：課文欣賞／完整原文頁
+- `DIFFICULT_WORDS`：難詞與語詞理解頁
+- `SENTENCE_RHETORIC`：句型／修辭頁
+- `TEXT_COMPREHENSION`：文意理解與原文證據頁
+- `SHAPE_NEAR`：生字形近字頁
+- `POLYPHONIC`：多音字頁
+- `IDIOM_OR_FOUR_CHAR`：成語／四字詞語頁
+- `SUMMARY_TRANSFER`：總結／遷移頁
+
+每一類代表頁都必須先完成文字稿、頁面結構、視覺構圖、角色定錨與文字層規劃，再取得教師確認。任何代表頁未通過，都只能停在代表頁修訂，不得開始全量 Renderer。
+
+課文頁的硬性規則：
+
+- 依自然段／意義段安排，保留完整課文原文；不得改寫、刪節、摘要或把段落關係改成獨立資訊卡。
+- 同一段課文應維持連續閱讀區；可因畫布寬度換行，但不得把每一句拆成獨立色塊或句子卡。課文中的目標詞語直接在原文位置標色、底線或圈選，再配置簡短詞語解釋。
+- 課文文字是主體，插圖只作理解輔助；投影正文以至少 36–40 pt 等效大小為目標。
+- 文字過多時可拆成連續課文頁，但必須保留原文順序與段落標記，不得縮小字體硬塞，也不得把拆頁當成改寫。
+- 語詞標示、底線、手繪色塊與難詞說明必須有核准來源；難詞解釋優先融入構圖，不退化成制式表格。
+
+圖片式文字規則：
+
+- 圖片式簡報不是「背景圖＋打字文字框」；手繪紙條、筆刷底色、航海日誌、對話泡泡、箭頭、圈選、底線與情境註記只能作為構圖語彙，正式文字仍由受控文字層建立。
+- 每頁先載入當課核准的 `role_anchor_refs`。角色外觀、服裝、配色、年齡感與畫風未通過定錨檢查時，該頁不得進入代表頁通過或批次製作。
+- 角色定錨是課程範圍內的規則；不得把其他課的角色或服裝設定自動套入本課。
+
+### 5.2 課文循環與四類語文頁
+
+課文循環頁的目的，是配合教學進度從不同閱讀角度重新理解課文，不是重複投影全文。依本課需要選用初讀、關鍵詞回看、段落功能、全文線索或主旨統整；不強制每課固定五輪。每頁只保留一個主要閱讀任務，並維持自然段／語意單位與原文順序。
+
+四類語文頁的內容順序固定如下：
+
+- **文意理解**：情境引題 → 課文證據／關鍵詞 → 一個主要問題（最多一個追問）→ 學生思考。題目須能回到課文證據，不把答案印在學生頁。
+- **修辭**：課文原句 → 看見特色 → 猜想效果 → 命名修辭 → 仿造／應用。先讓學生感受畫面、聲音、動作或情緒，再揭示術語。
+- **句型**：課文原句 → 句意理解 → 結構拆解 → 情境變化 → 分層仿說／仿寫。公式不得取代原句；一頁只教一個主要句型。
+- **課文循環**：依教學階段重新回看同一篇課文，使用淡色標記、底線、手繪圈選、箭頭、角色視線或小圖示引導，不一次標滿所有答案。
+
+這四類頁面共同採用：課文證據 → 視覺理解 → 教學發現 → 學生應用。不得退化成名稱／定義／例句表格、密集題目排列或背景圖上疊文字框。插圖只能補充理解，不能取代原文。
+
+### 5.3 語文頁代表頁與批次門檻
+
+每個本課實際啟用的頁型都必須先完成一頁代表頁，並由教師確認：原文與來源、單一教學焦點、證據層、構圖、角色定錨、文字層與投影可讀性。代表頁組通過後，才可批次製作同類頁面。
+
+這是「代表頁先確認、批次逐頁檢查」，不是每一頁生成前都停等。批次中若發生文字錯誤、答案洩漏、構圖退化、卡片牆／講義感、角色漂移或視覺風格漂移，立即停批並列出受影響頁面與下游項目。
+
+詳細的課文循環、文意、修辭、句型、成語與圖片式文字層規則，執行這些頁型時必須讀取 [references/classroom-language-page-rules.md](references/classroom-language-page-rules.md)。
 
 ## NotebookLM 輸出規則
 
@@ -163,14 +217,16 @@ NotebookLM 必須分成兩種輸入包：知識來源包與簡報／語音包。
 - `layout_direction`：`TEXT_LEFT_IMAGE_RIGHT`、`IMAGE_LEFT_TEXT_RIGHT` 或教師確認的其他配置；左右位置不得視為固定模板。
 - `source_refs`：課文段落、教材頁碼或已確認知識節點。
 - `visual_layer`：背景、角色、物件、動線、留白與安全邊界；不得承載未驗證教材文字。
-- `text_rendering.mode`：圖片式簡報預設為 `VERIFIED_RASTER_TEXT_LAYERS`。
+- `text_rendering.mode`：`TEXT_READING_PAGE` 使用 `CONTROLLED_NATIVE_TEXT_READING_PAGE` 保留真正可控的連續課文文字層；`IMAGE_COMPOSED_PAGE` 使用 `VERIFIED_RASTER_TEXT_COMPONENTS`，先產生逐元件校對的透明文字圖片，再與底圖合成。
 - `text_rendering.layers`：每段正式文字獨立記錄文字內容、可見層、來源、位置、樣式與局部修復範圍。
 
 課文原文、注音、生字、成語、題目與正式例句必須先鎖定為 `Verified Teaching Text`，再進入文字圖片層渲染。圖片文字錯誤時，只重建受影響的文字層；不得因單一文字錯誤重做整頁。
 
 只有教師指定可編輯 PPTX 時，才由同一份 Verified Teaching Text 派生 Native Text；PPTX 的人工修改不得回寫 Slide Script。
 
-簡報畫布全域固定為 `16:9` 橫式。頁型可以改變內容配置、文字／圖片位置與留白，但不得改變簡報畫布比例。學習單、短文單與其他非簡報輸出依各自 Output Profile，不受此畫布規則取代。
+簡報畫布必須先由教師在 `4:3` 與 `16:9` 中選定，再鎖定對應的 `canvas_profile`、實際像素與輸出格式。頁型可以改變內容配置、文字／圖片位置與留白，但不得改變已鎖定的簡報畫布比例。學習單、短文單與其他非簡報輸出依各自 Output Profile，不受此畫布規則取代。
+
+每份 Slide Script 與 Render Request 必須在視覺構圖前鎖定 `canvas_lock`：`profile`、`ratio`、`width_px`、`height_px`、`orientation`、`safe_area`、`fit_mode`、`output_formats` 與教師決定紀錄。未選定、缺少、衝突或只寫「高畫質」而沒有實際像素時，標記 `CANVAS_SPEC_BLOCKED`，不得建立代表頁或批次。
 
 每張投影片至少記錄：
 
@@ -192,6 +248,11 @@ NotebookLM 必須分成兩種輸入包：知識來源包與簡報／語音包。
 - visual_benchmark_refs（若有 Approved Visual Benchmark）
 - benchmark_alignment（若有 Approved Visual Benchmark）
 - visual_text_dna（正向範例、文字層、字體角色、斷行與檢查狀態）
+- canvas_lock（教師選定的簡報畫布與實際輸出設定）
+- text_layer_construction_profile（文字元件、頁型分流與圖文關係）
+- image_layout_plan（主插圖、輔助插圖、文字區、留白區、圖間距與超載時拆頁策略）
+- visual_density_profile（LOW | MEDIUM | HIGH；HIGH 必須有教師確認或拆頁理由）
+- page_number_system（依已選 Style 鎖定的頁碼位置、格式、字體角色、顏色與特殊頁顯示規則）
 
 ### 成語頁
 
@@ -220,11 +281,14 @@ NotebookLM 必須分成兩種輸入包：知識來源包與簡報／語音包。
 - Style Library 決定色彩、材質、筆觸與整體視覺語言。
 - Role Library 決定角色外觀、語氣、表情與出現方式。
 - Layout Library 決定版面結構。
+- Style／Layout 共同決定課級 `page_number_system` 的候選呈現；教師確認後，同一課所有頁必須沿用，不得逐頁自由漂移。
 - 每頁插圖必須依該頁教材句意或延伸任務生成，不以教材截圖取代。
 - 同一角色、服裝、比例與視覺 DNA 必須一致。
 - 版面可以依內容動態調整，不強迫所有頁面使用同一構圖。
 - 每頁必須先選定正向視覺範例與頁型家族，再進行圖片與文字層構圖；不得從抽象教學主題直接套用通用簡報模板。
 - 圖片底圖、正式文字層、角色與風格檢查必須分階段完成；任何一項不合格不得記為完成。
+- 插圖須先完成主次與密度規劃；一般頁預設一個主畫面，輔助視覺數量依內容與頁面功能決定。心智圖、路線圖、事件地圖、流程圖與漫畫可以使用較多輔助視覺，但必須維持主次、群組、閱讀路徑與留白。多圖互撞、相切、黏連或縮成密集圖牆時，必須減圖、拆頁或改成有意義的漫畫分格，不得直接交付。
+- 除 `TEXT_READING_PAGE` 外，正式文字預設先由 Verified Teaching Text 渲染成透明文字圖片元件，再依 `image_layout_plan` 排版與插圖合成；其他頁型使用普通字型逐行貼在背景上標記 `TYPED_TEXT_LAYOUT_FAIL`。
 - 若既有插圖視覺已獲教師接受，必須標記 `illustration_status: LOCKED`；文字失敗時只重建文字層，不得重新生成已接受的插圖。
 - 除課文閱讀頁外，預設以 `IMAGE_COMPOSED_PAGE` 交付：文字、插圖、物件與動線共同構圖後扁平化為整頁圖片。
 - 非課文頁禁止以背景圖＋文字框、卡片牆、大量半透明框或純文字骨架冒充圖片式簡報。
@@ -250,17 +314,19 @@ NotebookLM 必須分成兩種輸入包：知識來源包與簡報／語音包。
 3. 建立內容選取表：LKB 節點、Learning Modules、Teaching Strategy 步驟。
 4. 建立頁面骨架：頁序、頁面目的、頁型、教學焦點、左右構圖方向與預估頁數。
 5. 將頁面骨架交教師確認；未確認不得展開詳細腳本。
-6. 執行教師／學生資訊分流。
-7. 執行視覺、角色、版型與獨立文字圖層映射。
-8. 若有 Lesson Baseline，鎖定當前小節／Act，一次規劃該小節頁組，再逐頁施工。
-9. 產生選取的輸出格式。
-10. 對所有 `illustration_requirement` 建立符合 `skills/vmax-image-renderer/references/render-request-schema.md` 的 Render Request。
-11. 若 Output Profile 要求實際圖片，先建立跨頁型代表頁組並逐類取得教師核准；不得用一張樣張代表所有頁型。
-12. 代表頁組全數通過後，才呼叫 `skills/vmax-image-renderer/SKILL.md` 小批次生成；每批執行構圖與 Visual Drift 檢查。
-13. 只有實際資產通過重檢才記為 `RENDER_VERIFIED`。
-14. 產生 `output-manifest.md`。
-15. 執行輸出驗證。
-16. 腳本型輸出設為 `ready_for_teacher_review`；要求圖片但只有 handoff 時必須保留 `IMAGE_HANDOFF_READY`，不得宣稱圖片完成。
+6. 若尚無已鎖定畫布，先只詢問教師選擇 `4:3` 或 `16:9`；建立 `canvas_lock` 後才繼續。
+7. 讀取 Output Profile 與 `canvas_lock`，建立輸出清單；若設定衝突則停止。
+8. 執行教師／學生資訊分流。
+9. 執行視覺、角色、版型與獨立文字圖層映射。
+10. 若有 Lesson Baseline，鎖定當前小節／Act，一次規劃該小節頁組，再逐頁施工。
+11. 產生選取的輸出格式。
+12. 對所有 `illustration_requirement` 建立符合 `skills/vmax-image-renderer/references/render-request-schema.md` 的 Render Request，並複製同一份 `canvas_lock`。
+13. 若 Output Profile 要求實際圖片，先建立 `representative_page_set`，覆蓋課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語與總結遷移等實際啟用頁型，並逐類取得教師核准；不得用一張樣張代表所有頁型。
+14. 代表頁組全數通過後，才呼叫 `skills/vmax-image-renderer/SKILL.md` 小批次生成；每批執行文字正確性、圖文共同構圖、角色／風格一致性、畫布比例與 Visual Drift 檢查。
+15. 只有實際資產通過重檢才記為 `RENDER_VERIFIED`。
+16. 產生 `output-manifest.md`。
+17. 執行輸出驗證。
+18. 腳本型輸出設為 `ready_for_teacher_review`；要求圖片但只有 handoff 時必須保留 `IMAGE_HANDOFF_READY`，不得宣稱圖片完成。
 
 ## 輸出驗證
 
@@ -284,7 +350,10 @@ NotebookLM 必須分成兩種輸入包：知識來源包與簡報／語音包。
 - 若有 Approved Visual Benchmark，代表頁與全課批次已通過五軸 benchmark_alignment
 - 非課文頁均通過整頁圖片合成檢查，沒有背景圖＋文字框或卡片牆退化
 - 課文頁的原文語詞定位色與語詞標示一致
+- 文字層通過 `TEXT_PROOF_PASS`、`TEXT_OBJECT_RELATION_PASS`、`TEXT_DENSITY_PASS`、`TEXT_EMBEDDING_PASS` 與 `STUDENT_LAYER_PASS`
+- 所有簡報頁實際 PNG／PDF 均符合同一 `canvas_lock`，沒有混入另一比例、3:2、9:16 或 provider 預設尺寸
+- 圖片／角色素材沒有拉伸；裁切均有記錄且符合核准的 `fit_mode`
 
 ## 完成條件
 
-只有所有選定輸出、manifest 與驗證報告均完成，且狀態為 `ready_for_teacher_review` 時，本技能才算完成。教師確認前不得標示為 approved。
+只有所有選定輸出、manifest 與驗證報告均完成，且狀態為 `ready_for_teacher_review`、畫布驗證為 PASS 時，本技能才算完成。教師確認前不得標示為 approved。

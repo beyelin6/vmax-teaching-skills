@@ -1,4 +1,4 @@
-# V-MAX Polyphonic Source Policy 1.1
+# V-MAX Polyphonic Source Policy 1.3
 
 ## 定位
 
@@ -105,10 +105,24 @@ AI 是否判斷有明確教學價值？
 ## D. 讀音與例詞核對
 
 1. 本課使用讀音以課本生字欄、課文注音或教材明列辨音活動為第一來源。
-2. 教育部辭典用於補充、驗證讀音、詞義與例詞，不能取代本課教材身分。
-3. 每個多音字例詞必須逐詞查核；不得只確認單字有某讀音後，自行類推所有例詞。
-4. 課本與辭典不一致、詞條無法支持例詞、OCR 不清或語境無法判定時，標記 `PRONUNCIATION_SOURCE_CONFLICT / EXAMPLE_WORD_UNVERIFIED`，停在當前 STEP。
-5. 未完成核對的讀音、例詞與口訣不得標示 `CONFIRMED / LOCKED`。
+2. 教材已列出的讀音集合是本課多音字的有效範圍；AI 不得因模型記憶、一般語文常識或辭典另列讀音，自行擴張本課讀音集合、列數或學生可見教學內容。
+3. 教育部《國語辭典簡編本》用於補充、驗證讀音、詞義與例詞，不能取代本課教材身分。
+4. 若 AI 發現教材未列但可能存在的其他讀音，只能建立 `AI_SUGGESTED_READING` 候選；必須以教育部《國語辭典簡編本》或教師指定的其他權威來源驗證，並在教師確認單中標示「教材未列／延伸候選／待教師確認」、來源證據與受影響下游，不得直接列入多音字正式列數、預習單或簡報。
+5. 每個多音字例詞必須逐詞查核；不得只確認單字有某讀音後，自行類推所有例詞。
+6. 課本與辭典不一致、教材讀音集合與補充來源不一致、詞條無法支持例詞、OCR 不清或語境無法判定時，標記 `PRONUNCIATION_SOURCE_CONFLICT / EXAMPLE_WORD_UNVERIFIED`，停在當前 STEP，不得自行選邊。
+7. 未完成核對的讀音、例詞與口訣不得標示 `CONFIRMED / LOCKED`。
+
+### D1. 教材列數優先
+
+多音字的正式呈現列數，先由教材來源決定，再由教師確認：
+
+```text
+教材明列 2 個讀音 → 正式候選最多先呈現 2 列
+教材未列的第 3 個讀音 → 只能另列 AI_SUGGESTED_READING，完成來源驗證並停等教師
+教材與辭典對讀音數量或讀法不一致 → PRONUNCIATION_SOURCE_CONFLICT，停等教師
+```
+
+「《國語辭典簡編本》查得到」不等於「本課應教」；不得把辭典的完整字音表直接轉成教材教學列。
 
 ## E. 必填欄位
 
@@ -119,9 +133,20 @@ polyphonic_item:
   official_lesson_character: true | false
   teacher_reason:
   textbook_evidence:
-  lesson_pronunciation_evidence: []
+  lesson_pronunciation_evidence:
+    - source_file:
+      pdf_page:
+      printed_page:
+      region_ref:
+      exact_text:
+      extraction_method: TEXT_LAYER | OCR | MANUAL_TRANSCRIPTION | IMAGE_REVIEW
+      extraction_confidence: HIGH | MEDIUM | LOW
+      verification_status: UNVERIFIED | TEACHER_GUIDE_VERIFIED | DICTIONARY_VERIFIED | CONFLICTED
   dictionary_entry_evidence: []
   readings: []
+  reading_source_status: TEXTBOOK_CONFIRMED | AI_SUGGESTED_READING | TEACHER_SPECIFIED
+  reading_expansion_status: NONE | VERIFIED_PENDING_TEACHER | SOURCE_CONFLICT
+  downstream_impact: []
   example_word_verification: []
   meaning_by_reading: []
   lesson_context:
@@ -153,6 +178,7 @@ polyphonic_item:
 - `TEACHER_POLYPHONIC_DROPPED`：教師指定多音字在後段被刪除
 - `POLYPHONIC_IDENTITY_MISSING`：未記錄來源身分
 - `PRONUNCIATION_SOURCE_CONFLICT`：教材讀音與補充來源衝突
+- `UNVERIFIED_AI_READING_EXPANSION`：AI 未完成來源驗證就自行增加教材未列讀音
 - `EXAMPLE_WORD_UNVERIFIED`：例詞未逐詞取得來源支持
 - `PRONUNCIATION_INFERENCE_DRIFT`：只查單字後自行類推例詞讀音
 

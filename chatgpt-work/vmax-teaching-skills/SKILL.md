@@ -5,7 +5,7 @@ description: ChatGPT Work 專用的 V-MAX 唯一啟動技能。用於重新開�
 
 # V-MAX ChatGPT Work Launcher
 
-版本：1.1
+版本：1.3
 
 ## 安裝模型
 
@@ -25,6 +25,7 @@ GitHub Source of Truth：
    - `skills/vmax-teaching-skills/SKILL.md`
    - `V-MAX_BOOTSTRAP.md`
    - `runtime/lesson-state.md`
+   - `core/governance/continuation-state-gate.md`
    - current main workflow
    - current executor
    - hold policy
@@ -32,8 +33,16 @@ GitHub Source of Truth：
    - `adapters/chatgpt.md`
    - `core/visual/visual-reference-library.md`
    - `core/visual/visual-text-dna.md`
+   - `core/presentation/canvas-lock-policy.md`
+   - `core/presentation/text-layer-construction-policy.md`
 4. 再按當前 stage 讀取需要的 policy／skill；不要一次下載或安裝全部技能。
 5. 無法實際讀取任一必要檔案時回報 `BOOTSTRAP_BLOCKED`，不得用對話記憶繼續。
+
+## 每次續作的 State Sync Gate
+
+ChatGPT Work 不得把「繼續／下一步／確認／沿用」直接當成可以製作的指令。每次都必須先讀取最新 Drive Runtime revision，核對目前 stage、唯一 `next_allowed_stage`、教師最新決定、Source Master／LKB／Slide Script 版本與視覺基準。
+
+若 State Sync 無法通過，回報 `CONTINUATION_STATE_BLOCKED`，只列出缺少或衝突項目與受影響下游，不能生成候選教材、圖片、腳本或批次成果。上下文整理、換平台或對話中斷後，必須重新執行完整同步，不得沿用聊天記憶。
 
 ## 強制回條
 
@@ -57,9 +66,11 @@ GitHub Source of Truth：
 
 使用中文標題、精簡表格與條列。完整 Machine Payload 可另存，但對話不顯示 raw schema、內部欄位或空白程式碼框。每項來源顯示教材、教育部辭典、AI 建議或待核對狀態。
 
-製作簡報時，必須先讀取正向視覺範例與 Visual Text DNA。逐頁腳本、圖片底圖、正式文字層、角色／風格檢查與 PPTX／PNG 輸出必須分階段完成；不得從抽象教學主題直接套用通用簡報模板。正式中文只能由可驗證文字層渲染，文字感覺或圖文關係不像正向範例時標記 `VISUAL_TEXT_DNA_FAIL`，停等修正，不得量產。
+製作簡報時，必須先讀取正向視覺範例、Visual Text DNA、Canvas Lock Policy 與 Text Layer Construction Policy。若尚無鎖定畫布，只能先詢問教師選擇 `4:3` 或 `16:9`；選定後續跑不得切換。逐頁腳本、圖片底圖、正式文字層、角色／風格檢查與 PPTX／PNG 輸出必須分階段完成；不得從抽象教學主題直接套用通用簡報模板。正式中文只能由可驗證文字層渲染，文字感覺或圖文關係不像正向範例時標記 `VISUAL_TEXT_DNA_FAIL`，停等修正，不得量產。
 
 若目前 WORK 模式的插圖視覺已符合教師期待，視覺資產視為 `illustration_status: LOCKED`。之後文字表達、字體、斷行、位置或顯示失敗，只能重建文字層與排版，不得重新生成插圖或角色。
+
+每個圖片／腳本候選都必須保留版本與教師狀態；未確認候選不得覆蓋確認稿、改寫 Runtime 或觸發其他頁面重算。代表頁未確認前，不得批次製作。
 
 WORK 模式的簡報預設交付為高畫質圖片化投影片（PNG）與 PDF。不得自行生成可編輯文字框的 PPTX；只有教師明確要求 PPTX 時，才另行派生。
 

@@ -1,4 +1,4 @@
-# V-MAX Manifest 3.6
+# V-MAX Manifest 3.8
 
 ## 角色
 
@@ -9,12 +9,12 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.6
+vmax_manifest_version: 3.8
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door:
   path: skills/vmax-teaching-skills/SKILL.md
-  current_version: 1.0
+  current_version: 1.2
 runtime_storage:
   provider: GOOGLE_DRIVE
   root_folder_name: 00_Runtime_State
@@ -24,10 +24,13 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.3
+  current_version: 2.4
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.6
+  current_version: 1.8
+continuation_state_gate:
+  path: core/governance/continuation-state-gate.md
+  current_version: 1.0
 course_orchestrator:
   path: skills/vmax-course-orchestrator/SKILL.md
   current_version: 0.5.0
@@ -54,11 +57,11 @@ cross_ai_schema_package:
   migration_policy: core/schemas/vmax/migrations/README.md
 teacher_review_view:
   path: core/ui/teacher-review-view-contract.md
-  current_version: 1.1
+  current_version: 1.2
 workflow_test_freeze: core/governance/workflow-test-freeze.md
 workflow_hold_regression:
   path: tests/workflow-hold-regression-cases.md
-  current_version: 1.9
+  current_version: 2.2
 knowledge_lab_ordering:
   path: core/director/knowledge-lab-ordering-policy.md
   current_version: 1.9
@@ -82,7 +85,7 @@ visual_reference_library:
   current_version: 1.0
 visual_text_dna:
   path: core/visual/visual-text-dna.md
-  current_version: 1.0
+  current_version: 1.1
 text_embedded_language_policy:
   path: core/pedagogy/text-embedded-language-teaching-policy.md
   current_version: 1.0
@@ -100,6 +103,12 @@ character_system:
   current_version: 2.2
 classroom_image_slide_policy:
   path: core/presentation/classroom-image-slide-policy.md
+  current_version: 1.4
+canvas_lock_policy:
+  path: core/presentation/canvas-lock-policy.md
+  current_version: 1.0
+text_layer_construction_policy:
+  path: core/presentation/text-layer-construction-policy.md
   current_version: 1.1
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
@@ -124,13 +133,13 @@ google_drive_lesson_archive:
   current_version: 1.0
 renderer_contract:
   path: core/renderer/image-first-hybrid-renderer.md
-  current_version: 1.5
+  current_version: 1.7
 presentation_engine:
   path: skills/presentation-engine/SKILL.md
-  current_version: 0.4.0
+  current_version: 0.9.0
   image_renderer:
     path: skills/vmax-image-renderer/SKILL.md
-    current_version: 1.2
+    current_version: 1.6
     request_schema: skills/vmax-image-renderer/references/render-request-schema.md
   presentation_schema:
     path: core/schemas/vmax/slide-script.schema.json
@@ -142,7 +151,7 @@ presentation_engine:
 # Backward-compatible top-level aliases for readers that do not traverse nested entries.
 image_renderer:
   path: skills/vmax-image-renderer/SKILL.md
-  current_version: 1.2
+  current_version: 1.6
   request_schema: skills/vmax-image-renderer/references/render-request-schema.md
 visual_drift_detector:
   path: core/quality/visual-drift-detector.md
@@ -152,7 +161,7 @@ quality_gate:
   current_version: 2.5
 typography_bridge:
   path: skills/vmax-typography-bridge/SKILL.md
-  current_version: 1.1
+  current_version: 1.2
 vqs_quality_validator:
   path: skills/vqs-quality-validator/SKILL.md
   current_version: 0.2.0
@@ -306,7 +315,7 @@ SOURCE 0
 - 部首、偏旁、部件、字形口訣逐字核對；口訣預設為 AI 建議，教師確認前不得鎖定。
 - 發現字形、讀音或例詞疑點時停在當前 STEP。
 
-權威：`core/director/polyphonic-source-policy.md` v1.1、`skills/character-group-visual-comparison/SKILL.md` v1.1。
+權威：`core/director/polyphonic-source-policy.md` v1.3、`skills/character-group-visual-comparison/SKILL.md` v1.1。
 
 ---
 

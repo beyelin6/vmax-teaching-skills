@@ -63,9 +63,12 @@ AI 延伸不得混入 Official Knowledge。
 - 角色與風格已核准。
 - 一頁一個主要焦點。
 - 內容過多時拆頁，而非縮小字體。
-- 簡報畫布為 `16:9` 橫式；學習單依自己的 Output Profile，不套用簡報比例。
+- 簡報畫布符合教師核准的 `canvas_lock`，且僅為 `4:3` 或 `16:9` 橫式；實際 PNG／PDF 尺寸與 Output Manifest 一致。學習單依自己的 Output Profile，不套用簡報比例。
+- 已先完成並核准本課實際啟用的代表頁組：課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語、總結遷移。
+- 課文頁保留原文與段落結構，正文為主體，投影正文達 36–40 pt 等效大小；文字過多時拆成連續頁，不得縮字或改寫。
 - 圖片式簡報的正式文字具備 `VERIFIED_RASTER_TEXT_LAYERS` 與來源引用；不可把生圖文字或未驗證文字列為完成。
-- 插圖能支援理解。
+- 插圖能支援理解，且不退化為背景圖＋文字框、規則矩形卡片牆、表格化講義或「像打字貼上去」的文字構圖。
+- 每頁角色均能追溯當課 `role_anchor_refs`；臉型、髮型、服裝、配色、年齡感與畫風一致。
 
 ### 4. 答案與角色分流
 
@@ -101,6 +104,7 @@ AI 延伸不得混入 Official Knowledge。
 若交付物要求圖片，確認：
 
 - 每個必要資產都有 Render Request 與可追蹤的實際輸出。
+- 代表頁組已逐類通過教師確認，未以單一樣張推定其他頁型通過；批次頁未出現 `COMPOSITION_REGRESSION`、`TYPED_TEXT_LAYOUT_FAIL` 或 `CHARACTER_STYLE_GATE_FAILED`。
 - 狀態為 `RENDER_VERIFIED`，不是 `RENDER_READY` 或 `IMAGE_HANDOFF_READY`。
 - 驗證針對實際圖片／匯出頁面執行，不是只檢查 prompt。
 - 教學關鍵繁體中文、注音、標點與教材內容逐字正確。

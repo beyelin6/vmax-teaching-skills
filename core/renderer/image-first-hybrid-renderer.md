@@ -1,4 +1,4 @@
-# V-MAX Image-first Hybrid Renderer 1.5
+# V-MAX Image-first Hybrid Renderer 1.7
 
 ## 定位
 
@@ -12,7 +12,7 @@ V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護�
 
 本檔定義渲染原則；實際工具選擇、能力探測、Render Request 與完成狀態由 `skills/vmax-image-renderer/SKILL.md` 執行。
 
-製作教師口述型圖像簡報時，另須遵守 `core/presentation/classroom-image-slide-policy.md`。
+製作教師口述型圖像簡報時，另須遵守 `core/presentation/classroom-image-slide-policy.md`、`core/presentation/canvas-lock-policy.md` 與 `core/presentation/text-layer-construction-policy.md`；畫布與文字層政策分別是比例／尺寸與文字施工的唯一來源。
 
 ---
 
@@ -20,7 +20,7 @@ V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護�
 
 ### Default Text Rendering Contract
 
-圖片式學生頁的正式文字預設採 `VERIFIED_RASTER_TEXT_LAYERS`：每個標題、課文片段、任務、注音與標籤都是可追溯的獨立文字圖片層，最後再與視覺層合成。`SLIDE_SCRIPT` 中的 Verified Teaching Text 仍是唯一文字真值；文字圖片層只是渲染產物。可編輯 Native Text 僅作 PPTX 等教師指定輸出的下游派生物。
+圖片式學生頁的正式文字預設採 `VERIFIED_RASTER_TEXT_LAYERS`：除 `TEXT_READING_PAGE` 外，每個標題、任務、注音與標籤都是可追溯的獨立透明文字圖片層，最後再與視覺層合成。`TEXT_READING_PAGE` 的完整課文原文使用真正可控的連續文字層；`SLIDE_SCRIPT` 中的 Verified Teaching Text 仍是唯一文字真值。其他頁型的可編輯 Native Text 僅作教師指定 PPTX 等下游派生物。
 
 錯字、缺字、位置或樣式問題時，修復範圍預設為 `LOCAL_LAYER_ONLY`，不得重做未受影響的整頁。
 
@@ -28,7 +28,7 @@ V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護�
 適合除課文閱讀頁以外的學生頁。插圖、文字、動線、物件與裝飾必須先共同構圖，再輸出為單一整頁圖片；學生看到的文字不得只是 PowerPoint 文字框貼在背景圖上。
 
 ### Mode 2｜Hybrid Composed Slide
-先生成完整圖片式構圖，再以可控排字重建高風險核心文字，最後扁平化為整頁圖片。Native Text 是製作手段，不是交付畫面上的浮動文字框。
+先生成有主次與呼吸感的無字／少字圖片式構圖，再把已確認文字逐元件渲染成「只有文字像素、背景透明的 PNG／raster 元件」，依構圖錨定後合成並扁平化為整頁圖片。文字元件不得帶白色矩形或不透明文字框背景。Native Text 只可作為內部排版手段或教師指定的 PPTX 下游，不是預設交付畫面上的浮動文字框。
 
 ### Mode 3｜Precision Reading Slide
 只用於課文閱讀頁，或教師明確要求保留可編輯文字的高密度分析頁。不得把此模式當作非課文頁的方便降級方案。
@@ -44,6 +44,10 @@ V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護�
 
 ## 2. Reference Composition
 
+在建立 Reference Composition 前，先完成 `canvas_lock` preflight。不得由圖片 provider 自動決定畫布，也不得先生成其他比例再於交付時硬裁切。尚未由教師選定 `4:3` 或 `16:9` 時，標記 `CANVAS_SPEC_BLOCKED`，不得進入圖片生成。
+
+最低 preflight 欄位為：`canvas_profile`、`canvas_ratio`、`width_px`、`height_px`、`orientation`、`safe_area`、`fit_mode` 與 `output_formats`。缺少或衝突時停止，不得用上一次對話的比例猜測。
+
 若 Lesson Baseline 含 Approved Visual Benchmark，Reference Composition 必須另外寫入：
 - `visual_benchmark_refs`：樣張或代表頁來源。
 - `benchmark_alignment`：留白、文字密度、局部插畫、角色干擾度、講義感五軸對齊說明。
@@ -52,10 +56,12 @@ Benchmark 只引用視覺節奏與版面氣質，不是教材內容來源；不�
 
 Mode 2 不採「先畫背景再隨便塞字」。流程是：
 1. 完整內容生成視覺構圖參考稿。
-2. 取得理想文字位置、比例、框體、留白與閱讀順序。
-3. 生成乾淨背景／UI。
-4. 依參考稿重建 Verified Teaching Text。
-5. 檢查美感與閱讀節奏是否仍成立。
+2. 先決定主插圖、輔助插圖、文字區、留白區與圖間距；若多圖會相切或黏連，先拆頁或減少圖片。
+3. 取得理想文字位置、比例、容器、留白與閱讀順序。
+4. 生成乾淨背景／UI。
+5. 將 Verified Teaching Text 逐元件渲染成透明文字圖片。
+6. 依參考稿錨定文字元件並合成。
+7. 檢查美感、閱讀節奏與圖間呼吸是否仍成立。
 
 Reference Composition 是視覺藍圖，不是內容真值來源。
 
@@ -90,7 +96,7 @@ Reference Composition 是視覺藍圖，不是內容真值來源。
 ```text
 1. 局部重生／局部修補
 2. 移除圖片中的錯誤或不必要文字
-3. 以 Verified Native Text 在原構圖位置重建
+3. 以 Verified Raster Text Component 在原構圖位置重建
 4. 小區塊重做／重繪
 5. 只有前述方法無法維持教學正確與視覺一致時，才整頁重畫
 ```
@@ -118,7 +124,8 @@ Native Text 要成為畫面的一部分，可壓在天然留白、紙張、卡�
 2. 文字依附場景或認知關係，不是浮在背景上的獨立標籤群。
 3. 移除背景插圖後版面不能仍只是普通文字簡報；若可以，代表圖像沒有參與教學構圖。
 4. 禁止「背景圖＋數個文字框」、卡片牆、同尺寸方框陣列與大量半透明面板。
-5. 高風險文字以可控排字合成後扁平化，不保留大量浮動 PowerPoint 文字物件。
+5. 高風險文字以透明文字圖片元件合成後扁平化，不保留大量浮動 PowerPoint 文字物件。
+6. 多圖頁必須通過主次、圖間距與留白檢查；插圖互撞、相切或黏成圖牆時標記 `IMAGE_COLLISION` 或 `VISUAL_BREATHING_FAIL`。
 
 ### 課文頁的原文定位配色
 
@@ -168,6 +175,9 @@ Native Text 要成為畫面的一部分，可壓在天然留白、紙張、卡�
 - prompt、Renderer Script、Visual YAML、預覽描述都不是圖片成品。
 - 最終資產必須存在，並能以路徑、URL 或平台 asset ID 追蹤。
 - 必須重新檢視最終成品，核對教材真值、繁體中文、尺寸與裁切。
+- 必須讀取實際 PNG／PDF 寬高，確認所有頁面精確符合已鎖定的 `4:3` 或 `16:9`；不得接受 3:2、9:16 或 provider 預設比例。
+- 所有插圖與角色必須使用等比縮放、contain 或已記錄的核准裁切；拉伸標記 `ASSET_STRETCH_DETECTED`，未審核裁切標記 `ASSET_CROP_UNAUDITED`。
+- 文字元件必須通過 `TEXT_PROOF_PASS`、`TEXT_OBJECT_RELATION_PASS`、`TEXT_DENSITY_PASS`、`TEXT_EMBEDDING_PASS` 與 `STUDENT_LAYER_PASS`；多圖頁另須通過 `IMAGE_DENSITY_PASS`。任一失敗不得交付。
 - 只有 `RENDER_VERIFIED` 可進入正式交付；`IMAGE_HANDOFF_READY` 只代表已可轉交其他平台。
 - 圖片模型連續兩次產生錯字、假字或錯誤注音時，不得省略該頁；改走「無字／低字背景 → 可控排字 → 扁平化 → 逐字重檢」。
 

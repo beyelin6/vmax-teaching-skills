@@ -157,6 +157,72 @@ FAIL：使用舊 `01_來源主檔 / 02_生成腳本 / 03_角色與視覺資產 /
 
 分類：`LOAD_RECEIPT_MISSING / V-MAX_FRONT_DOOR_REQUIRED / WRONG_EXECUTOR_SELECTED / PREMATURE_DESIGN_LOCK / RAW_SCHEMA_DUMP`
 
+## W-21｜長對話／換平台續作不得靠記憶
+
+輸入情境：前一輪已完成部分簡報候選與教師修正，對話中斷或改用另一個 AI；教師只說「繼續」。聊天中存在多個候選版本，但 Google Drive Runtime State 尚未載入或 revision 不明。
+
+### PASS
+
+- 先讀 GitHub Manifest、Google Drive Runtime Index 與指定課次最新 State。
+- 建立 State Sync Receipt，顯示目前 stage、唯一下一步、教師最新決定、上游版本、視覺基準與候選版本狀態。
+- Runtime revision 不明、State 與聊天內容衝突或教師決定尚未回寫時，標記 `CONTINUATION_STATE_BLOCKED`。
+- 只列出缺少項目、衝突與受影響下游，等待教師決定；不生成圖片、腳本、學習單或批次成果。
+- 上下文整理或換平台後重新執行完整同步，不沿用上一段摘要。
+
+### BLOCKER
+
+- 依聊天記憶猜測目前課次、stage、HOLD 或最新版本。
+- 直接採用本地候選輸出覆蓋 Drive State 或已確認稿。
+- State 尚未同步就開始「先試跑一張」。
+- 將未確認候選混入下一版或靜默重算下游。
+
+分類：`CONTINUATION_STATE_BLOCKED / STATE_REVISION_UNKNOWN / HOLD_POSITION_UNKNOWN / TEACHER_DECISION_NOT_PERSISTED / CANDIDATE_VERSION_MIXED / WORK_BLOCKED_BEFORE_RENDER`
+
+---
+
+## W-22｜簡報畫布比例不得漂移
+
+輸入情境：同一輪候選成果曾出現 16:9、4:3 或 3:2；教師要求繼續製作，但 Slide Script、Render Request 或 Runtime State 沒有共同的畫布鎖定。
+
+### PASS
+
+- 若沒有已確認畫布，先只詢問教師選擇 4:3 或 16:9；不能讓 provider 自行決定。
+- 教師選定後建立同一份 `canvas_lock`，含 profile、比例、實際寬高、方向、安全邊界、fit mode 與決定紀錄。
+- 代表頁與批次輸出都驗證實際 PNG／PDF 尺寸，拒絕另一比例、3:2、9:16 或平台預設尺寸。
+- 外部插圖與角色圖只能等比縮放、contain 或已記錄的核准裁切；不可拉伸。
+- 畫布設定缺失、衝突或成品漂移時，停止渲染並列出受影響下游。
+
+### BLOCKER
+
+- 直接沿用聊天記憶猜測本課要 16:9。
+- 同一份簡報混用 16:9、4:3 或 3:2。
+- 先生成圖片，最後才嘗試裁成目標比例。
+- 為填滿畫布拉伸角色、插圖或文字元件。
+
+分類：`CANVAS_SPEC_BLOCKED / CANVAS_DRIFT / OUTPUT_PROFILE_MISMATCH / ASSET_STRETCH_DETECTED / ASSET_CROP_UNAUDITED`
+
+---
+
+## W-23｜文字層不得退化成打字貼圖
+
+輸入情境：同一課同時存在路線圖式總覽頁、情境語詞頁與完整課文頁；候選稿中有文字融入畫面，也有左右硬切、四格拼貼與逐行打字版。
+
+### PASS
+
+- 依頁型選擇文字施工方式：總覽短句融入路線／物件，情境頁使用物件錨定標籤，課文頁保留連續原文文字元件。
+- 所有正式文字先經校對，再以透明圖片元件嵌入紙張、筆刷、書頁、泡泡或自然留白。
+- 文字與插圖、角色視線、動作或原文位置有明確關係。
+- 文字密度、段落連續性、學生／教師層分流與投影可讀性均通過檢查。
+
+### BLOCKER
+
+- 課文與圖片左右硬切，互不參與理解。
+- 每句或每個詞被拆成獨立卡片、平均四格或固定資訊框。
+- 語詞解釋過小、脫離段落或只是裝飾性貼字。
+- 幸福證據、進度卡、教師答案或講者備註出現在學生頁。
+
+分類：`TYPED_TEXT_LAYOUT_FAIL / TEXT_OBJECT_DETACHED / TEXT_DENSITY_OVERLOAD / PARAGRAPH_FRAGMENTED / ANSWER_LEAK / TEACHER_LAYER_LEAK`
+
 ---
 
 ## 整體 PASS
@@ -186,6 +252,13 @@ workflow_hold_regression:
   front_door_loaded: PASS
   load_receipt_rendered: PASS
   course_orchestrator_not_stage_machine: PASS
+  continuation_state_sync: PASS
+  no_render_before_state_sync: PASS
+  canvas_lock: PASS
+  no_4_3_or_3_2_drift: PASS
+  no_asset_stretch: PASS
+  text_layer_construction: PASS
+  no_typed_text_split_layout: PASS
 ```
 
 任一 FAIL，不得宣告工作流回歸測試完成。

@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.3
+# V-MAX Main Workflow 2.4
 
 ## 定位
 
@@ -236,7 +236,7 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 只有完成 Slide Architecture 後才可估頁數；頁數是結果，不是起點。
 
-教師口述型圖像簡報必須依 `core/presentation/classroom-image-slide-policy.md` 建立：學生頁只放學生此刻需要看見的內容；教師講稿、答案與來源細節分流到教師層。若當課已有核准 Lesson Baseline／施工總表，進入逐頁腳本、生圖、修圖或排版前必讀，並以小節／Act 為單位先規劃頁組，再逐頁施工。
+教師口述型圖像簡報必須依 `core/presentation/classroom-image-slide-policy.md`、`core/presentation/canvas-lock-policy.md` 與 `core/presentation/text-layer-construction-policy.md` 建立：先詢問教師選擇 `4:3` 或 `16:9`，選定後鎖定畫布；學生頁只放學生此刻需要看見的內容；教師講稿、答案與來源細節分流到教師層。若當課已有核准 Lesson Baseline／施工總表，進入逐頁腳本、生圖、修圖或排版前必讀，並以小節／Act 為單位先規劃頁組，再逐頁施工。
 
 ---
 
@@ -244,7 +244,7 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 代表頁驗證必須覆蓋課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類逐一核准，未展示頁型不得因教師對另一張說「可以」而連帶通過。
 
-除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；精準文字可控排字後扁平化，不得退化成背景圖＋文字框、卡片牆或大量半透明框。代表頁組全數通過後才可進全量 Renderer；全量以 5–8 頁小批次推進並逐批檢查 Visual Drift。
+除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；精準文字可控排字後扁平化，不得退化成背景圖＋文字框、卡片牆、逐行打字或大量半透明框。代表頁組全數通過後才可進全量 Renderer；全量以 5–8 頁小批次推進並逐批檢查 Visual Drift、Canvas Drift 與 Text Layer Drift。
 
 Lesson Package 交付依 `skills/lesson-package-delivery/SKILL.md`。
 Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護第二套。

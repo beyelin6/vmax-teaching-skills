@@ -3,7 +3,7 @@ name: vmax-typography-bridge
 description: V-MAX 共用字體橋接技能。依視覺風格與文字語意角色，自動選擇字形 DNA，生成 AI 圖像中文字體描述，並映射到 Canva 可編輯繁中字型。適用於簡報、預習單、課後短文單、作文單、A4 圖像教材與其他學生可見教材。
 ---
 
-# V-MAX Typography Bridge v1.1
+# V-MAX Typography Bridge v1.2
 
 ## 目的
 
@@ -18,9 +18,9 @@ description: V-MAX 共用字體橋接技能。依視覺風格與文字語意角�
 
 ## Visual Text DNA 連動
 
-本技能不只選擇字體名稱，也必須讀取 `core/visual/visual-text-dna.md` 與當課正向視覺範例。字體、字級、行距、字距、斷行、顏色與文字在構圖中的位置共同構成文字感覺；只完成字形正確不代表通過。
+本技能不只選擇字體名稱，也必須讀取 `core/visual/visual-text-dna.md`、`core/presentation/text-layer-construction-policy.md` 與當課正向／負向視覺範例。字體、字級、行距、字距、斷行、顏色與文字在構圖中的位置共同構成文字感覺；只完成字形正確不代表通過。
 
-正式簡報文字必須由獨立、可驗證的文字層渲染。AI 生圖只能提供無正式中文的圖片底圖；若文字層與正向範例的氣質不一致，標記 `VISUAL_TEXT_DNA_FAIL`，不得交付。
+正式簡報文字必須由獨立、可驗證的文字層渲染，並依頁型選擇連續段落、物件錨定標籤或路線／旗幟／木牌等畫面物件。AI 生圖只能提供無正式中文的圖片底圖；若文字層與正向範例的氣質不一致，或退化成負向基準的逐行打字／卡片牆，標記 `VISUAL_TEXT_DNA_FAIL` 或 `TYPED_TEXT_LAYOUT_FAIL`，不得交付。
 
 ## 一、Typography DNA
 

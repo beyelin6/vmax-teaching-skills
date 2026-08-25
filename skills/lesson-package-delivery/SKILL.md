@@ -76,7 +76,7 @@ Render Request 遵循 `skills/vmax-image-renderer/references/render-request-sche
 角色功能、基準圖、表情／姿勢、immutable DNA、本課變體、drift guardrails。
 
 ### Image-first Slide PDF / Teaching PPTX
-學生可見內容正確、正式中文字／注音可驗證、學生頁無答案，並與核准 Slide Script、Teacher Intent / LVM / Text-Embedded rules 一致。簡報畫布必須為 `16:9` 橫式；圖片式輸出正式文字必須使用可追溯的獨立文字圖片層。PPTX 僅在教師要求時生成；若生成，教師答案可放講者備註，但不得出現在學生可見頁。
+學生可見內容正確、正式中文字／注音可驗證、學生頁無答案，並與核准 Slide Script、Teacher Intent / LVM / Text-Embedded rules 一致。簡報輸出必須符合教師核准的 `canvas_lock`（僅可為 `4:3` 或 `16:9` 橫式），且實際尺寸必須與 Output Manifest 一致；不得由交付流程自行切換比例。圖片式輸出正式文字必須使用可追溯的獨立文字圖片層。PPTX 僅在教師要求時生成；若生成，教師答案可放講者備註，但不得出現在學生可見頁。
 
 ### Pre-study Worksheet
 遵循 `skills/prestudy-worksheet/SKILL.md` v1.3。

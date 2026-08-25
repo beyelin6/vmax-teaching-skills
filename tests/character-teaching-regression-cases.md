@@ -1,4 +1,4 @@
-# V-MAX Character Teaching Regression Cases 1.1
+# V-MAX Character Teaching Regression Cases 1.3
 
 ## 用途
 
@@ -94,7 +94,7 @@ AI 若發現某正式生字可能容易寫錯，只能提出：
 
 ### PASS
 - 課本生字欄／課文注音是本課讀音第一來源。
-- 教育部辭典補充驗證各讀音、詞義與每一個例詞。
+- 教育部《國語辭典簡編本》補充驗證各讀音、詞義與每一個例詞。
 - 每個例詞留下獨立核對紀錄。
 
 ### BLOCKER
@@ -103,6 +103,36 @@ AI 若發現某正式生字可能容易寫錯，只能提出：
 - 未核對例詞卻標成已鎖定。
 
 分類：`PRONUNCIATION_SOURCE_CONFLICT / EXAMPLE_WORD_UNVERIFIED / PRONUNCIATION_INFERENCE_DRIFT`
+
+## CASE C-08｜教材未列讀音不得由 AI 自行擴張
+
+### PASS
+- 先以教冊／課本生字欄／課文注音確認本課正式讀音集合與呈現列數。
+- AI 發現教材未列的其他讀音時，只能列為 `AI_SUGGESTED_READING` 延伸候選。
+- 延伸候選必須以教育部《國語辭典簡編本》或指定權威來源驗證，並標示「教材未列／待教師確認」。
+- 延伸候選必須出現在教師確認單，附上來源證據與 `downstream_impact`。
+- 未經教師確認，不得放入正式多音字列數、預習單、簡報或學生可見頁面。
+
+### BLOCKER
+- AI 只因模型記憶或查到字典，就把教材列兩個讀音的多音字直接做成三列。
+- AI 用字典的完整讀音清單取代本課教冊標示。
+- 未查證教材來源就把新增讀音標為 `CONFIRMED / LOCKED`。
+- 教材與字典數量或讀法不一致時，AI 自行選擇其中一方繼續生成。
+
+分類：`UNVERIFIED_AI_READING_EXPANSION / PRONUNCIATION_SOURCE_CONFLICT`
+
+## CASE C-09｜多音字讀音證據必須可追溯
+
+### PASS
+- 每個讀音保存來源檔名、PDF 頁碼、印刷頁碼、區塊、擷取原文、擷取方式、信心等級與核對狀態。
+- 預習單、簡報腳本與學生頁引用既有 evidence，不因下游製作重新掃描整份 PDF。
+
+### BLOCKER
+- 只保存「來自教冊」而沒有頁碼、區塊或原文。
+- 讀音進入正式輸出前沒有 `verification_status`。
+- 下游找不到證據就自行重建或猜測讀音。
+
+分類：`PRONUNCIATION_EVIDENCE_MISSING / SOURCE_TRACEABILITY_FAIL`
 
 ---
 
@@ -115,6 +145,8 @@ character_teaching_regression:
   single_character_requires_teacher: PASS
   error_prone_not_auto_entry: PASS
   polyphonic_source_gate_preserved: PASS
+  textbook_reading_count_not_expanded: PASS
+  pronunciation_evidence_traceable: PASS
   character_form_verified: PASS
   mnemonic_accuracy_verified: PASS
   example_words_individually_verified: PASS

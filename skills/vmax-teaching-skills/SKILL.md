@@ -5,7 +5,7 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。當使用者要�
 
 # V-MAX Teaching Skills Front Door
 
-版本：1.0
+版本：1.2
 
 ## 唯一入口
 
@@ -21,10 +21,13 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。當使用者要�
 4. `core/governance/vmax-main-workflow.md`
 5. `skills/vmax-golden-path-executor/SKILL.md`
 6. `core/governance/hold-teacher-interface-policy.md`
-7. `core/ui/teacher-review-view-contract.md`
-8. `core/schemas/vmax/README.md`
-9. 對應平台 adapter
-10. 當前 stage 的 canonical policy／skill
+7. `core/governance/continuation-state-gate.md`
+8. `core/ui/teacher-review-view-contract.md`
+9. `core/schemas/vmax/README.md`
+10. 對應平台 adapter
+11. 當前 stage 的 canonical policy／skill
+
+若當前 stage 涉及簡報或視覺，追加讀取 `core/presentation/canvas-lock-policy.md` 與 `core/presentation/text-layer-construction-policy.md`；畫布未由教師選定並鎖定，或文字層規則未載入時，不得建立代表頁或 Render Request。
 
 任一必要檔案無法實際讀取，回報 `BOOTSTRAP_BLOCKED`，不得用模型記憶、舊對話或先前安裝版本繼續。
 
@@ -39,9 +42,12 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。當使用者要�
 ## 啟動後第一個 Gate
 
 1. 讀 Google Drive Lesson Master Index 與本課 Runtime State。
-2. 執行 Lesson Master Preflight 與來源完整性檢查。
-3. 只有 Runtime 唯一合法 stage 可執行。
-4. 完成 Machine Payload 後，對話只顯示 Teacher Review View。
+2. 執行 `continuation-state-gate.md` 的 State Sync Receipt。
+3. 執行 Lesson Master Preflight 與來源完整性檢查。
+4. 只有 Runtime 唯一合法 stage 可執行。
+5. 完成 Machine Payload 後，對話只顯示 Teacher Review View。
+
+若是「繼續／下一步／確認／沿用」而 State Sync 未通過，必須停在 `CONTINUATION_STATE_BLOCKED`；不得因記得上一段對話而開始分析、設計、渲染或批次。
 
 ## 對話硬限制
 
@@ -67,6 +73,7 @@ front_door_gate:
   canonical_files_loaded: true
   runtime_loaded: true
   teacher_review_contract_loaded: true
+  continuation_state_sync_passed: true
   cross_ai_schema_package_loaded: true
   only_next_allowed_stage_executed: true
   raw_payload_hidden: true

@@ -5,7 +5,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 # V-MAX Golden Path Executor
 
-版本：1.6
+版本：1.8
 
 ## 目的
 
@@ -28,13 +28,22 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 3. Google Drive 對應課程 Runtime State
 4. `core/governance/vmax-main-workflow.md`
 5. `core/governance/hold-teacher-interface-policy.md`
-6. `core/ui/teacher-review-view-contract.md`
-7. `core/schemas/vmax/README.md`
-8. 當前 stage 的 canonical policies / skills
+6. `core/governance/continuation-state-gate.md`
+7. `core/ui/teacher-review-view-contract.md`
+8. `core/schemas/vmax/README.md`
+9. `core/presentation/canvas-lock-policy.md`（進入簡報／視覺 stage 時）
+10. `core/presentation/text-layer-construction-policy.md`（進入簡報／視覺 stage 時）
+11. 當前 stage 的 canonical policies / skills
 
 若舊技能、舊腳本、舊對話與 Manifest 衝突，一律以 Manifest 最新 canonical files 與 Drive Runtime State 為準。
 
 Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selection, HOLD, Revision, Status Transition, and Slide Script MUST conform to the matching schema in `core/schemas/vmax/`. Schema validation does not replace the teacher-facing confirmation card.
+
+### A1. Resume / Continuation State Gate
+
+在合法序列之前，必須先依 `core/governance/continuation-state-gate.md` 完成 State Sync Receipt。未確認 Runtime revision、目前 HOLD、教師最新決定、上游版本、當前工作項目與視覺基準前，不得執行任何分析、設計、渲染或批次。
+
+若「聊天記憶／本地候選／Drive Runtime／GitHub Manifest」出現差異，標記 `CONTINUATION_STATE_BLOCKED`，列出差異與下游影響，等待教師決定；不得自行選邊。
 
 ---
 
@@ -81,10 +90,11 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 執行器必須：
 1. 關閉當前 HOLD。
-2. 查 Runtime State 與主流程取得唯一合法下一步。
-3. 只執行該下一步。
-4. 若下一步有 HOLD，完成後立即停住。
-5. 不得順便執行再下一步。
+2. 先回寫教師決定與 State revision。
+3. 重新同步 Runtime State 與主流程，取得唯一合法下一步。
+4. 只執行該下一步。
+5. 若下一步有 HOLD，完成後立即停住。
+6. 不得順便執行再下一步。
 
 違反：`FLYING_TRAIN / SKIPPED_DECISION_LAYER`。
 
@@ -164,7 +174,9 @@ STEP 2.5 必須同時載入：
 
 完成後只顯示形近字、多音字、教材詞語／成語審核表與待確認項目。每個項目顯示來源狀態、教材證據、字形／讀音核對、AI 建議與理由、教師決定。
 
-部首、偏旁、字形口訣逐字核對；多音字以課本生字欄／課文注音為本課第一來源，教育部辭典只作補充驗證，例詞必須逐詞查核。任何疑點停在 STEP 2.5。
+部首、偏旁、字形口訣逐字核對；多音字以課本生字欄／課文注音為本課第一來源，教育部《國語辭典簡編本》只作補充驗證，例詞必須逐詞查核。任何疑點停在 STEP 2.5。
+
+教材已列的多音字讀音集合與列數不得由 AI 自行擴張；若 AI 發現教材未列的其他讀音，只能標為 `AI_SUGGESTED_READING`，完成權威來源驗證並列出受影響下游項目，等待教師確認後才能進入預習單、簡報或其他學生可見輸出。
 
 完成後顯示 `HOLD 2.5`，等待教師確認；不得展開詩節教學或其他 stage。
 
@@ -226,7 +238,7 @@ STEP 2.5 必須同時載入：
 
 Full Renderer 的前置條件不是「看過一張樣張」，而是跨頁型代表頁組均已核准：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。教師的「可以」只核准本次實際展示的頁型；未展示頁型不得自動通過。
 
-簡報畫布固定為 `16:9` 橫式。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。全量必須以 5–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION` 即停止，不得做完整套後才回頭驗收。
+簡報畫布必須先詢問教師選擇 `4:3` 或 `16:9`，再建立並鎖定 `canvas_lock`；不得由 Renderer、平台預設或舊對話自行選邊。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。Full Renderer 前必須完成代表頁組：課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語、總結遷移等實際啟用頁型；每類均需教師確認，且每頁先載入當課角色定錨。全量必須以 5–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION`、`TYPED_TEXT_LAYOUT_FAIL`、`TEXT_OBJECT_DETACHED` 或角色／風格漂移即停止，不得做完整套後才回頭驗收。
 
 對每個必要圖片建立 Render Request，探測當前平台實際工具並執行。prompt、Renderer Script、Visual YAML 或 `IMAGE_HANDOFF_READY` 不等於圖片完成；只有實際資產通過重檢並標記 `RENDER_VERIFIED` 才能進入 Quality Gate。工具不可用時保留 handoff 並回報阻塞，不得跳過圖片需求。
 
