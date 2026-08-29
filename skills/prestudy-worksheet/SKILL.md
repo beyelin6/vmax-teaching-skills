@@ -318,6 +318,8 @@ Illustrations are instructional anchors, not mandatory decoration for every ques
 - Illustration placement must preserve the full usable width and height of the associated writing area. If a picture cannot fit without reducing writing space, remove it or move it to a declared decorative margin slot.
 - Illustration source and visual direction must follow the teacher-approved lesson settings and visual DNA. Generic stock-like substitutions, invented narrative elements, or illustrations that contradict the lesson are not allowed.
 - A worksheet may contain zero illustrations in a section when no illustration materially improves comprehension. The absence of an illustration is preferable to decorative overload.
+- Place illustrations after the text and writing layout is complete. The default placement target is a safe visual gap beside or between content blocks, not the top or bottom edge by habit. Header/footer placement is allowed only when it is the best available thematic anchor and does not crowd the page.
+- The renderer must first identify unused visual whitespace, then rank candidate slots by: no collision with text, no loss of writing space, proximity to the related lesson content, and consistency with the teacher-approved visual DNA. Illustration placement is a secondary composition decision, never a primary grid constraint.
 - The preflight record must list each illustration's source role, intended teaching function, slot, and protected zones; missing provenance is `ILLUSTRATION_PROVENANCE_FAIL`.
 
 ### Adaptive Page Composition Contract
