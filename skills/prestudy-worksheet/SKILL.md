@@ -5,7 +5,7 @@ description: 將教材鎖定主檔或已確認的預習題目製成國小國語�
 
 # V-MAX Pre-study Worksheet Skill
 
-版本：1.3
+版本：1.5
 
 ## 目的
 
@@ -333,3 +333,15 @@ The worksheet locks instructional order and minimum usability, not a single rigi
 - Section frames may use different heights and widths, but each frame must have a stable internal hierarchy: section label → prompt/content → student response area.
 - Adaptive reflow may move a whole section, but may not split a character group, separate a prompt from its response lines, or place an illustration inside a protected writing zone.
 - Record the selected composition in a layout manifest with `composition_mode: ADAPTIVE`, section bounding boxes, reading order, and the reason for major reflows.
+## Final Production Contract v1.5
+
+The worksheet renderer must apply these confirmed production decisions:
+
+- Support two output profiles: `STANDARD` for stable restrained production and `FREE_HAND` for lesson-specific hand-drawn variation. Both share the same content, reading order, minimum type size, and writing-space requirements.
+- Use adaptive composition. Do not force a full-width title bar, centered title, or 50/50 page split. A compact left-weighted title and unequal columns are valid when they improve page balance.
+- Short compatible sections may be placed side by side, such as `轉轉多音字` and `課文身分證`; longer sections may stack according to measured content bounds.
+- Shape-near characters are grouped units. Each group uses one shared frame, each character appears exactly once, and no duplicate group heading is printed above the rows. Two-character and three-character groups may use different internal layouts.
+- Complete text layout before adding illustrations. Illustrations are optional, must be supported by the approved lesson source and visual DNA, and should occupy safe visual whitespace beside or between content blocks. They must never cover or compress writing areas, answer lines, phonetic fields, word-making fields, or student-information fields.
+- Do not require one illustration per question. Repeated characters or generic decorative pictures are prohibited unless the approved lesson setting explicitly calls for continuity.
+- AI image generation may be used for hand-drawn frames and lesson illustrations, but all student-facing Chinese text, phonetic notation, prompts, labels, and writing lines must be rendered or corrected as native text overlays. A single wrong character must be repaired locally without regenerating the whole page.
+- A page is not deliverable until the final PNG and PDF pass A4 100% inspection for text accuracy, layout collision, safe margins, writing-space preservation, and illustration provenance.
