@@ -73,7 +73,7 @@ polyphonic_source_policy:
   current_version: 1.1
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
-  current_version: 1.2
+  current_version: 1.4
 character_teaching_regression:
   path: tests/character-teaching-regression-cases.md
   current_version: 1.1
@@ -91,7 +91,7 @@ text_embedded_language_policy:
   current_version: 1.0
 text_embedded_language_skill:
   path: skills/text-embedded-language-teaching/SKILL.md
-  current_version: 1.0
+  current_version: 1.1
 language_knowledge_placement:
   path: core/director/language-knowledge-placement-policy.md
   current_version: 1.1
