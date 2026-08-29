@@ -5,13 +5,15 @@ description: 將已核准的 V-MAX Render Request 實際渲染為教學圖片或
 
 # V-MAX Image Renderer
 
-版本：1.6
+版本：1.7
 
 ## 目的
 
 把「視覺規格」推進為「實際且已驗證的圖片檔」。本技能是共用執行層；內容、教學決策、角色與版面仍由上游核准成果決定。
 
 Render input must identify the approved Slide Script version when rendering presentation pages. The renderer is a downstream executor, not a presentation author.
+
+Render Request 前必須執行 `PRE_RENDER_RULE_COMPLIANCE_CHECK`。依序核對 Runtime State、當課 `lesson-presentation-execution-rules.md`、最新 Layout Brief、Slide Script、當頁 Source 與 assets；確認來源核准狀態、canonical／supporting figure 分類、頁型 `character_policy`、圖文對應、文字模式、密度、構圖退化、答案洩漏與歷史 Render Request 污染。任何一項失敗即標記 `PRE_RENDER_RULE_BLOCKED`，不得生圖或修圖。
 
 ## 啟動條件
 

@@ -5,7 +5,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 # V-MAX Golden Path Executor
 
-版本：1.8
+版本：1.9
 
 ## 目的
 
@@ -40,6 +40,12 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selection, HOLD, Revision, Status Transition, and Slide Script MUST conform to the matching schema in `core/schemas/vmax/`. Schema validation does not replace the teacher-facing confirmation card.
 
 ### A1. Resume / Continuation State Gate
+
+續作簡報、修圖或生圖前，除 Runtime State 外，必須載入當課 `core/governance/lesson-presentation-execution-rules.md`（若存在），並遵循其優先順序與衝突處理。最新教師確認的 Lesson Execution Rules 高於歷史腳本、Render Request、代表頁與渲染結果，但不得高於官方教材事實。
+
+每個 Render Request 前必須先通過 `PRE_RENDER_RULE_COMPLIANCE_CHECK`；未通過不得呼叫 Renderer。
+
+教師討論結果必須依 `LESSON_LOCAL`、`REUSABLE_PATTERN`、`GLOBAL_SKILL_RULE` 分層保存。單課規則只更新當課 Execution Rules；只有跨課驗證後才可 promotion 到共用技能，並同步版本與 Manifest，不得因單課施工決策直接改寫全域規則。
 
 在合法序列之前，必須先依 `core/governance/continuation-state-gate.md` 完成 State Sync Receipt。未確認 Runtime revision、目前 HOLD、教師最新決定、上游版本、當前工作項目與視覺基準前，不得執行任何分析、設計、渲染或批次。
 

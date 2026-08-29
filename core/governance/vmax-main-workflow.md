@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.4
+# V-MAX Main Workflow 2.5
 
 ## 定位
 
@@ -235,6 +235,10 @@ Lesson Map 先建立整課理解旅程；Session Map 依內容密度自然切堂
 Knowledge Lab 讀取已確認的 2.5／2.6，不得改寫已鎖內容。
 
 Visual Grammar / Slide Architecture 先認知關係再決定畫面。
+
+簡報續作與生圖前必須讀取當課 `core/governance/lesson-presentation-execution-rules.md`。它承接教師已確認的課程局部視覺決策，優先於歷史腳本、Render Request、代表頁與渲染結果，但不得高於官方教材事實。
+
+規則分為 `LESSON_LOCAL`、`REUSABLE_PATTERN` 與 `GLOBAL_SKILL_RULE`；單課施工決策不得直接污染全域技能，只有跨課驗證後才可 promotion。
 
 完成 Slide Architecture 後，必須先產生 `working/slide-page-layout-brief.md`，逐頁說明頁面目的、學生可見文字、教材證據、頁型、構圖、文字區、留白區與插圖需求。接著由 Style Recommender 產生 `working/style-recommendation.md`、`working/style-selection-profile.md` 與 `working/page-family-style-matrix.md`。
 

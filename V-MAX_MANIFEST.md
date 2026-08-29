@@ -24,10 +24,10 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.4
+  current_version: 2.5
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.8
+  current_version: 1.9
 continuation_state_gate:
   path: core/governance/continuation-state-gate.md
   current_version: 1.0
@@ -37,6 +37,9 @@ course_orchestrator:
 source_library_policy: core/governance/source-library-policy.md
 lesson_master_preflight:
   path: core/governance/lesson-master-preflight.md
+  current_version: 1.0
+lesson_presentation_execution_rules:
+  path: core/governance/lesson-presentation-execution-rules.md
   current_version: 1.0
 task_knowledge_requirement_registry:
   path: core/governance/task-knowledge-requirement-registry.md
@@ -136,10 +139,10 @@ renderer_contract:
   current_version: 1.7
 presentation_engine:
   path: skills/presentation-engine/SKILL.md
-  current_version: 0.10.1
+  current_version: 0.10.2
   image_renderer:
     path: skills/vmax-image-renderer/SKILL.md
-    current_version: 1.6
+    current_version: 1.7
     request_schema: skills/vmax-image-renderer/references/render-request-schema.md
   presentation_schema:
     path: core/schemas/vmax/slide-script.schema.json
@@ -151,7 +154,7 @@ presentation_engine:
 # Backward-compatible top-level aliases for readers that do not traverse nested entries.
 image_renderer:
   path: skills/vmax-image-renderer/SKILL.md
-  current_version: 1.6
+  current_version: 1.7
   request_schema: skills/vmax-image-renderer/references/render-request-schema.md
 visual_drift_detector:
   path: core/quality/visual-drift-detector.md
