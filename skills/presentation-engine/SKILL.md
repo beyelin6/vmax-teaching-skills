@@ -7,7 +7,7 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 
 The page-by-page `SLIDE_SCRIPT` is the single presentation source of truth. Its portable contract is `core/schemas/vmax/slide-script.schema.json`. NotebookLM, Google Slides, Canva, PPTX, and rendered PNG/PDF are downstream derivatives and must not write back to the Slide Script or Source Master.
 
-版本：0.9.0
+版本：0.10.0
 
 ## 使命
 
@@ -119,6 +119,13 @@ Every Slide Script must record the Source Master, `APPROVED_TEACHING_SELECTION`,
 - 不強迫每課使用固定章節或固定頁數。
 - 未啟用的 Learning Module 不得出現在輸出。
 - 同一知識節點可映射到不同輸出，但不得產生互相矛盾的版本。
+
+### 4.1 頁型混搭與一致性
+
+- 簡報可以混搭不同視覺風格，但必須以 `page_family` 為邊界管理；不得逐頁隨機換風格。
+- 進入樣板頁前，必須產生並交教師確認 `working/page-family-style-matrix.md`，將每個啟用頁型對應到 `style_variant`，並列出整課共用的 `shared_invariants`。
+- 同一頁型的所有頁面必須沿用同一 `style_variant`。例如課文閱讀頁可統一使用水彩插圖，成語頁可統一使用韓風漫畫；不得在同一頁型內無理由混用。
+- `style_core` 控制整課共用 DNA；`page_variants` 控制頁型差異。任何頁型變體都不得覆蓋畫布比例、正式文字規則、角色 DNA、安全邊界或教師已確認的字體系統。
 
 ### 5. 教師口述型簡報
 - 若當課有已核准 Lesson Baseline／施工總表／代表頁／樣品 PDF/PNG/PPTX，先登錄為 `Approved Visual Benchmark`，再進入 slide_script、Render Request 或修圖。
@@ -312,9 +319,10 @@ NotebookLM 必須分成兩種輸入包：知識來源包與簡報／語音包。
 1. 驗證所有前置文件與核准狀態。
 2. 讀取 Output Profile，建立輸出清單。
 3. 建立內容選取表：LKB 節點、Learning Modules、Teaching Strategy 步驟。
-4. 建立頁面骨架：頁序、頁面目的、頁型、教學焦點、左右構圖方向與預估頁數。
-5. 將頁面骨架交教師確認；未確認不得展開詳細腳本。
-6. 若尚無已鎖定畫布，先只詢問教師選擇 `4:3` 或 `16:9`；建立 `canvas_lock` 後才繼續。
+4. 建立 `working/slide-page-layout-brief.md`：逐頁記錄頁序、頁面目的、學生可見文字、教材證據、頁型、教學焦點、構圖方向、圖像需求、文字區、留白區與必要拆頁。
+5. 建立 `working/page-family-style-matrix.md`，將可混搭的風格明確分配到頁面類型，並交教師確認；未確認不得製作樣板頁。
+6. 將逐頁版面配置與風格矩陣交教師確認；未確認不得展開正式 `SLIDE_SCRIPT` 或代表頁。
+7. 若尚無已鎖定畫布，先只詢問教師選擇 `4:3` 或 `16:9`；建立 `canvas_lock` 後才繼續。
 7. 讀取 Output Profile 與 `canvas_lock`，建立輸出清單；若設定衝突則停止。
 8. 執行教師／學生資訊分流。
 9. 執行視覺、角色、版型與獨立文字圖層映射。

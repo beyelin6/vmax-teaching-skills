@@ -82,8 +82,10 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Character Topology / Cast
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
+→ 逐頁版面配置與文字說明稿
+→ 頁型風格矩陣／Style Recipe
+→ HOLD｜教師確認頁型風格混搭規則
 → 頁數估算／頁數帳本
-→ Style Recipe
 → 代表頁驗證
 → 全量 Renderer
 → Quality Gate
@@ -233,6 +235,12 @@ Lesson Map 先建立整課理解旅程；Session Map 依內容密度自然切堂
 Knowledge Lab 讀取已確認的 2.5／2.6，不得改寫已鎖內容。
 
 Visual Grammar / Slide Architecture 先認知關係再決定畫面。
+
+完成 Slide Architecture 後，必須先產生 `working/slide-page-layout-brief.md`，逐頁說明頁面目的、學生可見文字、教材證據、頁型、構圖、文字區、留白區與插圖需求。接著由 Style Recommender 產生 `working/style-recommendation.md`、`working/style-selection-profile.md` 與 `working/page-family-style-matrix.md`。
+
+風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材，例如課文頁水彩插圖、成語頁韓風漫畫。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
+
+教師確認逐頁版面稿與頁型風格矩陣前，不得建立代表頁、正式 Slide Script 或啟動 Renderer。這個 HOLD 是為了讓風格推薦不再被樣板頁流程掩蓋。
 
 只有完成 Slide Architecture 後才可估頁數；頁數是結果，不是起點。
 

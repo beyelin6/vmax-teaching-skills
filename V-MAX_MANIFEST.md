@@ -136,7 +136,7 @@ renderer_contract:
   current_version: 1.7
 presentation_engine:
   path: skills/presentation-engine/SKILL.md
-  current_version: 0.9.0
+  current_version: 0.10.0
   image_renderer:
     path: skills/vmax-image-renderer/SKILL.md
     current_version: 1.6

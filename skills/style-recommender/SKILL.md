@@ -5,9 +5,18 @@ description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teach
 
 # Style Recommender
 
-版本：0.2.0
-
 Machine-readable style selections MUST conform to `core/schemas/vmax/style-selection-profile.schema.json`. `style_core` is the reusable locked visual system; `page_variants` may adjust page-family composition but may not silently replace the core palette, typography, ratio, safe boundary, or character rules.
+
+## 頁面類型風格矩陣
+
+風格可以混搭，但混搭必須以「頁面類型」為單位，不得逐頁隨意漂移。推薦結果必須另外輸出一份 page-family matrix，至少列出：
+
+- `page_family`：課文閱讀、語文知識、成語／四字詞語、情境漫畫、總結遷移等。
+- `style_variant`：該頁型使用的插圖媒材、筆觸、色彩與構圖語言。
+- `shared_invariants`：整課共用的字體、畫布比例、章節標籤、角色 DNA、留白與安全邊界。
+- `consistency_rule`：同一 `page_family` 的所有頁面必須沿用同一 `style_variant`，除非教師明確核准例外。
+
+例如：課文閱讀頁可採水彩插圖，成語頁可採韓風漫畫；兩者可以並存，但同類頁面不得一頁水彩、一頁漫畫。混搭的是頁面家族，不是未經說明的單頁風格。
 
 ## 使命
 
@@ -68,6 +77,8 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 - 同一風格須能依課文類型動態調整。
 - 不得沿用上一課的背景、情境、圖像符號或章節命名。
 - 同一份教材可推薦不同方向，例如溫暖敘事、探險任務、清楚資訊圖，但必須說明差異。
+- 風格方案可包含多個頁面家族變體；必須明確區分「課級共用 DNA」與「頁型專屬變體」。
+- 頁型專屬變體只能改變插圖媒材、情境語言與局部構圖，不得破壞整課共用的字體、畫布、角色、章節標籤、留白與文字可讀性。
 - Bee 老師可搭配多種風格，但其蜜蜂元素只能作為識別，不得主導整套教材視覺。
 - 學生可見文字必須清楚、大字、繁體中文。
 - 插圖須依內容重新生成，不以教材截圖代替情境插圖。
@@ -88,6 +99,7 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 
 - `working/style-recommendation.md`
 - `working/style-selection-profile.md`
+- `working/page-family-style-matrix.md`
 
 推薦完成後必須停止，等待教師：
 
