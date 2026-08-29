@@ -238,7 +238,7 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 完成 Slide Architecture 後，必須先產生 `working/slide-page-layout-brief.md`，逐頁說明頁面目的、學生可見文字、教材證據、頁型、構圖、文字區、留白區與插圖需求。接著由 Style Recommender 產生 `working/style-recommendation.md`、`working/style-selection-profile.md` 與 `working/page-family-style-matrix.md`。
 
-風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材，例如課文頁水彩插圖、成語頁韓風漫畫。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
+風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材。水彩、漫畫或其他畫風僅為示意，實際媒材、版型與構圖應依教材、教學功能與教師偏好推薦，不得硬編成固定答案。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
 
 教師確認逐頁版面稿與頁型風格矩陣前，不得建立代表頁、正式 Slide Script 或啟動 Renderer。這個 HOLD 是為了讓風格推薦不再被樣板頁流程掩蓋。
 

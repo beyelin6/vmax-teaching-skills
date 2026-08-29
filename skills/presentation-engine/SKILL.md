@@ -7,7 +7,7 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 
 The page-by-page `SLIDE_SCRIPT` is the single presentation source of truth. Its portable contract is `core/schemas/vmax/slide-script.schema.json`. NotebookLM, Google Slides, Canva, PPTX, and rendered PNG/PDF are downstream derivatives and must not write back to the Slide Script or Source Master.
 
-版本：0.10.0
+版本：0.10.1
 
 ## 使命
 
@@ -124,7 +124,7 @@ Every Slide Script must record the Source Master, `APPROVED_TEACHING_SELECTION`,
 
 - 簡報可以混搭不同視覺風格，但必須以 `page_family` 為邊界管理；不得逐頁隨機換風格。
 - 進入樣板頁前，必須產生並交教師確認 `working/page-family-style-matrix.md`，將每個啟用頁型對應到 `style_variant`，並列出整課共用的 `shared_invariants`。
-- 同一頁型的所有頁面必須沿用同一 `style_variant`。例如課文閱讀頁可統一使用水彩插圖，成語頁可統一使用韓風漫畫；不得在同一頁型內無理由混用。
+- 同一頁型的所有頁面必須沿用同一 `style_variant`。水彩、漫畫、拼貼、手繪、資訊圖、攝影感或其他媒材都只是可選方案，不是固定規定；不得在同一頁型內無理由混用。
 - `style_core` 控制整課共用 DNA；`page_variants` 控制頁型差異。任何頁型變體都不得覆蓋畫布比例、正式文字規則、角色 DNA、安全邊界或教師已確認的字體系統。
 
 ### 5. 教師口述型簡報

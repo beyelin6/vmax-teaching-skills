@@ -16,7 +16,7 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 - `shared_invariants`：整課共用的字體、畫布比例、章節標籤、角色 DNA、留白與安全邊界。
 - `consistency_rule`：同一 `page_family` 的所有頁面必須沿用同一 `style_variant`，除非教師明確核准例外。
 
-例如：課文閱讀頁可採水彩插圖，成語頁可採韓風漫畫；兩者可以並存，但同類頁面不得一頁水彩、一頁漫畫。混搭的是頁面家族，不是未經說明的單頁風格。
+水彩插圖、韓風漫畫等僅是示意，不是固定配方或預設答案。實際方案可依教材內容、教學功能與教師偏好推薦不同媒材、畫風、構圖與版型；只要同一頁面家族內保持一致即可。混搭的是頁面家族，不是未經說明的單頁風格。
 
 ## 使命
 
