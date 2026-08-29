@@ -177,3 +177,14 @@ render_result:
 - 不得因一張樣張獲得「可以」就推定所有未展示頁型已核准。
 - 不得在代表頁組未通過前生成完整簡報；不得先做完全部頁數再詢問視覺方向。
 - 不得因修正文字錯誤而把整頁排回講義感或純文字骨架。
+## Pre-study Worksheet Execution Contract v1.0
+
+When rendering a `prestudy-worksheet`, the renderer must consume the worksheet layout manifest rather than infer a new composition from the prompt.
+
+- Apply `output_profile: STANDARD | FREE_HAND` and `composition_mode: ADAPTIVE` from the approved worksheet payload.
+- Render the page composition and all section bounding boxes first; then place optional, source-approved illustrations only into ranked safe visual-whitespace slots.
+- Render all student-facing Chinese text, phonetic notation, prompts, labels, and writing lines as verified transparent text layers. Never ask an image model to author the final worksheet text.
+- Render each shape-near character group as one card. Do not add a duplicate group heading; each character appears once with its own pronunciation and word-making fields. Two-character and three-character groups may use different internal layouts.
+- Reject any illustration collision with a writing area, answer line, phonetic field, word-making field, or student-information field with `ILLUSTRATION_COLLISION`.
+- Reject missing group boundaries, duplicate group labels, text overflow, or unverified text with `PRESTUDY_LAYOUT_FAIL` or `TYPED_TEXT_LAYOUT_FAIL`.
+- A single incorrect glyph must be repaired by replacing only its verified text layer; do not regenerate the complete page image.

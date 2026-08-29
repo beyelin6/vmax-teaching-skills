@@ -118,7 +118,7 @@ prestudy_language_selection:
   current_version: 1.1
 prestudy_worksheet:
   path: skills/prestudy-worksheet/SKILL.md
-  current_version: 1.3
+  current_version: 1.5
 postlesson_short_writing_worksheet:
   path: skills/postlesson-short-writing-worksheet/SKILL.md
   current_version: 1.3
@@ -356,7 +356,7 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 ## Worksheet Resolution
 
 ### Pre-study Worksheet
-權威：`skills/prestudy-worksheet/SKILL.md` v1.3。
+權威：`skills/prestudy-worksheet/SKILL.md` v1.5。
 
 ### Post-lesson Short Writing Worksheet
 權威：`skills/postlesson-short-writing-worksheet/SKILL.md` v1.3。
