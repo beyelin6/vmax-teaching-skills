@@ -285,3 +285,13 @@ prestudy_worksheet:
 > 先看線索、留下痕跡；上課再把理解長出來。
 
 > A4 學習單寧可少放一點，也不要把孩子要讀的字縮到 12 pt 以下。
+## Fixed A4 Layout Contract v1.0
+
+The default worksheet uses a locked A4 landscape layout: 3508 x 2480 px at 300 dpi, with a 4.5 mm safe margin. The page is divided into four locked zones: header 12%, main task area 48%, writing/reflection area 28%, and footer 12%.
+
+- The main task area contains at most three cards; each card has only a title, task, and response area.
+- Reserve writing space before placing illustrations or decoration.
+- Illustrations stay inside declared slots and never cross text, phonetic notation, writing lines, or safe margins.
+- A layout manifest is required before rendering and must include zone coordinates, dimensions, font sizes, and line limits.
+- Overflow, collision, zone drift, or writing-space compression is a hard failure. Never shrink student-visible text below 12 pt.
+- Alternative layouts require explicit teacher approval and the same A4 100% print validation.
