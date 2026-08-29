@@ -306,3 +306,15 @@ Shape-near characters are grouped teaching units, not a flat list of individual 
 - Every character in the group receives its own pronunciation field and word-making line, while the shared group frame and label make the comparison relationship explicit.
 - A three-character group must not be squeezed into a two-character template. If the card cannot fit at the minimum readable size, reflow the card or move the whole group; do not shrink or split it.
 - Group order follows the approved source order. Deduplication may remove repeated groups, but may not reorder or silently merge distinct groups.
+
+### Illustration Placement and Provenance Contract
+
+Illustrations are instructional anchors, not mandatory decoration for every question.
+
+- Use illustrations only when they support the approved lesson theme, scenario, vocabulary, text structure, or student task. Do not add one illustration per question or fill empty space with unrelated characters.
+- Every illustration must be assigned a declared slot and purpose before rendering: `lesson_anchor`, `section_anchor`, `task_cue`, or `character_anchor`.
+- Writing areas, answer lines, phonetic fields, word-making fields, and student-information fields are protected no-illustration zones. An illustration may not overlap, cover, squeeze, or visually compete with them.
+- Illustration placement must preserve the full usable width and height of the associated writing area. If a picture cannot fit without reducing writing space, remove it or move it to a declared decorative margin slot.
+- Illustration source and visual direction must follow the teacher-approved lesson settings and visual DNA. Generic stock-like substitutions, invented narrative elements, or illustrations that contradict the lesson are not allowed.
+- A worksheet may contain zero illustrations in a section when no illustration materially improves comprehension. The absence of an illustration is preferable to decorative overload.
+- The preflight record must list each illustration's source role, intended teaching function, slot, and protected zones; missing provenance is `ILLUSTRATION_PROVENANCE_FAIL`.
