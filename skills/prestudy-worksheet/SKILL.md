@@ -306,6 +306,7 @@ Shape-near characters are grouped teaching units, not a flat list of individual 
 - Every character in the group receives its own pronunciation field and word-making line, while the shared group frame and label make the comparison relationship explicit.
 - A three-character group must not be squeezed into a two-character template. If the card cannot fit at the minimum readable size, reflow the card or move the whole group; do not shrink or split it.
 - Group order follows the approved source order. Deduplication may remove repeated groups, but may not reorder or silently merge distinct groups.
+- The shared frame itself communicates the group relationship; do not add a duplicate group label above the card. Each character is shown once, directly beside or above its own pronunciation and word-making fields. For example, a two-character group is displayed as `即（　）詞：＿＿＿＿　／　既（　）詞：＿＿＿＿`, not as a heading `即／既` followed by repeated character rows.
 
 ### Illustration Placement and Provenance Contract
 
