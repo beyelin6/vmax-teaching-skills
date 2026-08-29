@@ -318,3 +318,15 @@ Illustrations are instructional anchors, not mandatory decoration for every ques
 - Illustration source and visual direction must follow the teacher-approved lesson settings and visual DNA. Generic stock-like substitutions, invented narrative elements, or illustrations that contradict the lesson are not allowed.
 - A worksheet may contain zero illustrations in a section when no illustration materially improves comprehension. The absence of an illustration is preferable to decorative overload.
 - The preflight record must list each illustration's source role, intended teaching function, slot, and protected zones; missing provenance is `ILLUSTRATION_PROVENANCE_FAIL`.
+
+### Adaptive Page Composition Contract
+
+The worksheet locks instructional order and minimum usability, not a single rigid column split.
+
+- Do not force every lesson into a full-width title bar or a centered 50/50 page division. The title may be compact, left-weighted, or offset toward an open area when the lesson's content distribution requires it.
+- Use the available A4 canvas as an adaptive layout field. Section positions may change between lessons, but reading order must remain clear: title/student information → language work → text exploration → reflection or Bonus.
+- When content is short, compatible sections such as `轉轉多音字` and `課文身分證` may sit side by side. When content is long, they may stack. The layout engine must choose based on measured content height, not a fixed template assumption.
+- Unequal left/right columns are allowed. The text-exploration area may be wider than the language area, or vice versa, provided all student-visible text and writing space meet the minimum requirements.
+- Section frames may use different heights and widths, but each frame must have a stable internal hierarchy: section label → prompt/content → student response area.
+- Adaptive reflow may move a whole section, but may not split a character group, separate a prompt from its response lines, or place an illustration inside a protected writing zone.
+- Record the selected composition in a layout manifest with `composition_mode: ADAPTIVE`, section bounding boxes, reading order, and the reason for major reflows.
