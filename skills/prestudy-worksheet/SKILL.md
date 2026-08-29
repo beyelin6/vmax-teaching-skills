@@ -295,3 +295,14 @@ The default worksheet uses a locked A4 landscape layout: 3508 x 2480 px at 300 d
 - A layout manifest is required before rendering and must include zone coordinates, dimensions, font sizes, and line limits.
 - Overflow, collision, zone drift, or writing-space compression is a hard failure. Never shrink student-visible text below 12 pt.
 - Alternative layouts require explicit teacher approval and the same A4 100% print validation.
+
+### Character-Group Layout Contract
+
+Shape-near characters are grouped teaching units, not a flat list of individual characters.
+
+- Each normalized character group must remain a single visual card; never split its members across unrelated cards or page regions.
+- A group may contain two or three characters according to the approved lesson source. The layout must support both group sizes without changing the teaching meaning.
+- Choose horizontal or vertical arrangement per card according to available width, height, and writing-space requirements. The chosen direction must be consistent within the card and keep all characters visibly comparable.
+- Every character in the group receives its own pronunciation field and word-making line, while the shared group frame and label make the comparison relationship explicit.
+- A three-character group must not be squeezed into a two-character template. If the card cannot fit at the minimum readable size, reflow the card or move the whole group; do not shrink or split it.
+- Group order follows the approved source order. Deduplication may remove repeated groups, but may not reorder or silently merge distinct groups.
