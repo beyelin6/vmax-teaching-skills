@@ -5,7 +5,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 # V-MAX Golden Path Executor
 
-版本：1.9
+版本：2.0
 
 ## 目的
 
@@ -155,6 +155,10 @@ STEP 2.5 必須同時載入：
 - `skills/character-group-visual-comparison/SKILL.md`
 
 ### 生字深教唯一規則
+
+STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執行器必須分開保留：正式生字／認讀字、生字關聯詞／生字關聯成語、課文成語／四字詞語、多音字及其詞語。任何含有本課正式生字、形近字或多音字的詞語／成語，必須保留多重 provenance；成語數量上限只能影響獨立成頁推薦，不得刪除生字關聯記錄。
+
+在進入 STEP 2.6 前，必須產生 `LANGUAGE_CANDIDATE_COVERAGE`，核對每一個正式生字是否已有關聯詞／關聯成語判讀，以及每個課文成語是否有保留／不保留理由。缺少任一對應時標記 `STEP2.5_COVERAGE_INCOMPLETE` 並停在 HOLD 2.5。
 
 教材正式生字完整保留，但：
 

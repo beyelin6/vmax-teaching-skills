@@ -24,10 +24,10 @@ runtime_storage:
   index_document_id: 1q4vgqiRFbrvcMeZ7B102rY_kZVF7Z4LcqR8iL8vPKmQ
 main_workflow:
   path: core/governance/vmax-main-workflow.md
-  current_version: 2.5
+  current_version: 2.6
 executor:
   path: skills/vmax-golden-path-executor/SKILL.md
-  current_version: 1.9
+  current_version: 2.0
 continuation_state_gate:
   path: core/governance/continuation-state-gate.md
   current_version: 1.0
