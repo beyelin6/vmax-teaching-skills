@@ -7,7 +7,7 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 
 The page-by-page `SLIDE_SCRIPT` is the single presentation source of truth. Its portable contract is `core/schemas/vmax/slide-script.schema.json`. NotebookLM, Google Slides, Canva, PPTX, and rendered PNG/PDF are downstream derivatives and must not write back to the Slide Script or Source Master.
 
-版本：0.10.2
+版本：0.10.3
 
 ## 使命
 
@@ -120,6 +120,16 @@ Every Slide Script must record the Source Master, `APPROVED_TEACHING_SELECTION`,
 - 不強迫每課使用固定章節或固定頁數。
 - 未啟用的 Learning Module 不得出現在輸出。
 - 同一知識節點可映射到不同輸出，但不得產生互相矛盾的版本。
+
+### 4.2 逐頁施工稿三層契約
+
+`working/slide-page-layout-brief.md` 必須依三層產出，讓教師先確認內容與結構，再進入視覺施工：
+
+1. `PAGE_PLAN`：全課逐頁規劃。每頁至少記錄頁面目的、學生可見文字、教材來源、`page_family`、`style_variant`、`character_policy`、文字／插圖區的大致比例、視線動線、插圖功能、留白需求、禁止構圖與是否需要拆頁。
+2. `REPRESENTATIVE_CONSTRUCTION`：每個啟用頁型的代表頁施工稿。補充實際構圖位置、文字層級、標色方式、角色出現方式、插圖大小、閱讀安全區與具體視覺節奏。
+3. `SLIDE_SCRIPT`：正式逐頁來源。鎖定每個正式文字、來源、素材、Render Request、版本與教師確認狀態。
+
+第一層不要求像素級座標；比例使用可調整範圍，不得硬編成永久模板。第二層才細化代表頁，第三層才是正式輸出主檔。頁數先標記 `PROPOSED_PAGE_COUNT`；教師確認後才可升級為本課 `LESSON_LOCAL` 固定頁數。
 
 ### 4.1 頁型混搭與一致性
 

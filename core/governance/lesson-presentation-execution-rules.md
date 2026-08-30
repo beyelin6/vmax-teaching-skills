@@ -1,6 +1,6 @@
 # Lesson Presentation Execution Rules
 
-版本：1.0
+版本：1.1
 
 本檔是每課簡報製作期間，教師追加並確認的具體視覺、版面、角色、素材再利用與違規處理決策主檔。它不是教材知識來源，也不得改寫官方 Source Master 或 Lesson Knowledge Book。
 
@@ -42,3 +42,7 @@
 每一頁建立 Render Request 前，必須先產生 `PRE_RENDER_RULE_COMPLIANCE_CHECK` 並通過。至少檢查：最新 Execution Rules、來源與核准狀態、角色分類與 asset、頁型 character_policy、課文連續性、語詞原文標記、圖文對應、構圖退化、卡片牆、答案洩漏、頁型密度、文字模式與歷史 Render Request 污染。
 
 未通過不得生圖；狀態使用 `PRE_RENDER_RULE_BLOCKED`，並列出違規規則與唯一修正決定。
+
+## 逐頁施工稿層級
+
+當課簡報規劃應先產生 `PAGE_PLAN`，再針對每個啟用頁型產生 `REPRESENTATIVE_CONSTRUCTION`，最後才建立正式 `SLIDE_SCRIPT`。PAGE_PLAN 是內容與結構確認稿，不要求像素級座標；比例以範圍表示，頁數以 `PROPOSED_PAGE_COUNT` 表示，教師確認後才可升級為本課固定頁數。

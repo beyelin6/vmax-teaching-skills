@@ -13,6 +13,7 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 
 - `page_family`：課文閱讀、語文知識、成語／四字詞語、情境漫畫、總結遷移等。
 - `style_variant`：該頁型使用的插圖媒材、筆觸、色彩與構圖語言。
+- `character_policy`：該頁型的人物使用策略，使用 `CANONICAL_REQUIRED`、`CANONICAL_OPTIONAL`、`SUPPORTING_FIGURE_ALLOWED`、`CHARACTER_DISCOURAGED` 或 `NO_CHARACTER`。
 - `shared_invariants`：整課共用的字體、畫布比例、章節標籤、角色 DNA、留白與安全邊界。
 - `consistency_rule`：同一 `page_family` 的所有頁面必須沿用同一 `style_variant`，除非教師明確核准例外。
 

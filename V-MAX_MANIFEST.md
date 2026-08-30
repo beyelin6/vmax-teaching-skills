@@ -40,7 +40,7 @@ lesson_master_preflight:
   current_version: 1.0
 lesson_presentation_execution_rules:
   path: core/governance/lesson-presentation-execution-rules.md
-  current_version: 1.0
+  current_version: 1.1
 task_knowledge_requirement_registry:
   path: core/governance/task-knowledge-requirement-registry.md
   current_version: 1.0
@@ -139,7 +139,7 @@ renderer_contract:
   current_version: 1.7
 presentation_engine:
   path: skills/presentation-engine/SKILL.md
-  current_version: 0.10.2
+  current_version: 0.10.3
   image_renderer:
     path: skills/vmax-image-renderer/SKILL.md
     current_version: 1.7
