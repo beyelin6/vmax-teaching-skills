@@ -1,5 +1,9 @@
 # V-MAX Adapter｜ChatGPT 1.5
 
+## Lesson Artifact Registry
+
+製作預習單、課後短文單或簡報前，必須讀取 `core/governance/lesson-artifact-registry.md` 與該課 registry（若存在），優先引用 `APPROVED`／`LOCKED`／`FINAL` artifact，並在下游輸出保留 `source_artifact_refs`。
+
 ## 目的
 
 本檔只處理 ChatGPT 如何載入、執行與回寫 V-MAX；不得改寫 V-MAX Core。

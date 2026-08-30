@@ -1,5 +1,9 @@
 # V-MAX Adapter｜Codex 1.1
 
+## Lesson Artifact Registry
+
+製作預習單、課後短文單或簡報前，必須讀取 `core/governance/lesson-artifact-registry.md` 與該課 registry（若存在），優先引用 `APPROVED`／`LOCKED`／`FINAL` artifact，並在下游輸出保留 `source_artifact_refs`。
+
 ## 目的
 
 本檔只定義 Codex 在本地／Repository 工作環境中如何啟動與執行 V-MAX。Codex 不得因能直接修改程式與檔案，就改寫 V-MAX Core 的教學決策。

@@ -41,6 +41,9 @@ lesson_master_preflight:
 lesson_presentation_execution_rules:
   path: core/governance/lesson-presentation-execution-rules.md
   current_version: 1.1
+lesson_artifact_registry:
+  path: core/governance/lesson-artifact-registry.md
+  current_version: 1.0
 task_knowledge_requirement_registry:
   path: core/governance/task-knowledge-requirement-registry.md
   current_version: 1.0
@@ -171,6 +174,7 @@ vqs_quality_validator:
   adapters:
     chatgpt: adapters/chatgpt.md
     codex: adapters/codex.md
+    antigravity: adapters/antigravity.md
     gemini: adapters/gemini.md
     spark: adapters/spark.md
     notebooklm: adapters/notebooklm.md
@@ -180,6 +184,7 @@ vqs_quality_validator:
 adapters:
   chatgpt: adapters/chatgpt.md
   codex: adapters/codex.md
+  antigravity: adapters/antigravity.md
   gemini: adapters/gemini.md
   spark: adapters/spark.md
   notebooklm: adapters/notebooklm.md

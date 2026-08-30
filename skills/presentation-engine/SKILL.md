@@ -29,6 +29,7 @@ The page-by-page `SLIDE_SCRIPT` is the single presentation source of truth. Its 
 10. `core/visual/visual-reference-library.md`
 11. `core/visual/visual-text-dna.md`
 12. 當課 `core/governance/lesson-presentation-execution-rules.md`（若存在）
+13. `core/governance/lesson-artifact-registry.md` 與當課 artifact registry（若存在）
 
 Machine-readable companion objects must conform to `core/schemas/vmax/learning-module-profile.schema.json` and `core/schemas/vmax/teaching-strategy-profile.schema.json`.
 Role and style selections must conform to `core/schemas/vmax/role-selection-profile.schema.json` and `core/schemas/vmax/style-selection-profile.schema.json`; only confirmed selections may control presentation output.
