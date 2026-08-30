@@ -1,5 +1,18 @@
 # V-MAX Idiom Expression & Visualization Policy 1.0
 
+## Runtime presentation rule: idiom pages
+
+An idiom page must not be designed as a teaching handout or worksheet. Do not add `想一想`, reflection prompts, practice questions, answer blanks, or a large worksheet-style block at the bottom.
+
+The minimum student-visible content is:
+
+- the idiom name;
+- only the necessary meaning;
+- the original-text quote or an approved example sentence, when available;
+- an understanding-oriented situation illustration.
+
+The page may use a narrative or visual composition appropriate to the idiom, but it must remain a presentation page: no answer leakage, no extra exercise, and no decorative card wall. This rule is global unless a newer teacher-confirmed Lesson Execution Rule explicitly changes the page purpose.
+
 ## 定位
 
 本政策定義成語從「值不值得教」到「學生怎麼看懂、怎麼用、怎麼被視覺化」的完整轉譯層。

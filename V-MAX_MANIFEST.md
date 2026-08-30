@@ -121,7 +121,7 @@ text_layer_construction_policy:
   current_version: 1.1
 idiom_expression_visualization:
   path: core/director/idiom-expression-visualization-policy.md
-  current_version: 1.0
+  current_version: 1.1
 prestudy_language_selection:
   path: core/worksheet/prestudy-language-selection-policy.md
   current_version: 1.1
