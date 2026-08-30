@@ -5,6 +5,8 @@ description: 將已核准的 Lesson Knowledge Book、Learning Module Profile、T
 
 # Presentation Engine
 
+Presentation work must use the lesson's `00_施工中_接續區` as its incremental handoff area. Save analysis, teacher confirmations, layout briefs, representative trials, and revision records by stage, then update `00_CURRENT_目前進度.md` before advancing or rendering.
+
 The page-by-page `SLIDE_SCRIPT` is the single presentation source of truth. Its portable contract is `core/schemas/vmax/slide-script.schema.json`. NotebookLM, Google Slides, Canva, PPTX, and rendered PNG/PDF are downstream derivatives and must not write back to the Slide Script or Source Master.
 
 版本：0.10.3

@@ -5,6 +5,8 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。當使用者要�
 
 # V-MAX Teaching Skills Front Door
 
+Before starting any presentation task, initialize or read the lesson's `00_施工中_接續區` and follow `core/governance/working-handoff-area-policy.md`. Persist each stage's analysis, discussion, teacher confirmation, trial, and revision record before advancing; conversation memory is never the sole handoff source.
+
 版本：1.2
 
 ## 唯一入口
