@@ -23,6 +23,7 @@
 1. 讀 `V-MAX_MANIFEST.md`。
 2. 讀 GitHub `runtime/lesson-state.md` 取得 Runtime schema 與 Drive 位置。
 3. 讀取 `core/governance/lesson-artifact-registry.md`，並在該課存在時讀取其 registry。
+4. 讀取 `core/governance/working-handoff-area-policy.md` 與該課 `00_施工中_接續區/00_CURRENT_目前進度.md`（若存在）。
 3. 到 Google Drive 讀 `V-MAX_Runtime_Index`。
 4. 依教師指定課次／active lesson 讀該課 `V-MAX_State_{冊別}_{課次}_{課名}`。
 5. 讀 Manifest 指定的 current main workflow。

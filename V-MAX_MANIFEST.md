@@ -44,6 +44,9 @@ lesson_presentation_execution_rules:
 lesson_artifact_registry:
   path: core/governance/lesson-artifact-registry.md
   current_version: 1.0
+working_handoff_area_policy:
+  path: core/governance/working-handoff-area-policy.md
+  current_version: 1.0
 task_knowledge_requirement_registry:
   path: core/governance/task-knowledge-requirement-registry.md
   current_version: 1.0
