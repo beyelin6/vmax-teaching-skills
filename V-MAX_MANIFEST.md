@@ -34,6 +34,9 @@ continuation_state_gate:
 course_orchestrator:
   path: skills/vmax-course-orchestrator/SKILL.md
   current_version: 0.5.0
+education_document_design:
+  path: skills/vmax-education-document-design/SKILL.md
+  current_version: 2.0
 source_library_policy: core/governance/source-library-policy.md
 lesson_master_preflight:
   path: core/governance/lesson-master-preflight.md
@@ -201,6 +204,34 @@ gemini_source_analysis:
   task_requirement_registry: core/governance/task-knowledge-requirement-registry.md
   regression: tests/gemini-source-analysis-regression-cases.md
   adapter_version: 2.5
+```
+
+---
+
+## Standalone Education Document Design Resolution
+
+`skills/vmax-education-document-design/SKILL.md` 是可獨立呼叫的教育文件設計技能，也是其他 V-MAX 模組可選擇委派的設計專家。
+
+- 它**不是** Canonical Golden Path 的固定步驟。
+- 啟用此技能**不代表**必須啟動完整課程流程、Knowledge Lab、Course Orchestrator 或 Presentation Engine。
+- 親師手冊、班級手冊、學習單美編、教育文件重排、版面檢查等獨立任務，可直接由此技能處理。
+- 只有當目前任務真的需要完整課程、簡報、角色、Renderer、Drive 歸檔等專門能力時，才委派給對應 V-MAX 技能。
+- 其他 V-MAX 技能可呼叫此技能處理資訊設計、版型、文字／插圖整合與文件 QA，但不得因此把它升格為整條 Golden Path 的強制節點。
+
+其獨立工作流為：
+
+```text
+Source
+→ Function
+→ Content Inventory
+→ Page Blueprint
+→ Layout
+→ Typography / Controllable Text
+→ Visual System
+→ Page-by-page Production
+→ Teacher Review
+→ QA
+→ Output
 ```
 
 ---
