@@ -1,11 +1,30 @@
 ---
 name: vmax-education-document-design
-description: Design, redesign, beautify, review, and produce elementary-school educational documents, worksheets, teaching materials, parent/class handbooks, and teaching slides. Use when the task requires teaching-aware information design, source fidelity, page planning, answer-space protection, controllable Traditional Chinese text, page-by-page production, teacher confirmation, or visual QA.
+description: Design, redesign, beautify, review, and produce elementary-school educational documents, worksheets, teaching materials, parent/class handbooks, and teaching slides. Use when the task requires teaching-aware information design, source fidelity, page planning, answer-space protection, controllable Traditional Chinese text, page-by-page production, teacher confirmation, or visual QA. This skill is standalone-capable and may also be delegated to by other V-MAX skills.
 ---
 
 # V-MAX Education Document Design
 
 Use this skill as the workflow controller for elementary-school educational document design. It is not a fixed template system.
+
+## Standalone capability and delegation boundary
+
+This skill is **standalone-capable**.
+
+Do not invoke the V-MAX full lesson workflow, Golden Path, course orchestration, Knowledge Lab, or presentation pipeline merely because this skill is used.
+
+Direct requests such as the following should normally stay inside this skill:
+- beautify or redesign a parent/class handbook;
+- redesign or review a worksheet;
+- improve an educational document's layout, typography, writing space, or visual system;
+- plan and produce a multi-page educational information document;
+- review an existing teaching artifact for layout, readability, density, or image/text integration.
+
+Delegate to another V-MAX skill only when the current task actually requires that specialized capability. For example, a request to build a full lesson presentation may use `presentation-engine`, while a standalone parent handbook should not.
+
+Other V-MAX skills may also call this skill as a design specialist. Such delegation does not make this skill a mandatory Golden Path stage.
+
+When invoked directly, use this skill's own source → Blueprint → design → teacher review → QA workflow unless the user explicitly requests a broader V-MAX workflow.
 
 ## Core objective
 
