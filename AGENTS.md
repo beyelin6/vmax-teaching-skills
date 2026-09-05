@@ -38,6 +38,37 @@
 - 每一課都必須重新分析文體、結構、教學重點與適用模組。
 - 不得沿用上一課的內容、詞語、成語、修辭或視覺情境。
 
+## Standalone Skill Routing
+
+`skills/vmax-education-document-design/SKILL.md` 是可獨立呼叫的教育文件設計技能。
+
+當使用者的主要任務是下列類型時，直接路由到此 Skill，而不要因為 Repository 屬於 V-MAX 就自動啟動完整課程 Golden Path：
+
+- 親師手冊、班級手冊、家長日文件、美編與重排
+- 學習單、教材單張、教育資訊頁的版面設計或修改
+- 教育文件的字級、作答空間、資訊結構、圖文融合、視覺系統或 QA
+- 已有文件的美化、重製、版面檢查、逐頁修改
+- 不需要完整 Lesson Runtime／Course Orchestrator／Knowledge Lab 的一般教育文件設計任務
+
+此類 standalone 任務的預設讀取順序：
+
+1. `skills/vmax-education-document-design/SKILL.md`
+2. 依該 Skill 的 progressive loading 規則讀必要 `references/`
+3. 若需要案例判斷，再依 `references/example-routing.md` 選最小必要 Golden / Negative Example
+
+不得因啟動 standalone Skill 而強制讀取或執行：
+- `V-MAX_BOOTSTRAP.md`
+- lesson Runtime State
+- current main workflow
+- Golden Path executor
+- Course Orchestrator
+- Knowledge Lab
+- Presentation Engine
+
+除非使用者明確要求完整課程／整課簡報流程，或目前任務確實需要對應專門能力。
+
+若 standalone 任務後續真的需要簡報、Renderer、角色系統、Drive 歸檔等能力，才由目前 Skill 委派到對應 canonical skill；不得預先啟動整套流程。
+
 ## 工作流關卡
 
 1. 先完成教材轉錄與防漏檢查。
@@ -45,6 +76,8 @@
 3. 教學藍圖經確認後，才產生 NotebookLM 指令與投影片腳本。
 4. 最終簡報與延伸教材必須依已確認的當課設定生成。
 5. 任何來源、選教範圍、教學設計、版本或品質衝突都必須建立 HOLD，列出證據與受影響下游，等待教師決定；不得自行猜測或選邊。
+
+上述「工作流關卡」適用於完整課程／Lesson workflow；純 standalone 教育文件設計任務依 `vmax-education-document-design` 自身的 Source → Blueprint → Design → Teacher Review → QA 流程執行。
 
 ## 視覺與簡報
 
