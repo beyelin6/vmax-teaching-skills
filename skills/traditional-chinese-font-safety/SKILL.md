@@ -5,13 +5,23 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 
 # Traditional Chinese Font Safety｜繁中文字型安全
 
-版本：1.0.0
+版本：1.1.0
 
 ## 使命
 
 避免「工作區沒有指定字型」「繁中字變方框」「注音缺字」「不同頁被系統換成不同 fallback」「預覽正常但 PNG/PDF 輸出異常」等問題。
 
 本 Skill 不要求所有環境安裝相同字型；它要求每次正式輸出前，使用可取得、授權清楚、且已實際渲染驗證的繁中字型。
+
+## 必讀檔案
+
+執行本 Skill 時必須同時讀取：
+
+1. `font-registry.yaml`：字型來源、角色與 fallback。
+2. `bee-teacher-font-system.md`：Bee 老師教材的正式字型選用規則。
+3. `scripts/check_fonts.py`：機器可執行的 glyph/preflight 檢查。
+4. `scripts/render_font_qa_page.py`：2560×1440 字型 QA 測試頁產生器。
+5. `scripts/bootstrap_fonts.py`（若存在）：從核准官方來源取得字型檔。
 
 ## 觸發條件
 
@@ -24,15 +34,17 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 
 ## 執行順序
 
-1. 讀取 `font-registry.yaml`。
+1. 讀取 `font-registry.yaml` 與 `bee-teacher-font-system.md`。
 2. 依教材功能選字型角色，不得隨機挑系統字型。
 3. 確認實際字型檔可被目前 renderer 載入。
-4. 用測試字串實際渲染，不得只檢查 family name。
+4. 用 `scripts/check_fonts.py` 實際檢查 glyph coverage；不得只檢查 family name。
 5. 檢查繁中字、標點與注音。
 6. 失敗時依 registry fallback 順序切換。
-7. fallback 後重新實際渲染。
+7. fallback 後重新實際檢查。
 8. 若仍缺字、方框、亂碼、錯誤字形或 renderer 無法載入：STOP，禁止批次輸出。
-9. 代表頁通過後才可批次製作。
+9. 使用 `scripts/render_font_qa_page.py` 產生 2560×1440 QA 頁，確認字級、行距、標點、注音位置與 fallback 後版面。
+10. QA 代表頁通過後才可批次製作。
+11. 最終 PNG/PDF 再做一次目視 QA。
 
 ## 標準測試字串
 
@@ -51,6 +63,8 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 - `bopomofo_safe`：注音頁必須使用已驗證支援注音的字型；不得以「繁中字可顯示」推定注音可顯示。
 - `emergency_fallback`：思源黑體 TC（Traditional Chinese/TW variant）。
 
+詳細使用情境以 `bee-teacher-font-system.md` 為準。
+
 ## 國小教材特別規則
 
 1. 「漂亮」不得優先於正確字形與清晰度。
@@ -60,6 +74,8 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 5. 同一頁原則上不超過 2 個主要字族；特殊注音字型除外。
 6. 字型替換後不得破壞原核准的字級階層、行距、安全區與文字框位置。
 7. 學生可見文字輸出後要以最終 PNG/PDF 再檢查一次，不以程式執行成功視為 QA 通過。
+8. 16:9 image-first 教材字型 QA 預設使用 2560×1440 畫布。
+9. 正式繁體中文字不得依賴生成式圖片模型燒字；以可控文字渲染層為準。
 
 ## 字型檔管理
 
@@ -80,6 +96,7 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 - traditional_chinese_test: pass/fail
 - bopomofo_test: pass/fail/not_required
 - missing_glyphs
+- font_qa_page: pass/fail
 - final_render_QA: pass/fail
 
 任一必要項目 fail 時不得標示成品為 confirmed/final。
