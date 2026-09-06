@@ -69,6 +69,25 @@
 
 若 standalone 任務後續真的需要簡報、Renderer、角色系統、Drive 歸檔等能力，才由目前 Skill 委派到對應 canonical skill；不得預先啟動整套流程。
 
+## Codex Skill 同步與新 Skill 發現
+
+GitHub `skills/` 是 V-MAX Skill 清單的 Source of Truth。Codex 本機不得只更新「已存在的 Skill」而忽略 GitHub 新增的 Skill。
+
+Windows / Codex 環境使用：
+
+- `scripts/sync_codex_skills.ps1`：重新整理 GitHub cache、掃描所有含 `SKILL.md` 的 `skills/*` 目錄，並鏡像到目前使用者的 `~/.codex/skills/`。
+- `scripts/enable_codex_skill_auto_sync.ps1`：一次性啟用 Windows 登入自動同步。
+- `docs/codex-skill-sync.md`：完整安裝、驗證、停用與故障排除說明。
+
+同步規則：
+
+1. GitHub 新增 `skills/<name>/SKILL.md` 時，下次同步必須自動建立對應本機 Skill。
+2. GitHub 更新既有 Skill 時，同步必須更新整個 Skill 目錄，而非只更新 `SKILL.md`。
+3. GitHub 移除 Skill 內舊檔時，該 V-MAX Skill 本機目錄應跟隨鏡像移除舊檔。
+4. 不得刪除或修改 `~/.codex/skills/` 中非 V-MAX 管理的其他 Skills。
+5. 同步完成後必須寫入 `~/.codex/skills/.vmax-managed-skills.json`，列出本次發現的 Skill、版本、來源與目的地。
+6. 若同步失敗，不得假裝本機已是最新版；應回報 sync error，並保留既有可用 Skill。
+
 ## 工作流關卡
 
 1. 先完成教材轉錄與防漏檢查。
