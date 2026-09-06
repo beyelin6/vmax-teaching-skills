@@ -1,0 +1,87 @@
+version: 1.0.0
+policy: V-MAX Traditional Chinese Teaching Font Registry
+
+roles:
+  character_learning:
+    preferred: Iansui
+    fallback: [Source Han Sans TC]
+    notes: "生字、形近字與國字教學。Iansui 必須逐課檢查缺字。"
+
+  body_sans:
+    preferred: Source Han Sans TC
+    fallback: [Iansui]
+    notes: "一般正文、詞語解釋、資訊層級。"
+
+  body_serif:
+    preferred: Source Han Serif TC
+    fallback: [Source Han Sans TC]
+    notes: "課文原文、閱讀性較強的正式文字。"
+
+  rounded_title:
+    preferred: jf open huninn
+    fallback: [Source Han Sans TC]
+    notes: "活動標題、對話框、任務卡；避免長篇正文。"
+
+  handwriting_accent:
+    preferred: Chenyu Luoyan
+    fallback: [Iansui, Source Han Sans TC]
+    notes: "僅短句、便利貼、角色小提醒。正式使用前須另外核對官方來源與目前版本授權。"
+
+  bopomofo_safe:
+    preferred: Iansui-family verified Bopomofo font
+    fallback: [jf open huninn, Source Han Sans TC]
+    notes: "注音必須實際渲染測試；不可只檢查繁中文字。"
+
+  emergency_fallback:
+    preferred: Source Han Sans TC
+    fallback: []
+
+fonts:
+  - id: Iansui
+    display_name: "芫荽 Iansui"
+    official_source: "https://github.com/ButTaiwan/iansui"
+    license: "SIL Open Font License 1.1"
+    traditional_chinese: true
+    taiwan_learning_focus: true
+    caveat: "專案目前為 Beta，且作者說明字集並非完整 Big5；缺字時必須 fallback。"
+
+  - id: jf_open_huninn
+    display_name: "jf open 粉圓"
+    official_source: "https://github.com/justfont/open-huninn-font"
+    license: "SIL Open Font License 1.1"
+    traditional_chinese: true
+    bopomofo: true
+    usage: "標題、對話、任務卡"
+
+  - id: Source_Han_Sans_TC
+    display_name: "思源黑體 TC / Source Han Sans TW"
+    official_source: "https://github.com/adobe-fonts/source-han-sans"
+    license: "Open source; verify bundled license from official release"
+    traditional_chinese: true
+    usage: "正文與 emergency fallback"
+
+  - id: Source_Han_Serif_TC
+    display_name: "思源宋體 TC / Source Han Serif TW"
+    official_source: "https://github.com/adobe-fonts/source-han-serif"
+    license: "Open source; verify bundled license from official release"
+    traditional_chinese: true
+    usage: "課文、閱讀長文、正式文件"
+
+  - id: Chenyu_Luoyan
+    display_name: "辰宇落雁體"
+    official_source: null
+    license: "PENDING_OFFICIAL_SOURCE_VERIFICATION"
+    traditional_chinese: true
+    usage: "手寫裝飾短句"
+    auto_download: false
+
+render_test:
+  traditional_chinese: "永遠的馬偕｜學習重點｜臺灣｜醫療教育｜體驗與觀察｜麥齒醫衛獻灣臺邊學夢"
+  bopomofo: "國語 ㄍㄨㄛˊ ㄩˇ｜學習 ㄒㄩㄝˊ ㄒㄧˊ｜ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏ"
+
+rules:
+  - "Only download fonts automatically from official_source entries with verified licensing."
+  - "Never silently use an arbitrary system fallback."
+  - "Render-test before representative page and again before final batch export."
+  - "If missing glyphs remain after fallback, stop output."
+  - "For character-learning pages, append all lesson target characters to the render test."
