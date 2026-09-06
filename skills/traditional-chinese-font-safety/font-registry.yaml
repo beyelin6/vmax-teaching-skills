@@ -1,71 +1,86 @@
-version: 1.0.0
+version: 1.1.0
 policy: V-MAX Traditional Chinese Teaching Font Registry
 
 roles:
   character_learning:
     preferred: Iansui
-    fallback: [Source Han Sans TC]
+    fallback: [Source_Han_Sans_TW]
     notes: "生字、形近字與國字教學。Iansui 必須逐課檢查缺字。"
 
   body_sans:
-    preferred: Source Han Sans TC
+    preferred: Source_Han_Sans_TW
     fallback: [Iansui]
-    notes: "一般正文、詞語解釋、資訊層級。"
+    notes: "一般正文、詞語解釋、資訊層級。正式教材使用 TW/Taiwan region-specific 版本。"
 
   body_serif:
-    preferred: Source Han Serif TC
-    fallback: [Source Han Sans TC]
-    notes: "課文原文、閱讀性較強的正式文字。"
+    preferred: Source_Han_Serif_TW
+    fallback: [Source_Han_Sans_TW]
+    notes: "課文原文、閱讀性較強的正式文字。正式教材使用 TW/Taiwan region-specific 版本。"
 
   rounded_title:
-    preferred: jf open huninn
-    fallback: [Source Han Sans TC]
+    preferred: jf_open_huninn
+    fallback: [Source_Han_Sans_TW]
     notes: "活動標題、對話框、任務卡；避免長篇正文。"
 
   handwriting_accent:
-    preferred: Chenyu Luoyan
-    fallback: [Iansui, Source Han Sans TC]
+    preferred: Chenyu_Luoyan
+    fallback: [Iansui, Source_Han_Sans_TW]
     notes: "僅短句、便利貼、角色小提醒。正式使用前須另外核對官方來源與目前版本授權。"
 
   bopomofo_safe:
-    preferred: Iansui-family verified Bopomofo font
-    fallback: [jf open huninn, Source Han Sans TC]
+    preferred: Iansui_verified_bopomofo
+    fallback: [jf_open_huninn, Source_Han_Sans_TW]
     notes: "注音必須實際渲染測試；不可只檢查繁中文字。"
 
   emergency_fallback:
-    preferred: Source Han Sans TC
+    preferred: Source_Han_Sans_TW
     fallback: []
 
 fonts:
   - id: Iansui
     display_name: "芫荽 Iansui"
     official_source: "https://github.com/ButTaiwan/iansui"
+    official_release_api: "https://api.github.com/repos/ButTaiwan/iansui/releases/latest"
     license: "SIL Open Font License 1.1"
     traditional_chinese: true
     taiwan_learning_focus: true
+    auto_download: true
+    region: "Taiwan education focused"
     caveat: "專案目前為 Beta，且作者說明字集並非完整 Big5；缺字時必須 fallback。"
 
   - id: jf_open_huninn
     display_name: "jf open 粉圓"
     official_source: "https://github.com/justfont/open-huninn-font"
+    official_release_api: "https://api.github.com/repos/justfont/open-huninn-font/releases/latest"
     license: "SIL Open Font License 1.1"
     traditional_chinese: true
     bopomofo: true
+    auto_download: true
     usage: "標題、對話、任務卡"
 
-  - id: Source_Han_Sans_TC
-    display_name: "思源黑體 TC / Source Han Sans TW"
+  - id: Source_Han_Sans_TW
+    display_name: "思源黑體 TW / Source Han Sans TW"
     official_source: "https://github.com/adobe-fonts/source-han-sans"
-    license: "Open source; verify bundled license from official release"
+    official_release_api: "https://api.github.com/repos/adobe-fonts/source-han-sans/releases/latest"
+    license: "SIL Open Font License 1.1"
     traditional_chinese: true
-    usage: "正文與 emergency fallback"
+    region: "TW"
+    required_variant: "Taiwan region-specific subset"
+    auto_download: true
+    usage: "一般正文、詞語解釋、資訊層級、emergency fallback"
+    safety_rule: "只允許 SourceHanSansTW 字型檔；不得以 JP、SC、HC/HK 或未確認區域版本替代。"
 
-  - id: Source_Han_Serif_TC
-    display_name: "思源宋體 TC / Source Han Serif TW"
+  - id: Source_Han_Serif_TW
+    display_name: "思源宋體 TW / Source Han Serif TW"
     official_source: "https://github.com/adobe-fonts/source-han-serif"
-    license: "Open source; verify bundled license from official release"
+    official_release_api: "https://api.github.com/repos/adobe-fonts/source-han-serif/releases/latest"
+    license: "SIL Open Font License 1.1"
     traditional_chinese: true
+    region: "TW"
+    required_variant: "Taiwan region-specific subset"
+    auto_download: true
     usage: "課文、閱讀長文、正式文件"
+    safety_rule: "只允許 SourceHanSerifTW 字型檔；不得以 JP、SC、HC/HK 或未確認區域版本替代。"
 
   - id: Chenyu_Luoyan
     display_name: "辰宇落雁體"
@@ -80,8 +95,11 @@ render_test:
   bopomofo: "國語 ㄍㄨㄛˊ ㄩˇ｜學習 ㄒㄩㄝˊ ㄒㄧˊ｜ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏ"
 
 rules:
-  - "Only download fonts automatically from official_source entries with verified licensing."
+  - "Only download fonts automatically from official_source entries with verified licensing and auto_download=true."
+  - "For Source Han fonts, only TW/Taiwan region-specific files may be used in final Taiwan student-facing materials."
+  - "Never silently use JP, SC, HC/HK, or an arbitrary system fallback in place of TW fonts."
   - "Never silently use an arbitrary system fallback."
   - "Render-test before representative page and again before final batch export."
   - "If missing glyphs remain after fallback, stop output."
   - "For character-learning pages, append all lesson target characters to the render test."
+  - "Record source, version, region, selected file, and fallback status in the preflight report."
