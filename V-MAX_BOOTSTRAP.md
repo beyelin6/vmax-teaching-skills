@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.5
+# V-MAX Bootstrap 1.6
 
 ## 目的
 
@@ -16,6 +16,24 @@
 
 平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。第一個實質回應顯示 `V-MAX LOAD` 回條，列出本次實際讀取的 Plugin、Manifest、Executor、Runtime stage 與 Teacher Review View 版本。缺少回條或任一版本為 UNKNOWN 時停止，不得產生 STEP 1。
 
+## ChatGPT Live Skill Loading
+
+ChatGPT 不使用 Codex 的 `~/.codex/skills` 本機副本作為 V-MAX 正式來源。當 GitHub Connector 可用時，ChatGPT 必須直接以 `beyelin6/vmax-teaching-skills` 的 default branch（目前為 `main`）作為 V-MAX Skill 的即時來源。
+
+規則：
+
+1. ChatGPT 執行 V-MAX 任務時，不得只依賴模型記憶、過去對話中曾讀取的 Skill 內容或舊版摘要。
+2. 任務需要某個 V-MAX Skill 時，必須從 GitHub 讀取該 Skill 當前的 `SKILL.md`；需要 progressive loading 時，再讀取該 Skill 指定的 registry、reference、policy 或 script 說明。
+3. 同一對話先前讀過某 Skill，但 GitHub 在之後已更新時，下一個新的 V-MAX 工作階段／明確重新載入要求應重新讀取 GitHub 現行版本。
+4. 若 GitHub 無法存取，不得宣稱已載入最新版；回報 `CHATGPT_GITHUB_SKILL_BLOCKED`，並指出缺少的 Skill 路徑。
+5. ChatGPT 不需要把 V-MAX Skill 複製或「安裝」到 Codex 的本機 skills 目錄；ChatGPT 與 Codex 採不同載入策略，但共同以 GitHub 為 Source of Truth。
+6. 若任務涉及程式合成的繁體中文學生可見文字、PNG/PDF/PPTX、學習單、手冊、生字、形近字或注音，必須動態讀取 `skills/traditional-chinese-font-safety/SKILL.md`，並依其規則完成 font preflight；不得只憑模型記憶執行。
+7. 若任務涉及圖片生成或修改，仍須依 `skills/vmax-image-renderer/SKILL.md` 與當前平台可用工具執行，不得因已讀 font-safety 而跳過 Renderer 規則。
+
+ChatGPT 載入 Skill 後，若該 Skill 有明示版本，應在需要版本核對或 V-MAX LOAD 回條時回報實際讀到的版本；未實際讀取不得猜測版本。
+
+---
+
 ## 啟動順序
 
 任何新的 V-MAX 教材任務，在開始實際教學設計前，先依序：
@@ -24,11 +42,11 @@
 2. 讀 GitHub `runtime/lesson-state.md` 取得 Runtime schema 與 Drive 位置。
 3. 讀取 `core/governance/lesson-artifact-registry.md`，並在該課存在時讀取其 registry。
 4. 讀取 `core/governance/working-handoff-area-policy.md` 與該課 `00_施工中_接續區/00_CURRENT_目前進度.md`（若存在）。
-3. 到 Google Drive 讀 `V-MAX_Runtime_Index`。
-4. 依教師指定課次／active lesson 讀該課 `V-MAX_State_{冊別}_{課次}_{課名}`。
-5. 讀 Manifest 指定的 current main workflow。
-6. 讀 Manifest 指定的 current executor。
-7. 讀與當前 stage 直接相關的 policy / skill。
+5. 到 Google Drive 讀 `V-MAX_Runtime_Index`。
+6. 依教師指定課次／active lesson 讀該課 `V-MAX_State_{冊別}_{課次}_{課名}`。
+7. 讀 Manifest 指定的 current main workflow。
+8. 讀 Manifest 指定的 current executor。
+9. 讀與當前 stage 直接相關的 policy / skill。
 
 若平台無法讀 GitHub，標記 `BOOTSTRAP_BLOCKED`；若可讀 GitHub 但無法讀 Drive Runtime，標記 `RUNTIME_DRIVE_BLOCKED`。不得假裝已載入現行狀態。
 
