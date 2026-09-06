@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.6
+# V-MAX Bootstrap 1.6.1
 
 ## 目的
 
@@ -14,23 +14,70 @@
 
 ## Front Door 與載入回條
 
-平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。第一個實質回應顯示 `V-MAX LOAD` 回條，列出本次實際讀取的 Plugin、Manifest、Executor、Runtime stage 與 Teacher Review View 版本。缺少回條或任一版本為 UNKNOWN 時停止，不得產生 STEP 1。
+平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。第一個實質回應顯示 `V-MAX LOAD` 回條，列出本次實際讀取的 Plugin、Manifest、Executor、Runtime stage 與 Teacher Review View 版本。首次載入時若從未成功取得任何可信 V-MAX 規格，缺少回條或任一必要版本為 UNKNOWN 才停止，不得產生 STEP 1。
 
 ## ChatGPT Live Skill Loading
 
 ChatGPT 不使用 Codex 的 `~/.codex/skills` 本機副本作為 V-MAX 正式來源。當 GitHub Connector 可用時，ChatGPT 必須直接以 `beyelin6/vmax-teaching-skills` 的 default branch（目前為 `main`）作為 V-MAX Skill 的即時來源。
 
-規則：
+### 初次載入
 
-1. ChatGPT 執行 V-MAX 任務時，不得只依賴模型記憶、過去對話中曾讀取的 Skill 內容或舊版摘要。
-2. 任務需要某個 V-MAX Skill 時，必須從 GitHub 讀取該 Skill 當前的 `SKILL.md`；需要 progressive loading 時，再讀取該 Skill 指定的 registry、reference、policy 或 script 說明。
-3. 同一對話先前讀過某 Skill，但 GitHub 在之後已更新時，下一個新的 V-MAX 工作階段／明確重新載入要求應重新讀取 GitHub 現行版本。
-4. 若 GitHub 無法存取，不得宣稱已載入最新版；回報 `CHATGPT_GITHUB_SKILL_BLOCKED`，並指出缺少的 Skill 路徑。
-5. ChatGPT 不需要把 V-MAX Skill 複製或「安裝」到 Codex 的本機 skills 目錄；ChatGPT 與 Codex 採不同載入策略，但共同以 GitHub 為 Source of Truth。
-6. 若任務涉及程式合成的繁體中文學生可見文字、PNG/PDF/PPTX、學習單、手冊、生字、形近字或注音，必須動態讀取 `skills/traditional-chinese-font-safety/SKILL.md`，並依其規則完成 font preflight；不得只憑模型記憶執行。
-7. 若任務涉及圖片生成或修改，仍須依 `skills/vmax-image-renderer/SKILL.md` 與當前平台可用工具執行，不得因已讀 font-safety 而跳過 Renderer 規則。
+1. ChatGPT 執行新的 V-MAX 工作階段時，先從 GitHub 讀取目前必要的 canonical files 與相關 `SKILL.md`。
+2. 不得只依賴模型記憶、舊對話摘要或未驗證的舊版 Skill。
+3. 成功載入後，記錄本次已驗證的 repository revision／commit SHA、Skill 版本與必要 canonical file 版本，作為本工作階段的 `LAST_KNOWN_GOOD`。
+4. 若本工作階段從未成功載入任何可信 V-MAX 規格且 GitHub 無法存取，回報 `CHATGPT_GITHUB_SKILL_BLOCKED` 並停止需要 V-MAX 規格的實質製作。
 
-ChatGPT 載入 Skill 後，若該 Skill 有明示版本，應在需要版本核對或 V-MAX LOAD 回條時回報實際讀到的版本；未實際讀取不得猜測版本。
+### Freshness Check
+
+V-MAX 長時間教材製作不得只在工作階段開始時檢查一次，也不得在每一頁都完整重新載入全部規格。
+
+在下列 checkpoint 執行輕量 freshness check：
+
+- 準備開始下一張投影片／下一個頁面時；
+- 準備開始下一批次時；
+- 教師完成一個 HOLD／確認點後；
+- 教師明確要求重新載入、更新、同步或檢查最新版時；
+- 即將執行可能受規格更新影響的輸出、合併、歸檔或批次生成前。
+
+Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_KNOWN_GOOD`，不要無條件重讀所有 Skill。
+
+### Selective Reload
+
+若 freshness check 顯示 GitHub 沒有更新：
+
+- 直接沿用 `LAST_KNOWN_GOOD`；
+- 不重新載入整套 V-MAX；
+- 不向教師重複顯示成功訊息。
+
+若 GitHub 已更新：
+
+1. 比較自 `LAST_KNOWN_GOOD` 之後的變更範圍。
+2. 只重新讀取與目前任務、目前 stage、目前頁面類型直接相關的 changed canonical files／Skills。
+3. 更新本工作階段的 `LAST_KNOWN_GOOD`。
+4. 將更新影響分為：
+   - `NO_CURRENT_IMPACT`：與目前教材工作無關，記錄後繼續。
+   - `FORWARD_ONLY`：只影響後續尚未製作內容，從下一頁／下一批次套用。
+   - `RETROACTIVE_REVIEW`：可能影響已完成或已確認頁面，建立 `UPDATE_IMPACT`，列出受影響頁面／產物與原因；不得自行推翻教師已確認成果或自動重做。
+5. 只有更新造成真正規格衝突、來源忠實問題、Runtime stage 衝突或會使繼續製作產生錯誤時，才建立 HOLD。
+
+### Graceful Fallback
+
+若 freshness check 暫時無法連到 GitHub，但本工作階段已有 `LAST_KNOWN_GOOD`：
+
+- 不得反覆顯示「目前無法讀取 GitHub 最新 V-MAX 設定」並阻塞逐頁製作；
+- 使用 `LAST_KNOWN_GOOD` 繼續目前工作；
+- 內部標記 `GITHUB_REFRESH_PENDING`；
+- 在下一個自然 checkpoint 再嘗試 freshness check；
+- 除非教師詢問版本狀態、更新可能影響安全／來源忠實／不可逆輸出，否則不需要每頁向教師顯示 refresh failure。
+
+若連續檢查失敗但仍有 `LAST_KNOWN_GOOD`，不得把狀態升級成 `CHATGPT_GITHUB_SKILL_BLOCKED`；只有「從未成功載入可信規格」才 BLOCK。
+
+### Skill-specific dynamic loading
+
+- 任務需要某個 V-MAX Skill 時，從 GitHub 讀取該 Skill 當前 `SKILL.md`；需要 progressive loading 時，再讀取其 registry、reference、policy 或 script 說明。
+- 若任務涉及程式合成的繁體中文學生可見文字、PNG/PDF/PPTX、學習單、手冊、生字、形近字或注音，必須載入 `skills/traditional-chinese-font-safety/SKILL.md` 並完成 font preflight。
+- 若任務涉及圖片生成或修改，必須載入 `skills/vmax-image-renderer/SKILL.md` 並依當前平台實際工具能力執行。
+- ChatGPT 不需要把 V-MAX Skill 複製或安裝到 Codex 本機 skills 目錄；ChatGPT 與 Codex 採不同載入策略，但共同以 GitHub 為 Source of Truth。
 
 ---
 
@@ -48,7 +95,7 @@ ChatGPT 載入 Skill 後，若該 Skill 有明示版本，應在需要版本核�
 8. 讀 Manifest 指定的 current executor。
 9. 讀與當前 stage 直接相關的 policy / skill。
 
-若平台無法讀 GitHub，標記 `BOOTSTRAP_BLOCKED`；若可讀 GitHub 但無法讀 Drive Runtime，標記 `RUNTIME_DRIVE_BLOCKED`。不得假裝已載入現行狀態。
+首次載入若平台無法讀 GitHub且沒有 `LAST_KNOWN_GOOD`，標記 `BOOTSTRAP_BLOCKED`；若已有可信 `LAST_KNOWN_GOOD`，改標記 `GITHUB_REFRESH_PENDING` 並依 Graceful Fallback 繼續。若可讀 GitHub但無法讀 Drive Runtime，標記 `RUNTIME_DRIVE_BLOCKED`。不得假裝已載入未曾成功取得的現行狀態。
 
 ---
 
