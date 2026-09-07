@@ -1,4 +1,4 @@
-# V-MAX Manifest 3.8.3
+# V-MAX Manifest 3.8.4
 
 ## 角色
 
@@ -7,7 +7,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.3
+vmax_manifest_version: 3.8.4
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door:
@@ -39,23 +39,23 @@ text_layer_construction_policy:
   current_version: 1.1
 renderer_contract:
   path: core/renderer/image-first-hybrid-renderer.md
-  current_version: 1.7
+  current_version: 1.8
 presentation_engine:
   path: skills/presentation-engine/SKILL.md
-  current_version: 0.10.3
+  current_version: 0.10.4
 image_renderer:
   path: skills/vmax-image-renderer/SKILL.md
-  current_version: 1.7
+  current_version: 1.8
 quality_gate:
   path: core/quality/quality-gate-2.md
-  current_version: 2.5
+  current_version: 2.6
 ```
 
-> 未在本摘要列出的既有 canonical modules 仍依 repository 各自最新 Manifest 3.8.2 登錄值執行；本次 3.8.3 的版本裁決重點是 Lesson Presentation Execution Rules 1.3 與 Object-based Scene Composition。不得因摘要化而將其他 canonical module 視為移除。
+> 未在本摘要列出的既有 canonical modules 仍依 repository 既有 canonical 登錄與各模組現行版本執行；不得因本摘要化索引而將其他模組視為移除。
 
 ## Object-based Scene Composition Resolution
 
-國語圖片式簡報的一般施工模型正式改為 `OBJECT_SCENE`，而不是「完整大底圖＋後貼文字」。
+國語圖片式簡報的一般施工模型正式為 `OBJECT_SCENE`，不是「完整大底圖＋後貼文字」。
 
 每頁在 Renderer 前必須完成：
 - `OBJECT_COMPOSITION_PLAN`
@@ -80,9 +80,18 @@ quality_gate:
 
 一般教學頁若退化為「一張完整 AI 場景占滿畫布，文字只能在縫隙中反覆挪動」，標記 `MONOLITHIC_BACKGROUND_REGRESSION`，不得靠縮字、白色遮罩或持續挪字修補，必須回到物件組版。
 
-`IMMERSIVE_FULL_SCENE` 只適用於有教學理由的封面、情緒停格、故事高潮、環境沉浸或單一大情境觀察頁；不得成為一般課文、語詞、生字、句型頁的方便預設。
+`IMMERSIVE_FULL_SCENE` 只適用於有教學理由的封面、情緒停格、故事高潮、環境沉浸或單一大情境觀察頁；不得成為一般課文、語詞、生字、形近字、多音字、句型或修辭頁的方便預設。
 
-權威：`core/governance/lesson-presentation-execution-rules.md` v1.3。
+### Downstream alignment
+
+以下 canonical modules 必須使用同一 Object Composition First 語意：
+- `lesson-presentation-execution-rules.md` v1.3：逐頁規劃與執行期裁決
+- `presentation-engine/SKILL.md` v0.10.4：PAGE_PLAN、Slide Script、Render Request
+- `image-first-hybrid-renderer.md` v1.8：Renderer Contract
+- `vmax-image-renderer/SKILL.md` v1.8：實際渲染
+- `quality-gate-2.md` v2.6：正式驗收
+
+若任何舊文件仍出現「無字／少字底圖優先」「先生成背景再塞字」「圖像相切一律拆頁」等舊語意，均視為 legacy wording，不得覆蓋上述 canonical chain。
 
 ## Canonical Golden Path
 
