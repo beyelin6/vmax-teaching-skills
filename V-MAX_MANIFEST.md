@@ -1,4 +1,4 @@
-# V-MAX Manifest 3.8.1
+# V-MAX Manifest 3.8.2
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.1
+vmax_manifest_version: 3.8.2
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door:
@@ -82,7 +82,7 @@ character_deep_teaching_focus:
   current_version: 1.1
 polyphonic_source_policy:
   path: core/director/polyphonic-source-policy.md
-  current_version: 1.1
+  current_version: 1.3
 character_group_visual_comparison:
   path: skills/character-group-visual-comparison/SKILL.md
   current_version: 1.4
@@ -286,8 +286,10 @@ SOURCE 0
 → Character Topology / Cast
 → Knowledge Lab
 → Visual Grammar / Slide Architecture
-→ Page Estimate
-→ Style Recipe
+→ Page-by-page Layout + Character Plan + Key Line Plan + Scene Overlap Plan
+→ Page-family Style Matrix / Style Recipe
+→ HOLD｜Teacher confirms page layout and style-mix rules
+→ Page Estimate / Page Ledger
 → Representative Validation
 → Full Renderer
 → Actual Asset Verification
@@ -451,7 +453,7 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 06_延伸教材
 ```
 
-完整重做不覆蓋舊版，先讀 Drive 後建立 `_01 / _02 / _03...`。
+完整重做不覆蓋舊版，先讀 Drive 後建立下一版本 `_01 / _02 / _03...`。
 
 Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與版本的唯一權威。
 
@@ -480,6 +482,8 @@ Lesson Package 不得再維護舊五類歸檔結構；Archive Skill 是位置與
 - 已選整課圖像心智地圖卻在大綱消失
 - Drive 舊五類資料夾結構
 - A4 學習單靠縮字到 12 pt 以下塞內容
+- 將 `Visual Grammar / Slide Architecture → Page Estimate` 解讀為可跳過逐頁版面、角色、金句與場景交疊規劃
+- 將所有圖像交疊一律視為 `IMAGE_COLLISION`，而不先核對已確認的 `overlap_mode`
 
 ---
 
