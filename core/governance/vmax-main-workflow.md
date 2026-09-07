@@ -94,7 +94,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Google Drive 歸檔與驗證
 ```
 
-若無需處理成語：STEP 2.6 明確記錄 `N/A_NO_IDIOM`，不得默默跳過。
+若無需處理成語：STEP 2.6 明確記錄 `N/A_NO_IDIOM`，仍須停在 HOLD 2.6；教師確認後才進 Teacher Intent Lock，不得默默跳過。
 
 ---
 

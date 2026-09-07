@@ -76,8 +76,10 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Character Topology / Cast
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
+→ 逐頁版面配置與文字說明稿
+→ 頁型風格矩陣／Style Recipe
+→ HOLD｜教師確認頁型風格混搭規則
 → 頁數估算／頁數帳本
-→ Style Recipe
 → 代表頁驗證
 → 全量 Renderer
 → Quality Gate
@@ -86,7 +88,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Google Drive 歸檔與驗證
 ```
 
-若本課無需處理成語，STEP 2.6 明確記錄 `N/A_NO_IDIOM` 後才可前進。
+若本課無需處理成語，STEP 2.6 明確記錄 `N/A_NO_IDIOM`，仍須停在 HOLD 2.6；教師確認後才進 Teacher Intent Lock。
 
 ---
 
@@ -160,7 +162,7 @@ STEP 2.5 必須同時載入：
 
 STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執行器必須分開保留：正式生字／認讀字、生字關聯詞／生字關聯成語、課文成語／四字詞語、多音字及其詞語。任何含有本課正式生字、形近字或多音字的詞語／成語，必須保留多重 provenance；成語數量上限只能影響獨立成頁推薦，不得刪除生字關聯記錄。
 
-在進入 STEP 2.6 前，必須產生 `LANGUAGE_CANDIDATE_COVERAGE`，核對每一個正式生字是否已有關聯詞／關聯成語判讀，以及每個課文成語是否有保留／不保留理由。缺少任一對應時標記 `STEP2.5_COVERAGE_INCOMPLETE` 並停在 HOLD 2.5。
+在進入 STEP 2.6 前，必須產生 `LANGUAGE_CANDIDATE_COVERAGE`，核對每一個正式生字是否已有關聯詞／關聯成語判讀，以及每個課文成語是否有保留／不保留理由。缺少任一對應時標記 `STEP2.5_COVERAGE_INCOMPLETE`，停留 STEP 2.5 補齊覆蓋；不得進入 HOLD 2.5，也不得將一般「確認」視為完成核准。覆蓋完整後才顯示 HOLD 2.5。
 
 教材正式生字完整保留，但：
 

@@ -134,6 +134,8 @@ TEACHER_INTENT_LOCK
 ```text
 HOLD_2_5 confirmed
 → STEP_2_6 = N/A_NO_IDIOM
+→ HOLD_2_6
+→ HOLD_2_6 confirmed
 → TEACHER_INTENT_LOCK
 ```
 

@@ -18,11 +18,11 @@
   "oneOf": [
     { "properties": { "from_status": { "const": "BATCH_DRAFT" }, "to_status": { "const": "TEACHER_REVIEW" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
     { "properties": { "from_status": { "const": "TEACHER_REVIEW" }, "to_status": { "const": "BATCH_DRAFT" }, "actor_type": { "const": "TEACHER" } } },
-    { "properties": { "from_status": { "const": "TEACHER_REVIEW" }, "to_status": { "const": "LESSON_LOCKED" }, "actor_type": { "const": "TEACHER" }, "teacher_confirmation_ref": { "type": "string" } } },
+    { "required": ["teacher_confirmation_ref"], "properties": { "from_status": { "const": "TEACHER_REVIEW" }, "to_status": { "const": "LESSON_LOCKED" }, "actor_type": { "const": "TEACHER" }, "teacher_confirmation_ref": { "type": "string", "minLength": 1 } } },
     { "properties": { "from_status": { "const": "LESSON_LOCKED" }, "to_status": { "const": "OUTPUT_DRAFT" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
     { "properties": { "from_status": { "const": "OUTPUT_DRAFT" }, "to_status": { "const": "OUTPUT_QA" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
     { "properties": { "from_status": { "const": "OUTPUT_QA" }, "to_status": { "const": "OUTPUT_DRAFT" }, "actor_type": { "enum": ["AGENT", "SYSTEM"] } } },
-    { "properties": { "from_status": { "const": "OUTPUT_QA" }, "to_status": { "const": "APPROVED_OUTPUT" }, "actor_type": { "const": "TEACHER" }, "teacher_confirmation_ref": { "type": "string" }, "qa_gate_summary": { "type": "object" } } },
+    { "required": ["teacher_confirmation_ref", "qa_gate_summary"], "properties": { "from_status": { "const": "OUTPUT_QA" }, "to_status": { "const": "APPROVED_OUTPUT" }, "actor_type": { "const": "TEACHER" }, "teacher_confirmation_ref": { "type": "string", "minLength": 1 }, "qa_gate_summary": { "type": "object" } } },
     { "properties": { "from_status": { "const": "APPROVED_OUTPUT" }, "to_status": { "const": "SUPERSEDED" }, "actor_type": { "enum": ["TEACHER", "SYSTEM"] } } }
   ],
   "additionalProperties": false

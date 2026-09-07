@@ -18,11 +18,11 @@
   "allOf": [
     {
       "if": { "properties": { "status": { "const": "LESSON_LOCKED" } } },
-      "then": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }
+      "then": { "required": ["teacher_confirmation_status"], "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }
     },
     {
-      "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } },
-      "then": { "properties": { "status": { "const": "LESSON_LOCKED" } } }
+      "if": { "required": ["teacher_confirmation_status"], "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } },
+      "then": { "properties": { "status": { "enum": ["LESSON_LOCKED", "SUPERSEDED"] } } }
     }
   ],
   "$defs": { "derivedFrom": { "type": "object", "required": ["direct_parent", "lineage"], "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
