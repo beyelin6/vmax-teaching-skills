@@ -1,6 +1,6 @@
 # Lesson Presentation Execution Rules
 
-版本：1.1
+版本：1.2
 
 本檔是每課簡報製作期間，教師追加並確認的具體視覺、版面、角色、素材再利用與違規處理決策主檔。它不是教材知識來源，也不得改寫官方 Source Master 或 Lesson Knowledge Book。
 
