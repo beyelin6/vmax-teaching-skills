@@ -1,4 +1,4 @@
-# V-MAX Manifest 3.8
+# V-MAX Manifest 3.8.1
 
 ## 角色
 
@@ -9,7 +9,7 @@
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8
+vmax_manifest_version: 3.8.1
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door:
@@ -43,7 +43,7 @@ lesson_master_preflight:
   current_version: 1.0
 lesson_presentation_execution_rules:
   path: core/governance/lesson-presentation-execution-rules.md
-  current_version: 1.1
+  current_version: 1.2
 lesson_artifact_registry:
   path: core/governance/lesson-artifact-registry.md
   current_version: 1.0
@@ -417,7 +417,6 @@ STEP 2.5 決定教學價值／保留；STEP 2.6 決定生活例句、理解重�
 內容放不下時：`刪減 → 縮短 → 重排 → 必要時增加頁數`；**不得縮到 12 pt 以下**。
 
 圖片／PDF 輸出必須以 A4 實際列印尺寸檢查等效字級，避免畫布縮放造成假 PASS。
-
 
 共同交付規格：
 - 先通過 Lesson Master Preflight 與任務 Coverage Diff；母檔不足時只增補核准 Patch。
