@@ -1,257 +1,94 @@
-# V-MAX Quality Gate 2.6
+# V-MAX Quality Gate 2.7
 
 ## 定位
 
-Quality Gate 2.6 是 V-MAX 在正式簡報渲染與交付前的最後一道檢查。
+正式簡報交付前檢查教材真值、觀看路徑、Object Composition、文字／注音、語詞標記、角色、Visual Drift 與教師後製負擔。
 
-它同時檢查：
-- 教學結構與教材真值
-- 觀看路徑與視覺理解
-- Object Composition 是否成立
-- 是否發生「一張大底圖＋挪字」退化
-- 文字與注音正確性、可讀性
-- 角色功能與一致性
-- Visual Drift / Lesson Visual Map
-- 教師是否仍需手動搬字、排圖、補救
-
-必要子檢查：
-- `core/quality/lesson-visual-map-quality-gate.md`
-- `core/quality/visual-drift-detector.md`
-- 最新 `core/governance/lesson-presentation-execution-rules.md`
-
-核心問題：
-
-> 這張投影片的文字、角色、場景與小插圖真的共同構圖了，還是其實只是在一張完成插畫上找地方塞字？
-
----
+核心問題：投影片是否真正共同構圖？學生是否能清楚辨認「哪幾個字是指定語詞」，而不是被穿字色塊或錯位底線干擾？
 
 ## Gate A｜Teaching Integrity
 
-必查：
-- Acts 與頁面目的來自真正理解任務，不為湊頁數。
-- 語詞、句型、修辭、生字、形近字、多音字、成語符合來源與教師選擇。
-- Teacher Intent LOCKED 項完整保留。
-- 每頁只有一個主要教學焦點。
-- 學生頁只放當下需要看見的內容；答案與備課說明分流。
-- 無不必要重複頁或擅自新增教材。
-
-任一教材真值錯誤 → FAIL。
-
----
+教材、語詞、句型、修辭、生字、形近字、多音字、成語符合核准來源與教師選擇；一頁一主要焦點；學生頁不洩漏答案。教材真值錯誤 → FAIL。
 
 ## Gate B｜Visual Understanding & Object Composition
 
-### B1. Visual Understanding
+一般圖片式頁可追溯 `OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`；有語詞標記時可追溯 `VOCAB_MARK_PLAN`。
 
-必查：
-- 第一視線清楚。
-- 比較、因果、時間、空間、證據或動作關係可直接看懂。
-- 插圖真的服務理解，不只是裝飾背景。
-- 世界觀、角色、材質、色彩在合理變奏中一致。
+正式文字／注音先取得空間；主視覺、小插圖、角色、標記有主次；protected zones 完整；適合時使用自然輪廓而非全數硬矩形。
 
-### B2. Object Composition Contract
+### Monolithic Background Regression
 
-一般圖片式頁必須可追溯到：
-- `OBJECT_COMPOSITION_PLAN`
-- `CHARACTER_PLAN`
-- `KEY_LINE_PLAN`
+完整 AI 場景吃滿畫布、文字只能在縫隙搬動、所有物件烘焙成單一底圖、修改主要變成上下左右挪字 → `MONOLITHIC_BACKGROUND_REGRESSION`，一般頁 FAIL。回 Object Composition 重構。
 
-必查：
-- 正式文字／注音／閱讀安全區是否在主視覺生成前取得空間。
-- `primary_visual_object`、`supporting_visual_objects`、`character_objects`、`annotation_objects` 是否有主次。
-- `layer_order` 是否合理。
-- `protected_zones` 是否完整保護課文、注音、人物臉部、關鍵動作與教材證據。
-- 插圖是否在適合時使用自然輪廓、去背、局部淡出或遮罩，而非全部硬矩形。
+### Planned Overlap
 
-缺少 Object Composition Plan → `MISSING_OBJECT_COMPOSITION_PLAN` → FAIL。
+核准 `SCENE_INTEGRATED`／`FOREGROUND_OVERLAP`／planned overlaps 不算碰撞。未規劃或遮住臉、關鍵動作、核心教材證據、課文／注音閱讀區才是 `IMAGE_COLLISION`。
 
-### B3. Monolithic Background Regression
-
-以下任一出現，即 `MONOLITHIC_BACKGROUND_REGRESSION`；一般教學頁直接 FAIL：
-
-1. 一張完整 AI 場景幾乎占滿畫布，文字只能在剩餘縫隙中反覆移動。
-2. 課文、語詞、注音、金句未先占位，只能壓圖、縮字、加白框或遮罩補救。
-3. 角色、小插圖、道具全部烘焙進同一底圖，局部修改必須整頁重生。
-4. 修改過程主要變成「再往上／下／左／右挪一點」。
-5. 一般頁移除文字後仍是一張近乎完整、不可拆的海報式插畫。
-6. 背景本身承擔了整頁構圖，其他物件只是後貼附件。
-
-修正方式：回到 `OBJECT_COMPOSITION_PLAN` 重構物件。不得用縮字、白色遮罩或繼續搬字通過 Gate。
-
-### B4. IMMERSIVE_FULL_SCENE 例外
-
-封面、故事高潮、情緒停格、環境沉浸、單一大情境觀察等可合理近滿版，但必須：
-- PAGE_PLAN 明確標記 `IMMERSIVE_FULL_SCENE`
-- 有教學理由
-- 正式文字仍有事前規劃的安全區
-
-未標記例外卻做成滿版場景 → `MONOLITHIC_BACKGROUND_REGRESSION`。
-
-### B5. Planned Overlap
-
-`SCENE_INTEGRATED`、`FOREGROUND_OVERLAP`、`planned_overlaps` 中已核准的交疊不算碰撞。
-
-只有以下才標記 `IMAGE_COLLISION`：
-- 未規劃、無教學／敘事理由
-- 遮住臉部、關鍵手勢、核心物件或教材證據
-- 侵入課文／注音／語詞／金句閱讀區
-- 破壞主次、視線、呼吸或可理解性
-
-不得因圖像相切本身就判 FAIL。
-
----
-
-## Gate C｜Text Accuracy & Readability
+## Gate C｜Text Accuracy, Readability & Vocabulary Marking
 
 ### C1. Zero-Tolerance Core Text
-
-以下必須零錯誤：
-- 課文原句
-- 生字
-- 注音
-- 多音字
-- 形近字正式字形
-- 成語本體與正式定義
-- 題目與選項
-- Lesson Visual Map 正式主旨／結構／語文標籤
-- 所有需朗讀、抄寫、辨識的文字
-
-核心錯誤 → BLOCKER。
+課文、生字、注音、多音字、形近字、成語正式內容、題目與所有需朗讀／辨識文字零錯誤。
 
 ### C2. Readability
+不縮字硬塞；後排可讀；注音不被圖像或標記侵入；課文保持連續閱讀秩序。
 
-- 不得用縮字解決資訊過量。
-- 核心文字從教室後排可辨識。
-- 注音不被角色／插圖侵入。
-- 課文閱讀頁保留連續閱讀秩序。
-- 學生可見標音不得混入拼音、日文假名或亂碼。
+### C3. Vocabulary Marking Gate
 
-### C3. Typed Text Layout
+指定語詞預設 `UNDERLINE_HIGHLIGHT`，整句／金句才使用核准的 `BACKGROUND_HIGHLIGHT`。
 
-非課文頁若只是把正確文字像打字一樣浮在背景上 → `TYPED_TEXT_LAYOUT_FAIL`。
+逐一檢查：
+- **Alignment**：筆刷位於中文字主要字框下方，保留約字高 8–12% 淨距；不可穿過主要筆畫。
+- **Stroke**：厚度約字高 10–16%，可有自然手繪感，但不可高到成為字後色塊。
+- **Span**：只涵蓋指定語詞，無多字／少字／錯詞；標點預設不納入。
+- **Layer**：文字在上、標記在下；不得遮注音。
+- **Color**：同一 `term_color_id` 在原文與詞語解釋一致。
+- **Hierarchy**：語詞字下標記與整句背景筆刷視覺層級明確不同。
 
-文字必須和物件、場景、角色視線、標記與留白共同構圖；正確但「後貼」仍不能 PASS。
+任一失敗 → `VOCAB_HIGHLIGHT_COLLISION` → REVISE；若造成語詞範圍誤判、遮字／注音或標錯詞 → FAIL。
 
-### C4. Strange Chinese Character Scan
+修正原則：若正式文字位置正確，只修標記物件，不得搬課文來遷就底線。
 
-逐頁檢查假字、筆畫黏連／斷裂、偏旁錯位、簡體／日文漢字混入、同字不一致、背景亂碼、注音不符與課文漏字增字。
+必須通過：
+- `VOCAB_MARK_ALIGNMENT_PASS`
+- `VOCAB_MARK_SPAN_PASS`
+- `VOCAB_MARK_LAYER_PASS`
+- `TERM_COLOR_CONSISTENCY_PASS`
 
----
+### C4. Typed Text / Strange Character
+非課文頁只是打字浮在背景 → `TYPED_TEXT_LAYOUT_FAIL`。逐頁掃描假字、錯字、亂碼、錯誤注音與字形異常。
 
 ## Gate D｜Renderer, Character & Regression
 
-### Renderer Completion
+老師不應再自行搬字、排圖、重打核心文字或調語詞底線。角色有功能且 canonical DNA 一致。代表頁需覆蓋實際 page families；本課有語詞標記時，至少一張代表頁必須實際通過 Vocabulary Marking Gate。
 
-不通過：
-- 老師仍需自己搬字、排圖、重打核心文字。
-- 角色／小插圖明明應局部修改卻必須整頁重生。
-- 非課文頁退化成背景圖＋文字框、卡片牆或純文字骨架。
-- 代表頁未覆蓋本課實際 page families 就全量生成。
+Visual Drift 檢查 WORLD / STYLE / PALETTE / CHARACTER / TYPOGRAPHY / UI / COMPOSITION / PEDAGOGICAL_VISUAL / LVM drift。任何 unresolved blocker → FAIL。
 
-### Character Completion
+若有 Approved Visual Benchmark，另檢查留白、文字密度、局部插畫比例、角色干擾度、模板感、大底圖退化，以及語詞標記是否與核准教材視覺語法一致。
 
-- 角色有明確教學／敘事功能。
-- canonical character 外觀、服裝、比例與 DNA 一致。
-- 場景融合時視線、姿勢、接觸關係合理。
-- 角色未搶走課文人物／核心教材焦點。
+## Page Risk
 
-### Visual Drift
+- R1：封面、情境、意象、情緒停格。
+- R2：段落原句＋情境、語詞、句型／修辭、成語、Lesson Visual Map。
+- R3：生字、注音、形近字、多音字、正式定義、評量。
 
-正式交付前檢查：
-- WORLD_DRIFT
-- STYLE_DRIFT
-- PALETTE_DRIFT
-- CHARACTER_DRIFT
-- TYPOGRAPHY_DRIFT
-- UI_DRIFT
-- COMPOSITION_DRIFT
-- PEDAGOGICAL_VISUAL_DRIFT
-- LVM_DRIFT
+課文語詞標記因可能改變學生對語詞範圍的判讀，至少按 R2 檢查；涉及注音／字形辨識時提升至 R3。
 
-任何 unresolved blocker → FAIL。
+## 修復順序
 
-### Approved Visual Benchmark
-
-若有核准樣張，檢查：
-- 留白與呼吸感
-- 文字密度
-- 局部插畫比例
-- 前景／中景／背景層次
-- 角色功能與干擾度
-- 是否避免卡片牆、滿版資訊與模板感
-- 是否避免重新退回大底圖模式
-
-漂移 → `VISUAL_BENCHMARK_DRIFT`。
-
----
-
-## Page Risk Level
-
-- R1｜Visual Safe：封面、情境開場、童詩意象、情緒停格。
-- R2｜Hybrid Recommended：段落原句＋情境、語詞、句型／修辭、成語、Lesson Visual Map。
-- R3｜Precision Required：生字、注音、形近字、多音字、正式定義、評量。
-
-不論 R1–R3，除已核准 `IMMERSIVE_FULL_SCENE` 外，一般圖片式頁都受 Object Composition Gate 約束。
-
----
-
-## Automatic Escalation
-
-核心文字錯誤 ≥2、重渲染兩次仍錯、注音／字形不穩或原句被改：
-
-`Image-first → Hybrid → Precision`
-
-若根因是大底圖退化：
-
-`Monolithic Background → Object Composition Rebuild`
-
-不得無限搬字或整頁重畫。
-
----
-
-## Visual Preservation Rule
-
-修正順序：
-1. 局部文字／物件重排或替換
-2. 局部重生／局部修補
+1. 局部標記／文字／物件修復
+2. 局部圖片修補
 3. 小區域重做
 4. 最後才整頁重構
 
-若根因是 `MONOLITHIC_BACKGROUND_REGRESSION`，跳過「繼續搬字」，直接回 Object Composition。
-
----
+`VOCAB_HIGHLIGHT_COLLISION`：先修標記，不搬正確文字。
+`MONOLITHIC_BACKGROUND_REGRESSION`：直接回 Object Composition，不繼續搬字。
 
 ## Teacher Effort Gate
 
-正式交付前必問：
-
-教師是否還需要：
-- 逐頁搬字、對齊
-- 手動移動角色／小插圖讓它不要擋字
-- 把滿版大圖拆開
-- 重打核心文字
-- 修大量圖片中文字
-- 自行統一角色／風格
-
-若答案為「是，而且不是極少量例外」→ Renderer 未完成。
-
----
-
-## Pre-delivery Preflight
-
-1. 核對 Verified Text 與來源。
-2. Strange Chinese Character Scan。
-3. `OBJECT_COMPOSITION_PASS`。
-4. `MONOLITHIC_BACKGROUND_PASS`。
-5. `PROTECTED_ZONE_PASS`。
-6. `PLANNED_OVERLAP_PASS`。
-7. Character consistency（適用時）。
-8. Lesson Visual Map Gate（適用時）。
-9. Visual Drift Detector。
-10. Approved Visual Benchmark（若有）。
-11. 代表頁核准涵蓋全部實際頁型。
-12. 所有 BLOCKER 歸零才可交付。
+若教師仍需逐頁調底線高低、重畫語詞範圍、搬字避色塊、統一角色或修大量中文字，Renderer 尚未完成。
 
 ## 核心金句
 
-> 一張漂亮插畫不是一張好投影片；好投影片是文字、角色、場景與小插圖一起為教學焦點服務。
+> 語詞標記的任務是讓孩子一眼看出語詞範圍；不能反過來妨礙孩子看字。
+
+> 字對了但畫線穿字、標錯範圍，一樣不是完成品。
