@@ -1,101 +1,81 @@
 ---
 name: presentation-engine
-description: 將已核准教材與教學策略轉換為 Slide Script、Render Request 與選定輸出；圖片式簡報採 Object Composition First，國語語詞標記採可追溯的字下螢光筆系統。
+description: 將核准教材與教學策略轉換為 Slide Script 與 Render Request；採 Object Composition First，語詞標記以最終 Verified Text glyph anchor 精準對位。
 ---
 
 # Presentation Engine
 
-版本：0.10.5
+版本：0.10.6
 
-`SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。圖片式簡報實際渲染交給 `vmax-image-renderer`；不得只交 prompt 宣稱完成。
+`SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
-## 前置條件
+## PAGE_PLAN
 
-執行前讀取核准 LKB、Learning Module Profile、Teaching Strategy Profile、Output Profile、Style/Role/Layout、Canvas/Text policies、最新 Lesson Presentation Execution Rules、Renderer Contract 與 artifact registry（若有）。未核准的上游內容不得進正式輸出。
+每頁至少包含 page purpose、student visible text、source refs、page family/style、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`。
 
-## 核心來源規則
+一般頁預設 `OBJECT_SCENE`，禁止簡化成文字區＋一張底圖。完整場景吃滿畫布、文字只能搬移 → `MONOLITHIC_BACKGROUND_REGRESSION`。
 
-教材、延伸、教學策略、角色與視覺都只使用已核准來源。學生頁不得含答案、內部 ID、來源 metadata 或教師解題步驟。頁數依內容與投影閱讀密度動態決定。
+## VOCAB_MARK_PLAN
 
-## 逐頁施工稿三層契約
+每個指定語詞記錄：`term_text`、`source_ref`、`term_color_id`、`mark_mode`、`occurrence_index`、`line_id`、`start_char_index`、`end_char_index`、`glyph_bbox`、`baseline_y`、`mark_bbox`、`text_layout_revision`、`include_punctuation`、`layer_order`、clearance/stroke ratios、paired definition ref。
 
-### PAGE_PLAN
-每頁至少包含：`page_purpose`、`student_visible_text`、`source_refs`、`page_family`、`style_variant`、`character_policy`、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、`canvas_lock`、`visual_density_profile`、拆頁判斷；有指定語詞標記時另必填 `VOCAB_MARK_PLAN`。
+### Text Anchor Contract
 
-### OBJECT_COMPOSITION_PLAN
-包含 `composition_mode`、`background_role`、`text_objects`、`primary_visual_object`、`supporting_visual_objects`、`character_objects`、`annotation_objects`、`layer_order`、`planned_overlaps`、`protected_zones`、`organic_edge_strategy`。一般頁預設 `OBJECT_SCENE`，禁止簡化成「文字區＋一張底圖」。
+Presentation Engine 不得在 PAGE_PLAN 階段猜最終底線 x/y。PAGE_PLAN 先指定 `term_text`、來源與 occurrence；實際 glyph anchor 必須等 Verified Text 完成最終排版後才建立。
 
-### VOCAB_MARK_PLAN
-每個學生可見的指定語詞至少記錄：
-- `term`
-- `source_ref`
-- `term_color_id`
-- `mark_mode: UNDERLINE_HIGHLIGHT`
-- `include_punctuation: no`（預設）
-- `layer_order: MARK_BELOW_TEXT`
-- `clearance_ratio: 0.08–0.12`（字高比例建議值）
-- `stroke_height_ratio: 0.10–0.16`（字高比例建議值）
-- `span_rule: TERM_ONLY`
-- `paired_definition_ref`（適用時）
+固定流程：
+`排版正式課文 → 產生 text_layout_revision → 精確定位 term occurrence → 取得 char indices / line / glyph bbox / baseline → 計算 mark bbox → 建立 Render Request`。
 
-語詞定位與整句強調不得混用：
-- 語詞 → `UNDERLINE_HIGHLIGHT`
-- 整句／金句 → `BACKGROUND_HIGHLIGHT`，且須由 `KEY_LINE_PLAN` 或句子強調策略核准。
+同詞多次出現必須指定 `occurrence_index`。任何字型、字級、字距、行距、欄寬、換行、文字位置或內容變更，都使舊 anchor 失效；Render Request 必須重新計算，不得沿用舊 mark bbox。
 
-`UNDERLINE_HIGHLIGHT` 必須位於中文字主要字框下方，與字保留淨距；筆刷可有手繪不規則感，但不得穿過主要筆畫。標點預設不納入。同一語詞在原文與詞語解釋使用同一 `term_color_id`。
+若找不到唯一正確 occurrence → `VOCAB_ANCHOR_FAIL`，不得猜位置。
+若文字 reflow 後仍引用舊 anchor → `STALE_VOCAB_MARK_ANCHOR`。
 
-### REPRESENTATIVE_CONSTRUCTION
-每個啟用頁型補充實際物件位置、文字層級、角色交疊、protected zones、自然輪廓策略與閱讀動線。課文＋語詞代表頁必須實際驗證至少一組 `UNDERLINE_HIGHLIGHT`，不可只在文字規格中宣告。
+## Vocabulary Visual Grammar
 
-### SLIDE_SCRIPT
-鎖定正式文字、來源、素材、Render Request、版本與教師確認。每頁記錄 object/character/key-line plans；有語詞標記時記錄 `vocab_mark_plan` 與 `term_color_map`。
+- 語詞定位 → `UNDERLINE_HIGHLIGHT`
+- 整句／金句 → `BACKGROUND_HIGHLIGHT`
 
-舊 `image_layout_plan` 只可作兼容摘要，不得取代 Object Composition。
+Underline 位於主要字框下方，淨距約字高 8–12%，筆刷厚度約 10–16%，只涵蓋指定語詞，標點預設排除，文字在上標記在下，不侵入注音。標記是獨立 annotation object，不烘焙進 AI 場景。
 
-## Object Composition First
+標記錯位時只修標記，不移動正確課文。
 
-施工順序：
-`教學焦點 → 正式文字／注音安全區 → 主場景 → 小插圖 → 角色 → 道具／語詞標記 → 金句 → 前中後景與 planned overlaps → Renderer 合成`
+## CHARACTER / KEY LINE / OBJECT COMPOSITION
 
-不得輸出「完整無字／少字大底圖 → 最後找位置放文字」的舊式 Render Request。文字只能靠搬動才能塞入完整插畫時 → `MONOLITHIC_BACKGROUND_REGRESSION`。
+角色有教學或敘事功能，可依核准 overlap 融入場景。金句來源須區分教材、教師補充、AI 過場。正式文字／注音在視覺生成前先取得安全區，小插圖與角色盡量維持獨立物件。
 
-合法 `SCENE_INTEGRATED`／`FOREGROUND_OVERLAP` 不算碰撞。`IMMERSIVE_FULL_SCENE` 只用於有教學理由的封面、高潮、情緒停格、環境沉浸或單一大情境觀察。
+## Representative Construction
 
-## 語詞標記與文字施工
+代表頁需實際驗證物件位置、閱讀動線、角色交疊與 protected zones。本課有課文語詞標記時，至少一張代表頁必須實測：
+- 正確 occurrence anchor
+- 文字 reflow 後 anchor 重算
+- underline alignment/span/layer
+- term color consistency
 
-Verified Teaching Text 先鎖定再渲染。課文、注音、生字、形近字、多音字、成語、題目與正式例句不得由圖片模型自由生成。
+## SLIDE_SCRIPT / Render Request
 
-語詞標記是 `annotation_object`，不是文字本身，也不是烘焙進 AI 圖片的色塊。正式文字位置確認後，若底線位置不準，只修 `VOCAB_MARK_PLAN`／標記物件，不移動正確的課文文字。
+Slide Script 鎖定正式文字、來源、object/character/key-line plans；有語詞標記時記錄 `vocab_mark_plan`、`term_color_map`、`text_layout_revision`。
 
-以下任一情況在送 Renderer 前即標記 `VOCAB_HIGHLIGHT_COLLISION`：標記穿字、遮注音、範圍錯誤、包含非指定標點、同詞顏色不一致、語詞標記高到變成背景色塊。
+Render Request 有語詞標記時必須帶入 anchor metadata 與以下 acceptance checks：
+- `VOCAB_ANCHOR_PASS`
+- `VOCAB_REFLOW_PASS`
+- `VOCAB_MARK_ALIGNMENT_PASS`
+- `VOCAB_MARK_SPAN_PASS`
+- `VOCAB_MARK_LAYER_PASS`
+- `TERM_COLOR_CONSISTENCY_PASS`
 
-## 頁型與代表頁
+未取得最終 glyph bbox 前，不得把估算座標寫成已核准 mark bbox。
 
-教師口述型簡報一頁一焦點，不縮字硬塞。小插圖優先自然輪廓。課文閱讀頁以正文為主要物件；形近字一頁一組優先，多音字一頁一字優先；評量頁不放答案。
+## Verified Teaching Text
 
-代表頁至少涵蓋 `TEXT_READING_PAGE`、一般 `OBJECT_SCENE`、高風險語文頁、Lesson Visual Map（若啟用）與其他獨立 page family。若本課有課文語詞標記，代表頁組中至少一頁必須驗證 Vocabulary Marking System。
+課文、注音、生字、形近字、多音字、成語、題目與正式例句不得由圖片模型自由生成。文字是構圖物件，先排版再產生依附於它的標記。
 
-## Render Request Contract
+## 代表頁與批次
 
-Render Request 必須帶入 source refs、verified text、canvas lock、object composition plan、character plan、key line plan、protected zones、planned overlaps、role anchors（適用時）、benchmark refs（適用時）；有語詞標記時必須帶 `vocab_mark_plan`。
-
-Acceptance checks 至少包含 `MONOLITHIC_BACKGROUND_PASS`；有語詞標記時另包含 `VOCAB_MARK_ALIGNMENT_PASS`、`VOCAB_MARK_SPAN_PASS`、`VOCAB_MARK_LAYER_PASS`、`TERM_COLOR_CONSISTENCY_PASS`。
-
-## 工作流程
-
-1. 驗證上游來源與核准狀態。
-2. 建立全課 PAGE_PLAN。
-3. 建立 page-family style matrix。
-4. 教師確認逐頁規劃與風格混搭。
-5. 確認頁數帳本。
-6. 建立各頁型 Representative Construction；課文語詞頁實測字下標記。
-7. 教師核准實際看見的代表頁型。
-8. 產生正式 Slide Script 與 Render Requests。
-9. 路由 Image Renderer 小批次生成。
-10. Quality Gate 通過後交付。
+代表頁覆蓋實際 page families。教師核准後才進小批次 Renderer；任何 anchor、文字、Object Composition blocker 立即停批。
 
 ## 核心金句
 
-> 語詞標記不是在字後面刷一塊顏色，而是精準告訴學生「這幾個字是一個要注意的語詞」。
+> 底線跟著字走，不是字跟著底線走。
 
-> 正式文字位置正確時，標記錯了就修標記，不要再搬課文。
+> 語詞標記的位置來自最終文字字框，不來自肉眼猜座標。
