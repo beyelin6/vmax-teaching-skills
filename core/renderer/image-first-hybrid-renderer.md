@@ -1,190 +1,201 @@
-# V-MAX Image-first Hybrid Renderer 1.7
+# V-MAX Image-first Hybrid Renderer 1.8
 
 ## 定位
 
-V-MAX 的簡報輸出採「圖片式整體構圖優先 + 文字正確性保護」的混合式 Renderer。
+V-MAX 的圖片式簡報採 **Object Composition First + Verified Text**。圖片式不等於「一張完整大底圖＋後貼文字」，而是先把文字、角色、主場景、小插圖、道具與標記視為可配置物件，共同建立構圖，最後才合成整頁。
 
 核心原則：
 
-> 不要為了可編輯而犧牲整體構圖；也不要為了漂亮而犧牲中文字與教學內容的正確性。
+> 文字不是最後找空位塞進去；正式文字的閱讀空間必須在視覺生成前取得。
 
-教師不需要手動後製。
+> 背景只是底層物件，不是整張投影片。
 
-本檔定義渲染原則；實際工具選擇、能力探測、Render Request 與完成狀態由 `skills/vmax-image-renderer/SKILL.md` 執行。
+> 不要為了可編輯犧牲整體構圖，也不要為了漂亮犧牲教材與繁體中文字正確性。
 
-製作教師口述型圖像簡報時，另須遵守 `core/presentation/classroom-image-slide-policy.md`、`core/presentation/canvas-lock-policy.md` 與 `core/presentation/text-layer-construction-policy.md`；畫布與文字層政策分別是比例／尺寸與文字施工的唯一來源。
+教師不需要手動後製。本檔定義渲染原則；實際工具與資產執行由 `skills/vmax-image-renderer/SKILL.md` 負責。
 
 ---
 
-## 1. Render Mode
+## 1. Render Modes
 
 ### Default Text Rendering Contract
 
-圖片式學生頁的正式文字預設採 `VERIFIED_RASTER_TEXT_LAYERS`：除 `TEXT_READING_PAGE` 外，每個標題、任務、注音與標籤都是可追溯的獨立透明文字圖片層，最後再與視覺層合成。`TEXT_READING_PAGE` 的完整課文原文使用真正可控的連續文字層；`SLIDE_SCRIPT` 中的 Verified Teaching Text 仍是唯一文字真值。其他頁型的可編輯 Native Text 僅作教師指定 PPTX 等下游派生物。
+除 `TEXT_READING_PAGE` 外，正式學生文字預設採 `VERIFIED_RASTER_TEXT_LAYERS`／透明文字元件；`TEXT_READING_PAGE` 使用真正可控的連續文字層。`SLIDE_SCRIPT` 的 Verified Teaching Text 是文字唯一真值。
 
-錯字、缺字、位置或樣式問題時，修復範圍預設為 `LOCAL_LAYER_ONLY`，不得重做未受影響的整頁。
+局部錯字、缺字、位置或樣式錯誤預設 `LOCAL_LAYER_ONLY` 修復，不重做未受影響物件。
 
-### Mode 1｜Image-composed Slide
-適合除課文閱讀頁以外的學生頁。插圖、文字、動線、物件與裝飾必須先共同構圖，再輸出為單一整頁圖片；學生看到的文字不得只是 PowerPoint 文字框貼在背景圖上。
+### Mode 1｜Object-composed Slide
 
-### Mode 2｜Hybrid Composed Slide
-先生成有主次與呼吸感的無字／少字圖片式構圖，再把已確認文字逐元件渲染成「只有文字像素、背景透明的 PNG／raster 元件」，依構圖錨定後合成並扁平化為整頁圖片。文字元件不得帶白色矩形或不透明文字框背景。Native Text 只可作為內部排版手段或教師指定的 PPTX 下游，不是預設交付畫面上的浮動文字框。
+一般學生頁預設模式。由 `OBJECT_COMPOSITION_PLAN` 驅動，分別配置文字安全區、主場景物件、小插圖、角色、道具、標記與前後景，再合成為整頁圖片。
+
+### Mode 2｜Hybrid Object-composed Slide
+
+需要精準繁體中文、注音或高風險文字時，以物件構圖為骨架，再把已校對文字渲染為透明文字元件共同合成。**不得先做一張不可拆的完整場景，再於剩餘空白中搬字。**
 
 ### Mode 3｜Precision Reading Slide
-只用於課文閱讀頁，或教師明確要求保留可編輯文字的高密度分析頁。不得把此模式當作非課文頁的方便降級方案。
 
-## 1.1 頁型硬分流
+只用於課文閱讀頁或教師明確要求保留可編輯文字的高密度分析頁。不得作為一般圖片頁的方便降級。
 
-- `TEXT_READING_PAGE`：課文原文保留可控文字層與傳統閱讀秩序。
-- `IMAGE_COMPOSED_PAGE`：其他學生可見頁預設整頁圖片式構圖；文字、插圖與認知關係在同一畫面語法中完成。
-- 形近字、多音字、句型、修辭、路線圖與評量即使需要精準排字，仍先以可控排字合成，再扁平化為圖片；不得退化成卡片牆、背景圖＋文字框或大量半透明框。
-- 若教師另有明確要求，才能變更單頁分流；不得由 Renderer 為省事自行改用 Native Analytic Slide。
+### IMMERSIVE_FULL_SCENE 例外
+
+封面、情緒停格、故事高潮、環境沉浸、單一大情境觀察可使用近滿版場景，但 PAGE_PLAN 必須有教學理由與預先保留的文字安全區。一般課文、語詞、生字、形近字、多音字、句型與修辭頁不得以此為預設。
 
 ---
 
-## 2. Reference Composition
+## 2. Object Composition Contract
 
-在建立 Reference Composition 前，先完成 `canvas_lock` preflight。不得由圖片 provider 自動決定畫布，也不得先生成其他比例再於交付時硬裁切。尚未由教師選定 `4:3` 或 `16:9` 時，標記 `CANVAS_SPEC_BLOCKED`，不得進入圖片生成。
+Renderer 在 Reference Composition 前必須讀取最新 `OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`。
 
-最低 preflight 欄位為：`canvas_profile`、`canvas_ratio`、`width_px`、`height_px`、`orientation`、`safe_area`、`fit_mode` 與 `output_formats`。缺少或衝突時停止，不得用上一次對話的比例猜測。
-
-若 Lesson Baseline 含 Approved Visual Benchmark，Reference Composition 必須另外寫入：
-- `visual_benchmark_refs`：樣張或代表頁來源。
-- `benchmark_alignment`：留白、文字密度、局部插畫、角色干擾度、講義感五軸對齊說明。
-
-Benchmark 只引用視覺節奏與版面氣質，不是教材內容來源；不得像素級複製，也不得複製樣張中的課文、頁碼、角色姿勢或單課細節。代表頁若無法說明五軸對齊，必須重做 Reference Composition，不得直接渲染全課。
-
-Mode 2 不採「先畫背景再隨便塞字」。流程是：
-1. 完整內容生成視覺構圖參考稿。
-2. 先決定主插圖、輔助插圖、文字區、留白區與圖間距；若多圖會相切或黏連，先拆頁或減少圖片。
-3. 取得理想文字位置、比例、容器、留白與閱讀順序。
-4. 生成乾淨背景／UI。
-5. 將 Verified Teaching Text 逐元件渲染成透明文字圖片。
-6. 依參考稿錨定文字元件並合成。
-7. 檢查美感、閱讀節奏與圖間呼吸是否仍成立。
-
-Reference Composition 是視覺藍圖，不是內容真值來源。
-
-教師口述型簡報的標準施工流為：
+標準施工順序：
 
 ```text
-先規劃頁型與學生焦點
-→ 產生無字或少字插畫底圖
-→ 後製可控繁體中文與必要注音
-→ 扁平化為整頁圖片或完成可交付版面
-→ 只修錯的層或局部
+教學焦點
+→ 正式文字／注音／閱讀安全區占位
+→ 主場景物件
+→ 課文小插圖／情境物件
+→ 角色物件
+→ 道具／箭頭／螢光筆／標記
+→ 金句／對話
+→ 前中後景與 planned_overlaps
+→ 整體合成
+→ 逐字與構圖 QA
 ```
 
-不得為了修一個字把整頁退回普通講義版型，也不得把課文、生字、注音、成語定義、正式例句或題目交給生圖模型自由生成。
+`OBJECT_COMPOSITION_PLAN` 至少包含：
+- `composition_mode`: `OBJECT_SCENE` / `IMMERSIVE_FULL_SCENE`
+- `background_role`
+- `text_objects`
+- `primary_visual_object`
+- `supporting_visual_objects`
+- `character_objects`
+- `annotation_objects`
+- `layer_order`
+- `planned_overlaps`
+- `protected_zones`
+- `organic_edge_strategy`
+
+背景只承擔環境、氣氛或空間連續性。課文小插圖與角色原則上是可獨立調整物件；插圖若內容允許，優先自然輪廓、去背、局部淡出或遮罩，不預設硬矩形圖片框。
+
+### 合法交疊
+
+`SCENE_INTEGRATED`、`FOREGROUND_OVERLAP` 或 `planned_overlaps` 中已核准的交疊屬 `APPROVED_SCENE_OVERLAP`。角色可被桌面、道具、前景局部遮擋，也可和人物／場景合理互動。
+
+只有以下情況才是 `IMAGE_COLLISION`：
+- 未規劃或無語意理由的碰撞；
+- 遮住人物臉部、關鍵手勢、核心物件或教材證據；
+- 侵入課文、注音、語詞、金句等閱讀安全區；
+- 破壞主次、視線與可理解性。
+
+不得因「圖像相切」本身就拆頁或把角色移回角落貼圖。
 
 ---
 
-## 3. Verified Teaching Text
+## 3. Monolithic Background Regression
 
-課文原句、生字、注音、語詞、成語定義、句型修辭、題目與學生任務必須來自來源資料／教師確認內容，不得由圖片模型自行改寫。
+一般教學頁有以下任一現象，標記 `MONOLITHIC_BACKGROUND_REGRESSION`，不得交付：
 
-若圖片式投影片含中文字，必須比對來源、標點、注音與題目。教學關鍵中文字有誤即不得交付。
+1. 一張完整 AI 場景幾乎占滿畫布，文字只能在剩餘縫隙中反覆移動。
+2. 正式文字沒有事前安全區，只能壓圖、加大白框或縮字補救。
+3. 角色、小插圖、道具全部烘焙在同一底圖，修改任何一項都必須整頁重生。
+4. 為容納文字反覆往上／下／左／右挪，而不是重新平衡物件。
+5. 除核准的沉浸式頁外，移除文字後剩下的是一張幾乎完整、不可拆的海報式插畫。
+
+修正方式固定為：回到 `OBJECT_COMPOSITION_PLAN`，重新配置物件；不得用縮字、白色遮罩、加文字框或持續挪字掩蓋問題。
 
 ---
 
-## 4. 正式 Renderer 降級策略
+## 4. Canvas / Reference Composition
 
-當某頁視覺很好但局部文字／元素失敗時，不得第一步就整頁推翻。
+建立 Reference Composition 前先完成 `canvas_lock`。不得由 provider 自動決定畫布，也不得先生成其他比例再硬裁切。
+
+若有 Approved Visual Benchmark，記錄 `visual_benchmark_refs` 與 `benchmark_alignment`；Benchmark 只控制留白、文字密度、局部插畫、角色干擾度與講義感，不是教材內容來源。
+
+Reference Composition 是**物件關係藍圖**，不是大底圖草稿，也不是內容真值來源。
+
+---
+
+## 5. Verified Teaching Text
+
+課文原句、生字、注音、語詞、成語定義、句型修辭、題目與學生任務必須來自來源資料／教師確認內容，不得交給圖片模型自由生成。
+
+若含中文字，必須逐字核對來源、標點、注音與題目。教學關鍵中文字有誤即不得交付。
+
+正式文字先占位、後渲染；「先做圖，最後再找地方放字」不符合本契約。
+
+---
+
+## 6. 局部修復與降級策略
 
 固定修復順序：
 
 ```text
-1. 局部重生／局部修補
-2. 移除圖片中的錯誤或不必要文字
-3. 以 Verified Raster Text Component 在原構圖位置重建
-4. 小區塊重做／重繪
-5. 只有前述方法無法維持教學正確與視覺一致時，才整頁重畫
+1. 局部文字或物件重排／替換
+2. 局部重生／修補
+3. 以 Verified Raster Text Component 重建錯誤文字
+4. 小區域重做
+5. 只有物件關係已不可救時才整頁重構
 ```
 
-原則：
-- 修錯字時，先修字，不先拆掉整張好看的投影片。
-- 若文字根本不必存在於圖片層，優先刪除圖片文字再疊正式文字。
-- 教學關鍵錯誤是 blocker；純裝飾微小瑕疵依 Quality Gate 判定。
-- Renderer 能力不足時應降級呈現方式，不得改變 Teacher Intent、教材事實或學習任務。
-- 不得把修復工作轉嫁給教師逐頁手動處理。
+若根因是 `MONOLITHIC_BACKGROUND_REGRESSION`，不得只修文字位置，必須重構物件層級。
+
+Renderer 能力不足時可降級呈現方式，但不得改 Teacher Intent、教材事實、角色身份或學習任務，也不得把後製工作轉嫁給教師。
 
 ---
 
-## 5. 圖文一體感
+## 7. 圖文與物件一體感
 
-Native Text 要成為畫面的一部分，可壓在天然留白、紙張、卡片、木牌、對話框、地圖標記、箭頭引線等位置。
+- 不讀完整文字，也能從物件、動作、路徑、尺度或關係看出主要概念。
+- 文字與圖像共同參與構圖，不是浮在一張完成插畫上的標籤。
+- 禁止背景圖＋數個文字框、卡片牆、同尺寸方框陣列與大量半透明面板。
+- 高風險文字使用可控透明文字元件合成並扁平化。
+- 多物件頁檢查主次、呼吸與 planned overlap；只有非預期碰撞才是 `IMAGE_COLLISION`。
+- 教師口述型簡報預設乾淨白／暖白、明顯留白與局部主畫面；不是每頁都滿版。
 
-禁止因為 Native Text 而把漂亮構圖拆回固定左圖右文或機械模板。
+### 課文頁定位配色
 
-教師口述型簡報預設保留乾淨白底或暖白、明顯留白與局部主畫面。這是投影閱讀與口述節奏的需求，不是裝飾偏好；若 Style Recipe 改用其他視覺世界，也不得犧牲一頁一焦點、少文字與教室後排可讀性。
-
-### 非課文頁的構圖驗收
-
-1. 不讀完整文字，也能從場景、動作、路徑、尺度或物件關係看出本頁主要概念。
-2. 文字依附場景或認知關係，不是浮在背景上的獨立標籤群。
-3. 移除背景插圖後版面不能仍只是普通文字簡報；若可以，代表圖像沒有參與教學構圖。
-4. 禁止「背景圖＋數個文字框」、卡片牆、同尺寸方框陣列與大量半透明面板。
-5. 高風險文字以透明文字圖片元件合成後扁平化，不保留大量浮動 PowerPoint 文字物件。
-6. 多圖頁必須通過主次、圖間距與留白檢查；插圖互撞、相切或黏成圖牆時標記 `IMAGE_COLLISION` 或 `VISUAL_BREATHING_FAIL`。
-
-### 課文頁的原文定位配色
-
-- 每個教學語詞建立唯一 `term_color_id`。
-- 原文中該語詞的位置與下方語詞標示使用同一顏色。
-- 詞義使用同組較深或中性的輔助色，不得與另一語詞的定位色混淆。
-- 配色不得改寫、拆散原詩行句或破壞原文換行。
-- 同頁不同語詞不得使用難以辨認的近似色，並須符合對比與色覺可辨識要求。
+每個教學語詞建立唯一 `term_color_id`；原文位置與語詞標示同色，詞義使用同組較深／中性色。配色不得改寫或拆散原文。
 
 ---
 
-## 6. 預設頁型
+## 8. 預設頁型
 
-- 閱讀／童詩／故事：Mode 1 + Mode 2
-- 課文＋詞語頁：`TEXT_READING_PAGE`，完整原文優先，詞語只做語境定位
-- 語詞／句型／修辭：Mode 2，最後扁平化為整頁圖片
-- 生字／形近字／多音字：Mode 2；精準文字以可控排字合成，不得因圖片模型錯字改成普通文字框頁
-- 成語：情境可 Mode 1；正式定義與例句用 Mode 2
-- 評量／練習：Mode 3
-- 仿作／遷移：Mode 1 + Mode 2，不留書寫線；需要書寫時轉入學習單
+- 閱讀／童詩／故事：Mode 1 + Mode 2；是否沉浸式由 PAGE_PLAN 決定。
+- 課文＋詞語：`TEXT_READING_PAGE`，完整原文優先，小插圖以獨立物件服務理解。
+- 語詞／句型／修辭：Mode 2 Object Composition。
+- 生字／形近字／多音字：Mode 2；精準文字＋語意物件，不得做滿版場景後塞字。
+- 成語：情境可 Mode 1；正式定義／例句用 Mode 2。
+- 評量／練習：Mode 3。
+- 仿作／遷移：Mode 1 + Mode 2；需要書寫時轉學習單。
 
-其中只有閱讀／課文原文預設保留可控文字層；其他頁型即使用 Mode 3 製作精準文字，也必須在交付前完成圖文合成與扁平化，除非教師明確要求可編輯版。
+---
 
-## 6.1 代表頁放行閘門
+## 9. 代表頁放行閘門
 
 全量 Renderer 前至少驗證：
+1. 一張 `TEXT_READING_PAGE`。
+2. 一張一般 `OBJECT_SCENE` 圖片頁，驗證不是大底圖貼字。
+3. 一張高風險語文頁，驗證精準排字與物件式視覺仍成立。
+4. 若啟用 Lesson Visual Map，再驗證其頁型。
 
-1. 一張 `TEXT_READING_PAGE`，含原文定位同色規則。
-2. 一張一般 `IMAGE_COMPOSED_PAGE`，驗證圖文共同構圖而非背景貼字。
-3. 一張高風險語文頁（形近字／多音字／句型／修辭擇一），驗證精準排字後仍維持圖片式設計。
-4. 若本課啟用 Lesson Visual Map，再加一張路線圖／全課圖像地圖。
-
-每一類需分別記錄教師核准。教師說「可以」只核准本次實際看見的頁型，不得推定未展示頁型也已核准。全部代表頁型通過前，不得全量生成。
-
-全量採小批次執行；每批完成後檢查構圖、文字整合與 Visual Drift。任一批出現「背景圖＋文字框」或卡片牆退化，立即停批，不得一路生成到完整頁數。
+每類分別取得教師核准。全量採小批次；任何批次出現 `MONOLITHIC_BACKGROUND_REGRESSION`、背景圖＋文字框或卡片牆，立即停批。
 
 ---
 
-## 7. 教師交付原則
+## 10. 執行與完成契約
 
-最終 PPT 應已完成圖文合成。教師不需要自己搬字、對齊、遮 AI 錯字或重做版面。若 V-MAX 無法完成，該頁視為 Renderer 未完成。
-
-## 8. 執行與完成契約
-
-需要圖片時必須先建立 Render Request，再由共用圖片渲染技能探測當前平台能力並實際執行。完成判定以實際資產為準：
-
-- prompt、Renderer Script、Visual YAML、預覽描述都不是圖片成品。
-- 最終資產必須存在，並能以路徑、URL 或平台 asset ID 追蹤。
-- 必須重新檢視最終成品，核對教材真值、繁體中文、尺寸與裁切。
-- 必須讀取實際 PNG／PDF 寬高，確認所有頁面精確符合已鎖定的 `4:3` 或 `16:9`；不得接受 3:2、9:16 或 provider 預設比例。
-- 所有插圖與角色必須使用等比縮放、contain 或已記錄的核准裁切；拉伸標記 `ASSET_STRETCH_DETECTED`，未審核裁切標記 `ASSET_CROP_UNAUDITED`。
-- 文字元件必須通過 `TEXT_PROOF_PASS`、`TEXT_OBJECT_RELATION_PASS`、`TEXT_DENSITY_PASS`、`TEXT_EMBEDDING_PASS` 與 `STUDENT_LAYER_PASS`；多圖頁另須通過 `IMAGE_DENSITY_PASS`。任一失敗不得交付。
-- 只有 `RENDER_VERIFIED` 可進入正式交付；`IMAGE_HANDOFF_READY` 只代表已可轉交其他平台。
-- 圖片模型連續兩次產生錯字、假字或錯誤注音時，不得省略該頁；改走「無字／低字背景 → 可控排字 → 扁平化 → 逐字重檢」。
+- prompt、Renderer Script、Visual YAML、預覽描述不是成品。
+- 最終資產必須存在且可追蹤。
+- 重新檢視最終成品，核對教材真值、繁體中文、尺寸與裁切。
+- 插圖／角色等比縮放；未審核裁切不得交付。
+- 文字元件通過 `TEXT_PROOF_PASS`、`TEXT_OBJECT_RELATION_PASS`、`TEXT_DENSITY_PASS`、`TEXT_EMBEDDING_PASS`、`STUDENT_LAYER_PASS`。
+- 物件式頁另須通過 `OBJECT_COMPOSITION_PASS`、`PROTECTED_ZONE_PASS`、`PLANNED_OVERLAP_PASS`、`MONOLITHIC_BACKGROUND_PASS`。
+- 只有 `RENDER_VERIFIED` 可正式交付。
+- 圖片模型連續兩次產生錯字／假字／錯誤注音時，改走「物件視覺生成 → 可控排字 → 合成 → 逐字重檢」，不是「整張低字背景 → 挪字」。
 
 ---
 
 ## 核心金句
 
-> 圖片式投影片負責讓孩子想看，正式文字層負責讓孩子看對。
+> 圖片式投影片不是一張漂亮背景再加字，而是文字、角色、場景與小插圖共同完成構圖。
 
-> 局部出錯先局部修，不要為了一個字拆掉整個好畫面。
+> 局部出錯先修局部物件；如果根因是一張大底圖，回到物件構圖，不要繼續搬字。
