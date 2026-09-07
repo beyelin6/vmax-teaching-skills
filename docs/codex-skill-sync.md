@@ -9,6 +9,12 @@
 1. GitHub 更新既有 Skill，但 Codex 本機仍停留在舊版。
 2. GitHub 新增 Skill，但 `~/.codex/skills/` 因為本機原本沒有該資料夾而完全看不到。
 
+## 安裝模式互斥
+
+本文件只適用於同步模式。若 repository 已透過 `.codex-plugin/plugin.json` 被 Codex Plugin discovery 載入，請不要再執行同步腳本；Plugin 與同步目錄會暴露相同 skill name，造成來源與版本優先順序不明。若要使用同步模式，先停用另一個來源，再重新啟動 Codex。
+
+ChatGPT Work 的 Launcher 是第三種平台專用方式，只保存一個 Launcher，不批次保存 repository `skills/` 模組；它不與 Codex Plugin 或同步模式互相替代。
+
 ## 核心腳本
 
 ### `scripts/sync_codex_skills.ps1`

@@ -69,7 +69,9 @@
 
 若 standalone 任務後續真的需要簡報、Renderer、角色系統、Drive 歸檔等能力，才由目前 Skill 委派到對應 canonical skill；不得預先啟動整套流程。
 
-## Codex Skill 同步與新 Skill 發現
+## Codex 安裝模式與同步 Skill 發現
+
+Codex 必須在 Plugin discovery 與本機同步之間擇一；同時使用會造成同名 Skill 重複載入。Plugin 模式直接讀 repository 的 `.codex-plugin/plugin.json`；同步模式才使用下列 PowerShell 腳本。切換前應關閉另一個來源並重新啟動 Codex。
 
 GitHub `skills/` 是 V-MAX Skill 清單的 Source of Truth。Codex 本機不得只更新「已存在的 Skill」而忽略 GitHub 新增的 Skill。
 

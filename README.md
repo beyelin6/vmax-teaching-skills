@@ -22,6 +22,10 @@ V-MAX 是臺灣國小國語教材轉錄、課程設計、視覺渲染與交付�
 
 完整模組以 `V-MAX_MANIFEST.md` 為準，不以本清單取代 Manifest。
 
+## Codex 安裝模式（擇一）
+
+Codex 有兩種互斥的安裝模式：Plugin 模式由 `.codex-plugin/plugin.json` 直接發現 repository 的 `skills/`；同步模式才執行 `scripts/sync_codex_skills.ps1`，將 GitHub `skills/` 鏡像到 `~/.codex/skills/`。不要同時啟用兩種模式，否則同名技能會重複載入，來源與版本優先順序不明。切換模式前停用另一個來源，並重新啟動 Codex。
+
 ## ChatGPT Work 單技能安裝
 
 ChatGPT Work 不應把 `skills/` 下的所有模組逐一保存為個人技能。只安裝：
