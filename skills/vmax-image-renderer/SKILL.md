@@ -1,106 +1,84 @@
 ---
 name: vmax-image-renderer
-description: 將核准的 V-MAX Render Request 實際渲染為教學圖片；採 Object Composition First、Verified Text 與可獨立修復的 Vocabulary Marking。
+description: 將核准 Render Request 實際渲染為教學圖片；採 Object Composition First、Verified Text 與 glyph-anchored Vocabulary Marking。
 ---
 
 # V-MAX Image Renderer
 
-版本：1.9
-
-## 目的
-
-把已核准視覺規格推進為實際且已驗證的圖片資產。Renderer 不重新決定教材內容、角色身份或頁面結構，也不得把物件式規劃退化成一張大底圖再搬字。
+版本：2.0
 
 ## PRE_RENDER_RULE_COMPLIANCE_CHECK
 
-每頁核對 Runtime State、最新 Execution Rules、Layout Brief、Slide Script、Source/assets，以及：
-- `OBJECT_COMPOSITION_PLAN`
-- `CHARACTER_PLAN`
-- `KEY_LINE_PLAN`
-- 適用時 `VOCAB_MARK_PLAN`
-- character policy / role anchors
-- canvas lock / Verified Teaching Text
-- protected zones / planned overlaps
-- `MONOLITHIC_BACKGROUND_REGRESSION`
-- `VOCAB_HIGHLIGHT_COLLISION`
-- 圖文對應、密度、答案洩漏與歷史污染
-
-任一失敗 → `PRE_RENDER_RULE_BLOCKED`。
+核對 Runtime State、Execution Rules、Layout Brief、Slide Script、Source/assets、Object/Character/Key Line plans，以及適用時的 `VOCAB_MARK_PLAN`、`text_layout_revision`、anchor metadata。檢查大底圖退化、Vocabulary collision/anchor/reflow、閱讀安全區、角色、答案與密度。任一 blocker → `PRE_RENDER_RULE_BLOCKED`。
 
 ## Object Composition First
 
-施工：
-`鎖定文字／注音安全區 → 主場景 → 小插圖 → 角色 → 道具／語詞標記 → 金句 → layer order / planned overlaps → Verified Text → 扁平化 → QA`
+正式文字／注音先占位，再配置場景、小插圖、角色、道具、標記與金句。不得使用無字大底圖→找空位→搬字流程。核准的場景交疊不是碰撞。
 
-不得使用 `無字／少字大底圖 → 找空位 → 後貼中文 → 反覆搬字` 作為一般預設。
+## Glyph-anchored Vocabulary Marking
 
-角色／小插圖／道具盡量保持獨立；插圖不預設硬矩形。核准的場景交疊不是碰撞。只有未規劃或遮住核心閱讀／視覺證據才標 `IMAGE_COLLISION`。
+每個語詞標記是獨立 annotation layer。**禁止以人工估算座標或上一次 render 的底線位置直接重用。**
 
-## Vocabulary Marking Execution
+執行流程：
+1. 完成 Verified Text 最終排版並取得 `text_layout_revision`。
+2. 以 `term_text + occurrence_index` 精確定位指定 occurrence。
+3. 取得 `line_id`、`start_char_index`、`end_char_index`。
+4. 從實際文字層量測 `glyph_bbox` 與 `baseline_y`。
+5. 由 glyph bbox 計算 `mark_bbox`。
+6. 生成 `UNDERLINE_HIGHLIGHT`。
+7. 執行 anchor/reflow/alignment/span/layer/color QA。
 
-有 `VOCAB_MARK_PLAN` 時，Renderer 必須把每一個語詞標記建立成獨立 annotation asset／layer：
-- 使用 Verified Text 的實際位置計算 term span。
-- `UNDERLINE_HIGHLIGHT` 預設位於字下方，與中文字主要字框保留約字高 8–12% 淨距。
-- 筆刷厚度約字高 10–16%，可手繪不規則，但不能碰主要筆畫。
-- span 只包含指定語詞；標點預設排除。
-- 標記層在文字層下方。
-- 有注音時避開注音 protected zone。
-- 同一 `term_color_id` 在原文與詞義區一致。
+若 occurrence 不唯一或找不到 → `VOCAB_ANCHOR_FAIL`，不得猜。
 
-`BACKGROUND_HIGHLIGHT` 只用於已核准整句／金句，不得偷偷替代語詞 `UNDERLINE_HIGHLIGHT`。
+### Reflow Invalidation
 
-### 標記 QA
+下列任何變更均視為 text reflow：字型、字級、字距、行距、欄寬、換行、文字 x/y、文字內容。
 
-逐詞檢查：
-1. `VOCAB_MARK_ALIGNMENT_PASS`：標記確實襯在字下，不穿字。
-2. `VOCAB_MARK_SPAN_PASS`：起訖字元正確，沒有多標／少標／含標點。
-3. `VOCAB_MARK_LAYER_PASS`：文字在上、標記在下，注音安全。
-4. `TERM_COLOR_CONSISTENCY_PASS`：同詞同色 ID。
+發生 reflow：
+- 更新 `text_layout_revision`。
+- invalid 所有舊 `glyph_bbox`、`baseline_y`、`mark_bbox`。
+- 強制重新 locate、measure、calculate、render。
 
-任一失敗 → `VOCAB_HIGHLIGHT_COLLISION`，不得交付。
+若 revision 已改變但 anchor 未重算 → `STALE_VOCAB_MARK_ANCHOR` → FAIL。
 
-修復時先局部重算／移動／重畫標記。若文字本身位置與內容正確，禁止為了配合標記而搬動課文文字。
+### Underline Geometry
 
-## Monolithic Background Regression
+字下淨距約字高 8–12%；筆刷厚度約 10–16%；span 只含指定語詞，標點預設排除；文字在上、標記在下；不得遮注音。同一 term color ID 跨原文／詞義一致。手繪感只能作用於筆刷邊緣，不能改變 anchor/span 的準確性。
 
-完整場景吃滿畫布、文字只能在縫隙搬移、物件全部烘焙成單一底圖 → `MONOLITHIC_BACKGROUND_REGRESSION`。回 Object Composition 重構，不縮字、不蓋白框、不繼續搬字。
+整句／金句才可用核准 `BACKGROUND_HIGHLIGHT`。
+
+## Vocabulary Completion Gate
+
+逐詞必須通過：
+- `VOCAB_ANCHOR_PASS`
+- `VOCAB_REFLOW_PASS`
+- `VOCAB_MARK_ALIGNMENT_PASS`
+- `VOCAB_MARK_SPAN_PASS`
+- `VOCAB_MARK_LAYER_PASS`
+- `TERM_COLOR_CONSISTENCY_PASS`
+
+`VOCAB_HIGHLIGHT_COLLISION`、`VOCAB_ANCHOR_FAIL`、`STALE_VOCAB_MARK_ANCHOR` 任一存在，不得 `RENDER_VERIFIED`。
+
+修復標記：先重新定位 occurrence，再重算 bbox，最後調 clearance/stroke。文字正確時禁止搬文字追底線。
 
 ## Verified Text / Provider
 
-`TEXT_READING_PAGE` 使用可控連續文字層；其他圖片式頁使用 `VERIFIED_RASTER_TEXT_COMPONENTS`。圖片模型不得自由生成教學關鍵中文、注音、題目或正式定義。
+課文、注音、生字、形近字、多音字、成語、題目與正式定義不得由圖片模型自由生成。若 provider 無法量測最終文字 glyph bbox 或安全重算 anchor，標記 `RENDERER_CAPABILITY_BLOCKED`；不得以肉眼猜座標代替。
 
-若平台不能安全 compose objects／verified text／vocab marks，標記 `RENDERER_CAPABILITY_BLOCKED` 或 `IMAGE_HANDOFF_READY`，不得用錯誤大底圖流程代替。
+## Monolithic Background Regression
 
-## 代表頁與批次
+完整場景吃滿畫布、文字只能搬移或物件全烘焙成單一底圖 → `MONOLITHIC_BACKGROUND_REGRESSION`。回 Object Composition 重構。
 
-代表頁覆蓋本課實際頁型；有課文語詞標記時至少一張代表頁實測 Vocabulary Marking System。全量採小批次，每批檢查 Visual Drift、Object Composition、文字、角色與語詞標記。
+## Representative / Batch
 
-## Completion Gate
+有語詞標記時，代表頁必須實測至少一次 reflow（例如字級／欄寬變動）後 anchor 自動失效並重新計算。全量採小批次，每批檢查文字、Object Composition、角色與 Vocabulary anchors。
 
-交付至少通過：
-- `TEXT_PROOF_PASS`
-- `TEXT_OBJECT_RELATION_PASS`
-- `TEXT_DENSITY_PASS`
-- `TEXT_EMBEDDING_PASS`
-- `STUDENT_LAYER_PASS`
-- `OBJECT_COMPOSITION_PASS`
-- `PROTECTED_ZONE_PASS`
-- `PLANNED_OVERLAP_PASS`
-- `MONOLITHIC_BACKGROUND_PASS`
-- 適用時 `VOCAB_MARK_ALIGNMENT_PASS`
-- 適用時 `VOCAB_MARK_SPAN_PASS`
-- 適用時 `VOCAB_MARK_LAYER_PASS`
-- 適用時 `TERM_COLOR_CONSISTENCY_PASS`
-- canvas / crop / character consistency
+## Completion
 
-只有 `RENDER_VERIFIED` 可交付。
-
-## Pre-study Worksheet
-
-學習單仍依 worksheet layout manifest；不以簡報 Object Scene 或語詞底線規則改寫其既有作答區結構。學生可見中文／注音仍使用 verified text layers。
+除一般文字／Object Composition／canvas／角色 gates 外，有語詞標記頁必須通過上述六項 Vocabulary gates。只有 `RENDER_VERIFIED` 可交付。
 
 ## 核心金句
 
-> 語詞畫線是獨立標記物件：襯在字下、範圍對準、錯了只修標記。
+> 食宿的底線只能從「食宿」兩字的最終字框算出來，不能因為它原本大概在第二行就畫在第二行某個位置。
 
-> Renderer 的工作是把已核准的文字、角色、場景、小插圖與標記組成真正能上課的畫面。
+> 字改了，anchor 就失效；重新算線，不搬字。
