@@ -14,15 +14,37 @@
       "asset_ref": null,
       "derived_from": {
         "direct_parent": "SLIDE_SCRIPT:SS-001",
-        "lineage": ["SOURCE_MASTER:SM-001", "SLIDE_SCRIPT:SS-001"]
+        "lineage": [
+          "SOURCE_MASTER:SM-001",
+          "SLIDE_SCRIPT:SS-001"
+        ]
       },
-      "affected_slides": ["P01"],
+      "affected_slides": [
+        "P01"
+      ],
       "impact_note": null,
       "teacher_confirmation_ref": null
     }
   ],
   "derived_from": {
     "direct_parent": "SLIDE_SCRIPT:SS-001",
-    "lineage": ["SOURCE_MASTER:SM-001", "SLIDE_SCRIPT:SS-001"]
+    "lineage": [
+      "SOURCE_MASTER:SM-001",
+      "SLIDE_SCRIPT:SS-001"
+    ]
+  },
+  "canvas_lock": {
+    "profile": "lesson_presentation_16_9_v1",
+    "ratio": "16:9",
+    "width_px": 2560,
+    "height_px": 1440,
+    "orientation": "LANDSCAPE",
+    "safe_area": "approved-example-safe-area",
+    "fit_mode": "PRESERVE_ASPECT_CONTAIN_OR_APPROVED_CROP",
+    "output_formats": [
+      "PNG",
+      "PDF"
+    ],
+    "teacher_decision_ref": "EXAMPLE-CANVAS-CONFIRMATION-001"
   }
 }

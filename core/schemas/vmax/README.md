@@ -48,3 +48,17 @@ Migration policy: `migrations/README.md`.
 ## Legacy policy fields
 
 Some older, policy-specific documents contain fields such as `teacher_decision`, `promotion.status`, or local `*_decision` values. Those fields remain available for the policy that defines them, but they are not the cross-AI approval source of truth. A decision that authorizes downstream V-MAX production must also be represented by the applicable `APPROVED_TEACHING_SELECTION`, confirmed companion profile, `HOLD_EVENT` resolution, or `STATUS_TRANSITION` object. If the old field and the portable object disagree, stop and create a HOLD; do not normalize the disagreement silently.
+
+## Output verification evidence
+
+`OUTPUT_MANIFEST.outputs[]` entries marked `RENDER_VERIFIED` must include nonempty `asset_ref` and `verification_report_ref`. An `APPROVED` manifest requires `teacher_confirmation_status: CONFIRMED` and at least one output. Approval of an inventory does not turn its handoff entries into completed renders; delivery must still check each required output.
+
+For older records, retain actual existing asset and report references. Do not invent references to pass validation; if evidence cannot be recovered or regenerated, mark the affected output `BLOCKED` and revalidate before delivery. Draft handoffs may still have null asset references. Schema validation checks reference presence only; VQS must reopen assets and inspect reports, versions and applicable quality gates.
+
+## HOLD and revision decision evidence
+
+`HOLD_EVENT` requires a nonempty `teacher_decision_event` for `TEACHER_DECIDED`, `RESOLVED`, or `CANCELLED`. A teacher decision alone does not prove resolution: the executor must verify the selected action and affected upstream/downstream state before marking `RESOLVED`. Cancellation records a teacher decision to withdraw the HOLD; it does not approve its dependent outputs.
+
+`REVISION_EVENT.status` is required. `APPROVED` and `CANCELLED` require a nonempty `teacher_decision_event`; `APPROVED` also requires a nonempty `changed_version`. Approval authorizes the recorded revision scope, not automatic reapproval of downstream assets. Recalculate or invalidate the affected outputs and apply their normal review/QA gates before delivery.
+
+For older records, recover actual decision and version references. Missing evidence must remain unresolved; do not fabricate events or infer approval from prior status labels. The schemas check field presence and types; the executor must verify that referenced events belong to this lesson and decision scope.

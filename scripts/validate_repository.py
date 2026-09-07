@@ -39,6 +39,7 @@ def validate_vmax_schemas() -> None:
         "revision-event.schema.json",
         "status-transition.schema.json",
         "slide-script.schema.json",
+        "output-manifest.schema.json",
     )
     required_supporting_files = (
         "README.md",
@@ -53,6 +54,7 @@ def validate_vmax_schemas() -> None:
         "examples/role-selection-profile.example.json",
         "examples/style-selection-profile.example.json",
         "examples/status-transition.example.json",
+        "examples/output-manifest.example.json",
         "migrations/README.md",
     )
     for filename in required_supporting_files:

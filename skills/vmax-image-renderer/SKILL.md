@@ -63,7 +63,9 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 ## Verified Text / Provider
 
-課文、注音、生字、形近字、多音字、成語、題目與正式定義不得由圖片模型自由生成。若 provider 無法量測最終文字 glyph bbox 或安全重算 anchor，標記 `RENDERER_CAPABILITY_BLOCKED`；不得以肉眼猜座標代替。
+課文、注音、生字、形近字、多音字、成語、題目與正式定義不得由圖片模型自由生成。只有當頁含語詞標記或其他精準文字 anchor 時，才要求最終文字 glyph bbox 量測與安全重算能力；若缺少，標記 `RENDERER_CAPABILITY_BLOCKED`，不得以肉眼猜座標代替。無此類 anchor 的頁面不因缺少量測 API 而阻擋，仍須通過文字、字型與其他適用 QA。
+
+每次選擇 provider 或施工正式文字前，必須載入 `references/provider-routing.md` 與 `references/verified-text-overlay.md`。圖片生成可與文字 renderer 分工；平台只匯入既有合成資產時，依 provider routing 的 reflow 規則保留或重算 anchor。
 
 ## Monolithic Background Regression
 

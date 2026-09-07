@@ -175,7 +175,7 @@ V-MAX 成品層可保留高畫質渲染成果；可編修 PPTX 不屬預設必�
 
 - 執行實際建立／修改
 - 取得可驗證結果
-- 才標記 `CANVA_RENDER_VERIFIED`
+- 依 `skills/vmax-image-renderer/references/provider-routing.md` 完成最終輸出重檢與全部適用 gates 後，才標記 `CANVA_RENDER_VERIFIED`，並對應共用狀態 `RENDER_VERIFIED`；僅建立成功不得視為驗證通過。
 
 若沒有 Canva Connector / API 或沒有可驗證寫入能力：
 

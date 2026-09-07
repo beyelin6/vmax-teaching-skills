@@ -23,16 +23,37 @@
           "status": { "enum": ["HANDOFF_READY", "RENDER_VERIFIED", "BLOCKED", "SUPERSEDED"] },
           "platform": { "type": ["string", "null"] },
           "asset_ref": { "type": ["string", "null"] },
+          "verification_report_ref": { "type": ["string", "null"] },
           "derived_from": { "$ref": "#/$defs/derivedFrom" },
           "affected_slides": { "type": "array", "items": { "type": "string" } },
           "impact_note": { "type": ["string", "null"] },
           "teacher_confirmation_ref": { "type": ["string", "null"] }
         },
+        "allOf": [{
+          "if": { "properties": { "status": { "const": "RENDER_VERIFIED" } }, "required": ["status"] },
+          "then": {
+            "required": ["asset_ref", "verification_report_ref"],
+            "properties": {
+              "asset_ref": { "type": "string", "minLength": 1 },
+              "verification_report_ref": { "type": "string", "minLength": 1 }
+            }
+          }
+        }],
         "additionalProperties": false
       }
     },
     "derived_from": { "$ref": "#/$defs/derivedFrom" }
   },
+  "allOf": [{
+    "if": { "properties": { "status": { "const": "APPROVED" } }, "required": ["status"] },
+    "then": {
+      "required": ["teacher_confirmation_status"],
+      "properties": {
+        "teacher_confirmation_status": { "const": "CONFIRMED" },
+        "outputs": { "minItems": 1 }
+      }
+    }
+  }],
   "$defs": {
     "derivedFrom": {
       "type": "object",

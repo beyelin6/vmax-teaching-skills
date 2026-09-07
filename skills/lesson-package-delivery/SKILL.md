@@ -197,7 +197,7 @@ lesson_package_delivery:
   visual_yaml_md: PASS | N/A_BY_TEACHER
   character_visual_assets: PASS | N/A_BY_TEACHER
   verified_render_assets: PASS | N/A_BY_TEACHER
-  presentation_canvas_16_9: PASS | N/A_BY_TEACHER
+  presentation_canvas_lock: PASS | N/A_BY_TEACHER
   verified_raster_text_layers: PASS | N/A_BY_TEACHER
   render_verification_report: PASS | N/A_BY_TEACHER
   image_first_pdf: PASS | N/A_BY_TEACHER
@@ -205,23 +205,27 @@ lesson_package_delivery:
   pptx_teacher_request_recorded: PASS | N/A_BY_TEACHER
   prestudy_worksheet: PASS | N/A_BY_TEACHER
   postlesson_short_writing_worksheet: PASS | N/A_BY_TEACHER
-  worksheet_lkb_coverage: PASS
-  worksheet_render_verified: PASS
-  worksheet_min_font_12pt: PASS
-  worksheet_export_scale: PASS
-  worksheet_filename_and_range: PASS
-  worksheet_single_png_preserved: PASS
-  worksheet_print_share_separated: PASS
-  worksheet_share_render_quality: PASS
-  worksheet_png_decode: PASS
+  worksheet_lkb_coverage: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_render_verified: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_min_font_12pt: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_export_scale: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_filename_and_range: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_single_png_preserved: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_print_share_separated: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_share_render_quality: PASS | FAIL | N/A_BY_TEACHER
+  worksheet_png_decode: PASS | FAIL | N/A_BY_TEACHER
   worksheet_zhuyin_word_space: PASS | N/A
   writing_character_scale_safe: PASS | N/A
-  worksheet_regression: PASS
+  worksheet_regression: PASS | FAIL | N/A_BY_TEACHER
   workflow_regression: PASS
   google_drive_archive: PASS | BLOCKED
 ```
 
 Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 PASS 才能宣告完整交付。
+
+學習單檢查只適用於 Output Profile 中已選取的學習單；兩份均經教師排除時，共同 worksheet gates 標記 `N/A_BY_TEACHER` 並附排除決定，不要求虛構 PASS。只排除其中一份時，另一份仍必須完成全部適用 gates；注音／造詞與寫作人物等專用檢查依實際頁型記錄 N/A 理由。
+
+`presentation_canvas_lock` 核對教師選定的 `4:3` 或 `16:9` 與實際輸出尺寸，不固定要求 16:9；歷史 `presentation_canvas_16_9` 只供追溯，不再作新交付的判定欄位。
 
 上述任一必要 worksheet gate FAIL 時，不得把學習單列為 PASS。
 
@@ -236,11 +240,11 @@ Google Drive 已指定為固定交付位置時，`google_drive_archive` 必須 P
 - 冊別資料夾正確
 - 課版本號正確
 - 六個分類資料夾存在
-- 10 項交付物依類別實際存在
+- 本次 Output Profile 選定的全部必要交付物依類別實際存在；未選取項目有教師決定與排除理由，不固定要求 10 項
 - 所有必要圖片均為 `RENDER_VERIFIED`，且可重新開啟檢查
-- 預習單與短文單通過 12 pt 字級與匯出縮放檢查
-- 單課 PNG 全部保留；印刷版與分享版分開且課次範圍正確
-- 分享版及修改後的 PDF 已逐頁重新渲染檢查
+- 已選取的預習單／短文單通過 12 pt 字級與匯出縮放檢查；未選取項目依上述適用性規則記錄
+- 若交付學習單，單課 PNG 全部保留；印刷版與分享版分開且課次範圍正確
+- 若交付學習單，分享版及修改後的 PDF 已逐頁重新渲染檢查
 - 檔名可辨識
 - Drive list/search 可重新查到
 

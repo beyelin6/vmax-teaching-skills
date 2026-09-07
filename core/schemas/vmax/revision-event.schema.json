@@ -3,7 +3,7 @@
   "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/revision-event.schema.json",
   "title": "V-MAX Revision Event",
   "type": "object",
-  "required": ["object_type", "revision_id", "lesson_id", "trigger", "changed_object", "affected_downstream", "recommended_return_phase", "unchanged_objects", "teacher_decision_required"],
+  "required": ["object_type", "revision_id", "lesson_id", "trigger", "changed_object", "affected_downstream", "recommended_return_phase", "unchanged_objects", "teacher_decision_required", "status"],
   "properties": {
     "object_type": { "const": "REVISION_EVENT" },
     "revision_id": { "type": "string" },
@@ -18,5 +18,21 @@
     "teacher_decision_event": { "type": ["string", "null"] },
     "status": { "enum": ["OPEN", "WAITING_TEACHER", "APPROVED", "CANCELLED"] }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "enum": ["APPROVED", "CANCELLED"] } }, "required": ["status"] },
+      "then": {
+        "required": ["teacher_decision_event"],
+        "properties": { "teacher_decision_event": { "type": "string", "minLength": 1 } }
+      }
+    },
+    {
+      "if": { "properties": { "status": { "const": "APPROVED" } }, "required": ["status"] },
+      "then": {
+        "required": ["changed_version"],
+        "properties": { "changed_version": { "type": "string", "minLength": 1 } }
+      }
+    }
+  ],
   "additionalProperties": false
 }

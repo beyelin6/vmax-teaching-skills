@@ -15,9 +15,18 @@
 1. GitHub `main` 的 `V-MAX_MANIFEST.md`。
 2. Google Drive `V-MAX_Runtime_Index`。
 3. 教師指定課次的最新 Runtime State 與 revision。
-4. Runtime State 指向的 Source Master、LKB、Learning Modules、Teaching Strategy 與教師確認紀錄。
+4. Runtime State 指向且當前階段已應存在的 Source Master、LKB、Learning Modules、Teaching Strategy 與教師確認紀錄；依下述階段適用性規則讀取。
 5. 若任務涉及簡報或視覺：目前 `SLIDE_SCRIPT`、Approved Visual Benchmark、Visual Text DNA、角色定錨、Style Recipe 與上一個代表頁狀態。
 6. 若任務涉及簡報或視覺：`output_profile.canvas_profile`、教師選定比例、實際像素、方向、安全邊界與素材 fit mode；畫布未鎖定時不得建立代表頁。
+
+### 階段適用性
+
+- 先由 Index 與 Runtime 判定新課或續作，以及目前唯一合法 stage，再決定本階段必要文件；不能先要求所有下游成品存在。
+- 新課尚無 State 時，依 Orchestrator 的新課初始化流程建立實際 Runtime State，再執行 State Sync；不得以範例 State 或聊天記憶替代。Drive 不可用時仍須阻擋。
+- SOURCE 0／STEP 1 尚未產生的 Source Master、LKB、Learning Modules、Teaching Strategy 等，記錄「本階段尚未產生」與理由，不視為遺失、不要求補造，也不得標為已載入或已核准。
+- 已完成階段的必要輸出、Runtime 已引用的核准版本，以及當前 stage 明定的必要輸入，都必須實際讀取；不能利用「尚未產生」豁免。缺少或版本不符即 BLOCKED／CONFLICT。
+- 視覺階段同樣依工作項目判定：建立角色或代表頁時，不要求該項尚未產生的成品先存在；全量渲染則必須已具備核准代表頁與所有既定前置條件。
+- State Sync Receipt 的尚未適用欄位保留 null，另以 `not_yet_produced` 列出文件、預期產生階段與理由；不能把 null 當成 PASS 證據。
 
 必要檔案或 Drive State 無法實際讀取時，標記 `CONTINUATION_STATE_BLOCKED`，不得用舊對話、模型記憶、上一輪輸出或猜測值繼續。
 
@@ -48,6 +57,7 @@ state_sync:
   canvas_width_px:
   canvas_height_px:
   candidate_outputs_preserved: true | false
+  not_yet_produced: []
   conflicts: []
   downstream_impact: []
 ```
@@ -61,7 +71,7 @@ state_sync:
 - `state_sync.status: PASS`。
 - `current_stage`、`last_completed_stage` 與 `next_allowed_stage` 互相一致。
 - 最新教師確認已回寫 Runtime State；聊天中的「好／確認」若尚未回寫，只能標記為待寫入事件，不得直接推進。
-- 本次任務使用的來源版本、逐頁腳本版本與視覺基準版本已載入。
+- 本次任務使用且按目前階段已應存在的來源版本、逐頁腳本版本與視覺基準版本已載入；尚未產生的下游物件依階段適用性記錄，不冒充已載入。
 - 若要渲染，當頁的 Verified Teaching Text、版面構圖、角色定錨、字體 DNA 與輸出模式均已存在。
 - 若要渲染，`canvas_lock` 必須已鎖定且與 Slide Script、Runtime State、Output Profile 一致；缺少或衝突時標記 `CANVAS_SPEC_BLOCKED`。
 - 尚未確認的候選輸出不會被當成鎖定版本。

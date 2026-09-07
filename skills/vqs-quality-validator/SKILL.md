@@ -18,6 +18,7 @@ description: 依 V-MAX Quality Standard（VQS）檢查 Baseline Lesson Package�
 3. `docs/TEACHING_DNA.md`
 4. `project/project-status.md`
 5. 當次 Output Manifest
+6. 若含圖片式簡報：`core/quality/quality-gate-2.md`、`core/presentation/text-layer-construction-policy.md` 與 `skills/vmax-image-renderer/references/provider-routing.md`；逐項執行全部適用 gates，不以舊版通用檢查清單取代。
 
 ## 適用成果
 
@@ -108,7 +109,10 @@ AI 延伸不得混入 Official Knowledge。
 - 狀態為 `RENDER_VERIFIED`，不是 `RENDER_READY` 或 `IMAGE_HANDOFF_READY`。
 - 驗證針對實際圖片／匯出頁面執行，不是只檢查 prompt。
 - 教學關鍵繁體中文、注音、標點與教材內容逐字正確。
-- 關鍵文字無法由圖片模型可靠產生時，已使用可控正式文字層。
+- 正式教材文字一律使用可控正式文字層，不因圖片模型宣稱文字可靠而豁免。
+- 有語詞標記頁必須通過 Quality Gate 2 的六項 Vocabulary gates，並保存目前文字 revision、anchor 與代表頁 reflow 實測證據。無此類標記時明確記錄不適用，不得因缺少 bbox API 阻擋。
+- 平台匯入已驗證合成資產時，依 provider routing 判定是否發生 reflow，並重檢最終匯出。
+- Output Manifest 中每個 `RENDER_VERIFIED` 項目都有可重新開啟的 `asset_ref` 與對應 `verification_report_ref`；Schema 通過不代表資產存在或 QA 已實際執行。
 
 ### 8. 學習單母檔與交付
 
