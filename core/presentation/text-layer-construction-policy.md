@@ -1,171 +1,227 @@
-# V-MAX Text Layer Construction Policy 1.1
+# V-MAX Text Layer Construction Policy 1.2
 
 ## 定位
 
-本政策定義國語圖片式簡報的文字層施工方式。文字必須可精準校對，但視覺上要和插圖、角色、物件、紙張、筆刷、路線與閱讀動線共同形成教材畫面。
+本政策定義國語圖片式簡報的文字層施工方式。文字必須可精準校對，也必須和插圖、角色、物件、標記與閱讀動線共同形成教材畫面。
 
 核心原則：
 
-> 文字不是貼在圖片上的內容；文字是畫面中的教學物件。字形要受控，位置要有關係，版面不能退化成 PPT 文字框。
+> 文字不是貼在圖片上的內容；文字是畫面中的教學物件。
+
+> 依附文字的語詞標記必須綁定最終文字字框；底線跟著字走，不是字跟著底線走。
 
 ## 1. 三種視覺基準
 
 ### 正向基準：整合式路線／總覽頁
-
-教師提供的「放學路線地圖」屬於正向基準 `POSITIVE_BENCHMARK_INTEGRATED_VISUAL_ROUTE_MAP`：
-
-- 文字進入木牌、旗幟、路標、對話泡泡與路線節點。
-- 短句、人物、事件與路線共同形成閱讀順序。
-- 插圖不是裝飾，而是直接說明事件關係。
+- 文字、人物、事件與路線共同形成閱讀順序。
+- 插圖直接說明事件關係。
 - 不依賴四欄、等尺寸卡片或固定左右欄。
 
-這類構圖適合課文總覽、全文線索、事件流程與遷移頁，不得直接拿來承載整段課文原文。
-
 ### 可接受基準：情境主圖＋語詞標籤
-
-教師提供的「感官偵探／點心情境頁」屬於可接受基準 `ACCEPTABLE_BENCHMARK_SITUATED_CALLOUTS`：
-
 - 一個連續主場景承載主要理解焦點。
 - 語詞、感官圖示與短解釋靠近對應物件。
 - 文字容器可以是手繪紙條、筆刷、標籤、泡泡或自然留白。
-- 每個文字元件都要能回答「它指向畫面的哪個物件或動作？」
-
-可接受但必須控制：文字標籤過多、容器過規則、教師專用的答案／進度卡混入學生頁，均需修正。
 
 ### 負向基準：分割式打字版
+- 課文區與圖片區硬切、彼此不作用。
+- 正文像逐行打字貼在背景。
+- 圖片排成平均矩形格或卡片牆。
+- 語詞解釋過小、脫離原文。
 
-教師提供的「完整課文左欄＋四格圖片右欄」屬於負向基準 `NEGATIVE_BENCHMARK_TYPED_TEXT_SPLIT_LAYOUT`：
-
-- 課文區與圖片區被硬切成兩個互不作用的區塊。
-- 正文像逐行打字貼在筆記紙上，沒有和插圖共同構圖。
-- 圖片被排成平均矩形格，像拼貼或卡片牆。
-- 語詞解釋過小、脫離原文與對應情境。
-
-出現上述特徵時標記 `TYPED_TEXT_LAYOUT_FAIL`，不得交付。
+出現上述特徵 → `TYPED_TEXT_LAYOUT_FAIL`。
 
 ## 2. 文字元件施工
 
 ### 2.0 頁型分流
 
-- `TEXT_READING_PAGE`：課文原文是閱讀主體，使用真正可控的連續文字層；可做段落排版、語詞標色、底線、圈選與局部校對。這不是失敗的「打字貼圖」，而是課文頁的必要文字層。
-- `IMAGE_COMPOSED_PAGE`：語詞、句型、修辭、文意、形近字、多音字、成語、總覽與遷移等學生頁，先將確認文字渲染成背景透明的文字圖片元件，再與背景、插圖、物件或自然留白合成。
-- 只有 `IMAGE_COMPOSED_PAGE` 使用普通浮動文字框、逐行打字或不透明白底文字框時，才標記 `TYPED_TEXT_LAYOUT_FAIL`；不得把這個錯誤判定套用到 `TEXT_READING_PAGE` 的正式課文文字層。
+- `TEXT_READING_PAGE`：課文原文是閱讀主體，使用可控連續文字層；可以加局部語詞標記、圈選與提示，但不得破壞連續閱讀。
+- `IMAGE_COMPOSED_PAGE`：語詞、句型、修辭、文意、形近字、多音字、成語、總覽與遷移等頁，使用 Verified Raster Text Components 與視覺物件共同合成。
+- 只有 `IMAGE_COMPOSED_PAGE` 退化成普通浮動文字框、逐行打字、不透明白底文字框時才標記 `TYPED_TEXT_LAYOUT_FAIL`；不得誤判課文閱讀頁的正式文字層。
 
-### 2.1 受控內容
+### 2.1 Verified Teaching Text
 
-課文、詞語、注音、成語、句型、修辭、題目與提示先成為 `Verified Teaching Text`，再渲染為獨立、透明背景的 `VERIFIED_RASTER_TEXT_COMPONENTS`。預設交付不得保留一般浮動字型文字框；圖片模型不得生成正式教材文字。
+課文、語詞、注音、成語、句型、修辭、題目與提示先成為 Verified Teaching Text，再進文字渲染。圖片模型不得生成正式教材文字。
 
 固定施工順序：
 
 ```text
 Verified Teaching Text 確認
-→ 逐元件渲染透明文字圖片
-→ 逐元件校對字形、斷行、行距與大小
-→ 依畫面物件／視線／留白錨定
-→ 與插圖合成
-→ 扁平化為整頁圖片
+→ 選定並驗證實際字型
+→ 完成最終文字排版
+→ 建立 text_layout_revision
+→ 校對字形、斷行、行距與大小
+→ 建立需要的文字錨定標記
+→ 與視覺物件共同合成
+→ 扁平化與 QA
 ```
 
-透明文字圖片元件不是把整段文字先排成普通文件再貼上；它必須帶著當頁的容器形狀、內距、行距、色彩與錨定關係一起施工。文字可以直接疊在背景的自然留白、淺色區、光影或專門設計的背景區上，不必每次都放進紙條、木牌或泡泡。只有教師明確要求可編輯 PPTX 時，才可由同一份 Verified Teaching Text 另派生 Native Text。
-
-每個文字元件至少保存：
+文字元件至少保存：
 
 ```yaml
 text_component:
   component_id:
   exact_text:
-  transparent_background: true
   source_ref:
   visibility: STUDENT | TEACHER | QA
   font_role:
   font_file:
   font_size_pt:
   line_height:
-  anchor_relation:
-  container_type:
   position:
   z_order:
+  text_layout_revision:
   proof_status: UNCHECKED | PROOFED | EMBEDDED | VERIFIED
   repair_scope: LOCAL_COMPONENT_ONLY
 ```
 
-`transparent_background: true` 表示輸出的文字圖片只有已校對的文字像素與必要的抗鋸齒 alpha，不能附帶白色矩形、整塊不透明底色或預設文字框背景；若需要紙張、筆刷或泡泡，必須另外作為已規劃的畫面物件，不能藏在文字元件裡。
+字型選擇不在本檔硬綁單一 family；正式字型由 `skills/traditional-chinese-font-safety/SKILL.md` 的 font role、實際可取得字型、glyph coverage、臺灣字形與 fallback QA 決定。
 
-### 2.2 段落文字不可碎片化
+### 2.2 Font Change = Reflow
 
-- 課文閱讀頁的自然段或完整語意單位，預設渲染為連續段落文字元件。
-- 不得把每一句切成獨立卡片、標籤或等距小框。
-- 只有為了局部文字修正、語詞標色或特殊教學標記，才建立局部附加元件；附加元件必須對回原文位置。
-- 課文過長時拆成連續閱讀頁，不縮小字級、不改寫、不打散原文結構。
+下列任一改變都屬 text reflow：
+- font family / font file
+- 字級、字距、行距
+- 欄寬、換行
+- 文字 x/y 位置
+- 文字內容
 
-### 2.3 文字與畫面物件的關係
+發生 reflow 時：
+1. 更新 `text_layout_revision`。
+2. 所有依附文字的舊 `glyph_bbox`、`baseline_y`、`mark_bbox` 全部 invalid。
+3. 所有語詞標記、底線、圈選與精準文字 anchor 必須重新計算。
+4. 不得把舊標記拖到新文字附近充當完成。
 
-透明文字元件可嵌入：木牌、旗幟、書頁、手繪紙條、筆刷底色、對話泡泡、漫畫旁白、場景招牌或自然留白。文字容器由當頁構圖決定，不得先套固定矩形再塞入文字。
+沿用舊 anchor → `STALE_TEXT_ANCHOR`；若為語詞標記則使用 `STALE_VOCAB_MARK_ANCHOR`。
 
-每個元件必須有一種明確關係：
+### 2.3 段落文字不可碎片化
 
-- 指向某個物件。
-- 跟隨某個角色的視線或動作。
-- 標示路線、時間、順序或變化。
-- 連接原文片段與詞語解釋。
-- 成為情境中的自然物件。
-- 依附背景的自然留白、色彩層、光影或構圖動線。
+- 課文閱讀頁自然段／完整語意單位維持連續文字。
+- 不得每句切成獨立卡片、標籤或等距小框。
+- 局部語詞標記是 annotation layer，不應把原文拆碎。
+- 課文過長時拆連續閱讀頁，不縮字、不改寫、不打散。
 
-若文字拿掉後插圖與教學理解完全沒有變化，檢查是否只是裝飾性貼字；若插圖拿掉後文字仍是普通講義，檢查是否缺少圖文共同構圖。
+### 2.4 文字與畫面物件關係
 
-## 3. 依頁型決定文字層
+文字可依附木牌、旗幟、書頁、紙條、筆刷、對話泡泡、場景招牌或自然留白。文字容器由當頁 Object Composition 決定，不先套固定矩形。
+
+若文字拿掉後插圖與教學理解完全沒變化，檢查是否只是裝飾貼字；若插圖拿掉後文字仍只是普通講義，檢查是否缺少圖文共同構圖。
+
+## 3. Vocabulary Marking Contract
+
+### 3.1 視覺語法
+
+- 語詞定位 → `UNDERLINE_HIGHLIGHT`
+- 整句／金句 → 經核准的 `BACKGROUND_HIGHLIGHT`
+
+語詞底線是獨立 annotation object，不是文字本身，也不是烘焙進 AI 圖片的背景色塊。
+
+### 3.2 Glyph Anchor
+
+語詞標記固定流程：
+
+```text
+最終文字排版
+→ text_layout_revision
+→ term_text + occurrence_index
+→ line_id + start/end char index
+→ glyph_bbox + baseline_y
+→ mark_bbox
+→ UNDERLINE_HIGHLIGHT
+```
+
+不得用肉眼估計 x/y，也不得沿用上一版 render 的底線座標。
+
+同詞多次出現時必須指定 `occurrence_index`。無法唯一定位 → `VOCAB_ANCHOR_FAIL`。
+
+### 3.3 Underline Geometry
+
+- 位於中文字主要字框下方。
+- 淨距約字高 8–12%。
+- 筆刷厚度約字高 10–16%。
+- span 只涵蓋指定語詞；標點預設排除。
+- `MARK_BELOW_TEXT`。
+- 不得侵入注音安全區。
+- 同一 `term_color_id` 在原文與詞義標示一致。
+- 手繪感只能改筆刷邊緣，不能破壞 anchor/span 準確度。
+
+### 3.4 Vocabulary QA
+
+有語詞標記時必須通過：
+- `VOCAB_ANCHOR_PASS`
+- `VOCAB_REFLOW_PASS`
+- `VOCAB_MARK_ALIGNMENT_PASS`
+- `VOCAB_MARK_SPAN_PASS`
+- `VOCAB_MARK_LAYER_PASS`
+- `TERM_COLOR_CONSISTENCY_PASS`
+
+穿字、標錯詞、跑到其他文字下方、遮注音 → `VOCAB_HIGHLIGHT_COLLISION`。
+
+修正順序：重新定位 occurrence → 重算 glyph bbox → 重算 mark bbox → 調整 clearance/stroke → 局部重建標記。若正文正確，不得搬正文配合底線。
+
+## 4. Object Composition 與插圖密度
+
+渲染前使用 `OBJECT_COMPOSITION_PLAN`，不再以 `image_layout_plan` 作為主要施工契約。舊 `image_layout_plan` 僅可保留作兼容摘要。
+
+Object Composition 至少區分：
+- 文字／注音閱讀安全區
+- 主場景物件
+- supporting visual objects
+- character objects
+- annotation objects
+- layer order
+- planned overlaps
+- protected zones
+
+一般頁不得先生成完整大底圖再塞字。`MONOLITHIC_BACKGROUND_REGRESSION`、`IMAGE_DENSITY_OVERLOAD`、未核准 `IMAGE_COLLISION`、`VISUAL_BREATHING_FAIL` 均不得交付。
+
+核准的 `SCENE_INTEGRATED`、`FOREGROUND_OVERLAP` 不因相切本身判碰撞。
+
+## 5. 依頁型決定文字層
 
 | 頁型 | 文字層策略 | 禁止退化 |
 | --- | --- | --- |
 | 課文總覽／路線圖 | 短句融入路線、旗幟、木牌與角色動線 | 固定四欄資訊卡 |
-| 課文閱讀頁 | 連續原文主區＋縮小的旁側理解插圖；語詞在原文位置標色，解釋靠近段落或對應物件 | 每句一框、全文逐行貼在背景上 |
-| 語詞／感官頁 | 一個連續主場景＋2–4 個物件錨定的詞語／短解釋 | 語詞四格表、解釋卡片牆 |
-| 文意理解頁 | 情境圖＋一個主問題＋少量視覺線索 | 題目框與圖片左右硬切 |
+| 課文閱讀頁 | 連續原文主區＋局部理解插圖；指定語詞用 glyph-anchored 字下標記 | 每句一框、全文貼在背景上 |
+| 語詞／感官頁 | 主場景＋物件錨定詞語／短解釋 | 語詞四格表、解釋卡片牆 |
+| 文意理解頁 | 情境圖＋一個主問題＋少量視覺線索 | 考卷式題目框 |
 | 句型／修辭頁 | 原句先出現，關鍵詞與視覺效果建立對應 | 名稱／定義／例句三欄 |
-| 形近字／多音字頁 | 精準字形與注音為主，部件／讀音與情境有可見關聯 | 圖片模型生成國字、平均四格 |
+| 形近字／多音字頁 | 精準字形、注音與情境有可見關聯 | 圖片模型生成國字、平均四格 |
 | 成語頁 | 先情境後成語，文字沿故事線出現 | 成語／解釋／例句固定三格 |
 
-## 4. 密度與層級
+## 6. 密度與層級
 
-- 一頁只保留一個主要教學焦點。
-- 一般情境頁最多 3–4 個次要文字標籤；超過時先刪減、拆頁或改成下一頁。
-- 課文閱讀頁可保留完整原文，但正文必須是主體，投影等效字級以 36–40 pt 為目標。
-- 語詞解釋必須配合段落與畫面，不獨立縮成角落小字。
-- 教師答案、幸福證據、進度評分與講者備註屬教師層；除非教師明確指定，不能混入學生頁。
+- 一頁一個主要教學焦點。
+- 一般情境頁最多約 3–4 個必要次要標籤；超過時優先刪減或拆頁。
+- 課文閱讀頁正文是主體，投影等效字級以 36–40 pt 為目標。
+- 語詞解釋靠近段落或對應情境，不縮成角落小字。
+- 教師答案、講者備註、進度資訊留教師層。
 
-### 4.1 插圖密度與呼吸感
+## 7. 文字層驗收
 
-圖片式簡報的插圖不是越多越好。渲染前必須先建立 `image_layout_plan`，至少標示主插圖、輔助插圖、文字區、留白區與圖間距；沒有構圖計畫不得直接批量生圖。
+交付前至少通過：
+1. `TEXT_PROOF_PASS`
+2. `TEXT_OBJECT_RELATION_PASS`
+3. `TEXT_DENSITY_PASS`
+4. `TEXT_EMBEDDING_PASS`
+5. `STUDENT_LAYER_PASS`
+6. `OBJECT_COMPOSITION_PASS`
+7. 適用時六項 Vocabulary Marking passes
+8. Font Safety / glyph / Bopomofo QA
 
-- 一般頁預設「一個主畫面＋依內容決定數量的輔助視覺」，主畫面負責主要理解焦點；心智圖、路線圖、事件地圖、流程圖與漫畫可有較多輔助視覺。
-- 輔助視覺數量不得以固定上限判定，而要檢查是否有清楚的主次、群組、閱讀路徑、圖間距與文字呼吸。
-- 多張插圖若各自都是完整場景，不得無計畫地相鄰、相切或黏成一片；必須保留可辨識的留白、自然邊界或經設計的漫畫分格。
-- 漫畫頁可有多格，但各格必須服務同一條事件／理解線；不得把多張獨立滿版圖縮成密集縮圖牆。
-- 插圖占比、圖間距與文字閱讀區必須先滿足投影可讀性；放不下時優先減少插圖、改成連續頁或改用局部圖，不得把文字與圖片一起縮到失去呼吸感。
-- 沒有明確教學理由時，不使用滿版複雜插圖；局部主畫面與自然留白優先。
-
-下列任一情況即停止該頁，不得交付：`IMAGE_DENSITY_OVERLOAD`、`IMAGE_COLLISION`、`VISUAL_BREATHING_FAIL`、`FULL_BLEED_UNJUSTIFIED`。
-
-## 5. 文字層驗收
-
-交付前必須同時通過：
-
-1. `TEXT_PROOF_PASS`：國字、標點、注音、來源與文字內容正確。
-2. `TEXT_OBJECT_RELATION_PASS`：文字和場景物件、角色動線或原文位置有明確關係。
-3. `TEXT_DENSITY_PASS`：沒有過小、過密、碎片化或解釋脫離段落。
-4. `TEXT_EMBEDDING_PASS`：文字容器與插圖共同構圖，不像後貼文字框。
-5. `STUDENT_LAYER_PASS`：沒有答案、講者備註、教師進度或內部資訊外露。
-6. `IMAGE_DENSITY_PASS`：主畫面、輔助圖、文字區與留白有清楚層級，圖片沒有互撞或黏成無法閱讀的圖牆。
-
-任一失敗即不得交付，使用下列阻擋碼：
-
+常用阻擋碼：
 - `TYPED_TEXT_LAYOUT_FAIL`
 - `TEXT_OBJECT_DETACHED`
 - `TEXT_DENSITY_OVERLOAD`
 - `PARAGRAPH_FRAGMENTED`
 - `ANSWER_LEAK`
 - `TEACHER_LAYER_LEAK`
-- `IMAGE_DENSITY_OVERLOAD`
-- `IMAGE_COLLISION`
-- `VISUAL_BREATHING_FAIL`
-- `FULL_BLEED_UNJUSTIFIED`
+- `MONOLITHIC_BACKGROUND_REGRESSION`
+- `VOCAB_HIGHLIGHT_COLLISION`
+- `VOCAB_ANCHOR_FAIL`
+- `STALE_VOCAB_MARK_ANCHOR`
+
+## 核心金句
+
+> 文字先排好，標記才知道要去哪裡。
+
+> 字型一換、文字一 reflow，所有依附文字的舊標記都必須重新算。
