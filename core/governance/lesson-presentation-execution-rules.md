@@ -50,9 +50,25 @@
 - `facing`: 視線或身體朝向，應服務文字、事件或視覺動線
 - `action`: 本頁動作／表情／教學任務
 - `speech_mode`: none / dialogue / prompt / task / label
+- `overlap_mode`: `SEPARATE_OBJECT` / `SCENE_INTEGRATED` / `FOREGROUND_OVERLAP`
+- `overlap_targets`: 允許與哪些場景、道具、情境插圖或人物產生視覺交疊；若無則 `NONE`
 - `avoid_zone`: 不可遮擋的課文、語詞、注音、主要事件、其他角色與核心插圖區
 
 角色出現必須有教學或敘事功能；不得只因角色庫存在而裝飾性塞入。若 canonical character 在前段已設定為貫穿角色，逐頁 brief 必須明確標出其出場節奏，避免角色在中段無理由消失。
+
+### 場景融入與交疊
+
+「角色是獨立版面物件」不代表角色必須永遠與其他圖片分離。當角色在語意上屬於場景中的參與者，例如採訪、觀察、對話、陪伴、操作器材、指向景物、與事件人物互動時，可以採 `SCENE_INTEGRATED` 或 `FOREGROUND_OVERLAP`，合理與背景、道具、情境插圖或其他人物交疊，使角色真正融入場景。
+
+允許交疊必須同時符合：
+
+- 交疊有敘事或教學理由，不是為了塞滿版面。
+- 不遮住人物臉部、手勢、關鍵動作、核心物件或教材重點。
+- 不侵入課文、語詞、注音、金句等學生閱讀安全區。
+- 前後景層級、比例、視線方向與接觸關係合理，不得像貼紙懸浮在場景上。
+- 若角色與場景人物互動，視線、姿勢、手部動作與距離必須能支持該互動。
+
+因此 Renderer 應區分「不合理遮擋」與「有意義的場景融合」；不得因偵測到圖像交疊就一律判定違規。
 
 ### KEY_LINE_PLAN
 
@@ -74,7 +90,9 @@
 
 角色、金句、課文文字、詞語解釋與小課文插圖都應視為可獨立配置的版面物件。逐頁 brief 必須先保留文字安全區與教學重點區，再配置角色和插圖；不得讓文字覆蓋人物臉部、關鍵動作或主要插圖，也不得讓角色／插圖侵入注音與學生閱讀區。
 
-若角色位置、金句位置或主要文字區尚未決定，該頁標記 `PAGE_LAYOUT_INCOMPLETE`，不得進入 Representative Validation 或 Renderer。
+物件避讓的核心是保護「文字閱讀區、教學重點與關鍵視覺」，不是禁止所有圖像彼此交疊。角色與場景插圖若符合 `overlap_mode` 與場景融入規則，可以有計畫地交疊。
+
+若角色位置、金句位置、主要文字區或必要的 overlap 關係尚未決定，該頁標記 `PAGE_LAYOUT_INCOMPLETE`，不得進入 Representative Validation 或 Renderer。
 
 ## 既有定稿教材再利用
 
@@ -82,7 +100,7 @@
 
 ## 生圖前門檻
 
-每一頁建立 Render Request 前，必須先產生 `PRE_RENDER_RULE_COMPLIANCE_CHECK` 並通過。至少檢查：最新 Execution Rules、來源與核准狀態、角色分類與 asset、頁型 character_policy、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、角色／文字／插圖避讓、課文連續性、語詞原文標記、圖文對應、構圖退化、卡片牆、答案洩漏、頁型密度、文字模式與歷史 Render Request 污染。
+每一頁建立 Render Request 前，必須先產生 `PRE_RENDER_RULE_COMPLIANCE_CHECK` 並通過。至少檢查：最新 Execution Rules、來源與核准狀態、角色分類與 asset、頁型 character_policy、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、角色／文字／插圖避讓、`overlap_mode` 與場景融入合理性、課文連續性、語詞原文標記、圖文對應、構圖退化、卡片牆、答案洩漏、頁型密度、文字模式與歷史 Render Request 污染。
 
 未通過不得生圖；狀態使用 `PRE_RENDER_RULE_BLOCKED`，並列出違規規則與唯一修正決定。
 
