@@ -12,6 +12,21 @@
 
 最新且已確認的本檔高於歷史 Slide Script、歷史 Render Request、舊代表頁與舊渲染結果；但不得高於官方 Source Master／LKB 的教材事實。若發生衝突，標記 `EXECUTION_RULE_CONFLICT`，保留衝突並停止，不得自行選邊。
 
+## 下游相容與衝突裁決
+
+本檔對逐頁施工與 Renderer 的要求屬於簡報執行期必要欄位。若 Presentation Engine、Image Renderer、Renderer Contract 或 Quality Gate 的舊版文字只列出較少欄位，該清單視為「基礎欄位」而非排他性完整清單；不得因此省略本檔已明列的 `CHARACTER_PLAN`、`KEY_LINE_PLAN`、`overlap_mode`、`overlap_targets` 或場景融入檢查。
+
+圖像碰撞類規則也必須依語意判斷：
+- 未規劃、無理由、破壞主次或閱讀安全區的交疊，才標記 `IMAGE_COLLISION`、`VISUAL_BREATHING_FAIL` 或其他碰撞錯誤。
+- 若 `CHARACTER_PLAN.overlap_mode` 已核准為 `SCENE_INTEGRATED` 或 `FOREGROUND_OVERLAP`，且符合本檔的場景融入條件，該交疊屬 `APPROVED_SCENE_OVERLAP`，不得因「相切／黏連／遮住局部背景」而自動判定違規。
+- 若下游工具無法辨別交疊是否核准，必須回讀最新 Layout Brief 與本檔；不得一律拆頁、移開角色或把角色退化成角落貼圖。
+
+因此，逐頁規劃的必要順序固定為：
+
+`Visual Grammar / Slide Architecture → 逐頁版面配置＋角色配置＋金句策略＋場景交疊規劃 → 頁型風格矩陣／Style Recipe → 教師確認 → 頁數估算 → 代表頁驗證 → Renderer`
+
+任何簡化版 Golden Path 若省略中間的逐頁規劃節點，只能視為摘要，不得解讀為允許跳過。
+
 ## 規則分層
 
 - `LESSON_LOCAL`：只適用本課，寫入本課的 Execution Rules。
