@@ -18,7 +18,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["slide_id", "sequence", "student_layer", "teacher_layer", "qa_layer"],
+        "required": ["slide_id", "sequence", "student_layer", "teacher_layer", "qa_layer", "object_composition_plan", "character_plan", "key_line_plan"],
         "properties": {
           "slide_id": { "type": "string" },
           "sequence": { "type": "integer", "minimum": 1 },
@@ -26,9 +26,23 @@
           "teacher_layer": { "type": "object" },
           "qa_layer": { "type": "object" },
           "source_refs": { "type": "array", "items": { "type": "string" } },
+          "page_class": { "enum": ["TEXT_READING_PAGE", "IMAGE_COMPOSED_PAGE"] },
+          "page_family": { "type": "string" },
+          "style_variant": { "type": "string" },
           "layout_direction": { "enum": ["TEXT_LEFT_IMAGE_RIGHT", "IMAGE_LEFT_TEXT_RIGHT", "OTHER_CONFIRMED_LAYOUT"] },
           "visual_layer": { "type": "object" },
+          "object_composition_plan": { "$ref": "#/$defs/objectCompositionPlan" },
+          "character_plan": { "$ref": "#/$defs/characterPlan" },
+          "key_line_plan": { "$ref": "#/$defs/keyLinePlan" },
+          "vocab_mark_plan": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/$defs/vocabMark" }
+          },
+          "text_layout_revision": { "type": "string", "minLength": 1 },
+          "term_color_map": { "type": "object", "additionalProperties": { "type": "string" } },
           "image_layout_plan": {
+            "description": "Legacy compatibility summary only. Must not replace object_composition_plan.",
             "type": "object",
             "properties": {
               "primary_visual_id": { "type": "string" },
@@ -60,6 +74,7 @@
                     "transparent_background": { "const": true },
                     "anchor_relation": { "type": "string" },
                     "container_type": { "type": "string" },
+                    "font_role": { "type": "string" },
                     "font_file": { "type": "string" },
                     "font_size_pt": { "type": "number", "exclusiveMinimum": 0 },
                     "line_height": { "type": "number", "exclusiveMinimum": 0 },
@@ -75,6 +90,12 @@
           },
           "render_request": { "type": "object" }
         },
+        "allOf": [
+          {
+            "if": { "required": ["vocab_mark_plan"] },
+            "then": { "required": ["text_layout_revision"] }
+          }
+        ],
         "additionalProperties": false
       }
     },
@@ -94,6 +115,8 @@
         "source_text_authority": { "const": "VERIFIED_TEACHING_TEXT" },
         "editable_text_output": { "const": "DERIVED_ONLY" },
         "local_text_repair": { "const": true },
+        "object_composition_first": { "const": true },
+        "glyph_anchored_vocab_marks": { "const": true },
         "canvas_aspect_ratio": { "enum": ["4:3", "16:9"] },
         "orientation": { "const": "LANDSCAPE" },
         "page_number_system": {
@@ -126,6 +149,82 @@
         "fit_mode": { "enum": ["PRESERVE_ASPECT_CONTAIN_OR_APPROVED_CROP"] },
         "output_formats": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["PNG", "PDF", "PPTX"] } },
         "teacher_decision_ref": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "objectCompositionPlan": {
+      "type": "object",
+      "required": ["composition_mode", "background_role", "text_objects", "primary_visual_object", "supporting_visual_objects", "character_objects", "annotation_objects", "layer_order", "planned_overlaps", "protected_zones", "organic_edge_strategy"],
+      "properties": {
+        "composition_mode": { "enum": ["OBJECT_SCENE", "IMMERSIVE_FULL_SCENE"] },
+        "background_role": { "type": "string" },
+        "text_objects": { "type": "array", "items": { "type": "object" } },
+        "primary_visual_object": { "type": ["object", "string", "null"] },
+        "supporting_visual_objects": { "type": "array", "items": { "type": "object" } },
+        "character_objects": { "type": "array", "items": { "type": "object" } },
+        "annotation_objects": { "type": "array", "items": { "type": "object" } },
+        "layer_order": { "type": "array", "items": { "type": "string" } },
+        "planned_overlaps": { "type": "array", "items": { "type": "object" } },
+        "protected_zones": { "type": "array", "items": { "type": "object" } },
+        "organic_edge_strategy": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "characterPlan": {
+      "type": "object",
+      "required": ["appear"],
+      "properties": {
+        "appear": { "type": "boolean" },
+        "character": { "type": ["string", "null"] },
+        "character_type": { "enum": ["CANONICAL_CHARACTER", "SEMANTIC_SUPPORTING_FIGURE", "NONE"] },
+        "role": { "type": ["string", "null"] },
+        "position": { "type": ["object", "string", "null"] },
+        "scale": { "type": ["number", "string", "null"] },
+        "facing": { "type": ["string", "null"] },
+        "action": { "type": ["string", "null"] },
+        "speech_mode": { "type": ["string", "null"] },
+        "overlap_mode": { "enum": ["SEPARATE_OBJECT", "SCENE_INTEGRATED", "FOREGROUND_OVERLAP", "NONE"] },
+        "overlap_targets": { "type": ["array", "string", "null"], "items": { "type": "string" } },
+        "avoid_zone": { "type": ["array", "string", "null"], "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "keyLinePlan": {
+      "type": "object",
+      "required": ["use", "source"],
+      "properties": {
+        "use": { "type": "boolean" },
+        "source": { "enum": ["TEXTBOOK", "TEACHER", "AI_TRANSITION", "NONE"] },
+        "text": { "type": ["string", "null"] },
+        "function": { "type": ["string", "null"] },
+        "placement": { "type": ["object", "string", "null"] },
+        "hierarchy": { "type": ["string", "null"] },
+        "relation_to_character": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "vocabMark": {
+      "type": "object",
+      "required": ["term_text", "source_ref", "term_color_id", "mark_mode", "include_punctuation", "layer_order", "span_rule", "occurrence_index", "start_char_index", "end_char_index", "text_layout_revision"],
+      "properties": {
+        "term_text": { "type": "string", "minLength": 1 },
+        "source_ref": { "type": "string" },
+        "term_color_id": { "type": "string" },
+        "mark_mode": { "enum": ["UNDERLINE_HIGHLIGHT"] },
+        "include_punctuation": { "const": false },
+        "layer_order": { "const": "MARK_BELOW_TEXT" },
+        "clearance_ratio": { "type": "number", "minimum": 0.08, "maximum": 0.12 },
+        "stroke_height_ratio": { "type": "number", "minimum": 0.10, "maximum": 0.16 },
+        "span_rule": { "const": "TERM_ONLY" },
+        "occurrence_index": { "type": "integer", "minimum": 1 },
+        "line_id": { "type": ["string", "integer", "null"] },
+        "start_char_index": { "type": "integer", "minimum": 0 },
+        "end_char_index": { "type": "integer", "minimum": 0 },
+        "glyph_bbox": { "type": ["object", "null"] },
+        "baseline_y": { "type": ["number", "null"] },
+        "mark_bbox": { "type": ["object", "null"] },
+        "text_layout_revision": { "type": "string", "minLength": 1 },
+        "paired_definition_ref": { "type": ["string", "null"] }
       },
       "additionalProperties": false
     }
