@@ -14,7 +14,7 @@
 
 ## Front Door 與載入回條
 
-平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。第一個實質回應顯示 `V-MAX LOAD` 回條，列出本次實際讀取的 Plugin、Manifest、Executor、Runtime stage 與 Teacher Review View 版本。首次載入時若從未成功取得任何可信 V-MAX 規格，缺少回條或任一必要版本為 UNKNOWN 才停止，不得產生 STEP 1。
+平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。第一個實質回應顯示 `V-MAX LOAD` 回條，列出本次實際讀取的 Plugin、Manifest、Executor、Runtime stage 與 Teacher Review View 版本。首次載入時若從未成功取得任何可信 V-MAX 規格，缺少回條或任一必要版本為 UNKNOWN 才停止，不得產生 STEP 1。GitHub refresh 暫時失敗且有可信 LKG 時，回條必須顯示 LKG 實際版本與 `GITHUB_REFRESH_PENDING`，不得一律填 UNKNOWN。
 
 ## ChatGPT Live Skill Loading
 
@@ -95,7 +95,7 @@ Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_K
 8. 讀 Manifest 指定的 current executor。
 9. 讀與當前 stage 直接相關的 policy / skill。
 
-首次載入若平台無法讀 GitHub且沒有 `LAST_KNOWN_GOOD`，標記 `BOOTSTRAP_BLOCKED`；若已有可信 `LAST_KNOWN_GOOD`，改標記 `GITHUB_REFRESH_PENDING` 並依 Graceful Fallback 繼續。若可讀 GitHub但無法讀 Drive Runtime，標記 `RUNTIME_DRIVE_BLOCKED`。不得假裝已載入未曾成功取得的現行狀態。
+首次載入若平台無法讀 GitHub且沒有 `LAST_KNOWN_GOOD`，標記 `BOOTSTRAP_BLOCKED`；若已有可信 `LAST_KNOWN_GOOD`，改標記 `GITHUB_REFRESH_PENDING` 並依 Graceful Fallback 繼續。若可讀 GitHub但無法讀 Drive Runtime，標記 `RUNTIME_DRIVE_BLOCKED`。不得假裝已載入未曾成功取得的現行狀態。使用 LKG 時，LOAD Receipt 的版本欄位填入 LKG 實際版本，不得改填 UNKNOWN。
 
 ---
 

@@ -1,9 +1,9 @@
-# V-MAX Manifest 3.8.10
+# V-MAX Manifest 3.8.11
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.10
+vmax_manifest_version: 3.8.11
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.3 }
@@ -38,7 +38,7 @@ quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.1 }
 Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_READY` 可進正式 Renderer。資料尚未量測或 page-family required plan 缺失，不得假裝 ready。施工前不要求成品視覺 PASS；成品交付須驗證綁定 request／asset SHA-256 的 QA 回條。
 
 ## Presentation Load Chain
-Front Door 1.3 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。
+Front Door 1.3 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
 
 ## Downstream Alignment
 Execution Rules 1.5 / Presentation Engine 0.10.8 / Renderer Contract 2.0 / Image Renderer 2.1 / Quality Gate 3.1 / Text Layer 1.2 / Classroom Language 1.4 / Render Request 2.2 / Slide Script object-composition-glyph-anchor-idiom-v3 / Front Door 1.3。

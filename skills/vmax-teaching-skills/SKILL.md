@@ -46,14 +46,14 @@ Before starting any presentation task, initialize or read the lesson's `00_施�
 
 若頁型為成語，另確認目前 Classroom Language Rules 與 Presentation Engine 已載入 `IDIOM_APPLICATION_PLAN` 規則；若含語詞標記，另確認 glyph-anchor/reflow contract 已載入。
 
-任何必要檔案無法實際讀取 → `BOOTSTRAP_BLOCKED`；不得用模型記憶、舊對話或先前安裝版本補位。
+GitHub refresh 暫時失敗時，先查本工作階段的可信 `LAST_KNOWN_GOOD`。有 LKG 時以 LKG 實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才回報 `BOOTSTRAP_BLOCKED`。LKG 必須包含 commit／revision、Manifest、Executor、必要 canonical 版本與成功載入時間；模型記憶、舊對話、任意本機副本或未驗證下載不能冒充 LKG。涉及安全、來源忠實、不可逆輸出或已知規格更新時，refresh pending 必須暫停該操作。
 
 ## 強制載入回條
 
 第一個實質回應最上方顯示：
 `V-MAX LOAD｜Plugin {VERSION}｜Manifest {manifest_version}｜Executor {executor_version}｜Stage {runtime_stage}｜UI {teacher_review_view_version}`
 
-版本值必須來自本次實際讀取。無法取得顯示 UNKNOWN 並停止。未顯示 → `LOAD_RECEIPT_MISSING`。
+版本值必須來自本次實際讀取或可信 LKG。使用 LKG 時不得顯示 UNKNOWN，必須明確附註 `GITHUB_REFRESH_PENDING`；只有沒有可信 LKG 時才顯示 UNKNOWN 並停止。未顯示 → `LOAD_RECEIPT_MISSING`。
 
 ## 啟動後第一個 Gate
 

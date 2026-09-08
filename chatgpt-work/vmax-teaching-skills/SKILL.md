@@ -5,7 +5,7 @@ description: ChatGPT Work 專用的 V-MAX 唯一啟動技能。用於重新開�
 
 # V-MAX ChatGPT Work Launcher
 
-版本：1.3
+版本：1.4
 
 ## 安裝模型
 
@@ -36,7 +36,7 @@ GitHub Source of Truth：
    - `core/presentation/canvas-lock-policy.md`
    - `core/presentation/text-layer-construction-policy.md`
 4. 再按當前 stage 讀取需要的 policy／skill；不要一次下載或安裝全部技能。
-5. 無法實際讀取任一必要檔案時回報 `BOOTSTRAP_BLOCKED`，不得用對話記憶繼續。
+5. GitHub refresh 失敗時，先依 Bootstrap 的 Graceful Fallback 尋找可信 `LAST_KNOWN_GOOD`。必要 canonical 原文可讀且 commit／revision、版本與成功載入記錄可核對時，以 LKG 繼續並標記 `GITHUB_REFRESH_PENDING`；沒有完整可信 LKG 才 `BOOTSTRAP_BLOCKED`。模型記憶與舊對話摘要不算 LKG。此分流只處理規格載入，不豁免 Drive Runtime、教師核准與 State Sync。
 
 ## 每次續作的 State Sync Gate
 
@@ -50,7 +50,7 @@ ChatGPT Work 不得把「繼續／下一步／確認／沿用」直接當成可�
 
 `V-MAX LOAD｜Plugin {VERSION}｜Manifest {manifest_version}｜Executor {executor_version}｜Stage {runtime_stage}｜UI {teacher_review_view_version}`
 
-未能取得實際值時填 `UNKNOWN` 並停止。沒有回條，視為 `LOAD_RECEIPT_MISSING`。
+版本從實際讀取的 canonical 或可信 LKG 取得。使用 LKG 時顯示 `Manifest {manifest_version} (LKG)｜GitHub refresh pending`，保留其他已驗證版本，不得一律改成 UNKNOWN。真正缺少的欄位才填 UNKNOWN 並依對應 Gate 處理；Runtime stage 不能由規格 LKG 推定。沒有回條，視為 `LOAD_RECEIPT_MISSING`。
 
 ## 不可被舊對話覆蓋的規則
 
