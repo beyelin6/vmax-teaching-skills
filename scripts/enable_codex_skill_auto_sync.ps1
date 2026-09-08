@@ -29,7 +29,10 @@ $raw = "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/scr
 $temp = Join-Path $env:TEMP "vmax-sync-codex-skills.ps1"
 try {
     Invoke-WebRequest -UseBasicParsing -Uri $raw -OutFile $temp
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $temp
+    $powerShellHost = Get-Command pwsh.exe -ErrorAction SilentlyContinue
+    if (-not $powerShellHost) { $powerShellHost = Get-Command powershell.exe -ErrorAction SilentlyContinue }
+    if (-not $powerShellHost) { throw "No PowerShell host (pwsh.exe or powershell.exe) was found." }
+    & $powerShellHost.Source -NoProfile -ExecutionPolicy Bypass -File $temp
 } catch {
     $logDir = Join-Path $HOME ".codex\vmax-sync"
     New-Item -ItemType Directory -Force -Path $logDir | Out-Null
@@ -41,7 +44,10 @@ try {
 
 Set-Content -Path $runnerFile -Value $runner -Encoding UTF8
 
-$cmd = "@echo off`r`nstart \"\" /min powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"$runnerFile\"`r`n"
+$powerShellHost = Get-Command pwsh.exe -ErrorAction SilentlyContinue
+if (-not $powerShellHost) { $powerShellHost = Get-Command powershell.exe -ErrorAction SilentlyContinue }
+if (-not $powerShellHost) { throw "No PowerShell host (pwsh.exe or powershell.exe) was found." }
+$cmd = '@echo off' + "`r`n" + 'start "" /min "' + $powerShellHost.Source + '" -NoProfile -ExecutionPolicy Bypass -File "' + $runnerFile + '"' + "`r`n"
 Set-Content -Path $startupFile -Value $cmd -Encoding ASCII
 
 Write-Host "[V-MAX AUTO SYNC] Enabled for current user."

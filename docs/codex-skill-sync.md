@@ -93,6 +93,9 @@ Get-Content "$HOME\.codex\skills\traditional-chinese-font-safety\SKILL.md" | Sel
 - 只同步 Repository `skills/` 下、且含 `SKILL.md` 的資料夾。
 - 不會對 `~/.codex/skills/` 根目錄做整體 `/MIR`，因此不會刪除其他來源的 Codex Skills。
 - `/MIR` 只作用在單一已識別的 V-MAX Skill 目錄，使該 Skill 內容與 GitHub 一致。
+- 每個 Skill 先同步到暫存目錄，再以備份／替換方式更新；替換失敗會嘗試恢復上一版。
+- 首次使用 `-DryRun` 會建立暫存 cache 預覽，不會要求本機先存在 cache，也不會留下暫存目錄。
+- 自動同步會優先選用 `pwsh.exe`，找不到時才使用 `powershell.exe`。
 - GitHub cache 更新採 `fetch + reset --hard origin/main + clean -fd`，cache 僅作同步來源，不應存放私人修改。
 - 自動啟用器只從 `https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/` 取得同步腳本。
 

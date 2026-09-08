@@ -7,6 +7,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$temporaryDryRunCache = $null
 
 function Write-Step([string]$Message) {
     Write-Host "[V-MAX SYNC] $Message"
@@ -42,6 +43,10 @@ if (-not (Test-Path (Join-Path $CacheDir ".git"))) {
     Write-Step "Local cache not found; cloning repository."
     if (-not $DryRun) {
         git clone --depth 1 --branch $Branch $RepoUrl $CacheDir | Out-Host
+    } else {
+        $temporaryDryRunCache = Join-Path ([System.IO.Path]::GetTempPath()) ("vmax-dryrun-" + [guid]::NewGuid().ToString("N"))
+        git clone --depth 1 --branch $Branch $RepoUrl $temporaryDryRunCache | Out-Host
+        $CacheDir = $temporaryDryRunCache
     }
 } else {
     Write-Step "Refreshing repository cache from GitHub."
@@ -77,14 +82,28 @@ foreach ($skill in $skillDirs) {
     $version = Read-SkillVersion (Join-Path $src "SKILL.md")
     $action = if (Test-Path $dst) { "update" } else { "install" }
 
-    Write-Step "$action $($skill.Name)$(if ($version) { " v$version" } else { "" })"
+    $versionLabel = if ($version) { " v$version" } else { "" }
+    Write-Step "$action $($skill.Name)$versionLabel"
 
     if (-not $DryRun) {
-        New-Item -ItemType Directory -Force -Path $dst | Out-Null
-        robocopy $src $dst /MIR /R:2 /W:1 /NFL /NDL /NJH /NJS /NP | Out-Null
+        $stage = Join-Path (Split-Path -Parent $dst) ("." + $skill.Name + ".sync-" + [guid]::NewGuid().ToString("N"))
+        $backup = "$dst.previous"
+        New-Item -ItemType Directory -Force -Path $stage | Out-Null
+        robocopy $src $stage /MIR /R:2 /W:1 /NFL /NDL /NJH /NJS /NP | Out-Null
         $rc = $LASTEXITCODE
         if ($rc -ge 8) {
+            Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
             throw "robocopy failed for $($skill.Name) with exit code $rc"
+        }
+        if (Test-Path $backup) { Remove-Item -LiteralPath $backup -Recurse -Force }
+        if (Test-Path $dst) { Move-Item -LiteralPath $dst -Destination $backup }
+        try {
+            Move-Item -LiteralPath $stage -Destination $dst
+            if (Test-Path $backup) { Remove-Item -LiteralPath $backup -Recurse -Force }
+        } catch {
+            if (Test-Path $dst) { Remove-Item -LiteralPath $dst -Recurse -Force -ErrorAction SilentlyContinue }
+            if (Test-Path $backup) { Move-Item -LiteralPath $backup -Destination $dst }
+            throw
         }
     }
 
@@ -117,3 +136,7 @@ if (-not $DryRun) {
 Write-Step "Completed. Discovered $($managed.Count) V-MAX skills."
 Write-Step "Managed-skill manifest: $manifestPath"
 $report | ConvertTo-Json -Depth 6
+
+if ($temporaryDryRunCache -and (Test-Path $temporaryDryRunCache)) {
+    Remove-Item -LiteralPath $temporaryDryRunCache -Recurse -Force -ErrorAction SilentlyContinue
+}
