@@ -121,3 +121,9 @@ Get-Content "$HOME\.codex\skills\traditional-chinese-font-safety\SKILL.md" | Sel
 - `~/.codex/skills/` 是執行快取／安裝層，不在本機直接維護 V-MAX Skill 正式版本。
 - 要修改 Skill：改 GitHub，再同步。
 - 不要在 Codex Skill 目錄直接做長期手動修補，避免下次鏡像同步被覆蓋。
+
+## 簡報驗證器的安裝後使用
+
+使用已載入 vmax-image-renderer 技能內 `scripts/validate_presentation.py` 的絕對路徑。它讀取 Skills 根目錄的 `.vmax-managed-skills.json`，從 cache_dir 找到同次同步的完整 scripts/core；不依賴課程目前目錄。Plugin 模式直接從 checkout 找到 canonical。自訂 CacheDir 同樣可用。
+
+Python 依賴只需在選定環境安裝一次：`python -m pip install "jsonschema>=4.18,<5"`。缺依賴會顯示設定錯誤，不得把錯誤當作 QA PASS。若只是單獨複製技能而沒有完整 Repository，可用 `--repo-root` 指定完整最新 checkout。詳細操作依 Renderer 的 Render Request Schema。

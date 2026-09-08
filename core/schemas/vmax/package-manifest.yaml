@@ -33,6 +33,8 @@ objects:
     schema: revision-event.schema.json
   - object_type: STATUS_TRANSITION
     schema: status-transition.schema.json
+  - object_type: RENDER_REQUEST
+    schema: render-request.schema.json
   - object_type: SLIDE_SCRIPT
     schema: slide-script.schema.json
   - object_type: OUTPUT_MANIFEST

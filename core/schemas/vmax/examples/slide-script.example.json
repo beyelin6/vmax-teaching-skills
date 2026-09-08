@@ -18,7 +18,10 @@
     {
       "slide_id": "P01",
       "sequence": 1,
-      "source_refs": ["LKB:pending_teacher_confirmation"],
+      "source_refs": [
+        "LKB:pending_teacher_confirmation",
+        "TEACHER_CONFIRMED_TASK:pending"
+      ],
       "layout_direction": "TEXT_LEFT_IMAGE_RIGHT",
       "visual_layer": {
         "page_purpose": "本頁主要教學焦點（待教師確認）",
@@ -30,12 +33,23 @@
         "mode": "VERIFIED_RASTER_TEXT_LAYERS",
         "layers": [
           {
+            "layer_id": "P01-TITLE",
+            "text": "課文觀察",
+            "visibility": "STUDENT",
+            "source_ref": "TEACHER_CONFIRMED_TASK:pending",
+            "repair_scope": "LOCAL_LAYER_ONLY"
+          },
+          {
             "layer_id": "P01-T01",
             "text": "請找一找畫面中的線索。",
             "visibility": "STUDENT",
             "source_ref": "TEACHER_CONFIRMED_TASK:pending",
-            "position": {"anchor": "visual_lower_left"},
-            "style": {"semantic_role": "student_task"},
+            "position": {
+              "anchor": "visual_lower_left"
+            },
+            "style": {
+              "semantic_role": "student_task"
+            },
             "repair_scope": "LOCAL_LAYER_ONLY"
           }
         ]
@@ -52,6 +66,27 @@
         "text_gate": "PENDING",
         "visual_gate": "PENDING",
         "character_style_gate": "PENDING"
+      },
+      "page_family": "TEXT_READING",
+      "object_composition_plan": {
+        "composition_mode": "OBJECT_SCENE",
+        "background_role": "white",
+        "text_objects": [],
+        "primary_visual_object": null,
+        "supporting_visual_objects": [],
+        "character_objects": [],
+        "annotation_objects": [],
+        "layer_order": [],
+        "planned_overlaps": [],
+        "protected_zones": [],
+        "organic_edge_strategy": "none"
+      },
+      "character_plan": {
+        "appear": false
+      },
+      "key_line_plan": {
+        "use": false,
+        "source": "NONE"
       }
     }
   ],
@@ -62,5 +97,18 @@
       "CANDIDATE_INVENTORY:CI-001",
       "APPROVED_TEACHING_SELECTION:ATS-001"
     ]
+  },
+  "canvas_lock": {
+    "profile": "lesson_presentation_16_9_v1",
+    "ratio": "16:9",
+    "width_px": 1920,
+    "height_px": 1080,
+    "orientation": "LANDSCAPE",
+    "safe_area": "5%",
+    "fit_mode": "PRESERVE_ASPECT_CONTAIN_OR_APPROVED_CROP",
+    "output_formats": [
+      "PNG"
+    ],
+    "teacher_decision_ref": "EXAMPLE_ONLY:canvas"
   }
 }

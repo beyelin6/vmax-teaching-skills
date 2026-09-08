@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/core/schemas/vmax/render-request.schema.json",
+  "title": "V-MAX Render Request",
+  "$ref": "slide-script.schema.json#/$defs/renderRequest"
+}

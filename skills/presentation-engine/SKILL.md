@@ -5,7 +5,7 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 # Presentation Engine
 
-版本：0.10.7
+版本：0.10.8
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
@@ -52,6 +52,8 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 Slide Script 鎖定正式文字、來源、object/character/key-line plans；有語詞標記時記錄 vocab anchors；成語頁必須傳遞完整 `idiom_application_plan`，不得只傳成語名稱或抽象 visual prompt。
 
 Render Request 有語詞標記時必須帶入六項 Vocabulary checks；成語頁必須帶入：`IDIOM_TEXT_PASS`、`IDIOM_HIERARCHY_PASS`、`IDIOM_EXAMPLE_READABILITY_PASS`、`IDIOM_EXAMPLE_NATURALNESS_PASS`、`IDIOM_EXAMPLE_VISUAL_MATCH_PASS`、`IDIOM_OBJECT_COMPOSITION_PASS`。
+
+正式送 Renderer 前使用目前 Renderer 技能內 launcher 的絕對路徑執行 Slide Script 驗證（`--require-ready`）；參照 Render Request Schema 的完整命令與安裝路徑解析。先以 PRE_LAYOUT 完成文字排版，再量測 anchor，取得自然度審閱證據並轉 RENDER_READY。Slide 與 Render Request 的 page_family、成語／語詞／物件／角色／金句 plans、revision、canvas 必須一致。非零退出碼不得送出。
 
 ## Verified Teaching Text
 

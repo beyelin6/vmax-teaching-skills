@@ -1,4 +1,4 @@
-# V-MAX Quality Gate 3.0
+# V-MAX Quality Gate 3.1
 
 ## 定位
 正式簡報交付前檢查教材真值、Object Composition、文字／注音、語詞標記、成語應用情境、角色與教師後製負擔。
@@ -66,3 +66,7 @@ Idiom：先核對成語語意 → 修正自然例句 → 定義人物／動作 �
 > 先有正確自然的例句，才有配合例句的圖。
 
 > PRE_LAYOUT 是準備；RENDER_READY 才是可施工合約。
+## 階段證據分工
+
+PRE_LAYOUT 只驗證草稿結構；RENDER_READY 驗證核准文字、成語例句審閱與排版 anchors，尚未產生成品的視覺 checks 可為 null。任何已知 false 先修復，不得施工。
+成品 Gate 必須以 Renderer launcher 的 --result 驗證回條；通用七項及適用成語／語詞六項 checks 全數通過，並綁定 request_sha256、asset_sha256 與 review_ref。Schema／hash 通過僅證明資料與證據一致，不取代實際語意、文字與成品審閱。

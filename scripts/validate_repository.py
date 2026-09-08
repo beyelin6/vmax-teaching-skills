@@ -39,6 +39,7 @@ def validate_vmax_schemas() -> None:
         "revision-event.schema.json",
         "status-transition.schema.json",
         "slide-script.schema.json",
+        "render-request.schema.json",
         "output-manifest.schema.json",
     )
     required_supporting_files = (
@@ -75,7 +76,10 @@ def validate_vmax_schemas() -> None:
         if not isinstance(payload.get("title"), str) or not payload["title"].startswith("V-MAX"):
             fail(f"schema title missing V-MAX prefix: {path.relative_to(ROOT)}")
         object_type = payload.get("properties", {}).get("object_type", {}).get("const")
-        if not isinstance(object_type, str):
+        if filename == "render-request.schema.json":
+            if payload.get("$ref") != "slide-script.schema.json#/$defs/renderRequest":
+                fail("render-request schema must reference the shared Slide Script contract")
+        elif not isinstance(object_type, str):
             fail(f"schema missing object_type const: {path.relative_to(ROOT)}")
 
 

@@ -5,7 +5,23 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.0
+版本：2.1
+
+## Request Contract Gate
+
+直接呼叫本技能也必須先讀取 `references/render-request-schema.md`、`core/schemas/vmax/render-request.schema.json` 與 Quality Gate。正式施工前執行：
+
+```sh
+python "<目前 Renderer 技能絕對路徑>/scripts/validate_presentation.py" "<request.json 絕對路徑>" --kind render-request --require-ready
+```
+
+收到完整 Slide Script 時以預設 kind 驗證並加 `--require-ready`，同時檢查上下游 Plan 相等。執行環境須有 jsonschema；驗證器無法執行或非零退出碼 → `PRE_RENDER_RULE_BLOCKED`，不得宣稱通過。PRE_LAYOUT 只可進排版準備。
+
+成語頁必須傳入完整 idiom_application_plan；施工前取得例句語法、用法、適齡生活語境審閱結果與 review_ref。證據不可由預設 true 代填；Schema 通過不代表語意審閱通過。沿用核准例句，圖跟例句人物與動作走。來源未提供時標示缺口或使用已核准補充，不得冒充教材原文。
+
+交付前逐頁執行六項成語 gates（文字、層級、例句可讀性、自然度、圖文匹配、物件構圖），保留實際成品檢查證據；任一失敗不得 RENDER_VERIFIED。
+
+施工前不要求尚未產生的圖文匹配結果；成品階段必須以 `--kind render-request --result RESULT` 驗證綁定請求 hash 與實際檔案 hash 的結果回條。正式文字以 layer_id/text/source_ref 原樣傳遞；空文字只允許明確 textless 的無字頁。資料格式、環境與草稿→排版→施工→QA 命令以 `references/render-request-schema.md` 為唯一詳細操作說明。
 
 ## PRE_RENDER_RULE_COMPLIANCE_CHECK
 
