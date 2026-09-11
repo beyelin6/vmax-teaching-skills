@@ -1,6 +1,6 @@
 # Bee 老師教材字型系統｜V-MAX
 
-版本：1.0.0
+版本：1.2.1
 
 ## 目的
 
@@ -19,11 +19,11 @@
 
 ## 核心字型角色
 
-### 1. 課文正文 `BODY_READING`
+### 1. 課文正文 `body_serif`
 
-首選：Source Han Serif TC（思源宋體 TC）
+首選：Source Han Serif TW（思源宋體 TW）
 
-Fallback：Source Han Sans TC
+Fallback：Source Han Sans TW
 
 用途：
 - 課文原文
@@ -36,9 +36,9 @@ Fallback：Source Han Sans TC
 - 若頁面本身資訊層級較多、字數少，可改用思源黑體。
 - 不使用粉圓或手寫體排長文。
 
-### 2. 一般正文 `BODY_SANS`
+### 2. 一般正文 `body_sans`
 
-首選：Source Han Sans TC（思源黑體 TC）
+首選：Source Han Sans TW（思源黑體 TW）
 
 Fallback：Iansui
 
@@ -53,11 +53,11 @@ Fallback：Iansui
 - 這是 Bee 老師系統的主要安全正文。
 - 所有大量學生可見文字若無特殊理由，優先使用本角色。
 
-### 3. 國字與生字 `CHARACTER_TEACHING`
+### 3. 國字與生字 `character_learning`
 
 首選：Iansui（芫荽）
 
-Fallback：Source Han Sans TC
+Fallback：Source Han Sans TW
 
 用途：
 - 生字大字
@@ -70,11 +70,11 @@ Fallback：Source Han Sans TC
 - 若芫荽缺字，該字必須 fallback，不可硬輸出。
 - 不使用手寫體、藝術字作生字教學。
 
-### 4. 活動標題 `ROUNDED_TITLE`
+### 4. 活動標題 `rounded_title`
 
 首選：jf open 粉圓
 
-Fallback：Source Han Sans TC
+Fallback：Source Han Sans TW
 
 用途：
 - 活動標題
@@ -88,11 +88,11 @@ Fallback：Source Han Sans TC
 - 不排長篇正文。
 - 建議搭配思源黑體正文。
 
-### 5. 注音安全 `BOPOMOFO`
+### 5. 注音安全 `bopomofo_safe`
 
 首選：已實測通過的 Iansui 系列注音字型
 
-Fallback：jf open 粉圓 → Source Han Sans TC
+Fallback：jf open 粉圓 → Source Han Sans TW
 
 用途：
 - 大字＋橫式注音
@@ -104,11 +104,11 @@ Fallback：jf open 粉圓 → Source Han Sans TC
 - 注音不可只看 cmap；代表頁需人工目視檢查聲調位置、基線、間距。
 - 成語頁若教材規則禁止注音，不得因字型系統自行加注音。
 
-### 6. 手寫裝飾 `HANDWRITING_ACCENT`
+### 6. 手寫裝飾 `handwriting_accent`
 
 首選：待核准之合法手寫字型
 
-Fallback：Iansui → Source Han Sans TC
+Fallback：Iansui → Source Han Sans TW
 
 用途：
 - Bee 老師便利貼
@@ -127,15 +127,15 @@ Fallback：Iansui → Source Han Sans TC
 
 | 教材類型 | 主標題 | 主要正文 | 生字/形近字 | 注音 | 裝飾短句 |
 |---|---|---|---|---|---|
-| 國語課文簡報 | 粉圓 | 思源宋體 TC / 思源黑體 TC | 芫荽 | 注音安全角色 | 手寫裝飾少量 |
-| 生字教學頁 | 粉圓或思源黑體粗體 | 思源黑體 TC | 芫荽 | 注音安全角色 | 原則不用 |
-| 形近字頁 | 粉圓 | 思源黑體 TC | 芫荽 | 注音安全角色 | 原則不用 |
-| 成語頁 | 粉圓 | 思源黑體 TC | 不需 | 依教材規則 | 少量 |
+| 國語課文簡報 | 粉圓 | 思源宋體 TW / 思源黑體 TW | 芫荽 | 注音安全角色 | 手寫裝飾少量 |
+| 生字教學頁 | 粉圓或思源黑體粗體 | 思源黑體 TW | 芫荽 | 注音安全角色 | 原則不用 |
+| 形近字頁 | 粉圓 | 思源黑體 TW | 芫荽 | 注音安全角色 | 原則不用 |
+| 成語頁 | 粉圓 | 思源黑體 TW | 不需 | 依教材規則 | 少量 |
 | 漫畫/對話頁 | 粉圓 | 粉圓短句＋思源黑體說明 | 不需 | 依需要 | 可少量 |
-| 預習單 | 粉圓或思源黑體粗體 | 思源黑體 TC | 芫荽 | 注音安全角色 | 不建議 |
-| 課後短文單 | 粉圓 | 思源黑體 TC | 視需要 | 視需要 | 少量 |
-| 親師手冊 | 粉圓/思源黑體 | 思源黑體 TC / 思源宋體 TC | 不需 | 不需 | 手寫裝飾少量 |
-| 教師正式文件 | 思源黑體粗體 | 思源黑體 TC / 思源宋體 TC | 不需 | 不需 | 不使用 |
+| 預習單 | 粉圓或思源黑體粗體 | 思源黑體 TW | 芫荽 | 注音安全角色 | 不建議 |
+| 課後短文單 | 粉圓 | 思源黑體 TW | 視需要 | 視需要 | 少量 |
+| 親師手冊 | 粉圓/思源黑體 | 思源黑體 TW / 思源宋體 TW | 不需 | 不需 | 手寫裝飾少量 |
+| 教師正式文件 | 思源黑體粗體 | 思源黑體 TW / 思源宋體 TW | 不需 | 不需 | 不使用 |
 
 ---
 
@@ -152,10 +152,11 @@ Fallback：Iansui → Source Han Sans TC
 
 ## Preflight 最低要求
 
-每次正式批次輸出前：
+每個實際使用的字型角色分別檢查；以下以生字角色為例。`skills/...` 為 repository 路徑，本機安裝時換成實際 Skill 目錄：
 
 ```bash
 python skills/traditional-chinese-font-safety/scripts/check_fonts.py \
+  --role character_learning \
   --font-dir assets/fonts \
   --extra-text "<本課所有目標國字與關鍵詞>" \
   --require-bopomofo \

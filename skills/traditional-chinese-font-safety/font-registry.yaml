@@ -1,4 +1,4 @@
-version: 1.1.0
+version: 1.2.1
 policy: V-MAX Traditional Chinese Teaching Font Registry
 
 roles:
@@ -28,7 +28,7 @@ roles:
     notes: "僅短句、便利貼、角色小提醒。正式使用前須另外核對官方來源與目前版本授權。"
 
   bopomofo_safe:
-    preferred: Iansui_verified_bopomofo
+    preferred: Iansui
     fallback: [jf_open_huninn, Source_Han_Sans_TW]
     notes: "注音必須實際渲染測試；不可只檢查繁中文字。"
 
@@ -38,6 +38,7 @@ roles:
 
 fonts:
   - id: Iansui
+    postscript_pattern: "Iansui(?:-.*)?"
     display_name: "芫荽 Iansui"
     official_source: "https://github.com/ButTaiwan/iansui"
     official_release_api: "https://api.github.com/repos/ButTaiwan/iansui/releases/latest"
@@ -49,6 +50,7 @@ fonts:
     caveat: "專案目前為 Beta，且作者說明字集並非完整 Big5；缺字時必須 fallback。"
 
   - id: jf_open_huninn
+    postscript_pattern: "jf-openhuninn(?:-.*)?"
     display_name: "jf open 粉圓"
     official_source: "https://github.com/justfont/open-huninn-font"
     official_release_api: "https://api.github.com/repos/justfont/open-huninn-font/releases/latest"
@@ -59,6 +61,7 @@ fonts:
     usage: "標題、對話、任務卡"
 
   - id: Source_Han_Sans_TW
+    postscript_pattern: "SourceHanSansTW-.*"
     display_name: "思源黑體 TW / Source Han Sans TW"
     official_source: "https://github.com/adobe-fonts/source-han-sans"
     official_release_api: "https://api.github.com/repos/adobe-fonts/source-han-sans/releases/latest"
@@ -71,6 +74,7 @@ fonts:
     safety_rule: "只允許 SourceHanSansTW 字型檔；不得以 JP、SC、HC/HK 或未確認區域版本替代。"
 
   - id: Source_Han_Serif_TW
+    postscript_pattern: "SourceHanSerifTW-.*"
     display_name: "思源宋體 TW / Source Han Serif TW"
     official_source: "https://github.com/adobe-fonts/source-han-serif"
     official_release_api: "https://api.github.com/repos/adobe-fonts/source-han-serif/releases/latest"
@@ -92,7 +96,7 @@ fonts:
 
 render_test:
   traditional_chinese: "永遠的馬偕｜學習重點｜臺灣｜醫療教育｜體驗與觀察｜麥齒醫衛獻灣臺邊學夢"
-  bopomofo: "國語 ㄍㄨㄛˊ ㄩˇ｜學習 ㄒㄩㄝˊ ㄒㄧˊ｜ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏ"
+  bopomofo: "國語 ㄍㄨㄛˊ ㄩˇ｜學習 ㄒㄩㄝˊ ㄒㄧˊ｜ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦㄧㄨㄩˉˊˇˋ˙"
 
 rules:
   - "Only download fonts automatically from official_source entries with verified licensing and auto_download=true."

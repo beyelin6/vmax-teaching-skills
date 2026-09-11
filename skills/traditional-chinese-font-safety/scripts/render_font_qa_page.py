@@ -1,87 +1,95 @@
 #!/usr/bin/env python3
-"""Render a 2560x1440 V-MAX Traditional Chinese font QA page.
-
-The page is intentionally text-heavy and includes Traditional Chinese, Bopomofo,
-lesson-character samples, punctuation, multiple sizes, and paired role examples.
-Use it after font preflight and before representative-page production.
-"""
-
-from __future__ import annotations
-
+"""Measured, paginated font QA samples; visual approval remains manual."""
 import argparse
+import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
+from font_policy import BOPOMOFO, font_metadata
 
 W, H = 2560, 1440
-BG = "white"
-TEXT = "black"
 
+def wrap_text(draw, text, font, width):
+    lines = []
+    for paragraph in text.split('\n'):
+        line = ''
+        for char in paragraph:
+            box = draw.textbbox((0, 0), line + char, font=font)
+            if box[2] - box[0] > width:
+                if not line:
+                    raise ValueError('One glyph exceeds column width')
+                lines.append(line)
+                line = char
+            else:
+                line += char
+        lines.append(line)
+    return lines
 
-def load_font(path: str, size: int):
-    return ImageFont.truetype(path, size=size)
-
-
-def draw_text(draw, xy, text, font, fill=TEXT, spacing=8):
-    draw.multiline_text(xy, text, font=font, fill=fill, spacing=spacing)
-
-
-def main() -> int:
-    p = argparse.ArgumentParser(description="Render Bee teacher font QA page")
-    p.add_argument("--body-font", required=True)
-    p.add_argument("--title-font", required=True)
-    p.add_argument("--character-font", required=True)
-    p.add_argument("--bopomofo-font", required=True)
-    p.add_argument("--lesson-text", default="奉獻 良方 居家衛生 捐錢 食宿 永遠的馬偕")
-    p.add_argument("--output", default="bee-font-qa-2560x1440.png")
-    args = p.parse_args()
-
-    img = Image.new("RGB", (W, H), BG)
-    d = ImageDraw.Draw(img)
-
-    title = load_font(args.title_font, 84)
-    body = load_font(args.body_font, 46)
-    body_small = load_font(args.body_font, 36)
-    char_big = load_font(args.character_font, 112)
-    bop = load_font(args.bopomofo_font, 48)
-
-    # Header
-    draw_text(d, (110, 70), "Bee老師教材字型 QA｜2560×1440", title)
-    draw_text(d, (115, 180), "用途：正式簡報／PNG／PDF 批次輸出前的繁中與注音目視檢查", body_small)
-
-    # Section 1
-    draw_text(d, (120, 290), "① 繁體中文與臺灣常用字形", title)
-    draw_text(d, (140, 400), "永遠的馬偕｜學習重點｜臺灣｜醫療教育｜體驗與觀察", body)
-    draw_text(d, (140, 470), "麥 齒 醫 衛 獻 灣 臺 邊 學 夢", char_big)
-
-    # Section 2
-    draw_text(d, (120, 650), "② 注音與聲調", title)
-    draw_text(d, (140, 765), "國語  ㄍㄨㄛˊ  ㄩˇ    學習  ㄒㄩㄝˊ  ㄒㄧˊ", bop)
-    draw_text(d, (140, 835), "ㄅ ㄆ ㄇ ㄈ ㄉ ㄊ ㄋ ㄌ ㄍ ㄎ ㄏ ㄐ ㄑ ㄒ ㄓ ㄔ ㄕ ㄖ ㄗ ㄘ ㄙ", bop)
-
-    # Section 3
-    draw_text(d, (120, 950), "③ 本課目標字／關鍵詞", title)
-    draw_text(d, (140, 1065), args.lesson_text, body)
-
-    # Section 4
-    draw_text(d, (1450, 290), "④ 標點與閱讀密度", title)
-    sample = "「老師說：『讀一讀、想一想。』」\n臺灣的孩子在課堂上閱讀、討論，也練習把想法說清楚。"
-    draw_text(d, (1470, 410), sample, body)
-
-    draw_text(d, (1450, 650), "⑤ 字級階層", title)
-    draw_text(d, (1470, 770), "主標題 84 px", title)
-    draw_text(d, (1470, 885), "正文 46 px｜適合中年級簡報", body)
-    draw_text(d, (1470, 955), "補充說明 36 px｜僅用於次要資訊", body_small)
-
-    draw_text(d, (1450, 1080), "⑥ 最終人工檢查", title)
-    checklist = "□ 無方框／缺字   □ 注音位置正常\n□ 標點正常       □ 行距清楚\n□ fallback 未造成換行崩壞\n□ 學生可見文字清楚、不遮圖"
-    draw_text(d, (1470, 1190), checklist, body_small)
-
+def render(args):
+    body, title = (args.body_font, 46), (args.title_font, 64)
+    character = (args.character_font, 100)
+    lesson = args.lesson_text
+    if args.lesson_text_file:
+        lesson += Path(args.lesson_text_file).read_text(encoding='utf-8')
+    blocks = [(title, '繁中文字型檢查'), (body, '請目視確認字形、標點、行距及換行。'),
+              (title, '繁體中文與臺灣字形'),
+              (body, '臺灣的孩子在課堂上閱讀、討論，也練習把想法說清楚。'),
+              (character, '麥齒醫衛獻灣臺邊學夢'),
+              (title, '本課目標字與關鍵詞'), (character, lesson),
+              (title, '標點與閱讀'), (body, '「老師說：『讀一讀、想一想。』」'),
+              (title, '字級階層'), (body, '正文範例：閱讀、討論與觀察。')]
+    if args.bopomofo_font:
+        blocks += [(title, '注音與聲調'), ((args.bopomofo_font, 48), BOPOMOFO),
+                   ((args.bopomofo_font, 48), 'ㄍㄨㄛˊ ㄩˇ ㄒㄩㄝˊ ㄒㄧˊ')]
+    blocks += [(title, '最終人工檢查'), (body, '確認無方框、缺字、錯誤字形或遮擋。\n確認聲調位置與基線。\n字型替換後重新檢查最終成品。')]
+    pages, boxes = [], []
+    image = Image.new('RGB', (W, H), 'white')
+    draw = ImageDraw.Draw(image)
+    column, y = 0, 100
+    for (path, size), text in blocks:
+        _, _, coverage = font_metadata(Path(path))
+        missing = sorted({c for c in text if not c.isspace() and ord(c) not in coverage})
+        if missing:
+            raise ValueError(f'{path}: missing glyphs {missing}')
+        font = ImageFont.truetype(path, size)
+        for line in wrap_text(draw, text, font, 1100):
+            b = draw.textbbox((0, 0), line or ' ', font=font)
+            height = max(size, b[3] - b[1]) + 16
+            reserve = 146 if size == 64 else 0
+            if y + height + reserve > H - 100:
+                column += 1
+                y = 100
+                if column == 2:
+                    pages.append(image)
+                    image = Image.new('RGB', (W, H), 'white')
+                    draw = ImageDraw.Draw(image)
+                    column = 0
+            x = 100 + column * 1260
+            draw.text((x-b[0], y-b[1]), line, font=font, fill='black')
+            boxes.append({'page': len(pages)+1, 'bbox': [x, y, x+b[2]-b[0], y+b[3]-b[1]]})
+            y += height
+        y += 30
+    pages.append(image)
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
-    img.save(out, "PNG")
-    print(out)
+    outputs = []
+    for i, image in enumerate(pages):
+        target = out if i == 0 else out.with_name(f'{out.stem}-{i+1:02d}{out.suffix}')
+        image.save(target, 'PNG')
+        outputs.append(str(target))
+    report = {'pages': outputs, 'text_boxes': boxes, 'visual_qa': 'not_run'}
+    out.with_suffix('.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+    return report
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    for role in ('body', 'title', 'character'):
+        p.add_argument(f'--{role}-font', required=True)
+    p.add_argument('--bopomofo-font')
+    p.add_argument('--lesson-text', default='')
+    p.add_argument('--lesson-text-file')
+    p.add_argument('--output', default='bee-font-qa-2560x1440.png')
+    print(json.dumps(render(p.parse_args()), ensure_ascii=False))
     return 0
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     raise SystemExit(main())
