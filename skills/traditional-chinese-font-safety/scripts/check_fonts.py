@@ -18,7 +18,9 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set
 
 TC_TEST = "永遠的馬偕｜學習重點｜臺灣｜醫療教育｜體驗與觀察｜麥齒醫衛獻灣臺邊學夢"
-BOPOMOFO_TEST = "國語 ㄍㄨㄛˊ ㄩˇ｜學習 ㄒㄩㄝˊ ㄒㄧˊ｜ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏ"
+from font_policy import read_registry, identify_font, BOPOMOFO, has_bopomofo
+
+BOPOMOFO_TEST = BOPOMOFO
 
 FONT_EXTS = {".ttf", ".otf", ".ttc", ".otc"}
 
@@ -66,10 +68,8 @@ def load_cmap(path: Path, face_index: int = 0) -> Optional[Set[int]]:
 
     try:
         font = TTFont(str(path), fontNumber=face_index, lazy=True)
-        cmap: Set[int] = set()
-        for table in font["cmap"].tables:
-            if table.isUnicode():
-                cmap.update(table.cmap.keys())
+        cmap = {cp for cp, glyph in (font.getBestCmap() or {}).items()
+                if font.getGlyphID(glyph) != 0}
         font.close()
         return cmap
     except Exception:
@@ -148,10 +148,25 @@ def main() -> int:
     parser.add_argument("--extra-text", default="", help="Lesson-specific target characters/phrases to require.")
     parser.add_argument("--require-bopomofo", action="store_true", help="Require Bopomofo glyph coverage.")
     parser.add_argument("--report", default="font-preflight-report.json", help="Output JSON report path.")
+    parser.add_argument('--role', default='body_sans', help='Registry role; run once for each font role used.')
+    parser.add_argument('--text-file', help='UTF-8 file containing all visible text for this role.')
+    parser.add_argument('--include-system-fonts', action='store_true', help='Also search system directories; approval policy still applies.')
     args = parser.parse_args()
+    registry, font_configs = read_registry()
+    if args.role not in registry['roles']:
+        parser.error('Unknown registry role: ' + args.role)
+    global TC_TEST
+    TC_TEST = registry['render_test']['traditional_chinese']
+    if args.text_file:
+        args.extra_text += Path(args.text_file).read_text(encoding='utf-8')
+    args.require_bopomofo = args.require_bopomofo or args.role == 'bopomofo_safe' or has_bopomofo(args.extra_text)
+    role = registry['roles'][args.role]
+    chain = [role['preferred'], *role.get('fallback', [])]
 
     candidates: List[Path] = [Path(p) for p in args.font]
-    search_dirs = [Path(p) for p in args.font_dir] + DEFAULT_SEARCH_DIRS
+    search_dirs = [Path(p) for p in args.font_dir] + DEFAULT_SEARCH_DIRS[:2]
+    if args.include_system_fonts:
+        search_dirs += DEFAULT_SEARCH_DIRS[2:]
 
     if not candidates:
         matches = [m.lower() for m in args.match]
@@ -160,24 +175,51 @@ def main() -> int:
                 continue
             candidates.append(p)
 
-    existing = [p for p in candidates if p.exists()]
-    inspected = [inspect_font(p, args.extra_text, args.require_bopomofo) for p in existing]
-    passed = [r for r in inspected if r.get("pass")]
+    existing = sorted(set(p.resolve() for p in candidates if p.is_file()), key=str)
+    inspected = []
+    for path in existing:
+        result = inspect_font(path, args.extra_text, args.require_bopomofo)
+        try:
+            fid, version, _ = identify_font(path, font_configs)
+            approved = fid in chain
+            cfg = font_configs.get(fid, {})
+            result.update(font_id=fid, version=version, region=cfg.get('region'),
+                          source=cfg.get('official_source'), policy_pass=approved)
+            if not approved:
+                result['reason'] = 'Font identity is not approved for this role; filename alone is not evidence.'
+            result['pass'] = bool(result['pass'] and approved)
+        except Exception as exc:
+            result.update({'pass': False, 'policy_pass': False, 'reason': str(exc)})
+        inspected.append(result)
+    passed = sorted((r for r in inspected if r.get('pass')),
+                    key=lambda r: (chain.index(r['font_id']), str(r['path'])))
+    selected = passed[0] if passed else None
+    fallback = bool(selected and selected['font_id'] != chain[0])
 
     report = {
-        "schema": "vmax-font-preflight/1.0",
+        "schema": "vmax-font-preflight/1.1",
         "platform": platform.platform(),
         "require_bopomofo": args.require_bopomofo,
         "extra_text": args.extra_text,
         "candidate_count": len(existing),
         "status": "pass" if passed else "fail",
         "selected_font_file": passed[0]["path"] if passed else None,
-        "fallback_used": False,
+        "fallback_used": fallback,
+        "fallback_reason": 'Preferred font unavailable or failed preflight' if fallback else None,
+        "selected_font_role": args.role,
+        "selected_font_id": selected['font_id'] if selected else None,
+        "selected_font_region": selected.get('region') if selected else None,
+        "selected_font_source": selected.get('source') if selected else None,
+        "selected_font_version": selected.get('version') if selected else None,
+        "missing_glyphs": selected['missing_glyphs'] if selected else list(dict.fromkeys(c for r in inspected for c in r['missing_glyphs'])),
+        "font_qa_page": "not_run",
+        "final_render_QA": "not_run",
         "traditional_chinese_test": "pass" if passed else "fail",
         "bopomofo_test": ("pass" if passed else "fail") if args.require_bopomofo else "not_required",
         "fonts": inspected,
     }
 
+    Path(args.report).parent.mkdir(parents=True, exist_ok=True)
     Path(args.report).write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))
 

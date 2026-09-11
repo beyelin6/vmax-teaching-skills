@@ -5,7 +5,7 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 
 # Traditional Chinese Font Safety｜繁中文字型安全
 
-版本：1.2.0
+版本：1.2.1
 
 ## 使命
 
@@ -15,7 +15,7 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 
 ## 必讀檔案
 
-執行本 Skill 時必須同時讀取：
+先讀取下列兩份規則；腳本可直接執行，只有除錯或修改時才需閱讀實作：
 
 1. `font-registry.yaml`：字型來源、角色與 fallback。
 2. `bee-teacher-font-system.md`：Bee 老師教材的正式字型選用規則。
@@ -65,7 +65,7 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 `永遠的馬偕｜學習重點｜臺灣｜醫療教育｜體驗與觀察｜麥齒醫衛獻灣臺邊學夢`  
 `國語 ㄍㄨㄛˊ ㄩˇ｜學習 ㄒㄩㄝˊ ㄒㄧˊ｜ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏ`
 
-生字教學頁還必須加入該課所有目標國字實測。
+注音測試涵蓋全部 37 個符號及聲調。生字教學頁還必須加入該課所有目標國字實測。
 
 ## 教材字型角色
 
@@ -120,3 +120,18 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 - final_render_QA: pass/fail
 
 任一必要項目 fail 時不得標示成品為 confirmed/final。
+
+## 執行介面與檢查邊界
+
+Python 依賴：`Pillow`、`fonttools`、`PyYAML`。腳本路徑以本 Skill 實際安裝目錄為準；不假設目前工作目錄是 repository。
+
+```bash
+python <skill-dir>/scripts/check_fonts.py --role character_learning --font-dir assets/fonts --text-file working/visible-text.txt --require-bopomofo --report working/font-preflight-report.json
+```
+
+- 每個實際使用的角色分別執行；`--text-file` 傳入該角色全部可見文字，`--extra-text` 可追加目標字。文字含注音或角色為 `bopomofo_safe` 時自動啟用完整注音檢查。
+- 預設只搜尋工作區；需要系統字型時明確加 `--include-system-fonts` 或 `--font`。依 registry 的角色順序挑選，並核對字型內部 PostScript 名稱；改檔名不會使非 TW 字型通過。
+- TTC/OTC 僅檢查與 Pillow 相同的 face 0；其他 face 請先取得獨立字型檔。未核准字型不會因 coverage 足夠而自動通過。
+- 本檢查驗證 coverage、字型身分及 Pillow 載入；不代表 PDF/PPTX/瀏覽器已正確嵌字，也不是臺灣教學筆形的自動認證。目標 renderer 代表頁與最終成品仍需目視 QA。
+- `font_qa_page`、`final_render_QA` 初始為 `not_run`；完成實際檢查後才能記錄 pass。來源為 registry 的官方來源，版本讀取字型內部 metadata；下載 release 資訊保留在 bootstrap report。
+- QA 腳本依實測欄寬換行，內容過長時增加頁面，檔名依序為原輸出名、`-02.png` 等；檢查全部頁面。教案長文可用 `--lesson-text-file` 傳入，無注音教材可省略 `--bopomofo-font`。
