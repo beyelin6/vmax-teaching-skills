@@ -54,6 +54,11 @@
 
 任何錯序、缺區段或成語 provenance 斷裂標記 `SLIDE_ARCHITECTURE_ORDER_FAIL` 或 `IDIOM_CHARACTER_COVERAGE_INCOMPLETE`，不得進入 `RENDER_READY`。
 
+5. `PAGE_DETAIL_CONFIRMATION` 狀態為 `approved`，且每頁都有文字、來源、圖片細節與版面規格。
+6. Slide Script、Render Request 與頁面母檔的文字、source refs、頁型、圖片／版面 revision 一致。
+
+缺少逐頁細節、頁面母檔未核准或下游資料與母檔不一致，標記 `PAGE_DETAIL_CONFIRMATION_PENDING` 或 `PAGE_DETAIL_SOURCE_CONFLICT`，不得進入 `RENDER_READY`。
+
 正式 Renderer 只接受 `RENDER_READY`。若仍屬 `PRE_LAYOUT`，不得標記正式渲染完成。
 
 有語詞標記的 `RENDER_READY` request，`glyph_bbox`、`baseline_y`、`mark_bbox`、`text_layout_revision` 必須完整；否則 `RENDER_READY_ANCHOR_INCOMPLETE` → FAIL。
