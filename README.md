@@ -16,7 +16,7 @@ V-MAX 是臺灣國小國語教材轉錄、課程設計、視覺渲染與交付�
 - `chinese-textbook-transcriber`、`chinese-lesson-knowledge-builder`：忠實轉錄並建立課程知識書。
 - `learning-module-builder`、`teaching-strategy-builder`、`presentation-engine`：建立學習模組、教學策略與多平台輸出。
 - `vmax-image-renderer`：探測平台圖片能力，實際生圖／改圖／合成／重檢，或產生可執行 handoff。
-- `prestudy-worksheet`、`postlesson-short-writing-worksheet`：定義預習單與課後短文單。
+- `prestudy-worksheet`、`postlesson-short-writing-worksheet`、`postlesson-short-writing-presentation`：定義預習單、課後短文單與短文單解說簡報。
 - `vmax-typography-bridge`：統一繁體中文字體 DNA、可讀性與 Canva 映射。
 - `vqs-quality-validator`、`lesson-package-delivery`：品質驗證與正式交付。
 

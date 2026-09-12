@@ -1,0 +1,4 @@
+interface:
+  display_name: "V-MAX 短文單解說簡報"
+  short_description: "依核准短文單逐區解說，產生可確認、可渲染的教學簡報"
+  default_prompt: "Use $postlesson-short-writing-presentation to explain an approved short-writing worksheet in source order and prepare a page-detail-confirmed slide deck."
