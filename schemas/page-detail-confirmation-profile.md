@@ -32,6 +32,7 @@ page_detail_confirmation:
       page_purpose: ""
       navigation_marker:
         page_number_token: ""
+        page_number_position: BOTTOM_RIGHT_CORNER
         section_marker_token: ""
         source_sequence_index: 1
         source_section_id: ""
@@ -87,6 +88,12 @@ page_detail_confirmation:
           body_min_pt: 32
           vocabulary_target_pt: "30-34"
           vocabulary_min_pt: 28
+        vocabulary_marking:
+          mark_mode: UNDERLINE_HIGHLIGHT
+          visual_style: PALE_BRUSH_BEHIND_TEXT
+          line_only_allowed: false
+          term_refs: []
+          explanation_format: "詞語：解釋"
       page_spec_sha256: ""
       source_coverage: pass
       teacher_decision: pending
