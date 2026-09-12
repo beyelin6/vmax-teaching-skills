@@ -21,7 +21,11 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 正式 Slide Script 只能由已核准的 `PAGE_DETAIL_CONFIRMATION` 產生。每頁必須逐項帶入核准的學生可見文字、來源、圖片目的與細節、人物／物件／動作、禁止誤畫、閱讀順序、文字區、圖片區、留白與 protected zones。若有角色，還必須逐頁帶入相同的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；姿勢、表情、鏡位與道具只能使用母檔列出的允許變化。若頁面資料與母檔不一致，或角色識別資料缺失，標記 `PAGE_DETAIL_SOURCE_CONFLICT` 或 `CHARACTER_ANCHOR_MISSING`，不得送 Renderer。
 
+批次 Slide Script 必須建立 `BATCH_CONSTRUCTION_LOCK`，帶入整份 PAGE_DETAIL_CONFIRMATION hash、Style Selection Profile hash、選定 `style_core_id` 與每頁 `page_spec_sha256`；每頁和 Render Request 都要回指相同 hash。缺少或不一致時標記 `BATCH_CONSTRUCTION_LOCK_FAIL`，不得以模板、上一頁或平台預設補齊。
+
 一般頁預設 `OBJECT_SCENE`，禁止簡化成文字區＋一張底圖。完整場景吃滿畫布、文字只能搬移 → `MONOLITHIC_BACKGROUND_REGRESSION`。
+
+課文閱讀頁另受 `core/presentation/paragraph-text-page-policy.md` 約束：預設一頁一個自然段＋緊跟在旁的該段語詞解釋；語詞解釋不得脫離課文另成清單頁。單段過長才可依完整句子拆成連續頁。PAGE_DETAIL_CONFIRMATION 必須帶 `text_coverage`，確認完整原文、段落來源、拆頁理由、相鄰語詞版位與該段全部核准語詞覆蓋；不能用代表句、摘要或改寫代替。
 
 ## IDIOM_APPLICATION_PLAN
 

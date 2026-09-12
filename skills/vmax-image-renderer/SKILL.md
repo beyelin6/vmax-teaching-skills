@@ -17,6 +17,14 @@ python "<目前 Renderer 技能絕對路徑>/scripts/validate_presentation.py" "
 
 收到完整 Slide Script 時以預設 kind 驗證並加 `--require-ready`，同時檢查上下游 Plan 相等。執行環境須有 jsonschema；驗證器無法執行或非零退出碼 → `PRE_RENDER_RULE_BLOCKED`，不得宣稱通過。PRE_LAYOUT 只可進排版準備。
 
+批次製作另必須先執行 `scripts/validate_batch_lock.py`，同時提供 Slide Script、已核准 PAGE_DETAIL_CONFIRMATION 與已確認 Style Selection Profile：
+
+```sh
+python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" --slide-script "<Slide Script 絕對路徑>" --page-detail "<PAGE_DETAIL_CONFIRMATION 絕對路徑>" --style-selection "<Style Selection Profile 絕對路徑>"
+```
+
+這個檢查會驗證整份母檔 hash、每頁 page hash、頁序、page family、來源回指、風格核心與 Render Request 綁定；非零退出碼 → `BATCH_CONSTRUCTION_LOCK_FAIL`，不得啟動任何批次 Renderer。缺欄位不得套用上一頁、平台預設或通用模板。
+
 成語頁必須傳入完整 idiom_application_plan；施工前取得例句語法、用法、適齡生活語境審閱結果與 review_ref。證據不可由預設 true 代填；Schema 通過不代表語意審閱通過。沿用核准例句，圖跟例句人物與動作走。來源未提供時標示缺口或使用已核准補充，不得冒充教材原文。
 
 交付前逐頁執行六項成語 gates（文字、層級、例句可讀性、自然度、圖文匹配、物件構圖），保留實際成品檢查證據；任一失敗不得 RENDER_VERIFIED。
@@ -89,7 +97,9 @@ python "<目前 Renderer 技能絕對路徑>/scripts/validate_presentation.py" "
 
 ## Representative / Batch
 
-有語詞標記時，代表頁必須實測至少一次 reflow（例如字級／欄寬變動）後 anchor 自動失效並重新計算。全量採小批次，每批檢查文字、Object Composition、角色與 Vocabulary anchors。
+全量採 5–8 頁小批次；每批開始前重新執行 `validate_batch_lock.py`，每批結束後回讀 page_id、sequence、文字層、Object Composition、角色、來源、風格與產物 hash。發現 `PAGE_DETAIL_HASH_MISMATCH`、`PAGE_SPEC_HASH_MISMATCH`、`PAGE_ORDER_DRIFT`、`PAGE_FAMILY_DRIFT`、`STYLE_DRIFT`、`LAYOUT_SPEC_DRIFT`、`RENDER_REQUEST_UNBOUND` 或角色／風格漂移，立即停止整批，不得先完成全套再回頭修。
+
+有語詞標記時，代表頁必須實測至少一次 reflow（例如字級／欄寬變動）後 anchor 自動失效並重新計算。代表頁通過不代表其他頁通過；每頁仍需依自己的 locked page detail 與產物 QA 驗證。
 
 ## Completion
 
