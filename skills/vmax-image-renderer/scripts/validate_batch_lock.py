@@ -40,10 +40,11 @@ def load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def validate(slide_script_path: Path, page_detail_path: Path, style_selection_path: Path) -> None:
+def validate(slide_script_path: Path, page_detail_path: Path, style_selection_path: Path, role_selection_path: Path) -> None:
     slide_script = load_json(slide_script_path)
     page_detail_root = load_json(page_detail_path)
     style_selection = load_json(style_selection_path)
+    role_selection = load_json(role_selection_path)
     page_detail = page_detail_root.get("page_detail_confirmation", page_detail_root)
     if not isinstance(page_detail, dict):
         fail("page-detail root must contain page_detail_confirmation object")
@@ -57,6 +58,32 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
     if not isinstance(style_core, dict) or not style_core.get("style_core_id"):
         fail("STYLE_SELECTION_REQUIRED: selected style_core_id is missing")
     selected_style_id = style_core["style_core_id"]
+    if role_selection.get("status") != "CONFIRMED" or role_selection.get("teacher_confirmation_status") != "CONFIRMED":
+        fail("CHARACTER_REGISTRY_WRITEBACK_REQUIRED: Role Selection Profile must be CONFIRMED")
+    role_origin = role_selection.get("character_origin")
+    writeback = role_selection.get("registry_writeback") or {}
+    registry_ref = writeback.get("registry_ref")
+    registry_path: Path | None = None
+    if role_origin == "NEW_CHARACTER":
+        if writeback.get("status") != "COMPLETE" or writeback.get("reuse_level") not in {"LESSON_ONLY", "REUSABLE_CANDIDATE"}:
+            fail("CHARACTER_REGISTRY_WRITEBACK_REQUIRED")
+        if not registry_ref:
+            fail("CHARACTER_REGISTRY_WRITEBACK_REQUIRED: registry_ref missing")
+        registry_path = Path(registry_ref)
+        if not registry_path.is_absolute():
+            registry_path = role_selection_path.parent / registry_path
+        if not registry_path.is_file():
+            fail("CHARACTER_REGISTRY_WRITEBACK_REQUIRED: registry file missing")
+        if writeback.get("registry_sha256") != file_hash(registry_path):
+            fail("CHARACTER_REGISTRY_HASH_MISMATCH")
+        base_character_id = role_selection.get("base_character_id")
+        core_dna_ref = role_selection.get("core_dna_ref")
+        asset_refs = writeback.get("approved_asset_refs") or []
+        if not base_character_id or not core_dna_ref or not asset_refs:
+            fail("CHARACTER_DNA_MISSING or CHARACTER_ASSET_UNBOUND")
+        registry_text = registry_path.read_text(encoding="utf-8", errors="replace")
+        if base_character_id not in registry_text or core_dna_ref not in registry_text or any(asset not in registry_text for asset in asset_refs):
+            fail("CHARACTER_REGISTRY_WRITEBACK_REQUIRED: registry record is incomplete")
 
     batch_lock = slide_script.get("batch_lock")
     if not isinstance(batch_lock, dict):
@@ -69,6 +96,9 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
         fail("PAGE_DETAIL_HASH_MISMATCH")
     if batch_lock.get("style_selection_sha256") != expected_style_hash:
         fail("STYLE_SELECTION_HASH_MISMATCH")
+    expected_role_hash = file_hash(role_selection_path)
+    if batch_lock.get("role_selection_sha256") != expected_role_hash:
+        fail("CHARACTER_REGISTRY_HASH_MISMATCH")
     if batch_lock.get("selected_style_id") != selected_style_id:
         fail("STYLE_DRIFT: selected_style_id does not match confirmed Style Selection Profile")
     if not batch_lock.get("page_detail_confirmation_ref") or not batch_lock.get("style_selection_ref"):
@@ -151,9 +181,10 @@ def main() -> int:
     parser.add_argument("--slide-script", required=True, type=Path)
     parser.add_argument("--page-detail", required=True, type=Path)
     parser.add_argument("--style-selection", required=True, type=Path)
+    parser.add_argument("--role-selection", required=True, type=Path)
     args = parser.parse_args()
     try:
-        validate(args.slide_script, args.page_detail, args.style_selection)
+        validate(args.slide_script, args.page_detail, args.style_selection, args.role_selection)
     except ValueError as exc:
         print(f"BATCH_CONSTRUCTION_LOCK_FAIL: {exc}")
         return 1

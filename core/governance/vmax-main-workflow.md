@@ -259,7 +259,7 @@ Style Recommender 必須依本課課文、教學策略、角色與頁面家族�
 
 風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材。水彩、漫畫或其他畫風僅為示意，實際媒材、版型與構圖應依教材、教學功能與教師偏好推薦，不得硬編成固定答案。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
 
-教師確認主風格／頁型混搭規則後，才建立 Style Selection Profile 的 `CONFIRMED` 鎖。接著教師確認逐頁版面稿與頁型風格矩陣；在此之前狀態為 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或啟動 Renderer。確認後才建立 `PAGE_DETAIL_CONFIRMATION_APPROVED` 與 `BATCH_CONSTRUCTION_LOCK`；Renderer 必須依核准母檔批次製作，不能自行補抓教材內容、決定風格或改變頁面排版意圖。
+教師確認角色後，若是本課新角色，先完成 Character Registry writeback（預設 `LESSON_ONLY`）。教師確認主風格／頁型混搭規則後，才建立 Style Selection Profile 的 `CONFIRMED` 鎖。接著教師確認逐頁版面稿與頁型風格矩陣；在此之前狀態為 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或啟動 Renderer。確認後才建立 `PAGE_DETAIL_CONFIRMATION_APPROVED` 與 `BATCH_CONSTRUCTION_LOCK`；Renderer 必須依核准母檔批次製作，不能自行補抓教材內容、決定風格或改變頁面排版意圖。
 
 只有完成 Slide Architecture 後才可估頁數；頁數是結果，不是起點。
 

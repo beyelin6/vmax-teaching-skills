@@ -16,6 +16,7 @@ lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, cur
 page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profile.md, current_version: 1.0 }
 batch_construction_lock: { path: core/governance/batch-construction-lock.md, current_version: 1.0 }
 paragraph_text_page_policy: { path: core/presentation/paragraph-text-page-policy.md, current_version: 1.0 }
+character_library_writeback_policy: { path: core/character/character-library-writeback-policy.md, current_version: 1.0 }
 slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contract_version: object-composition-glyph-anchor-idiom-v3 }
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.2 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }

@@ -35,6 +35,15 @@ role_selection:
     learning_goals: []
     activity_types: []
     age_group: ""
+
+  character_origin: EXISTING_REGISTRY | NEW_CHARACTER | TEXT_CHARACTER | BEE_TEACHER
+  registry_writeback:
+    status: NOT_REQUIRED_EXISTING_ROLE | COMPLETE | PENDING
+    registry_ref: ""
+    registry_sha256: ""
+    reuse_level: LESSON_ONLY | REUSABLE_CANDIDATE | REUSABLE_CONFIRMED | FALLBACK_GUIDE
+    approved_asset_refs: []
+    teacher_confirmation_ref: ""
 ```
 
 ## 建議評分
