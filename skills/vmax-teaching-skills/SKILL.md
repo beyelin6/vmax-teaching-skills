@@ -28,6 +28,10 @@ Before starting any presentation task, initialize or read the lesson's `00_施�
 10. 對應平台 adapter
 11. 當前 stage canonical policy／skill
 
+進入批次簡報製作時另必讀 `core/governance/batch-construction-lock.md`，並實際執行其 page／style hash 驗證；只讀規格而未驗證 hash 不算載入完成。
+
+進入課文閱讀頁規劃時另必讀 `core/presentation/paragraph-text-page-policy.md`；未完成完整段落與該段語詞覆蓋驗證，不得進入批次製作。
+
 ## 簡報／視覺 Stage 強制載入鏈
 
 一旦進入簡報規劃、代表頁、Render Request、圖片施工、批次或成品 QA，不得只依賴「當前 stage skill」的模糊解讀；必須實際載入 Manifest 指向的最新版本：

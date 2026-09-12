@@ -72,9 +72,17 @@ style_selection:
 - `approved`
 - `needs_revision`
 
+## 教師選擇時點
+
+完成 Lesson Map、Session Map、角色／引導角色候選、Visual Grammar 與 Slide Architecture 後，才進入風格選擇確認。系統此時依本課教材與教學需求提出 **3–5 種風格庫方案**，可包含單一風格與依頁面類型混搭方案，並說明主風格、可用頁型變體、共同字體／畫布／留白與限制。
+
+教師在此 HOLD 選擇主風格、頁型混搭、風格庫中的其他 `style_id`，或要求重新推薦。教師選擇前不得建立代表頁、PAGE_DETAIL_CONFIRMATION、正式 Slide Script 或 Renderer 批次。
+
 ## 強制規則
 
 - `selected_style_id` 不得在教師核准前自動填入。
+- 系統只能推薦 3–5 組候選或混搭方案；推薦不等於選定，Renderer 不得替教師決定。
+- 批次施工只能消費 `status: approved`／機器檔 `status: CONFIRMED` 且 `teacher_confirmation_status: CONFIRMED` 的 Style Selection Profile。
 - `lesson_specific_adaptations` 必須依本課內容重建。
 - 混合風格時需指定主風格與輔助風格，不得把多套規則無限制堆疊。
 - 角色辨識色只能作為輔助色，不得覆蓋教材主題色。

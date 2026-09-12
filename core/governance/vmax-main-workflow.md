@@ -83,8 +83,9 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
 → 逐頁版面配置與文字說明稿
-→ 頁型風格矩陣／Style Recipe
-→ HOLD｜教師確認頁型風格混搭規則
+→ 風格庫 3–5 組候選／主風格＋頁型混搭方案
+→ HOLD｜教師選擇主風格與頁型混搭規則
+→ 鎖定 Style Selection Profile／Style Matrix
 → 頁數估算／頁數帳本
 → 代表頁驗證
 → 全量 Renderer
@@ -252,11 +253,13 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 完成 Slide Architecture 後，必須先產生 `working/slide-page-layout-brief.md`，逐頁說明頁面目的、學生可見文字、教材證據、頁型、構圖、文字區、留白區與插圖需求。接著由 Style Recommender 產生 `working/style-recommendation.md`、`working/style-selection-profile.md` 與 `working/page-family-style-matrix.md`。
 
+Style Recommender 必須依本課課文、教學策略、角色與頁面家族提出 3–5 組風格庫候選，也可提出主風格＋頁型混搭方案；這一步是教師選擇 HOLD，不是自動決策。`selected_style_id`、主風格、混搭頁型與限制未經教師確認前，不得建立 PAGE_DETAIL_CONFIRMATION、代表頁、正式 Slide Script 或啟動 Renderer。
+
 上述文件共同組成 `PAGE_DETAIL_CONFIRMATION`。每頁還必須明列：頁碼與區段、學生可見的每一段文字、來源回指、圖片目的／場景／人物／動作／必要物件／禁止誤畫、閱讀順序、文字區、圖片區、留白、protected zones、字體角色與互動方式。不得只寫抽象主題或一句圖片 prompt。
 
 風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材。水彩、漫畫或其他畫風僅為示意，實際媒材、版型與構圖應依教材、教學功能與教師偏好推薦，不得硬編成固定答案。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
 
-教師確認逐頁版面稿與頁型風格矩陣前，狀態為 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或啟動 Renderer。教師確認後才建立 `PAGE_DETAIL_CONFIRMATION_APPROVED`；Renderer 必須依核准母檔批次製作，不能自行補抓教材內容或改變頁面排版意圖。
+教師確認主風格／頁型混搭規則後，才建立 Style Selection Profile 的 `CONFIRMED` 鎖。接著教師確認逐頁版面稿與頁型風格矩陣；在此之前狀態為 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或啟動 Renderer。確認後才建立 `PAGE_DETAIL_CONFIRMATION_APPROVED` 與 `BATCH_CONSTRUCTION_LOCK`；Renderer 必須依核准母檔批次製作，不能自行補抓教材內容、決定風格或改變頁面排版意圖。
 
 只有完成 Slide Architecture 後才可估頁數；頁數是結果，不是起點。
 

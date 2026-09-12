@@ -102,6 +102,8 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 - `working/style-selection-profile.md`
 - `working/page-family-style-matrix.md`
 
+風格推薦的教師確認時點固定在：Lesson Map、Session Map、角色／引導角色候選、Visual Grammar 與 Slide Architecture 完成後，PAGE_DETAIL_CONFIRMATION 建立前。系統每課必須提出 3–5 組依課文量身推薦的候選，也可提出主風格＋頁面家族混搭方案；每組都要說明適用頁型、共享不變量、可變動項與限制。
+
 推薦完成後必須停止，等待教師：
 
 1. 選擇推薦方案
@@ -110,6 +112,6 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 4. 關閉角色
 5. 調整配色、材質或插圖方向
 
-未確認前，不得啟動 Presentation Engine 的最終產出。
+未確認前，不得建立 PAGE_DETAIL_CONFIRMATION、代表頁、Slide Script 或啟動 Renderer。只有教師確認後的 `CONFIRMED` Style Selection Profile 才能被 Presentation Engine、Batch Construction Lock 或 Image Renderer 消費；任何平台或 Renderer 自行挑選風格都標記 `STYLE_SELECTION_REQUIRED`。
 
 Only a `CONFIRMED` Style Selection Profile may be consumed by Presentation Engine or Image Renderer. A recommendation remains `TEACHER_REVIEW`／`WAITING_TEACHER`.
