@@ -158,6 +158,32 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
                 fail(f"PARAGRAPH_VOCABULARY_DROPPED at {slide_id}")
             if vocabulary.get("placement") not in {"INLINE_ADJACENT", "SIDE_BY_SIDE_ADJACENT", "CONTINUATION_ADJACENT"}:
                 fail(f"PARAGRAPH_VOCABULARY_DETACHED at {slide_id}")
+            typography = coverage.get("projection_typography")
+            if not isinstance(typography, dict) or typography.get("profile") != "CLASSROOM_PROJECTOR" or typography.get("effective_pt_verified") is not True:
+                fail(f"CLASSROOM_FONT_SIZE_UNVERIFIED at {slide_id}")
+            try:
+                body_min_pt = float(typography.get("body_min_pt", 0))
+                vocabulary_min_pt = float(typography.get("vocabulary_min_pt", 0))
+            except (TypeError, ValueError):
+                fail(f"CLASSROOM_FONT_SIZE_UNVERIFIED at {slide_id}")
+            if body_min_pt < 32 or vocabulary_min_pt < 28:
+                fail(f"CLASSROOM_FONT_TOO_SMALL at {slide_id}")
+            text_rendering = slide.get("text_rendering")
+            layers = text_rendering.get("layers") if isinstance(text_rendering, dict) else None
+            if not isinstance(layers, list) or not layers:
+                fail(f"CLASSROOM_FONT_SIZE_UNVERIFIED at {slide_id}")
+            student_layers = [layer for layer in layers if isinstance(layer, dict) and layer.get("visibility", "STUDENT") == "STUDENT"]
+            if not student_layers:
+                fail(f"CLASSROOM_FONT_SIZE_UNVERIFIED at {slide_id}")
+            for layer in student_layers:
+                try:
+                    font_size_pt = float(layer.get("font_size_pt", 0))
+                except (TypeError, ValueError):
+                    fail(f"CLASSROOM_FONT_SIZE_UNVERIFIED at {slide_id}")
+                role = layer.get("font_role", "BODY")
+                minimum = vocabulary_min_pt if role in {"VOCABULARY", "VOCAB"} else body_min_pt
+                if font_size_pt < minimum:
+                    fail(f"CLASSROOM_FONT_TOO_SMALL at {slide_id}")
             if coverage.get("coverage_mode") == "SPLIT_CONTINUATION":
                 if not coverage.get("split_group_id") or not coverage.get("split_reason"):
                     fail(f"PARAGRAPH_SPLIT_UNJUSTIFIED at {slide_id}")

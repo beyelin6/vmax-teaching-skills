@@ -23,7 +23,7 @@ python "<目前 Renderer 技能絕對路徑>/scripts/validate_presentation.py" "
 python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" --slide-script "<Slide Script 絕對路徑>" --page-detail "<PAGE_DETAIL_CONFIRMATION 絕對路徑>" --style-selection "<Style Selection Profile 絕對路徑>" --role-selection "<Role Selection Profile 絕對路徑>"
 ```
 
-這個檢查會驗證整份母檔 hash、每頁 page hash、頁序、page family、來源回指、風格核心、已確認角色與 Registry writeback、Render Request 綁定；非零退出碼 → `BATCH_CONSTRUCTION_LOCK_FAIL`，不得啟動任何批次 Renderer。缺欄位不得套用上一頁、平台預設或通用模板。
+這個檢查會驗證整份母檔 hash、每頁 page hash、頁序、page family、來源回指、風格核心、已確認角色與 Registry writeback、課文完整性、相鄰語詞與教室投影字級證據、Render Request 綁定；非零退出碼 → `BATCH_CONSTRUCTION_LOCK_FAIL`，不得啟動任何批次 Renderer。缺欄位不得套用上一頁、平台預設或通用模板。
 
 成語頁必須傳入完整 idiom_application_plan；施工前取得例句語法、用法、適齡生活語境審閱結果與 review_ref。證據不可由預設 true 代填；Schema 通過不代表語意審閱通過。沿用核准例句，圖跟例句人物與動作走。來源未提供時標示缺口或使用已核准補充，不得冒充教材原文。
 

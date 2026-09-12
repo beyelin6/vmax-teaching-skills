@@ -97,6 +97,54 @@ class BatchConstructionLockTests(unittest.TestCase):
         slide_path.write_text(json.dumps(slide_script, ensure_ascii=False), encoding="utf-8")
         return slide_path, page_detail_path, style_path, role_path
 
+    def make_text_fixture(self, root: Path) -> tuple[Path, Path, Path, Path]:
+        paths = self.make_fixture(root)
+        slide_path, page_detail_path, style_path, role_path = paths
+        page_detail = json.loads(page_detail_path.read_text(encoding="utf-8"))
+        page = page_detail["page_detail_confirmation"]["pages"][0]
+        page["page_family"] = "TEXT_READING_PAGE"
+        page["section_id"] = "paragraph_learning"
+        page["student_visible_text"] = {"body": ["這是一段完整課文。"]}
+        page["text_coverage"] = {
+            "source_unit_type": "NATURAL_PARAGRAPH",
+            "source_unit_ids": ["P1"],
+            "coverage_mode": "COMPLETE",
+            "text_integrity": "COMPLETE_UNEDITED",
+            "vocabulary_coverage": {"required_refs": ["VOCAB1"], "placement": "INLINE_ADJACENT"},
+            "projection_typography": {
+                "profile": "CLASSROOM_PROJECTOR",
+                "effective_pt_verified": True,
+                "body_min_pt": 32,
+                "vocabulary_min_pt": 28,
+            },
+        }
+        page["page_spec_sha256"] = MODULE.page_spec_hash(page)
+        page_detail_path.write_text(json.dumps(page_detail, ensure_ascii=False), encoding="utf-8")
+        detail_hash = MODULE.file_hash(page_detail_path)
+        style_hash = MODULE.file_hash(style_path)
+        role_hash = MODULE.file_hash(role_path)
+        slide_script = json.loads(slide_path.read_text(encoding="utf-8"))
+        slide = slide_script["slides"][0]
+        page_hash = page["page_spec_sha256"]
+        slide["page_family"] = "TEXT_READING_PAGE"
+        slide["page_detail_page_sha256"] = page_hash
+        slide["page_detail_confirmation_sha256"] = detail_hash
+        slide["text_rendering"] = {
+            "layers": [
+                {"visibility": "STUDENT", "font_role": "BODY", "font_size_pt": 36, "text": "這是一段完整課文。"},
+                {"visibility": "STUDENT", "font_role": "VOCABULARY", "font_size_pt": 30, "text": "詞語解釋"},
+            ]
+        }
+        slide["render_request"]["page_detail_page_sha256"] = page_hash
+        slide["render_request"]["page_detail_confirmation_sha256"] = detail_hash
+        lock = slide_script["batch_lock"]
+        lock["page_detail_confirmation_sha256"] = detail_hash
+        lock["style_selection_sha256"] = style_hash
+        lock["role_selection_sha256"] = role_hash
+        lock["pages"][0]["page_spec_sha256"] = page_hash
+        slide_path.write_text(json.dumps(slide_script, ensure_ascii=False), encoding="utf-8")
+        return paths
+
     def test_exact_page_and_style_lock_passes(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             paths = self.make_fixture(Path(temp))
@@ -118,6 +166,20 @@ class BatchConstructionLockTests(unittest.TestCase):
             payload["page_detail_confirmation"]["pages"][0]["layout_spec"]["composition"] = "OTHER"
             page_detail.write_text(json.dumps(payload), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "PAGE_DETAIL_HASH_MISMATCH"):
+                MODULE.validate(slide, page_detail, style, role)
+
+    def test_text_page_projection_typography_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.make_text_fixture(Path(temp))
+            MODULE.validate(*paths)
+
+    def test_text_page_small_body_font_is_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            slide, page_detail, style, role = self.make_text_fixture(Path(temp))
+            payload = json.loads(slide.read_text(encoding="utf-8"))
+            payload["slides"][0]["text_rendering"]["layers"][0]["font_size_pt"] = 28
+            slide.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "CLASSROOM_FONT_TOO_SMALL"):
                 MODULE.validate(slide, page_detail, style, role)
 
 
