@@ -65,9 +65,9 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" --slide-sc
 
 若 revision 已改變但 anchor 未重算 → `STALE_VOCAB_MARK_ANCHOR` → FAIL。
 
-### Underline Geometry
+### Vocabulary Brush Geometry
 
-字下淨距約字高 8–12%；筆刷厚度約 10–16%；span 只含指定語詞，標點預設排除；文字在上、標記在下；不得遮注音。同一 term color ID 跨原文／詞義一致。手繪感只能作用於筆刷邊緣，不能改變 anchor/span 的準確性。
+課文頁 `visual_style` 必須為 `PALE_BRUSH_BEHIND_TEXT`；淡色筆刷位於文字後方，高度接近字高、左右只略微超出詞語，不形成大色塊。資料層可保留 `MARK_BELOW_TEXT` 表示文字覆蓋在標記之上，但不得把它渲染成單純線條；span 只含指定語詞，標點預設排除，不得遮注音。同一 term color ID 跨原文／詞義一致。手繪感只能作用於筆刷邊緣，不能改變 anchor/span 的準確性。
 
 整句／金句才可用核准 `BACKGROUND_HIGHLIGHT`。
 

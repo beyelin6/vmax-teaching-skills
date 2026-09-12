@@ -153,11 +153,24 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
             body = visible.get("body") if isinstance(visible, dict) else None
             if not body:
                 fail(f"PARAGRAPH_TEXT_INCOMPLETE at {slide_id}")
+            image_spec = page.get("image_spec")
+            if not isinstance(image_spec, dict) or image_spec.get("text_in_image") is not False:
+                fail(f"TEXT_EMBEDDING_FAIL at {slide_id}")
+            navigation_marker = page.get("navigation_marker")
+            if not isinstance(navigation_marker, dict) or not navigation_marker.get("page_number_token"):
+                fail(f"PAGE_SEQUENCE_MARKER_MISSING at {slide_id}")
             vocabulary = coverage.get("vocabulary_coverage")
             if not isinstance(vocabulary, dict) or not isinstance(vocabulary.get("required_refs"), list):
                 fail(f"PARAGRAPH_VOCABULARY_DROPPED at {slide_id}")
             if vocabulary.get("placement") not in {"INLINE_ADJACENT", "SIDE_BY_SIDE_ADJACENT", "CONTINUATION_ADJACENT"}:
                 fail(f"PARAGRAPH_VOCABULARY_DETACHED at {slide_id}")
+            vocabulary_marking = coverage.get("vocabulary_marking")
+            if (
+                not isinstance(vocabulary_marking, dict)
+                or vocabulary_marking.get("visual_style") != "PALE_BRUSH_BEHIND_TEXT"
+                or vocabulary_marking.get("line_only_allowed") is not False
+            ):
+                fail(f"VOCAB_MARK_STYLE_INVALID at {slide_id}")
             typography = coverage.get("projection_typography")
             if not isinstance(typography, dict) or typography.get("profile") != "CLASSROOM_PROJECTOR" or typography.get("effective_pt_verified") is not True:
                 fail(f"CLASSROOM_FONT_SIZE_UNVERIFIED at {slide_id}")

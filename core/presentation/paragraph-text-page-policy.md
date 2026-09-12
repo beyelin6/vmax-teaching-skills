@@ -17,11 +17,14 @@
 - `source_unit_ids` 與完整原文來源回指。
 - `text_integrity: COMPLETE_UNEDITED`。
 - `student_visible_text.body` 的完整課文文字；不得只放代表句、摘要、改寫或省略句子。
+- 課文頁不自行增加解釋性標題、摘要、結論或教師講解；必要段落數字記號只作導覽，不得取代原文。
 - `vocabulary_coverage.required_refs`：該段已核准、必須在段落教學處理的全部語詞。
 - `vocabulary_coverage.placement: INLINE_ADJACENT` 或 `SIDE_BY_SIDE_ADJACENT`；若因字數拆頁，可用 `CONTINUATION_ADJACENT`，但仍須在同一段連續頁旁回指同一段與同一詞語覆蓋表。
 - `projection_typography.profile: CLASSROOM_PROJECTOR`，並以最終學生可見文字層記錄 `effective_pt_verified: true`。
 - 課文正文投影目標為 36–40 pt 等效字級，硬下限為 32 pt；段落旁語詞解釋目標為 30–34 pt，硬下限為 28 pt。
 - 字級必須以最終畫布、字型、行距與文字區量測後的實際文字層為準，不得以圖片解析度、提示詞或預設模板字級代替證據。
+- 課文、插圖、語詞標記與投影片序號必須是分開的可調整物件；`image_spec.text_in_image` 必須為 `false`。
+- 語詞標記採淡色 `PALE_BRUSH_BEHIND_TEXT`，直接對齊原文 occurrence；只標示原文實際存在的詞語，解釋區只呈現「詞語：解釋」。
 
 語詞解釋必須緊跟在該段完整課文旁，採同頁內嵌、左右相鄰或同一段連續頁相鄰的方式呈現，讓學生在上下文中理解。不得把該段語詞移成脫離課文的清單頁、獨立卡片牆或無法辨認所屬段落的角落。若解釋太多，先拆成同段連續頁或刪除未核准／低價值補充，不得刪掉已核准的段落語詞。課後統整頁可以再次整理語詞，但不能取代段落旁的即時解釋。
 

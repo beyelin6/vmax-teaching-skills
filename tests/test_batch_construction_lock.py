@@ -104,6 +104,8 @@ class BatchConstructionLockTests(unittest.TestCase):
         page = page_detail["page_detail_confirmation"]["pages"][0]
         page["page_family"] = "TEXT_READING_PAGE"
         page["section_id"] = "paragraph_learning"
+        page["image_spec"] = {"text_in_image": False}
+        page["navigation_marker"] = {"page_number_token": "P01", "page_number_position": "BOTTOM_RIGHT_CORNER"}
         page["student_visible_text"] = {"body": ["這是一段完整課文。"]}
         page["text_coverage"] = {
             "source_unit_type": "NATURAL_PARAGRAPH",
@@ -116,6 +118,13 @@ class BatchConstructionLockTests(unittest.TestCase):
                 "effective_pt_verified": True,
                 "body_min_pt": 32,
                 "vocabulary_min_pt": 28,
+            },
+            "vocabulary_marking": {
+                "mark_mode": "UNDERLINE_HIGHLIGHT",
+                "visual_style": "PALE_BRUSH_BEHIND_TEXT",
+                "line_only_allowed": False,
+                "term_refs": ["VOCAB1"],
+                "explanation_format": "詞語：解釋",
             },
         }
         page["page_spec_sha256"] = MODULE.page_spec_hash(page)

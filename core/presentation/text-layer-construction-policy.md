@@ -1,4 +1,4 @@
-# V-MAX Text Layer Construction Policy 1.2
+# V-MAX Text Layer Construction Policy 1.3
 
 ## 定位
 
@@ -100,6 +100,13 @@ text_component:
 - 局部語詞標記是 annotation layer，不應把原文拆碎。
 - 課文過長時拆連續閱讀頁，不縮字、不改寫、不打散。
 
+### 2.3.1 課文頁文字層規範
+
+- 課文以自然段為單位完整呈現；保留教材原文、標點、語氣詞、引號與段落順序，不刪節、不改寫、不自行濃縮。
+- 課文頁不得自行增加「第一段」或摘要、結論、教師講解等解釋性標題；可保留必要的 `①`、`②` 等段落數字記號，但不得取代原文。
+- 課文是獨立、可調整的連續文字物件。正文不可直接生成在圖片裡，插圖、正文、語詞標記與投影片序號必須分層保存。
+- 課文頁文字區優先確保教室投影可讀性；中年級以大字級、寬鬆行距與安全留白為優先。放不下時先重排，仍無法容納才依完整句子拆成連續頁。
+
 ### 2.4 文字與畫面物件關係
 
 文字可依附木牌、旗幟、書頁、紙條、筆刷、對話泡泡、場景招牌或自然留白。文字容器由當頁 Object Composition 決定，不先套固定矩形。
@@ -113,7 +120,14 @@ text_component:
 - 語詞定位 → `UNDERLINE_HIGHLIGHT`
 - 整句／金句 → 經核准的 `BACKGROUND_HIGHLIGHT`
 
-語詞底線是獨立 annotation object，不是文字本身，也不是烘焙進 AI 圖片的背景色塊。
+語詞標記是獨立 annotation object，不是文字本身，也不是烘焙進 AI 圖片的背景色塊。`UNDERLINE_HIGHLIGHT` 為既有資料層的相容 mark mode；課文頁的實際視覺必須使用 `PALE_BRUSH_BEHIND_TEXT`，不得以單純線條取代筆刷。
+
+### 3.1.1 段落語詞解釋規範
+
+- 語詞在原文的實際出現處直接標示，anchor 必須對齊該 occurrence；課文外不存在的詞語不得硬加到原文。
+- 筆刷採淡色螢光筆／手繪筆刷效果，位於文字後方，不遮字；高度接近文字高度，左右只略微超出詞語，不形成大色塊。
+- 段落旁解釋只呈現「詞語：解釋」，保持簡潔、適合四年級理解；不得再加底線、重複筆刷、複雜卡片、框線或標籤。
+- 詞語解釋必須在同頁下方、側邊或對應留白，緊跟所屬段落；拆頁時跟著所屬句子或段落，不另成脫離課文的清單頁。
 
 ### 3.2 Glyph Anchor
 
@@ -133,16 +147,15 @@ text_component:
 
 同詞多次出現時必須指定 `occurrence_index`。無法唯一定位 → `VOCAB_ANCHOR_FAIL`。
 
-### 3.3 Underline Geometry
+### 3.3 Vocabulary Mark Geometry
 
-- 位於中文字主要字框下方。
-- 淨距約字高 8–12%。
-- 筆刷厚度約字高 10–16%。
+- 課文頁 `visual_style` 必須為 `PALE_BRUSH_BEHIND_TEXT`；淡色筆刷位於中文字主要字框後方，文字層保持在上方。
+- 筆刷高度接近文字高度，左右只略微超出詞語，不形成大色塊。
 - span 只涵蓋指定語詞；標點預設排除。
-- `MARK_BELOW_TEXT`。
+- 資料層可保留 `MARK_BELOW_TEXT` 表示文字覆蓋在標記之上，但不得把它渲染成單純線條。
 - 不得侵入注音安全區。
 - 同一 `term_color_id` 在原文與詞義標示一致。
-- 手繪感只能改筆刷邊緣，不能破壞 anchor/span 準確度。
+- 手繪感只能改筆刷邊緣，不能破壞 anchor/span 準確度；若 occurrence 不存在，不得建立標記。
 
 ### 3.4 Vocabulary QA
 
@@ -196,6 +209,12 @@ Object Composition 至少區分：
 - 語詞解釋靠近段落或對應情境，不縮成角落小字。
 - 教師答案、講者備註、進度資訊留教師層。
 
+### 6.1 投影片頁碼與段落記號規範
+
+- 頁碼是整份簡報的實際投影片順序，例如 `P04`，放在整張投影片角落（通常右下角）；教材來源頁碼只放施工資料或備註，不放在學生畫面。
+- 頁碼與段落記號可以有設計感，但必須分別回指 `sequence_index` 與 `section_id`，不能以圖案或顏色取代正式序號。
+- 段落記號只作導覽輔助，不得新增課文標題、摘要或結論，也不得壓過正文安全區。
+
 ## 7. 文字層驗收
 
 交付前至少通過：
@@ -205,11 +224,14 @@ Object Composition 至少區分：
 4. `TEXT_EMBEDDING_PASS`
 5. `STUDENT_LAYER_PASS`
 6. `OBJECT_COMPOSITION_PASS`
-7. 適用時六項 Vocabulary Marking passes
-8. Font Safety / glyph / Bopomofo QA
+7. `TEXT_OBJECT_SEPARATION_PASS`
+8. 適用時六項 Vocabulary Marking passes
+9. Font Safety / glyph / Bopomofo QA
 
 常用阻擋碼：
 - `TYPED_TEXT_LAYOUT_FAIL`
+- `TEXT_EMBEDDING_FAIL`
+- `TEXT_OBJECT_SEPARATION_FAIL`
 - `TEXT_OBJECT_DETACHED`
 - `TEXT_DENSITY_OVERLOAD`
 - `PARAGRAPH_FRAGMENTED`

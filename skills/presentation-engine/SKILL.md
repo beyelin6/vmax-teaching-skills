@@ -5,7 +5,7 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 # Presentation Engine
 
-版本：0.10.8
+版本：0.10.9
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
@@ -26,6 +26,13 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 一般頁預設 `OBJECT_SCENE`，禁止簡化成文字區＋一張底圖。完整場景吃滿畫布、文字只能搬移 → `MONOLITHIC_BACKGROUND_REGRESSION`。
 
 課文閱讀頁另受 `core/presentation/paragraph-text-page-policy.md` 約束：預設一頁一個自然段＋緊跟在旁的該段語詞解釋；語詞解釋不得脫離課文另成清單頁。單段過長才可依完整句子拆成連續頁。PAGE_DETAIL_CONFIRMATION 必須帶 `text_coverage`，確認完整原文、段落來源、拆頁理由、相鄰語詞版位與該段全部核准語詞覆蓋；不能用代表句、摘要或改寫代替。
+
+### 課文頁文字層與段落語詞施工契約
+
+- 課文原文必須逐字完整呈現，保留標點、語氣詞、引號與段落順序；不得自行增加「第一段」等解釋性標題、摘要或教師講解。必要的 `①`、`②` 只作段落導覽記號。
+- 課文、插圖、語詞標記與投影片序號必須是分開的可調整物件；課文不得烘焙在圖片，`image_spec.text_in_image` 必須為 `false`。
+- 原文中的指定語詞在實際 occurrence 直接用淡色 `PALE_BRUSH_BEHIND_TEXT` 標示，筆刷位於文字後方、略微超出詞語、不遮字；不得以單純底線取代筆刷。解釋區只呈現簡潔的「詞語：解釋」，並與所屬段落相鄰。
+- 投影片頁碼使用實際簡報順序（例如 `P04`）並置於角落，通常右下角；教材來源頁碼只留在施工資料或備註。段落記號可有設計感，但必須回指 `sequence_index` 與 `section_id`。
 
 ## IDIOM_APPLICATION_PLAN
 
@@ -49,7 +56,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 ## Vocabulary Visual Grammar
 
-語詞定位 → `UNDERLINE_HIGHLIGHT`；整句／金句 → `BACKGROUND_HIGHLIGHT`。Underline 位於主要字框下方，淨距約字高 8–12%，筆刷厚度約 10–16%，只涵蓋指定語詞，標點預設排除，文字在上標記在下，不侵入注音。
+語詞定位 → `UNDERLINE_HIGHLIGHT`（相容 mark mode，課文頁 visual style 必須為 `PALE_BRUSH_BEHIND_TEXT`）；整句／金句 → `BACKGROUND_HIGHLIGHT`。淡色筆刷位於主要字框後方，與字高接近、左右只略微超出、不遮字，不得以單純底線取代筆刷；只涵蓋指定語詞，標點預設排除，文字層在上，不侵入注音。
 
 ## CHARACTER / KEY LINE / OBJECT COMPOSITION
 

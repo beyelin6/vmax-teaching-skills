@@ -1,6 +1,6 @@
 # 國語圖片式語文頁規則
 
-版本：1.4
+版本：1.5
 
 本參考文件供 `presentation-engine` 與 `vmax-image-renderer` 製作國語圖片式簡報時使用。形近字與多音字的專門規則仍以 `skills/character-group-visual-comparison/SKILL.md` 為準。
 
@@ -40,7 +40,7 @@
 
 同詞多次出現必須指定 occurrence。無法唯一定位 → `VOCAB_ANCHOR_FAIL`；reflow 後沿用舊標記 → `STALE_VOCAB_MARK_ANCHOR`。
 
-字下標記位於主要字框下方，淨距約字高 8–12%，筆刷厚度約 10–16%，只涵蓋語詞本身，標點預設排除，文字在上、標記在下，不遮注音，同一 `term_color_id` 原文／詞義一致。
+課文頁指定語詞使用淡色 `PALE_BRUSH_BEHIND_TEXT`，直接回到原文 occurrence；筆刷位於文字後方，高度接近字高、左右只略微超出、不遮字，不使用單純底線取代筆刷。既有資料層仍可用 `UNDERLINE_HIGHLIGHT` 作 mark mode，但必須帶上述 visual style。標點預設排除，同一 `term_color_id` 原文／詞義一致。
 
 有語詞標記頁必須通過：`VOCAB_ANCHOR_PASS`、`VOCAB_REFLOW_PASS`、`VOCAB_MARK_ALIGNMENT_PASS`、`VOCAB_MARK_SPAN_PASS`、`VOCAB_MARK_LAYER_PASS`、`TERM_COLOR_CONSISTENCY_PASS`。
 
@@ -59,6 +59,8 @@
 ## 6. 課文循環頁
 
 可依需要使用初讀 → 關鍵詞回看 → 段落功能 → 全文線索 → 主旨統整；不強迫固定輪數。保留原文與順序，同一段維持連續閱讀區，語詞標記直接回原文位置，文字過多時拆頁而不改寫、刪節或縮字。
+
+課文頁不自行增加解釋性標題、摘要或教師講解；可保留 `①`、`②` 等必要段落記號。投影片頁碼使用簡報實際順序（例如 `P04`）放在角落，教材來源頁碼留在施工資料或備註。正文、插圖、語詞標記與頁碼均為獨立物件。
 
 ## 7. 文意理解頁
 
