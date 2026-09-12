@@ -18,6 +18,7 @@ variant:
 source:
   course_id: ""
   baseline_version: ""
+  lesson_architecture_profile: "schemas/lesson-architecture-profile.md"
   source_lkb_version: ""
   applied_patch_ids: []
 
@@ -33,6 +34,7 @@ classroom_conditions:
   challenge_needs: []
 
 selection:
+  extension_templates: []
   included_sections: []
   excluded_sections: []
   included_slide_ids: []
@@ -44,6 +46,9 @@ selection:
 flow:
   source_teaching_flow_id: ""
   variant_teaching_flow_id: ""
+  architecture_mapping: []
+  changed_teaching_moves: []
+  preserved_learning_outcomes: []
   total_minutes: 40
   changes: []
 
@@ -118,9 +123,9 @@ validation:
 
 - Variant 必須引用 Baseline Version。
 - 若使用 Patch，必須列出所有 Patch ID。
-- Variant 可以刪選、重排與替換呈現方式，但不得改寫官方教材知識。
+- Variant 可以改寫教學活動、媒介、互動、時間配置與頁面呈現，也可以在 Baseline 骨架內重排學習責任；不得改寫未標示的官方教材知識。所有重排都必須以 `architecture_mapping` 說明如何保留教師確認的學習結果。
 - Variant 的教學時間必須重新驗證。
 - 平板活動失效時，必須能切換至替代方案。
 - Variant 不得覆蓋 Baseline 或既有 Patch。
-- `open_class_four_learning` 只是可選 Variant，不得反向要求日常課程都採四學。
+- `open_class_four_learning` 只是可選 Variant，不得反向要求日常課程都採四學；它可以重新組織 Baseline 的教學活動，但必須回指每一項 Baseline 學習結果。
 - 五大平台視為候選平台庫，實際選擇依學科、任務、學生熟悉度與可留下的學習證據決定。

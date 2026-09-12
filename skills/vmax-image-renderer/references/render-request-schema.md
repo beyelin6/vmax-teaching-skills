@@ -70,7 +70,13 @@ render_request:
 
   image_layout_plan: {}  # legacy compatibility summary only
   visual_density_profile: LOW | MEDIUM | HIGH
-  character_refs: []
+  character_refs:
+    - base_character_id: ""
+      core_dna_ref: ""
+      approved_asset_id: ""
+      asset_version: ""
+      allowed_variations: []
+      prohibited_drift: []
   canvas_lock: {}
   output_spec: {}
 

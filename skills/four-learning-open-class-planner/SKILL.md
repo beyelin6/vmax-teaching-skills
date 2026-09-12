@@ -1,6 +1,6 @@
 ---
 name: four-learning-open-class-planner
-description: 將既有 V-MAX Baseline 或 Classroom Variant 轉換為符合平板公開課需求的四學模式版本，整合學生自學、組內共學、組間互學、教師導學、五大學習平台候選、學習證據、觀課可視性與數位備案。不得為了形式硬湊四學或平台，必須保留 Lesson Flow、教材忠實、Theme、Visual DNA 與引導者敘事。
+description: 將既有 V-MAX Baseline 或 Classroom Variant 轉換為符合平板公開課需求的四學模式版本，整合學生自學、組內共學、組間互學、教師導學、五大學習平台候選、學習證據、觀課可視性與數位備案。可以重新設計教學呈現與活動，但必須回指並保留教師確認的 Lesson Architecture、教材忠實、Theme、Visual DNA 與引導者敘事。
 ---
 
 # V-MAX Four Learning Open Class Planner
@@ -9,7 +9,7 @@ description: 將既有 V-MAX Baseline 或 Classroom Variant 轉換為符合平�
 
 ## 使命
 
-把一堂已完成的 V-MAX 課程轉換為可公開觀課的平板教學版本，讓觀課者看見：
+把一堂已完成的 V-MAX 課程轉換為可公開觀課的平板教學版本，允許重新組織教學活動與學生責任，但不遺失 Baseline 的學習結果，讓觀課者看見：
 
 - 學生先自己思考
 - 小組內比較與修正
@@ -24,6 +24,7 @@ description: 將既有 V-MAX Baseline 或 Classroom Variant 轉換為符合平�
 必須讀取：
 
 - 已核准 Baseline Version
+- 已核准 Lesson Architecture Profile
 - 已核准 Classroom Variant 或 Teaching Flow
 - 已核准 Learning Modules
 - 已核准 Digital Interaction Profile
@@ -48,6 +49,8 @@ description: 將既有 V-MAX Baseline 或 Classroom Variant 轉換為符合平�
 - 短文構思或修改
 
 ### Step 2｜建立四學責任鏈
+
+先建立 `architecture_mapping`：逐一對應 Baseline 的每個必要區段與學習結果，標記 `preserved`、`transformed`、`extended` 或經教師核准的 `omitted`。四學是呈現與責任的重新組織方式，不是刪除 Baseline 內容的理由。
 
 為核心任務安排：
 

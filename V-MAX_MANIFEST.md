@@ -12,6 +12,8 @@ executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.5 }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.2 }
 classroom_language_page_rules: { path: skills/presentation-engine/references/classroom-language-page-rules.md, current_version: 1.4 }
+lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.0 }
+page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profile.md, current_version: 1.0 }
 slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contract_version: object-composition-glyph-anchor-idiom-v3 }
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.2 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
@@ -42,6 +44,10 @@ Front Door 1.3 在簡報／視覺 stage 強制載入 Execution Rules、Presentat
 
 ## Downstream Alignment
 Execution Rules 1.5 / Presentation Engine 0.10.8 / Renderer Contract 2.0 / Image Renderer 2.1 / Quality Gate 3.1 / Text Layer 1.2 / Classroom Language 1.4 / Render Request 2.2 / Slide Script object-composition-glyph-anchor-idiom-v3 / Front Door 1.3。
+
+## Lesson Architecture and Variants
+
+每課先建立 `schemas/lesson-architecture-profile.md` 的 Baseline 教學骨架，再依教師選擇建立平板、四學公開課、議題融入或自訂變體。變體可以改寫教學活動與呈現方式，但必須逐項回指 Baseline 的學習結果；不得靜默遺失教師指定內容。
 
 ## Canonical Golden Path
 `SOURCE 0 → STEP 1 → HOLD 1 → STEP 2 → HOLD 2 → STEP 2.5 → HOLD 2.5 → STEP 2.6 → HOLD 2.6 → Teacher Intent Lock → Lesson Map → Session Map → Visual Strategy → Character/Cast → Knowledge Lab → Visual Grammar → Page Object Composition + Character + Key Line + Vocabulary/Idiom Plans → Style Matrix HOLD → Page Ledger → Representative Validation → Full Renderer → Asset Verification → Quality Gate → Delivery → Archive Verification`
