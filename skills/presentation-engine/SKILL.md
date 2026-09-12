@@ -9,6 +9,12 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
+## SLIDE_ARCHITECTURE_LOCK
+
+Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapping`。Baseline 順序固定為：開頭導入 → 課文總說 → 圖像式心智圖 → 各段（課文／語詞解釋／修辭或句型／文意理解）→ 形近字 → 成語 → 教材語文活動 → 總結與學習遷移。頁數上限、模板或 Renderer 不得自行重排；外加變體只能透過明確 mapping 改變教學呈現。
+
+驗證必須拒絕：缺少任一必修區段、段內順序錯誤、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。
+
 ## PAGE_PLAN
 
 每頁至少包含 page purpose、student visible text、source refs、page family/style、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`；`page_family = IDIOM` 時另含 `IDIOM_APPLICATION_PLAN`。
@@ -50,6 +56,8 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 ## SLIDE_SCRIPT / Render Request
 
 Slide Script 鎖定正式文字、來源、object/character/key-line plans；有語詞標記時記錄 vocab anchors；成語頁必須傳遞完整 `idiom_application_plan`，不得只傳成語名稱或抽象 visual prompt。
+
+若存在 `LANGUAGE_CANDIDATE_COVERAGE.character_related_idioms`，每個保留項目必須有 `final_idiom_section_refs`，且至少回指一個最終成語頁；重複成語可共用頁面，但不得失去生字 `character_refs` provenance。缺少對應時標記 `IDIOM_CHARACTER_COVERAGE_INCOMPLETE`。
 
 Render Request 有語詞標記時必須帶入六項 Vocabulary checks；成語頁必須帶入：`IDIOM_TEXT_PASS`、`IDIOM_HIERARCHY_PASS`、`IDIOM_EXAMPLE_READABILITY_PASS`、`IDIOM_EXAMPLE_NATURALNESS_PASS`、`IDIOM_EXAMPLE_VISUAL_MATCH_PASS`、`IDIOM_OBJECT_COMPOSITION_PASS`。
 

@@ -43,6 +43,17 @@
 
 ## Gate E｜Render Readiness
 
+## Gate E0｜Slide Architecture & Idiom Coverage
+
+正式渲染前必須驗證 `SLIDE_ARCHITECTURE_LOCK`：
+
+1. 頁面區段符合 `opening → overview → visual_mind_map → paragraph_learning → character_comparison → idiom_learning → textbook_language_activity → summary_transfer`。
+2. 每個 `paragraph_learning` 依序包含課文、語詞解釋、修辭／句型與文意理解。
+3. 外加變體有完整 `architecture_mapping`，且不會把 transformed／extended 內容冒充 Baseline。
+4. `LANGUAGE_CANDIDATE_COVERAGE.character_related_idioms` 中每個 retained 項目都回指 `final_idiom_section_refs`。
+
+任何錯序、缺區段或成語 provenance 斷裂標記 `SLIDE_ARCHITECTURE_ORDER_FAIL` 或 `IDIOM_CHARACTER_COVERAGE_INCOMPLETE`，不得進入 `RENDER_READY`。
+
 正式 Renderer 只接受 `RENDER_READY`。若仍屬 `PRE_LAYOUT`，不得標記正式渲染完成。
 
 有語詞標記的 `RENDER_READY` request，`glyph_bbox`、`baseline_y`、`mark_bbox`、`text_layout_revision` 必須完整；否則 `RENDER_READY_ANCHOR_INCOMPLETE` → FAIL。

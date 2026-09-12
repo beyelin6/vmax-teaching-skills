@@ -88,6 +88,14 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Google Drive 歸檔與驗證
 ```
 
+### SLIDE_ARCHITECTURE_LOCK
+
+進入 `Visual Grammar / Slide Architecture` 前，Executor 必須建立並寫入 Slide Script 的 `SLIDE_ARCHITECTURE_LOCK`。預設順序為：
+
+`opening → overview → visual_mind_map → paragraph_learning(text_and_context → vocabulary_explanation → rhetoric_or_sentence_pattern → meaning_comprehension) → character_comparison → idiom_learning → textbook_language_activity → summary_transfer`
+
+頁數、模板或外加變體不得靜默重排此順序。若教師確認了變體，必須另存 `architecture_mapping`，逐項標記 `preserved`、`transformed`、`extended` 或 `omitted` 及理由；變體可以改變教學呈現，但不得遺失任何教師指定的學習結果。
+
 若本課無需處理成語，STEP 2.6 明確記錄 `N/A_NO_IDIOM`，仍須停在 HOLD 2.6；教師確認後才進 Teacher Intent Lock。
 
 ---
@@ -163,6 +171,8 @@ STEP 2.5 必須同時載入：
 STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執行器必須分開保留：正式生字／認讀字、生字關聯詞／生字關聯成語、課文成語／四字詞語、多音字及其詞語。任何含有本課正式生字、形近字或多音字的詞語／成語，必須保留多重 provenance；成語數量上限只能影響獨立成頁推薦，不得刪除生字關聯記錄。
 
 在進入 STEP 2.6 前，必須產生 `LANGUAGE_CANDIDATE_COVERAGE`，核對每一個正式生字是否已有關聯詞／關聯成語判讀，以及每個課文成語是否有保留／不保留理由。缺少任一對應時標記 `STEP2.5_COVERAGE_INCOMPLETE`，停留 STEP 2.5 補齊覆蓋；不得進入 HOLD 2.5，也不得將一般「確認」視為完成核准。覆蓋完整後才顯示 HOLD 2.5。
+
+`LANGUAGE_CANDIDATE_COVERAGE` 必須保存 `character_related_idioms` 與每項的 `character_refs`、`source_refs`、`decision`。進入 Slide Script 前，所有 `decision: retained` 的生字相關成語必須各自出現在 `final_idiom_section_refs`；若缺少任一對應，標記 `IDIOM_CHARACTER_COVERAGE_INCOMPLETE`，不得進入 Renderer。
 
 教材正式生字完整保留，但：
 
