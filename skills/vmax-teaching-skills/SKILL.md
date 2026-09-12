@@ -30,6 +30,8 @@ Before starting any presentation task, initialize or read the lesson's `00_施�
 
 進入批次簡報製作時另必讀 `core/governance/batch-construction-lock.md`，並實際執行其 page／style hash 驗證；只讀規格而未驗證 hash 不算載入完成。
 
+若本課使用新角色，另必讀 `core/character/character-library-writeback-policy.md`，確認角色已回存 Registry；未完成 writeback 不得進入批次渲染。
+
 進入課文閱讀頁規劃時另必讀 `core/presentation/paragraph-text-page-policy.md`；未完成完整段落與該段語詞覆蓋驗證，不得進入批次製作。
 
 ## 簡報／視覺 Stage 強制載入鏈

@@ -95,6 +95,8 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 風格 HOLD 必須先完成：依課文提出 3–5 組風格庫候選／混搭方案，顯示主風格、頁型變體與限制，等待教師選擇。`selected_style_id` 未被教師確認前保持空值；不得由 Executor、Presentation Engine、Renderer 或平台預設直接選風格。風格選定後，建立風格 hash 與 `BATCH_CONSTRUCTION_LOCK`，後續頁面只能沿用該主風格及已核准頁型變體。
 
+若教師確認的是本課新角色，必須先依 `core/character/character-library-writeback-policy.md` 完成 Registry writeback，預設 `LESSON_ONLY`，再進入風格、逐頁版面與批次製作；沒有 `registry_ref`、DNA、核准資產與 hash 時標記 `CHARACTER_REGISTRY_WRITEBACK_REQUIRED`。
+
 ### SLIDE_ARCHITECTURE_LOCK
 
 進入 `Visual Grammar / Slide Architecture` 前，Executor 必須建立並寫入 Slide Script 的 `SLIDE_ARCHITECTURE_LOCK`。預設順序為：

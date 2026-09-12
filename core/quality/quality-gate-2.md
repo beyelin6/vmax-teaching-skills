@@ -77,8 +77,9 @@
 5. 每 5–8 頁小批次開始前重新驗證，批次結束後完成逐頁回讀與 drift check。
 6. Style Selection Profile 已由教師確認，所有頁面與 Render Request 的 `style_core_id` 都等於選定主風格；頁型變體只能來自已核准的 `page_variants`。
 7. 課文閱讀頁的 `text_coverage` 顯示完整原文，且 `vocabulary_coverage.placement` 為相鄰版位；語詞解釋不得脫離課文另成清單頁。
+8. 新角色的 Role Selection Profile 已完成 Registry writeback，`reuse_level` 至少為 `LESSON_ONLY`，並有可回讀的 registry hash；不得自動升級為跨課可重用角色。
 
-任一項失敗標記 `BATCH_CONSTRUCTION_LOCK_FAIL`、`STYLE_SELECTION_REQUIRED`、`STYLE_SELECTION_HASH_MISMATCH`、`STYLE_DRIFT`、`PAGE_DETAIL_HASH_MISMATCH`、`PAGE_SPEC_HASH_MISMATCH`、`PAGE_ORDER_DRIFT`、`PAGE_FAMILY_DRIFT`、`LAYOUT_SPEC_DRIFT`、`PARAGRAPH_TEXT_INCOMPLETE`、`PARAGRAPH_VOCABULARY_DROPPED`、`PARAGRAPH_VOCABULARY_DETACHED`、`UNDECLARED_PAGE` 或 `RENDER_REQUEST_UNBOUND`，整批停止，不得進入 `RENDER_READY`。
+任一項失敗標記 `BATCH_CONSTRUCTION_LOCK_FAIL`、`STYLE_SELECTION_REQUIRED`、`STYLE_SELECTION_HASH_MISMATCH`、`STYLE_DRIFT`、`CHARACTER_REGISTRY_WRITEBACK_REQUIRED`、`CHARACTER_REGISTRY_HASH_MISMATCH`、`PAGE_DETAIL_HASH_MISMATCH`、`PAGE_SPEC_HASH_MISMATCH`、`PAGE_ORDER_DRIFT`、`PAGE_FAMILY_DRIFT`、`LAYOUT_SPEC_DRIFT`、`PARAGRAPH_TEXT_INCOMPLETE`、`PARAGRAPH_VOCABULARY_DROPPED`、`PARAGRAPH_VOCABULARY_DETACHED`、`UNDECLARED_PAGE` 或 `RENDER_REQUEST_UNBOUND`，整批停止，不得進入 `RENDER_READY`。
 
 ## Gate F｜Renderer / Regression
 老師不應再手動搬字、調底線、重畫語詞範圍，也不應逐頁提醒「例句要加大」「圖要配合造句」「成語、解釋、例句不要擠在一起」。反覆出現代表 Renderer／Layout Contract 尚未完成。

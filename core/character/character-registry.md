@@ -111,6 +111,8 @@ best_fit:
 
 ## F. Character Learning｜課後回寫
 
+教師確認的新角色必須先依 `core/character/character-library-writeback-policy.md` 回存至 Registry，至少建立 `LESSON_ONLY` 記錄；不能只保存在當次對話、Render Request 或圖片資產中。回存完成後才可進入 Style Selection、PAGE_DETAIL_CONFIRMATION 與批次視覺製作。
+
 每課完成後，若某角色表現突出，系統應產生：
 
 ```yaml

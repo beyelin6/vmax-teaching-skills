@@ -28,12 +28,27 @@
       },
       "additionalProperties": false
     },
+    "character_origin": { "enum": ["EXISTING_REGISTRY", "NEW_CHARACTER", "TEXT_CHARACTER", "BEE_TEACHER"] },
+    "registry_writeback": {
+      "type": "object",
+      "required": ["status", "registry_ref", "registry_sha256", "reuse_level", "approved_asset_refs", "teacher_confirmation_ref"],
+      "properties": {
+        "status": { "enum": ["NOT_REQUIRED_EXISTING_ROLE", "COMPLETE", "PENDING"] },
+        "registry_ref": { "type": ["string", "null"] },
+        "registry_sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "reuse_level": { "enum": ["LESSON_ONLY", "REUSABLE_CANDIDATE", "REUSABLE_CONFIRMED", "FALLBACK_GUIDE"] },
+        "approved_asset_refs": { "type": "array", "items": { "type": "string" } },
+        "teacher_confirmation_ref": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
     "teacher_confirmation_ref": { "type": ["string", "null"] },
     "derived_from": { "$ref": "#/$defs/derivedFrom" }
   },
   "allOf": [
     { "if": { "properties": { "status": { "const": "CONFIRMED" } } }, "then": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } } },
-    { "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }, "then": { "properties": { "status": { "const": "CONFIRMED" } } } }
+    { "if": { "properties": { "teacher_confirmation_status": { "const": "CONFIRMED" } } }, "then": { "properties": { "status": { "const": "CONFIRMED" } } } },
+    { "if": { "properties": { "character_origin": { "const": "NEW_CHARACTER" } }, "required": ["character_origin"] }, "then": { "required": ["registry_writeback"], "properties": { "registry_writeback": { "properties": { "status": { "const": "COMPLETE" }, "reuse_level": { "enum": ["LESSON_ONLY", "REUSABLE_CANDIDATE"] }, "registry_ref": { "type": "string", "minLength": 1 }, "registry_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }, "teacher_confirmation_ref": { "type": "string", "minLength": 1 } } } } } }
   ],
   "$defs": { "derivedFrom": { "type": "object", "required": ["direct_parent", "lineage"], "properties": { "direct_parent": { "type": "string" }, "lineage": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
   "additionalProperties": false

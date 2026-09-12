@@ -1281,6 +1281,8 @@
         "style_selection_ref",
         "style_selection_sha256",
         "selected_style_id",
+        "role_selection_ref",
+        "role_selection_sha256",
         "pages"
       ],
       "properties": {
@@ -1309,6 +1311,14 @@
         "selected_style_id": {
           "type": "string",
           "minLength": 1
+        },
+        "role_selection_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role_selection_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
         },
         "pages": {
           "type": "array",

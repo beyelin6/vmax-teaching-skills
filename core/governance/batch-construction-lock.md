@@ -29,6 +29,8 @@ batch_lock:
   style_selection_ref: "..."
   style_selection_sha256: "..."
   selected_style_id: "..."
+  role_selection_ref: "..."
+  role_selection_sha256: "..."
   pages:
     - slide_id: S001
       page_detail_page_id: S001
@@ -40,6 +42,7 @@ batch_lock:
 - `status` 不是 `LOCKED`、`mode` 不是 `EXACT_PAGE_DETAIL`，不得進入批次施工。
 - `page_detail_confirmation_sha256` 必須等於實際讀取的 PAGE_DETAIL_CONFIRMATION 檔案 SHA-256；檔案任何修改都會使舊鎖失效。
 - `style_selection_ref`、`style_selection_sha256` 與 `selected_style_id` 必須指向教師已確認的 Style Selection Profile；風格庫候選不能直接當成已選風格。
+- `role_selection_ref` 與 `role_selection_sha256` 必須指向教師已確認的 Role Selection Profile；若 `character_origin: NEW_CHARACTER`，其 `registry_writeback.status` 必須為 `COMPLETE`，且 `registry_ref`、registry hash、DNA 與核准資產都必須存在。
 - `pages` 必須與 Slide Script 的頁面一對一對應，數量、`slide_id`、`sequence` 與 `page_detail_page_id` 不得缺漏或重排。
 - `page_spec_sha256` 是該頁 PAGE_DETAIL_CONFIRMATION page object 移除自身 `page_spec_sha256` 欄位後的 canonical JSON SHA-256。內容、圖片需求、角色錨點、排版、留白或禁止誤畫任一欄位改變，都必須重新產生 hash 並重新取得教師確認。
 - Renderer 只能讀取鎖定欄位；缺欄位時標記失敗，不可套用平台預設、上一頁版型或 AI 自行推測。每頁必須帶入相同的 `style_core_id`，頁型變體只能使用已核准 Style Selection Profile 的 `page_variants`。
@@ -61,7 +64,8 @@ page_detail_page_sha256: "..."
 python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" \
   --slide-script "<Slide Script 絕對路徑>" \
   --page-detail "<PAGE_DETAIL_CONFIRMATION 絕對路徑>" \
-  --style-selection "<Style Selection Profile 絕對路徑>"
+  --style-selection "<Style Selection Profile 絕對路徑>" \
+  --role-selection "<Role Selection Profile 絕對路徑>"
 ```
 
 非零退出碼即 `BATCH_CONSTRUCTION_LOCK_FAIL`，不得生圖、不得進入 Render Request 的 `RENDER_READY`，也不得把結果混入交付包。
@@ -70,11 +74,12 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" \
 
 1. PAGE_DETAIL_CONFIRMATION 狀態為 `approved`。
 2. Style Selection Profile 狀態為 `CONFIRMED`，教師確認狀態為 `CONFIRMED`，且檔案 hash 與 `selected_style_id` 相符。
-3. 頂層 batch lock 完整且 hash 與實檔相符。
-4. 每頁 page hash、頁序、頁面 ID 與 Slide Script 完全對應。
-5. 每頁的 `page_family`、來源回指、風格核心與角色錨點沒有被下游換掉。
-6. 每個嵌入或外部 Render Request 都帶入相同的 page-detail hash 與 style core id。
-7. 沒有未被 PAGE_DETAIL_CONFIRMATION 宣告的額外頁面。
+3. Role Selection Profile 狀態為 `CONFIRMED`；新角色已完成 Registry writeback，且 writeback hash 與實檔相符。
+4. 頂層 batch lock 完整且 hash 與實檔相符。
+5. 每頁 page hash、頁序、頁面 ID 與 Slide Script 完全對應。
+6. 每頁的 `page_family`、來源回指、風格核心與角色錨點沒有被下游換掉。
+7. 每個嵌入或外部 Render Request 都帶入相同的 page-detail hash 與 style core id。
+8. 沒有未被 PAGE_DETAIL_CONFIRMATION 宣告的額外頁面。
 
 ## 4. 批次執行與停批
 
