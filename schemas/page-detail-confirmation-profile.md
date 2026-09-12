@@ -13,11 +13,28 @@ page_detail_confirmation:
   slide_architecture_lock_ref: ""
   canvas_lock_ref: ""
   style_matrix_ref: ""
+  page_number_system:
+    status: pending
+    format: "01"
+    numeral_style: ""
+    decorative_symbol: ""
+    visibility_policy: ""
+  section_marker_system:
+    status: pending
+    format: "01"
+    marker_style: ""
+    decorative_symbol: ""
+    visibility_policy: ""
   pages:
     - page_id: S001
       sequence_index: 1
       section_id: opening
       page_purpose: ""
+      navigation_marker:
+        page_number_token: ""
+        section_marker_token: ""
+        source_sequence_index: 1
+        source_section_id: ""
       source_refs: []
       student_visible_text:
         title: ""
@@ -63,6 +80,13 @@ page_detail_confirmation:
         vocabulary_coverage:
           required_refs: []
           placement: INLINE_ADJACENT
+        projection_typography:
+          profile: CLASSROOM_PROJECTOR
+          effective_pt_verified: false
+          body_target_pt: "36-40"
+          body_min_pt: 32
+          vocabulary_target_pt: "30-34"
+          vocabulary_min_pt: 28
       page_spec_sha256: ""
       source_coverage: pass
       teacher_decision: pending
