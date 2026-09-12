@@ -188,6 +188,12 @@ STEP 2.5 結束前必須輸出 `LANGUAGE_CANDIDATE_COVERAGE`：列出各聯集�
 
 ---
 
+## Lesson Architecture Baseline 與外加變體
+
+每課先建立並鎖定 `schemas/lesson-architecture-profile.md`：開頭導入 → 課文總說 → 圖像式心智圖 → 各段（課文／語詞解釋／修辭或句型／文意理解）→ 形近字 → 成語 → 教材語文活動 → 總結與學習遷移。
+
+平板操作、四學公開課、議題融入與教師自訂模板都是 Baseline 的呈現變體。變體可以重組活動、媒介、互動、時間配置與頁面組織，但必須以 `architecture_mapping` 回指每一個 Baseline 學習結果，標記 `preserved`、`transformed`、`extended` 或經教師確認的 `omitted`。不得未標示地改寫 Official Knowledge，也不得靜默刪除教師指定的學習重點。
+
 ## G. STEP 2.6｜成語表達與視覺化
 
 對保留成語決定：
