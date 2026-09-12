@@ -29,6 +29,13 @@ page_detail_confirmation:
         required_objects: []
         prohibited_elements: []
         text_in_image: false
+      character_refs:
+        - base_character_id: ""
+          core_dna_ref: ""
+          approved_asset_id: ""
+          asset_version: ""
+          allowed_variations: []
+          prohibited_drift: []
       layout_spec:
         composition: ""
         reading_order: []
@@ -47,7 +54,9 @@ page_detail_confirmation:
 
 ## 確認規則
 
-每頁都必須有學生可見文字、來源、圖片細節與排版說明。文字要逐項列出，圖片要說明畫面目的、人物／物件／動作與禁止誤畫，排版要說明閱讀順序、文字區、圖像區、留白與 protected zones。
+每頁都必須有學生可見文字、來源、圖片細節與排版說明。文字要逐項列出，圖片要說明畫面目的、人物／物件／動作與禁止誤畫，排版要說明閱讀順序、文字區、圖像區、留白與 protected zones。每個出場角色都必須引用已確認的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；沒有角色時明確記錄 `character_refs: []`。
+
+角色跨頁必須沿用同一個核心 DNA 與核准資產版本。允許的差異只能寫在 `allowed_variations`（例如姿勢、表情、鏡位、道具或場景）；臉型、髮型、角色年齡感、服裝識別與比例等禁止項目寫入 `prohibited_drift`。
 
 頁面可增加或合併，但必須保留 `sequence_index`、`section_id` 與來源回指。任何頁面內容變更都要更新此 Profile 的 revision；不得只改 Render Request 或圖片 prompt。
 

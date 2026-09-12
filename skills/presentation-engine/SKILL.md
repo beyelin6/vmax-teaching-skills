@@ -19,7 +19,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 每頁至少包含 page purpose、student visible text、source refs、page family/style、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`；`page_family = IDIOM` 時另含 `IDIOM_APPLICATION_PLAN`。
 
-正式 Slide Script 只能由已核准的 `PAGE_DETAIL_CONFIRMATION` 產生。每頁必須逐項帶入核准的學生可見文字、來源、圖片目的與細節、人物／物件／動作、禁止誤畫、閱讀順序、文字區、圖片區、留白與 protected zones。若頁面資料與母檔不一致，標記 `PAGE_DETAIL_SOURCE_CONFLICT`，不得送 Renderer。
+正式 Slide Script 只能由已核准的 `PAGE_DETAIL_CONFIRMATION` 產生。每頁必須逐項帶入核准的學生可見文字、來源、圖片目的與細節、人物／物件／動作、禁止誤畫、閱讀順序、文字區、圖片區、留白與 protected zones。若有角色，還必須逐頁帶入相同的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；姿勢、表情、鏡位與道具只能使用母檔列出的允許變化。若頁面資料與母檔不一致，或角色識別資料缺失，標記 `PAGE_DETAIL_SOURCE_CONFLICT` 或 `CHARACTER_ANCHOR_MISSING`，不得送 Renderer。
 
 一般頁預設 `OBJECT_SCENE`，禁止簡化成文字區＋一張底圖。完整場景吃滿畫布、文字只能搬移 → `MONOLITHIC_BACKGROUND_REGRESSION`。
 
