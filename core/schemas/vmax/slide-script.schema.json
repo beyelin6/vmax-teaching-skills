@@ -115,6 +115,18 @@
             "type": "string",
             "minLength": 1
           },
+          "style_variant_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layout_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "layout_contract_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
           "style_variant": {
             "type": "string"
           },
@@ -938,6 +950,18 @@
         "style_core_id": {
           "type": "string",
           "minLength": 1
+        },
+        "style_variant_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layout_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layout_contract_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
         },
         "approval_refs": {
           "type": "array",

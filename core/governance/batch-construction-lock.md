@@ -1,4 +1,4 @@
-# V-MAX Batch Construction Lock 1.0
+# V-MAX Batch Construction Lock 1.1
 
 本規格把「已確認的逐頁細節」變成批次施工時可驗證的輸入契約。目的不是再增加一份說明文件，而是讓批次 Renderer 沒有自行補頁、換版型、改文字或套用上一頁資料的空間。
 
@@ -46,6 +46,7 @@ batch_lock:
 - `pages` 必須與 Slide Script 的頁面一對一對應，數量、`slide_id`、`sequence` 與 `page_detail_page_id` 不得缺漏或重排。
 - `page_spec_sha256` 是該頁 PAGE_DETAIL_CONFIRMATION page object 移除自身 `page_spec_sha256` 欄位後的 canonical JSON SHA-256。內容、圖片需求、角色錨點、排版、留白或禁止誤畫任一欄位改變，都必須重新產生 hash 並重新取得教師確認。
 - Renderer 只能讀取鎖定欄位；缺欄位時標記失敗，不可套用平台預設、上一頁版型或 AI 自行推測。每頁必須帶入相同的 `style_core_id`，頁型變體只能使用已核准 Style Selection Profile 的 `page_variants`。
+- 每頁還必須帶入 `style_variant_id`、`layout_id`、`layout_contract` 與 `layout_contract_sha256`；版型契約必須與 Style Selection Profile 的對應 `page_variant` 完全一致。只帶 `style_core_id` 不算版型已套用。
 
 每個頁面的 Render Request 也必須帶入：
 

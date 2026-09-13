@@ -33,7 +33,9 @@ layout_direction: TEXT_LEFT_IMAGE_RIGHT
 source_nodes: []
 learning_modules: []
 strategy_step: ""
+style_variant_id: ""
 layout_id: ""
+layout_contract_sha256: ""
 answer_visibility: none
 text_rendering:
   mode: VERIFIED_RASTER_TEXT_LAYERS

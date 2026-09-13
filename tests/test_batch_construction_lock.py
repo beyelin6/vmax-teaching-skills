@@ -16,12 +16,28 @@ SPEC.loader.exec_module(MODULE)
 
 class BatchConstructionLockTests(unittest.TestCase):
     def make_fixture(self, root: Path) -> tuple[Path, Path, Path, Path]:
+        layout_contract = {
+            "composition": "SCENE",
+            "reading_order": ["PAGE_NUMBER", "CONTENT", "VISUAL"],
+            "text_regions": ["CONTENT"],
+            "image_regions": ["VISUAL"],
+            "protected_zones": ["CONTENT"],
+            "whitespace": "BALANCED",
+            "typography_roles": ["BODY"],
+        }
+        layout_contract_sha256 = MODULE.canonical_hash(layout_contract)
         page = {
             "page_id": "S001",
             "sequence_index": 1,
             "page_family": "IDIOM",
             "source_refs": ["LKB:S001"],
-            "layout_spec": {"composition": "SCENE"},
+            "layout_spec": {
+                "composition": "SCENE",
+                "style_variant_id": "STYLE-WARM-001:IDIOM",
+                "layout_id": "LAYOUT-IDIOM-001",
+                "layout_contract_sha256": layout_contract_sha256,
+                "layout_contract": layout_contract,
+            },
         }
         page["page_spec_sha256"] = MODULE.page_spec_hash(page)
         page_detail = {
@@ -36,6 +52,14 @@ class BatchConstructionLockTests(unittest.TestCase):
             "status": "CONFIRMED",
             "teacher_confirmation_status": "CONFIRMED",
             "style_core": {"style_core_id": "STYLE-WARM-001"},
+            "page_variants": [{
+                "variant_id": "STYLE-WARM-001:IDIOM",
+                "page_family": "IDIOM",
+                "layout_id": "LAYOUT-IDIOM-001",
+                "layout_contract": layout_contract,
+                "layout_contract_sha256": layout_contract_sha256,
+                "allowed_adjustments": [],
+            }],
         }
         page_detail_path = root / "page-detail.json"
         style_path = root / "style-selection.json"
@@ -70,6 +94,9 @@ class BatchConstructionLockTests(unittest.TestCase):
             "sequence": 1,
             "page_family": "IDIOM",
             "style_core_id": "STYLE-WARM-001",
+            "style_variant_id": "STYLE-WARM-001:IDIOM",
+            "layout_id": "LAYOUT-IDIOM-001",
+            "layout_contract_sha256": layout_contract_sha256,
             "source_refs": ["LKB:S001"],
             "page_detail_page_sha256": page_hash,
             "page_detail_confirmation_sha256": detail_hash,
@@ -77,6 +104,9 @@ class BatchConstructionLockTests(unittest.TestCase):
                 "page_detail_page_sha256": page_hash,
                 "page_detail_confirmation_sha256": detail_hash,
                 "style_core_id": "STYLE-WARM-001",
+                "style_variant_id": "STYLE-WARM-001:IDIOM",
+                "layout_id": "LAYOUT-IDIOM-001",
+                "layout_contract_sha256": layout_contract_sha256,
             },
         }
         slide_script = {
@@ -100,10 +130,22 @@ class BatchConstructionLockTests(unittest.TestCase):
     def make_text_fixture(self, root: Path) -> tuple[Path, Path, Path, Path]:
         paths = self.make_fixture(root)
         slide_path, page_detail_path, style_path, role_path = paths
+        style_payload = json.loads(style_path.read_text(encoding="utf-8"))
+        style_variant = style_payload["page_variants"][0]
+        style_variant.update({
+            "variant_id": "STYLE-WARM-001:TEXT-READING",
+            "page_family": "TEXT_READING_PAGE",
+            "layout_id": "LAYOUT-TEXT-READING-001",
+        })
+        style_path.write_text(json.dumps(style_payload, ensure_ascii=False), encoding="utf-8")
         page_detail = json.loads(page_detail_path.read_text(encoding="utf-8"))
         page = page_detail["page_detail_confirmation"]["pages"][0]
         page["page_family"] = "TEXT_READING_PAGE"
         page["section_id"] = "paragraph_learning"
+        page["layout_spec"].update({
+            "style_variant_id": "STYLE-WARM-001:TEXT-READING",
+            "layout_id": "LAYOUT-TEXT-READING-001",
+        })
         page["image_spec"] = {"text_in_image": False}
         page["navigation_marker"] = {"page_number_token": "P01", "page_number_position": "BOTTOM_RIGHT_CORNER"}
         page["student_visible_text"] = {"body": ["這是一段完整課文。"]}
@@ -136,6 +178,8 @@ class BatchConstructionLockTests(unittest.TestCase):
         slide = slide_script["slides"][0]
         page_hash = page["page_spec_sha256"]
         slide["page_family"] = "TEXT_READING_PAGE"
+        slide["style_variant_id"] = "STYLE-WARM-001:TEXT-READING"
+        slide["layout_id"] = "LAYOUT-TEXT-READING-001"
         slide["page_detail_page_sha256"] = page_hash
         slide["page_detail_confirmation_sha256"] = detail_hash
         slide["text_rendering"] = {
@@ -146,6 +190,8 @@ class BatchConstructionLockTests(unittest.TestCase):
         }
         slide["render_request"]["page_detail_page_sha256"] = page_hash
         slide["render_request"]["page_detail_confirmation_sha256"] = detail_hash
+        slide["render_request"]["style_variant_id"] = "STYLE-WARM-001:TEXT-READING"
+        slide["render_request"]["layout_id"] = "LAYOUT-TEXT-READING-001"
         lock = slide_script["batch_lock"]
         lock["page_detail_confirmation_sha256"] = detail_hash
         lock["style_selection_sha256"] = style_hash
@@ -189,6 +235,15 @@ class BatchConstructionLockTests(unittest.TestCase):
             payload["slides"][0]["text_rendering"]["layers"][0]["font_size_pt"] = 28
             slide.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "CLASSROOM_FONT_TOO_SMALL"):
+                MODULE.validate(slide, page_detail, style, role)
+
+    def test_layout_binding_drift_is_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            slide, page_detail, style, role = self.make_fixture(Path(temp))
+            payload = json.loads(slide.read_text(encoding="utf-8"))
+            payload["slides"][0]["layout_id"] = "LAYOUT-OTHER"
+            slide.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "LAYOUT_SPEC_DRIFT"):
                 MODULE.validate(slide, page_detail, style, role)
 
 
