@@ -1,6 +1,6 @@
 # 國語圖片式語文頁規則
 
-版本：1.5
+版本：1.6
 
 本參考文件供 `presentation-engine` 與 `vmax-image-renderer` 製作國語圖片式簡報時使用。形近字與多音字的專門規則仍以 `skills/character-group-visual-comparison/SKILL.md` 為準。
 
@@ -45,6 +45,8 @@
 有語詞標記頁必須通過：`VOCAB_ANCHOR_PASS`、`VOCAB_REFLOW_PASS`、`VOCAB_MARK_ALIGNMENT_PASS`、`VOCAB_MARK_SPAN_PASS`、`VOCAB_MARK_LAYER_PASS`、`TERM_COLOR_CONSISTENCY_PASS`。
 
 ## 3. 課文圖片的教學功能與證據
+
+**最高原則：課文頁插圖只有一個目的，就是幫助理解課文。** 畫風、角色、場景、道具與裝飾都必須服從這個目的；若無法說明對應哪段、哪句或哪個關鍵詞，就不得使用。
 
 課文圖片不是裝飾。每張圖至少完成一項：交代人物／地點／時間、呈現事件、動作或情緒、連結關鍵詞、呈現前後變化、支持推論。無法說明圖片對應哪段／哪句／哪個關鍵詞，就不得使用。不得增加未授權劇情、人物關係或答案性畫面。
 
