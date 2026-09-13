@@ -39,6 +39,8 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" --slide-sc
 
 正式文字／注音先占位，再配置場景、小插圖、角色、道具、標記與金句。不得使用無字大底圖→找空位→搬字流程。核准的場景交疊不是碰撞。
 
+課文頁可採單一主畫面或 `COMIC_PANELS` 分格漫畫（包含日式漫畫風、連續鏡格與前後對照）。使用分格時，Renderer 必須依核准的 `panel_order` 與 `panel_semantics` 施工；每格都要服務課文理解，不能自行增加無關格數、對話或劇情。
+
 ## Glyph-anchored Vocabulary Marking
 
 每個語詞標記是獨立 annotation layer。**禁止以人工估算座標或上一次 render 的底線位置直接重用。**
