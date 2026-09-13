@@ -30,7 +30,7 @@
       },
       "additionalProperties": false
     },
-    "page_variants": { "type": "array", "items": { "type": "object", "required": ["variant_id", "page_family", "allowed_adjustments"], "properties": { "variant_id": { "type": "string" }, "page_family": { "type": "string" }, "allowed_adjustments": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
+    "page_variants": { "type": "array", "items": { "type": "object", "required": ["variant_id", "page_family", "layout_id", "layout_contract", "layout_contract_sha256", "allowed_adjustments"], "properties": { "variant_id": { "type": "string" }, "page_family": { "type": "string" }, "layout_id": { "type": "string" }, "layout_contract": { "type": "object" }, "layout_contract_sha256": { "type": "string" }, "allowed_adjustments": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
     "teacher_confirmation_ref": { "type": ["string", "null"] },
     "derived_from": { "$ref": "#/$defs/derivedFrom" }
   },

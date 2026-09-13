@@ -13,6 +13,8 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 
 - `page_family`：課文閱讀、語文知識、成語／四字詞語、情境漫畫、總結遷移等。
 - `style_variant`：該頁型使用的插圖媒材、筆觸、色彩與構圖語言。
+- `layout_id`：該頁型實際套用的版型識別。
+- `layout_contract`／`layout_contract_sha256`：版型的閱讀順序、文字區、圖片區、protected zones、留白與字體角色；這些欄位是施工契約，不是僅供參考的推薦描述。
 - `character_policy`：該頁型的人物使用策略，使用 `CANONICAL_REQUIRED`、`CANONICAL_OPTIONAL`、`SUPPORTING_FIGURE_ALLOWED`、`CHARACTER_DISCOURAGED` 或 `NO_CHARACTER`。
 - `shared_invariants`：整課共用的字體、畫布比例、章節標籤、角色 DNA、留白與安全邊界。
 - `consistency_rule`：同一 `page_family` 的所有頁面必須沿用同一 `style_variant`，除非教師明確核准例外。
@@ -80,6 +82,7 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 - 同一份教材可推薦不同方向，例如溫暖敘事、探險任務、清楚資訊圖，但必須說明差異。
 - 風格方案可包含多個頁面家族變體；必須明確區分「課級共用 DNA」與「頁型專屬變體」。
 - 頁型專屬變體只能改變插圖媒材、情境語言與局部構圖，不得破壞整課共用的字體、畫布、角色、章節標籤、留白與文字可讀性。
+- 每個 `page_variants` 都必須輸出已確認的 `layout_id`、完整 `layout_contract` 與 `layout_contract_sha256`；不能只輸出 `style_core_id` 或 `style_variant` 名稱。
 - Bee 老師可搭配多種風格，但其蜜蜂元素只能作為識別，不得主導整套教材視覺。
 - 學生可見文字必須清楚、大字、繁體中文。
 - 插圖須依內容重新生成，不以教材截圖代替情境插圖。

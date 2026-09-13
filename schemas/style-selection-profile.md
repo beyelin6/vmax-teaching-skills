@@ -53,6 +53,19 @@ style_selection:
     illustration_language: []
     section_label_system: []
     layout_ids: []
+    layout_contracts:
+      - variant_id: ""
+        page_family: ""
+        layout_id: ""
+        layout_contract_sha256: ""
+        layout_contract:
+          composition: ""
+          reading_order: []
+          text_regions: []
+          image_regions: []
+          protected_zones: []
+          whitespace: ""
+          typography_roles: []
     role_integration_rules: []
     lesson_specific_adaptations: []
     presentation_canvas:
@@ -87,4 +100,6 @@ style_selection:
 - 混合風格時需指定主風格與輔助風格，不得把多套規則無限制堆疊。
 - 角色辨識色只能作為輔助色，不得覆蓋教材主題色。
 - 學生可見文字對比與字級優先於裝飾效果。
+- 每個 `page_variants` 必須包含已確認的 `layout_id`、`layout_contract` 與 `layout_contract_sha256`；版型配置不是建議文字，而是後續頁面施工的鎖定契約。
+- PAGE_DETAIL_CONFIRMATION 的 `layout_spec.style_variant_id`、`layout_id`、`layout_contract` 與 hash 必須逐頁回指同一個 Style Selection Profile page variant。
 - 簡報風格的 `presentation_canvas` 必須承接教師核准的 `canvas_lock`，僅允許 `4:3` 或 `16:9` 橫式；不得由風格推薦自行選擇、切換或改成其他比例。非簡報輸出依自己的 Output Profile。

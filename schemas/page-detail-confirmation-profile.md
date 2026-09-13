@@ -63,6 +63,10 @@ page_detail_confirmation:
           prohibited_drift: []
       layout_spec:
         composition: ""
+        style_variant_id: ""
+        layout_id: ""
+        layout_contract_sha256: ""
+        layout_contract: {}
         reading_order: []
         text_regions: []
         image_regions: []

@@ -58,6 +58,21 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
     if not isinstance(style_core, dict) or not style_core.get("style_core_id"):
         fail("STYLE_SELECTION_REQUIRED: selected style_core_id is missing")
     selected_style_id = style_core["style_core_id"]
+    style_variants = style_selection.get("page_variants")
+    if not isinstance(style_variants, list) or not style_variants:
+        fail("STYLE_LAYOUT_BINDING_REQUIRED: page_variants are missing")
+    style_variant_by_id: dict[str, dict[str, Any]] = {}
+    for variant in style_variants:
+        if not isinstance(variant, dict) or not variant.get("variant_id") or not variant.get("page_family") or not variant.get("layout_id"):
+            fail("STYLE_LAYOUT_BINDING_REQUIRED: page variant identity is incomplete")
+        contract = variant.get("layout_contract")
+        if not isinstance(contract, dict) or not variant.get("layout_contract_sha256"):
+            fail(f"STYLE_LAYOUT_BINDING_REQUIRED: layout contract missing for {variant.get('variant_id')}")
+        if variant.get("layout_contract_sha256") != canonical_hash(contract):
+            fail(f"STYLE_LAYOUT_HASH_MISMATCH: {variant.get('variant_id')}")
+        if variant["variant_id"] in style_variant_by_id:
+            fail(f"STYLE_LAYOUT_BINDING_REQUIRED: duplicate variant {variant['variant_id']}")
+        style_variant_by_id[variant["variant_id"]] = variant
     if role_selection.get("status") != "CONFIRMED" or role_selection.get("teacher_confirmation_status") != "CONFIRMED":
         fail("CHARACTER_REGISTRY_WRITEBACK_REQUIRED: Role Selection Profile must be CONFIRMED")
     role_origin = role_selection.get("character_origin")
@@ -141,6 +156,20 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
             fail(f"STYLE_DRIFT at Slide Script {slide_id}")
         if page.get("page_family") and slide.get("page_family") != page.get("page_family"):
             fail(f"PAGE_FAMILY_DRIFT at {slide_id}")
+        layout_spec = page.get("layout_spec")
+        if not isinstance(layout_spec, dict):
+            fail(f"STYLE_LAYOUT_BINDING_REQUIRED at {slide_id}")
+        style_variant_id = layout_spec.get("style_variant_id")
+        layout_id = layout_spec.get("layout_id")
+        layout_contract = layout_spec.get("layout_contract")
+        layout_contract_hash = layout_spec.get("layout_contract_sha256")
+        variant = style_variant_by_id.get(style_variant_id)
+        if variant is None or variant.get("page_family") != page.get("page_family"):
+            fail(f"LAYOUT_SPEC_DRIFT at {slide_id}")
+        if layout_id != variant.get("layout_id") or not isinstance(layout_contract, dict) or layout_contract_hash != canonical_hash(layout_contract) or layout_contract_hash != variant.get("layout_contract_sha256") or layout_contract != variant.get("layout_contract"):
+            fail(f"LAYOUT_SPEC_DRIFT at {slide_id}")
+        if slide.get("style_variant_id") != style_variant_id or slide.get("layout_id") != layout_id or slide.get("layout_contract_sha256") != layout_contract_hash:
+            fail(f"LAYOUT_SPEC_DRIFT at Slide Script {slide_id}")
         if slide.get("page_family") in {"TEXT_READING_PAGE", "PARAGRAPH_TEXT", "TEXT_AND_CONTEXT"} or str(page.get("section_id", "")).startswith("paragraph"):
             coverage = page.get("text_coverage")
             if not isinstance(coverage, dict):
@@ -219,6 +248,8 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
                 fail(f"RENDER_REQUEST_UNBOUND at {slide_id}")
             if render_request.get("style_core_id") != selected_style_id:
                 fail(f"STYLE_DRIFT in Render Request at {slide_id}")
+            if render_request.get("style_variant_id") != style_variant_id or render_request.get("layout_id") != layout_id or render_request.get("layout_contract_sha256") != layout_contract_hash:
+                fail(f"LAYOUT_SPEC_DRIFT in Render Request at {slide_id}")
 
 
 def main() -> int:
