@@ -44,6 +44,10 @@ page_detail_confirmation:
         must_not_show: []
       image_spec:
         purpose: ""
+        presentation_mode: SINGLE_SCENE
+        panel_count: null
+        panel_order: []
+        panel_semantics: []
         scene: ""
         subjects: []
         actions: []

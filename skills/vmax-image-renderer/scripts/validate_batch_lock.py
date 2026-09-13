@@ -156,6 +156,12 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
             image_spec = page.get("image_spec")
             if not isinstance(image_spec, dict) or image_spec.get("text_in_image") is not False:
                 fail(f"TEXT_EMBEDDING_FAIL at {slide_id}")
+            if image_spec.get("presentation_mode") == "COMIC_PANELS":
+                panel_count = image_spec.get("panel_count")
+                panel_order = image_spec.get("panel_order")
+                panel_semantics = image_spec.get("panel_semantics")
+                if not isinstance(panel_count, int) or panel_count < 2 or not isinstance(panel_order, list) or len(panel_order) != panel_count or not isinstance(panel_semantics, list) or len(panel_semantics) != panel_count or any(not item for item in panel_semantics):
+                    fail(f"COMIC_PANEL_PLAN_INCOMPLETE at {slide_id}")
             navigation_marker = page.get("navigation_marker")
             if not isinstance(navigation_marker, dict) or not navigation_marker.get("page_number_token"):
                 fail(f"PAGE_SEQUENCE_MARKER_MISSING at {slide_id}")
