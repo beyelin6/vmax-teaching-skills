@@ -33,9 +33,16 @@ GitHub Source of Truth：
    - `adapters/chatgpt.md`
    - `core/visual/visual-reference-library.md`
    - `core/visual/visual-text-dna.md`
+   - `core/governance/lesson-presentation-execution-rules.md`
+   - `skills/presentation-engine/SKILL.md`
+   - `skills/presentation-engine/references/classroom-language-page-rules.md`
    - `core/presentation/canvas-lock-policy.md`
+   - `core/presentation/paragraph-text-page-policy.md`
    - `core/presentation/text-layer-construction-policy.md`
+   - `skills/vmax-image-renderer/references/render-request-schema.md`
+   - `core/schemas/vmax/slide-script.schema.json`
 4. 再按當前 stage 讀取需要的 policy／skill；不要一次下載或安裝全部技能。
+   課文閱讀頁的語詞 placement 必須沿用既有 Slide Script 與 PAGE_DETAIL_CONFIRMATION；同頁是預設，獨立語詞頁必須有拆頁理由、核准回指與 Render Request 欄位一致性。
 5. GitHub refresh 失敗時，先依 Bootstrap 的 Graceful Fallback 尋找可信 `LAST_KNOWN_GOOD`。必要 canonical 原文可讀且 commit／revision、版本與成功載入記錄可核對時，以 LKG 繼續並標記 `GITHUB_REFRESH_PENDING`；沒有完整可信 LKG 才 `BOOTSTRAP_BLOCKED`。模型記憶與舊對話摘要不算 LKG。此分流只處理規格載入，不豁免 Drive Runtime、教師核准與 State Sync。
 
 ## 每次續作的 State Sync Gate
@@ -63,6 +70,8 @@ ChatGPT Work 不得把「繼續／下一步／確認／沿用」直接當成可�
 - `STEP 2.75` 與自行新增的 stage 非法。
 
 ## 教師畫面
+
+圖片式簡報與文件預設使用可用的 ChatGPT 原生圖像生成／影像編輯工具，直接顯示原生圖片結果，保留平台提供的編輯入口與原圖引用；不得只輸出 PNG 檔案卡片。依教師指定範圍引用原圖續編，另附下載檔供保存。文字／來源 QA 仍須執行；合成後圖片也須直接預覽。若平台不支援原生編輯，明確說明，不能把一般圖片預覽宣稱為有「編輯」功能。
 
 使用中文標題、精簡表格與條列。完整 Machine Payload 可另存，但對話不顯示 raw schema、內部欄位或空白程式碼框。每項來源顯示教材、教育部辭典、AI 建議或待核對狀態。
 

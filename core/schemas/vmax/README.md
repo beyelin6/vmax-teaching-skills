@@ -68,5 +68,6 @@ For older records, recover actual decision and version references. Missing evide
 Slide Script 與獨立 Render Request 使用 scripts/validate_presentation.py 驗證。正式施工加 --require-ready；草稿可省略。Render Request 不需要 object_type，使用 --kind render-request 選擇合約。執行需 jsonschema。自然度與成品語意仍需實際審閱。
 
 正式文字採 layer_id/text/source_ref 物件陣列，從 Slide Script 的 STUDENT text_rendering.layers 原樣傳入。舊文字字串陣列需依來源主檔映射為文字層，不能猜 source_ref。新 vocab marks 帶 text_layer_id，並以文字層內零起算、end-exclusive Unicode 字元索引定位。
+課文段落頁的語詞必須帶 `paragraph_ref`、`vocab_refs` 與 `language_placement`；預設使用 `IN_PARAGRAPH` 或 `ADJACENT_ON_SAME_PAGE`，重跑沿用既有 placement。`SEPARATE_LANGUAGE_PAGE` 只有在 Render Request 同時附具體 `reason` 與 `approval_ref` 時才合法。
 安裝後從已載入 Renderer 技能的 scripts/validate_presentation.py 絕對路徑啟動；完整 repo/cache 自動解析，必要時 --repo-root。
 --result RESULT 僅接受獨立 Render Request，隱含 --require-ready 並驗證逐資產 QA/hash；不取代 Output Manifest 或教師核准。完整範例命令與回條欄位以 skills/vmax-image-renderer/references/render-request-schema.md 為準。

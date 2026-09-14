@@ -134,7 +134,9 @@ def validate(data, kind='slide-script', require_ready=False):
         if require_ready and request['request_state'] != 'RENDER_READY':
             errors.append('RENDER_REQUEST_NOT_READY')
         if slide:
-            for key in ['page_family', 'idiom_application_plan', 'vocab_mark_plan', 'text_layout_revision', 'object_composition_plan', 'character_plan', 'key_line_plan']:
+            for key in ['page_family', 'paragraph_ref', 'vocab_refs', 'language_placement',
+                        'idiom_application_plan', 'vocab_mark_plan', 'text_layout_revision',
+                        'object_composition_plan', 'character_plan', 'key_line_plan']:
                 default = [] if key == 'vocab_mark_plan' else None
                 if slide.get(key, default) != request.get(key, default):
                     errors.append(f'SLIDE_RENDER_MISMATCH: {key}')

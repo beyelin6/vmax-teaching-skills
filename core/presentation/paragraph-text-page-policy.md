@@ -37,3 +37,13 @@
 - 未提供 `CLASSROOM_PROJECTOR` 的有效字級證據，或正文低於 32 pt、語詞低於 28 pt。
 
 Failure codes：`PARAGRAPH_TEXT_INCOMPLETE / PARAGRAPH_TEXT_REWRITTEN / PARAGRAPH_VOCABULARY_DROPPED / PARAGRAPH_VOCABULARY_DETACHED / PARAGRAPH_SPLIT_UNJUSTIFIED / PARAGRAPH_SOURCE_UNIT_DRIFT / CLASSROOM_FONT_SIZE_UNVERIFIED / CLASSROOM_FONT_TOO_SMALL`。
+
+## Machine Placement Contract
+
+每個段落語詞項目另外必須保存 `paragraph_ref`、`vocab_refs` 與 `language_placement`。`language_placement.mode` 使用 `IN_PARAGRAPH`、`ADJACENT_ON_SAME_PAGE` 或 `SEPARATE_LANGUAGE_PAGE`；拆頁時必須有具體 `reason` 與 `approval_ref`。
+
+`IN_PARAGRAPH` 與 `ADJACENT_ON_SAME_PAGE` 是預設與重跑沿用值。重跑、換模型、換 Renderer 或只修改圖片時，不得自行改成 `SEPARATE_LANGUAGE_PAGE`。重跑前先讀取既有 Slide Script、PAGE_DETAIL_CONFIRMATION 與 placement；若只是改圖、字體、anchor 或單頁構圖，保持 placement、`paragraph_ref` 與 `vocab_refs` 不變。要改 placement 必須先建立 `PLACEMENT_CHANGE_REQUEST` 並取得教師確認。
+
+缺少 placement、拆頁理由或核准回指 → `PARAGRAPH_LANGUAGE_PLACEMENT_MISSING` / `UNAPPROVED_LANGUAGE_SPLIT` → FAIL。
+
+> 語詞隨段落；同頁是預設，拆頁需要證據。

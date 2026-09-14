@@ -41,14 +41,15 @@ Before starting any presentation task, initialize or read the lesson's `00_施�
 1. `core/governance/lesson-presentation-execution-rules.md`
 2. `skills/presentation-engine/SKILL.md`
 3. `skills/presentation-engine/references/classroom-language-page-rules.md`
-4. `core/presentation/canvas-lock-policy.md`
-5. `core/presentation/text-layer-construction-policy.md`
-6. `skills/traditional-chinese-font-safety/SKILL.md`
-7. `core/renderer/image-first-hybrid-renderer.md`
-8. `skills/vmax-image-renderer/SKILL.md`
-9. `skills/vmax-image-renderer/references/render-request-schema.md`
-10. `core/quality/quality-gate-2.md`
-11. `core/schemas/vmax/slide-script.schema.json`
+4. `core/presentation/paragraph-text-page-policy.md`
+5. `core/presentation/canvas-lock-policy.md`
+6. `core/presentation/text-layer-construction-policy.md`
+7. `skills/traditional-chinese-font-safety/SKILL.md`
+8. `core/renderer/image-first-hybrid-renderer.md`
+9. `skills/vmax-image-renderer/SKILL.md`
+10. `skills/vmax-image-renderer/references/render-request-schema.md`
+11. `core/quality/quality-gate-2.md`
+12. `core/schemas/vmax/slide-script.schema.json`
 
 若頁型為成語，另確認目前 Classroom Language Rules 與 Presentation Engine 已載入 `IDIOM_APPLICATION_PLAN` 規則；若含語詞標記，另確認 glyph-anchor/reflow contract 已載入。
 

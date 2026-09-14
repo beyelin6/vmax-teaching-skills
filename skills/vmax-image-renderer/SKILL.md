@@ -9,6 +9,12 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 ## Request Contract Gate
 
+### 圖片式簡報／文件的原生預覽與續編
+
+在 ChatGPT／Codex 製作圖片式簡報或文件時，預設使用可用的 ChatGPT 原生圖像生成／影像編輯工具，直接呈現工具回傳的圖片，保留平台提供的原生編輯入口與後續影像引用。不得只交付 PNG 下載卡片或檔案路徑。修改時引用原圖／該頁最新核准版本，只修改指定範圍。PNG／PDF 可另作下載與歸檔。
+
+正式文字與來源仍依既有 QA 規則處理；需要文字合成時保留原生視覺來源，並直接顯示合成後預覽，不得為取得編輯入口而重生已核准內容。內嵌 PNG 預覽不等同原生編輯功能。若平台沒有原生生成或編輯入口，先說明實際限制，提供可行的直接預覽與引用原圖續編方式，不得假稱保留「編輯」按鈕。
+
 直接呼叫本技能也必須先讀取 `references/render-request-schema.md`、`core/schemas/vmax/render-request.schema.json` 與 Quality Gate。正式施工前執行：
 
 ```sh

@@ -49,13 +49,17 @@ class PresentationContracts(unittest.TestCase):
     def test_pre_layout_cannot_enter_renderer(self):
         self.request['request_state']='PRE_LAYOUT'
         self.request['vocab_mark_plan']=[dict(self.mark, glyph_bbox=None, baseline_y=None, mark_bbox=None)]
+        self.request.update(paragraph_ref='example:paragraph:1', vocab_refs=['example:vocab:1'],
+                            language_placement={'mode': 'ADJACENT_ON_SAME_PAGE'})
         self.assertEqual(validate(self.request, 'render-request'), [])
         self.assertTrue(validate(self.request, 'render-request', True))
         self.request['request_state']='RENDER_READY'
         self.assertTrue(validate(self.request, 'render-request', True))
 
     def test_anchor_shape_revision_span_and_layers(self):
-        self.request.update(text_layout_revision='r1',vocab_mark_plan=[self.mark])
+        self.request.update(text_layout_revision='r1',vocab_mark_plan=[self.mark],
+                            paragraph_ref='example:paragraph:1', vocab_refs=['example:vocab:1'],
+                            language_placement={'mode': 'ADJACENT_ON_SAME_PAGE'})
         self.assertEqual(validate(self.request, 'render-request', True), [])
         for change in [dict(glyph_bbox={}), dict(text_layout_revision='old'), dict(include_punctuation=True), dict(layer_order='MARK_ABOVE_TEXT'), dict(start_char_index=-1), dict(end_char_index=0), dict(stroke_height_ratio=0.9)]:
             d=copy.deepcopy(self.request); d['vocab_mark_plan'][0].update(change)
@@ -99,13 +103,29 @@ class PresentationContracts(unittest.TestCase):
         self.assertTrue(validate(self.request, 'render-request', True))
 
     def test_anchor_semantics_and_geometry(self):
-        self.request.update(text_layout_revision='r1', vocab_mark_plan=[self.mark])
+        self.request.update(text_layout_revision='r1',vocab_mark_plan=[self.mark],
+                            paragraph_ref='example:paragraph:1', vocab_refs=['example:vocab:1'],
+                            language_placement={'mode': 'ADJACENT_ON_SAME_PAGE'})
         for change in [dict(text_layer_id='missing'), dict(term_text='wrong'), dict(occurrence_index=2),
                        dict(end_char_index=100), dict(source_ref='wrong'),
                        dict(glyph_bbox=dict(x=99999,y=0,width=70,height=10)),
                        dict(mark_bbox=dict(x=0,y=5,width=70,height=2)), dict(baseline_y=999)]:
             d=copy.deepcopy(self.request); d['vocab_mark_plan'][0].update(change)
             self.assertTrue(validate(d, 'render-request', True), change)
+
+    def test_paragraph_language_placement_is_preserved_and_split_needs_evidence(self):
+        self.request.update(text_layout_revision='r1', vocab_mark_plan=[self.mark],
+                            paragraph_ref='example:paragraph:1', vocab_refs=['example:vocab:1'],
+                            language_placement={'mode': 'ADJACENT_ON_SAME_PAGE'})
+        self.assertEqual(validate(self.request, 'render-request', True), [])
+        for key in ['paragraph_ref', 'vocab_refs', 'language_placement']:
+            d=copy.deepcopy(self.request); d.pop(key)
+            self.assertTrue(validate(d, 'render-request', True), key)
+        d=copy.deepcopy(self.request)
+        d['language_placement']={'mode': 'SEPARATE_LANGUAGE_PAGE'}
+        self.assertTrue(validate(d, 'render-request', True))
+        d['language_placement']={'mode': 'SEPARATE_LANGUAGE_PAGE', 'reason': 'paragraph does not fit', 'approval_ref': 'teacher:1'}
+        self.assertEqual(validate(d, 'render-request', True), [])
 
     def test_final_receipt_and_changes_invalidate_evidence(self):
         with tempfile.TemporaryDirectory() as tmp:

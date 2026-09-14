@@ -1,6 +1,6 @@
 # Render Request Schema
 
-版本：2.2
+版本：2.3
 
 Render Request 是平台中立的圖片執行合約。正式簡報採 Object Composition First + Verified Text + Glyph-anchored Vocabulary Marking；成語頁另傳遞 `IDIOM_APPLICATION_PLAN`。
 
@@ -20,6 +20,12 @@ render_request:
   lesson_id: ""
   asset_type: slide | illustration | worksheet | character | cover | other
   page_family: ""
+  paragraph_ref: ""       # 課文段落頁必須回指所屬自然段
+  vocab_refs: []           # 語詞項目必須回指本段語詞
+  language_placement:
+    mode: IN_PARAGRAPH | ADJACENT_ON_SAME_PAGE | SEPARATE_LANGUAGE_PAGE
+    reason: ""             # SEPARATE_LANGUAGE_PAGE 必填
+    approval_ref: ""       # SEPARATE_LANGUAGE_PAGE 必填
 
   source_refs: []
   approval_refs: []
@@ -115,6 +121,10 @@ render_request:
 不得反向以圖片需求修改正確例句。若例句不自然或成語使用牽強，停在上游修正，不得靠插圖合理化。
 
 成語頁 `RENDER_READY` 前必須確認 `IDIOM_EXAMPLE_NATURALNESS_PASS`；成品再驗證 `IDIOM_EXAMPLE_VISUAL_MATCH_PASS`。
+
+## Paragraph Language Placement Contract
+
+課文閱讀頁的語詞預設嵌入所屬自然段，或放在同頁相鄰區域；`paragraph_ref`、`vocab_refs` 與 `language_placement` 必須從 Slide Script 原樣傳入 Render Request。重跑、換模型、換 Renderer 或只修改圖片時，沿用既有 placement，不得自行拆成獨立語詞頁。只有教師明確要求、完整段落在核准畫布與投影字級下確實無法容納，或語詞活動已成為新的主要教學焦點，才可使用 `SEPARATE_LANGUAGE_PAGE`，並同時提供具體 `reason` 與 `approval_ref`。缺少欄位、證據或跨欄位一致性 → `PARAGRAPH_LANGUAGE_PLACEMENT_MISSING`／`UNAPPROVED_LANGUAGE_SPLIT`。
 
 ## Vocabulary Anchor Contract
 

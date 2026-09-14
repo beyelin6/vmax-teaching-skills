@@ -1,15 +1,15 @@
-# V-MAX Manifest 3.8.11
+# V-MAX Manifest 3.8.12
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.11
+vmax_manifest_version: 3.8.12
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.3 }
 main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: 2.7 }
 executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.0 }
-lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.5 }
+lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.6 }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.5 }
 classroom_language_page_rules: { path: skills/presentation-engine/references/classroom-language-page-rules.md, current_version: 1.7 }
 lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.0 }
@@ -17,8 +17,8 @@ page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profi
 batch_construction_lock: { path: core/governance/batch-construction-lock.md, current_version: 1.1 }
 paragraph_text_page_policy: { path: core/presentation/paragraph-text-page-policy.md, current_version: 1.0 }
 character_library_writeback_policy: { path: core/character/character-library-writeback-policy.md, current_version: 1.0 }
-slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contract_version: object-composition-glyph-anchor-idiom-layout-v4 }
-render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.2 }
+slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contract_version: object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement }
+render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.3 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.0 }
 presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: 0.10.11 }
@@ -43,10 +43,10 @@ quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.2 }
 Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_READY` 可進正式 Renderer。資料尚未量測或 page-family required plan 缺失，不得假裝 ready。施工前不要求成品視覺 PASS；成品交付須驗證綁定 request／asset SHA-256 的 QA 回條。
 
 ## Presentation Load Chain
-Front Door 1.3 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
+Front Door 1.3 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Paragraph Text Page、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
 
 ## Downstream Alignment
-Execution Rules 1.5 / Presentation Engine 0.10.11 / Renderer Contract 2.0 / Image Renderer 2.1 / Quality Gate 3.2 / Text Layer 1.5 / Classroom Language 1.7 / Render Request 2.2 / Slide Script object-composition-glyph-anchor-idiom-layout-v4 / Main Workflow 2.7 / Front Door 1.3。
+Execution Rules 1.6 / Presentation Engine 0.10.12 / Renderer Contract 2.0 / Image Renderer 2.1 / Quality Gate 3.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.7 / Front Door 1.3。
 
 ## Lesson Architecture and Variants
 

@@ -167,6 +167,8 @@ If a representative page has been approved, lock its visual system for subsequen
 
 ## 8. Produce multi-page image work one page at a time
 
+For image-style documents or slides in ChatGPT/Codex, use available native ChatGPT image generation/editing and present the native image result inline, retaining its reference for subsequent edits and any edit controls the platform supplies. Do not deliver only PNG file cards or download paths. Edit the requested area of the latest approved page. Downloads may accompany the preview. Preserve source/text QA; when text compositing is needed, show the composite preview and retain the original generated visual. A local PNG preview does not itself guarantee a native Edit button. Explain actual platform limitations instead of claiming unsupported editing functionality.
+
 For 2+ page PNG/JPG/image-style worksheets, handbooks, teaching materials, slides, or visual drafts:
 
 > One page = one independent image.

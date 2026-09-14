@@ -5,7 +5,7 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 # Presentation Engine
 
-版本：0.10.11
+版本：0.10.12
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
@@ -28,6 +28,8 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 一般頁預設 `OBJECT_SCENE`，禁止簡化成文字區＋一張底圖。完整場景吃滿畫布、文字只能搬移 → `MONOLITHIC_BACKGROUND_REGRESSION`。
 
 課文閱讀頁另受 `core/presentation/paragraph-text-page-policy.md` 約束：預設一頁一個自然段＋緊跟在旁的該段語詞解釋；語詞解釋不得脫離課文另成清單頁。單段過長才可依完整句子拆成連續頁。PAGE_DETAIL_CONFIRMATION 必須帶 `text_coverage`，確認完整原文、段落來源、拆頁理由、相鄰語詞版位與該段全部核准語詞覆蓋；不能用代表句、摘要或改寫代替。
+
+每個含段落語詞的頁面還必須帶 `paragraph_ref`、`vocab_refs` 與 `language_placement`，並將三欄原樣傳入 Render Request。`IN_PARAGRAPH` 與 `ADJACENT_ON_SAME_PAGE` 是預設；重跑、換模型、換 Renderer 或只修改圖片時沿用已鎖定 placement，不得自行產生獨立語詞頁。拆頁必須有 `reason`、`approval_ref` 與 PAGE_DETAIL_CONFIRMATION 回指。
 
 ### 課文頁文字層與段落語詞施工契約
 
