@@ -7,6 +7,7 @@ vmax_manifest_version: 3.8.12
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.3 }
+chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: 1.4 }
 main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: 2.7 }
 executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.0 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.6 }
@@ -46,7 +47,7 @@ Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_REA
 Front Door 1.3 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Paragraph Text Page、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
 
 ## Downstream Alignment
-Execution Rules 1.6 / Presentation Engine 0.10.12 / Renderer Contract 2.0 / Image Renderer 2.1 / Quality Gate 3.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.7 / Front Door 1.3。
+Execution Rules 1.6 / Presentation Engine 0.10.12 / Renderer Contract 2.0 / Image Renderer 2.1 / Quality Gate 3.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.7 / Front Door 1.3 / ChatGPT Work Launcher 1.4。
 
 ## Lesson Architecture and Variants
 

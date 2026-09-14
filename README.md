@@ -28,9 +28,11 @@ Codex 有兩種互斥的安裝模式：Plugin 模式由 `.codex-plugin/plugin.js
 
 ## ChatGPT Work 單技能安裝
 
-ChatGPT Work 不應把 `skills/` 下的所有模組逐一保存為個人技能。只安裝：
+ChatGPT Work 不應把 `skills/` 下的所有模組逐一保存為個人技能。唯一的 Launcher 技能名稱是 `vmax-teaching-skills-chatgpt-work`，其 GitHub 安裝來源是：
 
 `chatgpt-work/vmax-teaching-skills/SKILL.md`
+
+直接安裝／更新可使用：[ChatGPT Work Launcher raw SKILL.md](https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/chatgpt-work/vmax-teaching-skills/SKILL.md)。這個檔案的資料夾名稱刻意與 Codex 的 `skills/vmax-teaching-skills/SKILL.md` 分開；後者是 canonical Front Door，不是 ChatGPT Work 個人 Launcher。兩者不可互相替代。
 
 這個 Launcher 每次執行時從 GitHub `main` 按需載入 Manifest、Golden Path 與當前 stage 規則，可避免跨資料夾引用在個人技能轉存時失效，也避免批次保存造成 HTTP 422。
 
