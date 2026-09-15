@@ -272,6 +272,8 @@ STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執�
 
 代表頁不是重新發想頁面；必須先依 `schemas/representative-page-selection-profile.md` 建立選擇檔，從已核准 `PAGE_DETAIL_CONFIRMATION.pages` 以 `page_detail_page_id` 挑選，並保存 PAGE_DETAIL 檔案 hash 與每頁 `page_spec_sha256`。代表頁製作前執行 `validate_representative_selection.py`；缺欄、hash 不一致、未涵蓋實際頁型或出現 PAGE_DETAIL 沒有的內容時，標記 `REPRESENTATIVE_PAGE_SOURCE_CONFLICT`／`REPRESENTATIVE_PAGE_FAMILY_COVERAGE_INCOMPLETE`，不得施工。
 
+代表頁與批次頁交付教師檢查時，優先使用 ChatGPT 原生圖像生成／影像編輯工具直接顯示在工作區，保留「編輯」入口與最新核准圖片引用；不得只交付 PNG 卡片、下載連結或檔案路徑。若當下平台無法提供原生入口，標記 `NATIVE_IMAGE_REVIEW_UNAVAILABLE` 並說明限制，再提供可直接預覽的替代結果。
+
 Full Renderer 的前置條件不是「看過一張樣張」，而是跨頁型代表頁組均已核准：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。教師的「可以」只核准本次實際展示的頁型；未展示頁型不得自動通過。
 
 簡報畫布必須先詢問教師選擇 `4:3` 或 `16:9`，再建立並鎖定 `canvas_lock`；不得由 Renderer、平台預設或舊對話自行選邊。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。Full Renderer 前必須完成代表頁組：課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語、總結遷移等實際啟用頁型；每類均需教師確認，且每頁先載入當課角色定錨。全量必須以 5–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION`、`TYPED_TEXT_LAYOUT_FAIL`、`TEXT_OBJECT_DETACHED` 或角色／風格漂移即停止，不得做完整套後才回頭驗收。

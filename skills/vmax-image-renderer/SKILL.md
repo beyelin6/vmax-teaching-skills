@@ -31,6 +31,10 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" --slide-sc
 
 這個檢查會驗證整份母檔 hash、每頁 page hash、頁序、page family、來源回指、風格核心、已確認的 `style_variant_id`／`layout_id`／`layout_contract`、角色與 Registry writeback、課文完整性、相鄰語詞與教室投影字級證據、Render Request 綁定；非零退出碼 → `BATCH_CONSTRUCTION_LOCK_FAIL`，不得啟動任何批次 Renderer。缺欄位不得套用上一頁、平台預設或通用模板。
 
+### 代表頁／批次檢查的原生圖像交付
+
+代表頁與每一批批次頁送教師檢查時，優先使用 ChatGPT 原生圖像生成／影像編輯工具直接呈現圖片，保留工作區的「編輯」入口與原圖引用，讓教師可以在同一頁指出局部修改。不得只交付 PNG 卡片、下載連結或檔案路徑作為檢查結果。正式文字、頁碼與來源仍須依 PAGE_DETAIL 與 QA 驗證；若平台當下沒有原生生成／編輯入口，必須明確標記 `NATIVE_IMAGE_REVIEW_UNAVAILABLE`，再提供可直接預覽的替代結果，不得宣稱具備不存在的編輯功能。
+
 成語頁必須傳入完整 idiom_application_plan；`visual_semantic_mode` 必須是 `EXTENDED_MEANING_EXAMPLE` 或 `CONTEXTUAL_APPLICATION`，且 `literal_image_prohibited=true`。施工前取得例句語法、用法、適齡生活語境審閱結果與 review_ref。證據不可由預設 true 代填；Schema 通過不代表語意審閱通過。沿用核准例句，圖跟例句人物與動作走，不得把成語字面當作配圖主題。來源未提供時標示缺口或使用已核准補充，不得冒充教材原文。
 
 交付前逐頁執行六項成語 gates（文字、層級、例句可讀性、自然度、圖文匹配、物件構圖），保留實際成品檢查證據；任一失敗不得 RENDER_VERIFIED。

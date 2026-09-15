@@ -271,7 +271,7 @@ Style Recommender 必須依本課課文、教學策略、角色與頁面家族�
 
 ## L. Delivery / Drive Archive
 
-代表頁驗證前，必須先建立並通過 `schemas/representative-page-selection-profile.md` 定義的選擇檔。選擇檔只能引用已核准 `PAGE_DETAIL_CONFIRMATION.pages`，不得另寫一份獨立 prompt 或自行補內容；每個選取頁都要保存 `page_detail_page_id`、PAGE_DETAIL 檔案 hash 與 `page_spec_sha256`。代表頁驗證必須覆蓋課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類逐一核准，未展示頁型不得因教師對另一張說「可以」而連帶通過。
+代表頁驗證前，必須先建立並通過 `schemas/representative-page-selection-profile.md` 定義的選擇檔。選擇檔只能引用已核准 `PAGE_DETAIL_CONFIRMATION.pages`，不得另寫一份獨立 prompt 或自行補內容；每個選取頁都要保存 `page_detail_page_id`、PAGE_DETAIL 檔案 hash 與 `page_spec_sha256`。代表頁驗證必須覆蓋課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類逐一核准，未展示頁型不得因教師對另一張說「可以」而連帶通過。代表頁與批次頁交付檢查時，優先使用 ChatGPT 原生圖像生成／影像編輯直接顯示於工作區並保留可續編原圖；原生入口不可用時標記 `NATIVE_IMAGE_REVIEW_UNAVAILABLE`。
 
 除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；精準文字可控排字後扁平化，不得退化成背景圖＋文字框、卡片牆、逐行打字或大量半透明框。代表頁組全數通過後才可進全量 Renderer；全量以 5–8 頁小批次推進並逐批檢查 Visual Drift、Canvas Drift 與 Text Layer Drift。
 

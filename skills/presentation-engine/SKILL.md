@@ -72,6 +72,8 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 代表頁只能從已核准 `PAGE_DETAIL_CONFIRMATION` 的 `pages` 挑選，不得另開一份只寫 prompt 的代表頁規畫。每個代表頁必須帶 `representative_id`、`page_detail_page_id`、PAGE_DETAIL 檔案 hash、該頁 `page_spec_sha256` 與 `verification_scope`；先執行 `validate_representative_selection.py`，通過後才可渲染。代表頁需實際驗證物件位置、閱讀動線、角色交疊與 protected zones。有課文語詞標記時至少實測一次正確 anchor 與 reflow 重算；有成語頁時至少實測一次：成語語意、例句自然度、例句情境圖三者一致。代表頁若需要任何內容或版面修改，先回寫 PAGE_DETAIL_CONFIRMATION、更新 hash 並重新取得教師確認。
 
+代表頁與批次頁提供教師檢查時，必須優先以 ChatGPT 原生圖像生成／影像編輯方式直接顯示在工作區，保留「編輯」入口與最新核准圖片引用；不得只輸出 PNG 卡片、下載連結或路徑。原生入口不可用時，明確回報 `NATIVE_IMAGE_REVIEW_UNAVAILABLE`，並提供可直接預覽的替代物。
+
 ## SLIDE_SCRIPT / Render Request
 
 Slide Script 鎖定正式文字、來源、object/character/key-line plans；有語詞標記時記錄 vocab anchors；成語頁必須傳遞完整 `idiom_application_plan`，不得只傳成語名稱或抽象 visual prompt。
