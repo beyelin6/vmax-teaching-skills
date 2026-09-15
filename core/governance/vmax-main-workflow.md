@@ -82,7 +82,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Character Topology / Cast
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
-→ 逐頁版面配置與文字說明稿
+→ 逐頁版面配置與文字說明初稿（未鎖定，不可直接施工）
 → 風格庫 3–5 組候選／主風格＋頁型混搭方案
 → HOLD｜教師選擇主風格與頁型混搭規則
 → 鎖定 Style Selection Profile／Style Matrix

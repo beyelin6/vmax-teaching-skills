@@ -76,7 +76,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Character Topology / Cast
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
-→ 逐頁版面配置與文字說明稿
+→ 逐頁版面配置與文字說明初稿（未鎖定，不可直接施工）
 → 風格庫 3–5 組候選／主風格＋頁型混搭方案
 → HOLD｜教師選擇主風格與頁型混搭規則
 → 鎖定 Style Selection Profile／Style Matrix
@@ -91,7 +91,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ### PAGE_DETAIL_CONFIRMATION
 
-`Slide Architecture` 與 `Style Matrix` 完成後，Executor 必須建立 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。它是每頁施工母檔，必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
+`Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix` 完成後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
 
 風格 HOLD 必須先完成：依課文提出 3–5 組風格庫候選／混搭方案，顯示主風格、頁型變體與限制，等待教師選擇。`selected_style_id` 未被教師確認前保持空值；不得由 Executor、Presentation Engine、Renderer 或平台預設直接選風格。風格選定後，建立風格 hash 與 `BATCH_CONSTRUCTION_LOCK`，後續頁面只能沿用該主風格及已核准頁型變體。
 

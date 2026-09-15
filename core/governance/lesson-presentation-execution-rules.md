@@ -10,7 +10,7 @@
 
 本檔的執行期必要欄位不得因下游舊版清單較短而省略。核准的場景交疊不得因相切自動判錯。
 
-逐頁規劃：`Visual Grammar → 物件式場景組版＋角色＋金句＋語詞標記＋交疊 → Style Recipe → 教師確認 → 頁數 → 代表頁 → Renderer`。
+逐頁規劃的完整順序為：`Visual Grammar / Slide Architecture → 版面配置與文字說明初稿 → 風格候選與教師選擇 HOLD → 已確認 Style Selection Profile／Style Matrix → 正式 PAGE_DETAIL_CONFIRMATION → 教師確認 → 頁數帳本 → 代表頁 → Renderer`。本檔下方的 Object Composition 與 PAGE_PLAN 是執行細節，不得省略上游的風格鎖、版型契約或正式逐頁母檔。未啟用的 Baseline 章節可依教材需求或教師確認省略，但已啟用章節不得重排。
 
 ## Object-based Scene Composition
 
