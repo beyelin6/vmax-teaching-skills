@@ -17,7 +17,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 ## PAGE_PLAN
 
-每頁至少包含 page purpose、student visible text、source refs、page family/style、`style_variant_id`、`layout_id`、`layout_contract_sha256`、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`；`page_family = IDIOM` 時另含 `IDIOM_APPLICATION_PLAN`。
+每頁至少包含 page purpose、student visible text、source refs、page family/style、`page_family_contract_id`、`page_specific_plan`、`style_variant_id`、`layout_id`、`layout_contract_sha256`、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`；`page_family = IDIOM` 時另含 `IDIOM_APPLICATION_PLAN`。頁型契約以 `core/presentation/page-family-construction-contracts.md` 為唯一登錄表；不得以通用模板或上一頁內容補齊缺少的頁型細節。
 
 正式 Slide Script 只能由已核准的 `PAGE_DETAIL_CONFIRMATION` 產生。每頁必須逐項帶入核准的學生可見文字、來源、圖片目的與細節、人物／物件／動作、禁止誤畫、閱讀順序、文字區、圖片區、留白與 protected zones。若有角色，還必須逐頁帶入相同的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；姿勢、表情、鏡位與道具只能使用母檔列出的允許變化。若頁面資料與母檔不一致，或角色識別資料缺失，標記 `PAGE_DETAIL_SOURCE_CONFLICT` 或 `CHARACTER_ANCHOR_MISSING`，不得送 Renderer。
 
@@ -42,7 +42,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 ## IDIOM_APPLICATION_PLAN
 
-成語頁必須記錄：`idiom`、`student_friendly_meaning`、`example_sentence`、`example_scene_subject`、`example_scene_action`、`semantic_relation`、`literal_image_risk`、`source_refs`。
+成語頁必須記錄：`visual_semantic_mode`（`EXTENDED_MEANING_EXAMPLE` 或 `CONTEXTUAL_APPLICATION`）、`literal_image_prohibited=true`、`idiom`、`student_friendly_meaning`、`example_sentence`、`example_scene_subject`、`example_scene_action`、`semantic_relation`、`literal_image_risk`、`source_refs`。配圖必須對應例句的人物、動作與引申義；缺少任一欄位即不得施工。
 
 固定推導順序：
 

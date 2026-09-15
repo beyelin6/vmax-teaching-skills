@@ -865,6 +865,8 @@
     "idiomApplicationPlan": {
       "type": "object",
       "required": [
+        "visual_semantic_mode",
+        "literal_image_prohibited",
         "idiom",
         "student_friendly_meaning",
         "example_sentence",
@@ -875,6 +877,16 @@
         "source_refs"
       ],
       "properties": {
+        "visual_semantic_mode": {
+          "type": "string",
+          "enum": [
+            "EXTENDED_MEANING_EXAMPLE",
+            "CONTEXTUAL_APPLICATION"
+          ]
+        },
+        "literal_image_prohibited": {
+          "const": true
+        },
         "idiom": {
           "type": "string",
           "minLength": 1,

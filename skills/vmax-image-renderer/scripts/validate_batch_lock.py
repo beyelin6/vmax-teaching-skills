@@ -10,6 +10,22 @@ from pathlib import Path
 from typing import Any
 
 
+PAGE_FAMILY_CONTRACTS = {
+    "OPENING": "OPENING", "COVER": "OPENING",
+    "OVERVIEW": "OVERVIEW", "LESSON_OVERVIEW": "OVERVIEW",
+    "VISUAL_MIND_MAP": "VISUAL_MIND_MAP", "LESSON_VISUAL_MAP": "VISUAL_MIND_MAP",
+    "TEXT_READING_PAGE": "TEXT_READING", "PARAGRAPH_TEXT": "TEXT_READING", "TEXT_AND_CONTEXT": "TEXT_READING",
+    "COMPREHENSION": "COMPREHENSION", "MEANING_COMPREHENSION": "COMPREHENSION",
+    "RHETORIC": "RHETORIC", "RHETORIC_DISCOVERY": "RHETORIC",
+    "SENTENCE_PATTERN": "SENTENCE_PATTERN",
+    "CHARACTER_COMPARISON_PAGE": "SHAPE_NEAR", "SHAPE_NEAR": "SHAPE_NEAR",
+    "POLYPHONIC": "POLYPHONIC", "POLYPHONIC_PAGE": "POLYPHONIC",
+    "IDIOM": "IDIOM", "IDIOM_APPLICATION": "IDIOM",
+    "LANGUAGE_ACTIVITY": "LANGUAGE_ACTIVITY", "TEXTBOOK_ACTIVITY": "LANGUAGE_ACTIVITY", "ACTIVITY": "LANGUAGE_ACTIVITY",
+    "SUMMARY_TRANSFER": "SUMMARY_TRANSFER", "SUMMARY": "SUMMARY_TRANSFER", "TRANSFER": "SUMMARY_TRANSFER",
+}
+
+
 def canonical_hash(value: Any) -> str:
     data = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(data).hexdigest()
@@ -156,6 +172,32 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
             fail(f"STYLE_DRIFT at Slide Script {slide_id}")
         if page.get("page_family") and slide.get("page_family") != page.get("page_family"):
             fail(f"PAGE_FAMILY_DRIFT at {slide_id}")
+        page_family = page.get("page_family")
+        expected_contract = PAGE_FAMILY_CONTRACTS.get(page_family)
+        actual_contract = page.get("page_family_contract_id")
+        if expected_contract is None or not actual_contract:
+            fail(f"PAGE_FAMILY_CONTRACT_MISSING at {slide_id}")
+        if actual_contract != expected_contract:
+            fail(f"PAGE_FAMILY_CONTRACT_MISMATCH at {slide_id}")
+        if not isinstance(page.get("page_specific_plan"), dict) or not page["page_specific_plan"]:
+            fail(f"PAGE_FAMILY_CONTRACT_MISSING at {slide_id}")
+        if page_family in {"CHARACTER_COMPARISON_PAGE", "SHAPE_NEAR"}:
+            comparison = page.get("character_comparison_plan")
+            count = comparison.get("group_count") if isinstance(comparison, dict) else None
+            refs = comparison.get("group_refs") if isinstance(comparison, dict) else None
+            if not isinstance(count, int) or count < 1 or count > 2 or not isinstance(refs, list) or len(refs) != count:
+                fail(f"SHAPE_NEAR_GROUP_OVERFLOW at {slide_id}")
+        if page_family in {"IDIOM", "IDIOM_APPLICATION"}:
+            idiom = page.get("idiom_application_plan")
+            if not isinstance(idiom, dict):
+                fail(f"PAGE_FAMILY_CONTRACT_MISSING at {slide_id}")
+            if idiom.get("visual_semantic_mode") not in {"EXTENDED_MEANING_EXAMPLE", "CONTEXTUAL_APPLICATION"}:
+                fail(f"IDIOM_EXAMPLE_VISUAL_MISMATCH at {slide_id}")
+            if idiom.get("literal_image_prohibited") is not True:
+                fail(f"IDIOM_LITERAL_IMAGE at {slide_id}")
+            for key in ("example_sentence", "example_scene_subject", "example_scene_action", "semantic_relation"):
+                if not isinstance(idiom.get(key), str) or not idiom[key].strip():
+                    fail(f"IDIOM_EXAMPLE_VISUAL_MISMATCH at {slide_id}")
         layout_spec = page.get("layout_spec")
         if not isinstance(layout_spec, dict):
             fail(f"STYLE_LAYOUT_BINDING_REQUIRED at {slide_id}")

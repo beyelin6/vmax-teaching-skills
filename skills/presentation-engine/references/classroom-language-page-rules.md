@@ -144,6 +144,12 @@ idiom_application_plan:
 
 沿用 `skills/character-group-visual-comparison/SKILL.md`；大字、注音、部件、詞語與情境必須形成可讀關係，不得用圖片模型生成正式國字。
 
+### 11.1 形近字頁容量與版型契約
+
+- 每頁只放 1–2 組形近字，預設一組、最多兩組；超過兩組必須拆成連續頁。
+- 每組保留共同部件／差異部件、例詞、字義情境與比較提示；不可把所有生字清單塞成滿版字表。
+- `PAGE_DETAIL_CONFIRMATION` 必須記錄 `character_comparison_plan.group_count`、`group_refs` 與本頁比較焦點；缺欄或超過兩組即 `SHAPE_NEAR_GROUP_OVERFLOW`。
+
 ## 12. 代表頁與批次
 
 每個實際啟用頁型先做代表頁。教師確認原文、焦點、證據、構圖、角色、文字與投影可讀性後才小批次生成。有課文語詞標記時，代表頁至少實測一次 reflow 後 anchor 重算；有成語頁時，代表頁至少驗證一次「例句 ↔ 情境圖 ↔ 成語引申義」三者一致。

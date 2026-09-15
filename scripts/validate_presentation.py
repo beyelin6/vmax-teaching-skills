@@ -73,6 +73,10 @@ def validate_ready_text(request):
         errors.append('PRE_RENDER_CHECK_FAILED')
     if request['page_family'] == 'IDIOM':
         plan = request['idiom_application_plan']
+        if plan.get('visual_semantic_mode') not in {'EXTENDED_MEANING_EXAMPLE', 'CONTEXTUAL_APPLICATION'}:
+            errors.append('IDIOM_SEMANTIC_MODE_INVALID')
+        if plan.get('literal_image_prohibited') is not True:
+            errors.append('IDIOM_LITERAL_IMAGE_NOT_BLOCKED')
         for key in ['idiom', 'student_friendly_meaning', 'example_sentence']:
             if not any(plan[key] in layer['text'] for layer in layers):
                 errors.append(f'IDIOM_VERIFIED_TEXT_MISMATCH: {key}')

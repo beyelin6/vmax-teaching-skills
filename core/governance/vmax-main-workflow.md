@@ -46,6 +46,7 @@ The teacher-facing workflow remains Phase／STEP／HOLD based; schemas do not re
 
 ### Delivery
 - `skills/presentation-engine/SKILL.md`
+- `core/presentation/page-family-construction-contracts.md`
 - `core/presentation/classroom-image-slide-policy.md`
 - `core/renderer/image-first-hybrid-renderer.md`
 - `skills/vmax-image-renderer/SKILL.md`
@@ -256,7 +257,7 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 Style Recommender 必須依本課課文、教學策略、角色與頁面家族提出 3–5 組風格庫候選，也可提出主風格＋頁型混搭方案；這一步是教師選擇 HOLD，不是自動決策。`selected_style_id`、主風格、混搭頁型與限制未經教師確認前，不得建立 PAGE_DETAIL_CONFIRMATION、代表頁、正式 Slide Script 或啟動 Renderer。
 
-上述文件共同組成 `PAGE_DETAIL_CONFIRMATION`。每頁還必須明列：頁碼與區段、學生可見的每一段文字、來源回指、圖片目的／場景／人物／動作／必要物件／禁止誤畫、閱讀順序、文字區、圖片區、留白、protected zones、字體角色與互動方式。不得只寫抽象主題或一句圖片 prompt。
+上述文件共同組成 `PAGE_DETAIL_CONFIRMATION`。每頁還必須明列：頁碼與區段、`page_family_contract_id`、完整 `page_specific_plan`、學生可見的每一段文字、來源回指、圖片目的／場景／人物／動作／必要物件／禁止誤畫、閱讀順序、文字區、圖片區、留白、protected zones、字體角色與互動方式。不得只寫抽象主題或一句圖片 prompt。
 
 風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材。水彩、漫畫或其他畫風僅為示意，實際媒材、版型與構圖應依教材、教學功能與教師偏好推薦，不得硬編成固定答案。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
 

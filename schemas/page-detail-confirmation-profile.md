@@ -77,6 +77,22 @@ page_detail_confirmation:
         student_task: ""
         teacher_notes_ref: ""
       page_family: ""
+      page_family_contract_id: ""
+      page_specific_plan: {}
+      character_comparison_plan:
+        group_count: null
+        group_refs: []
+        comparison_focus: ""
+      idiom_application_plan:
+        visual_semantic_mode: EXTENDED_MEANING_EXAMPLE
+        literal_image_prohibited: true
+        idiom: ""
+        student_friendly_meaning: ""
+        example_sentence: ""
+        example_scene_subject: ""
+        example_scene_action: ""
+        semantic_relation: ""
+        literal_image_risk: ""
       text_coverage:
         source_unit_type: NATURAL_PARAGRAPH
         source_unit_ids: []
@@ -109,7 +125,11 @@ page_detail_confirmation:
 
 ## 確認規則
 
-每頁都必須有學生可見文字、來源、圖片細節與排版說明。文字要逐項列出，圖片要說明畫面目的、人物／物件／動作與禁止誤畫，排版要說明閱讀順序、文字區、圖像區、留白與 protected zones。每個出場角色都必須引用已確認的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；沒有角色時明確記錄 `character_refs: []`。
+每頁都必須有 `page_family_contract_id`、學生可見文字、來源、圖片細節與排版說明。文字要逐項列出，圖片要說明畫面目的、人物／物件／動作與禁止誤畫，排版要說明閱讀順序、文字區、圖像區、留白與 protected zones。每個出場角色都必須引用已確認的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；沒有角色時明確記錄 `character_refs: []`。
+
+若 `page_family` 為形近字、成語或其他有專屬契約的頁型，`page_specific_plan` 必須完整帶入該頁型規定的容量、文字、圖像與驗收欄位；不能只在代表頁或 Render Request 階段補寫。
+
+`page_family` 為 `CHARACTER_COMPARISON_PAGE`／`SHAPE_NEAR` 時，`character_comparison_plan.group_count` 必須為 1 或 2，且 `group_refs` 數量相同；為 `IDIOM` 時，`idiom_application_plan` 必須以 `visual_semantic_mode: EXTENDED_MEANING_EXAMPLE` 或 `CONTEXTUAL_APPLICATION` 指向例句情境，並固定 `literal_image_prohibited: true`。這些是頁面施工契約，不是事後補充欄位。
 
 `status: approved` 後，必須寫入 `revision`、整份檔案的 `confirmation_sha256` 與每頁 canonical JSON（移除自身 `page_spec_sha256` 欄位後）的 `page_spec_sha256`。任何文字、圖片需求、角色錨點、排版、留白、來源或禁止誤畫變更，都要更新受影響頁 hash、整份檔案 hash，重新取得教師確認，不能只修改 Render Request。
 
