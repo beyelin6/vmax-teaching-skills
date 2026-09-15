@@ -36,6 +36,13 @@ class RepresentativePageSelectionTests(unittest.TestCase):
             "page_detail_confirmation_ref": page_detail_path.name,
             "page_detail_confirmation_sha256": MODULE.file_hash(page_detail_path),
             "required_page_families": ["IDIOM"],
+            "coverage_matrix": [{
+                "page_family": "IDIOM",
+                "contract_id": "IDIOM",
+                "style_variant_id": "STYLE-WARM-001:IDIOM",
+                "representative_id": "REP-001",
+                "status": "PENDING_TEACHER_REVIEW",
+            }],
             "selected_pages": [{
                 "representative_id": "REP-001",
                 "page_detail_page_id": "S001",

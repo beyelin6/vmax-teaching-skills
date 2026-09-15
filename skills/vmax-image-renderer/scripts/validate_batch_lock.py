@@ -25,6 +25,17 @@ PAGE_FAMILY_CONTRACTS = {
     "SUMMARY_TRANSFER": "SUMMARY_TRANSFER", "SUMMARY": "SUMMARY_TRANSFER", "TRANSFER": "SUMMARY_TRANSFER",
 }
 
+PAGE_SPECIFIC_REQUIRED = {
+    "TEXT_READING": {"text_coverage", "paragraph_ref", "vocab_refs", "language_placement"},
+    "COMPREHENSION": {"question", "evidence_refs", "response_mode"},
+    "RHETORIC": {"rhetoric_name", "source_sentence", "effect_prompt"},
+    "SENTENCE_PATTERN": {"pattern", "source_sentence", "practice_prompt"},
+    "POLYPHONIC": {"character", "pronunciations", "context_examples"},
+    "IDIOM": {"idiom_application_plan"},
+    "LANGUAGE_ACTIVITY": {"activity_ref", "student_output", "operation_steps"},
+    "SUMMARY_TRANSFER": {"summary_statement", "evidence_refs", "transfer_prompt"},
+}
+
 
 def canonical_hash(value: Any) -> str:
     data = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -181,6 +192,10 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
             fail(f"PAGE_FAMILY_CONTRACT_MISMATCH at {slide_id}")
         if not isinstance(page.get("page_specific_plan"), dict) or not page["page_specific_plan"]:
             fail(f"PAGE_FAMILY_CONTRACT_MISSING at {slide_id}")
+        required_plan_fields = PAGE_SPECIFIC_REQUIRED.get(expected_contract, set())
+        missing_plan_fields = sorted(required_plan_fields - set(page["page_specific_plan"]))
+        if missing_plan_fields:
+            fail(f"PAGE_FAMILY_CONTRACT_MISSING at {slide_id}: {','.join(missing_plan_fields)}")
         if page_family in {"CHARACTER_COMPARISON_PAGE", "SHAPE_NEAR"}:
             comparison = page.get("character_comparison_plan")
             count = comparison.get("group_count") if isinstance(comparison, dict) else None

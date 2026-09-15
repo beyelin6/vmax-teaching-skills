@@ -31,7 +31,7 @@ class BatchConstructionLockTests(unittest.TestCase):
             "sequence_index": 1,
             "page_family": "IDIOM",
             "page_family_contract_id": "IDIOM",
-            "page_specific_plan": {"focus": "example idiom application"},
+            "page_specific_plan": {"focus": "example idiom application", "idiom_application_plan": "S001-IDIOM-PLAN"},
             "idiom_application_plan": {
                 "visual_semantic_mode": "EXTENDED_MEANING_EXAMPLE",
                 "literal_image_prohibited": True,
@@ -154,7 +154,13 @@ class BatchConstructionLockTests(unittest.TestCase):
         page = page_detail["page_detail_confirmation"]["pages"][0]
         page["page_family"] = "TEXT_READING_PAGE"
         page["page_family_contract_id"] = "TEXT_READING"
-        page["page_specific_plan"] = {"focus": "完整自然段閱讀"}
+        page["page_specific_plan"] = {
+            "focus": "完整自然段閱讀",
+            "text_coverage": "P1",
+            "paragraph_ref": "P1",
+            "vocab_refs": ["VOCAB1"],
+            "language_placement": "INLINE_ADJACENT",
+        }
         page["section_id"] = "paragraph_learning"
         page["layout_spec"].update({
             "style_variant_id": "STYLE-WARM-001:TEXT-READING",

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vmax.local/schemas/page-family-construction.schema.json",
+  "title": "V-MAX Page Family Construction Contract",
+  "type": "object",
+  "required": ["page_family_contract_id", "page_specific_plan"],
+  "properties": {
+    "page_family_contract_id": {
+      "type": "string",
+      "enum": ["OPENING", "OVERVIEW", "VISUAL_MIND_MAP", "TEXT_READING", "COMPREHENSION", "RHETORIC", "SENTENCE_PATTERN", "SHAPE_NEAR", "POLYPHONIC", "IDIOM", "LANGUAGE_ACTIVITY", "SUMMARY_TRANSFER"]
+    },
+    "page_specific_plan": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"page_family_contract_id": {"const": "TEXT_READING"}}}, "then": {"properties": {"page_specific_plan": {"required": ["text_coverage", "paragraph_ref", "vocab_refs", "language_placement"]}}}},
+    {"if": {"properties": {"page_family_contract_id": {"const": "COMPREHENSION"}}}, "then": {"properties": {"page_specific_plan": {"required": ["question", "evidence_refs", "response_mode"]}}}},
+    {"if": {"properties": {"page_family_contract_id": {"const": "RHETORIC"}}}, "then": {"properties": {"page_specific_plan": {"required": ["rhetoric_name", "source_sentence", "effect_prompt"]}}}},
+    {"if": {"properties": {"page_family_contract_id": {"const": "SENTENCE_PATTERN"}}}, "then": {"properties": {"page_specific_plan": {"required": ["pattern", "source_sentence", "practice_prompt"]}}}},
+    {"if": {"properties": {"page_family_contract_id": {"const": "POLYPHONIC"}}}, "then": {"properties": {"page_specific_plan": {"required": ["character", "pronunciations", "context_examples"]}}}},
+    {"if": {"properties": {"page_family_contract_id": {"const": "IDIOM"}}}, "then": {"properties": {"page_specific_plan": {"required": ["idiom_application_plan"]}}}},
+    {"if": {"properties": {"page_family_contract_id": {"const": "LANGUAGE_ACTIVITY"}}}, "then": {"properties": {"page_specific_plan": {"required": ["activity_ref", "student_output", "operation_steps"]}}}},
+    {"if": {"properties": {"page_family_contract_id": {"const": "SUMMARY_TRANSFER"}}}, "then": {"properties": {"page_specific_plan": {"required": ["summary_statement", "evidence_refs", "transfer_prompt"]}}}}
+  ],
+  "additionalProperties": true
+}

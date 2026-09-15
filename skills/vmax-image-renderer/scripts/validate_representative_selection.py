@@ -9,6 +9,21 @@ import sys
 from pathlib import Path
 from typing import Any
 
+PAGE_FAMILY_CONTRACTS = {
+    "OPENING": "OPENING", "COVER": "OPENING",
+    "OVERVIEW": "OVERVIEW", "LESSON_OVERVIEW": "OVERVIEW",
+    "VISUAL_MIND_MAP": "VISUAL_MIND_MAP", "LESSON_VISUAL_MAP": "VISUAL_MIND_MAP",
+    "TEXT_READING_PAGE": "TEXT_READING", "PARAGRAPH_TEXT": "TEXT_READING", "TEXT_AND_CONTEXT": "TEXT_READING",
+    "COMPREHENSION": "COMPREHENSION", "MEANING_COMPREHENSION": "COMPREHENSION",
+    "RHETORIC": "RHETORIC", "RHETORIC_DISCOVERY": "RHETORIC",
+    "SENTENCE_PATTERN": "SENTENCE_PATTERN",
+    "CHARACTER_COMPARISON_PAGE": "SHAPE_NEAR", "SHAPE_NEAR": "SHAPE_NEAR",
+    "POLYPHONIC": "POLYPHONIC", "POLYPHONIC_PAGE": "POLYPHONIC",
+    "IDIOM": "IDIOM", "IDIOM_APPLICATION": "IDIOM",
+    "LANGUAGE_ACTIVITY": "LANGUAGE_ACTIVITY", "TEXTBOOK_ACTIVITY": "LANGUAGE_ACTIVITY", "ACTIVITY": "LANGUAGE_ACTIVITY",
+    "SUMMARY_TRANSFER": "SUMMARY_TRANSFER", "SUMMARY": "SUMMARY_TRANSFER", "TRANSFER": "SUMMARY_TRANSFER",
+}
+
 
 def canonical_hash(value: Any) -> str:
     data = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -59,6 +74,19 @@ def validate(selection_path: Path, page_detail_path: Path) -> None:
         raise ValueError("REPRESENTATIVE_PAGE_SELECTION_INCOMPLETE")
     if not isinstance(required_families, list) or not required_families:
         raise ValueError("REPRESENTATIVE_PAGE_FAMILY_COVERAGE_INCOMPLETE")
+    coverage_matrix = selection.get("coverage_matrix")
+    if not isinstance(coverage_matrix, list) or not coverage_matrix:
+        raise ValueError("REPRESENTATIVE_PAGE_COVERAGE_MATRIX_MISSING")
+    matrix_by_family = {}
+    for row in coverage_matrix:
+        if not isinstance(row, dict) or not row.get("page_family") or not row.get("contract_id") or not row.get("style_variant_id") or not row.get("representative_id"):
+            raise ValueError("REPRESENTATIVE_PAGE_COVERAGE_MATRIX_INCOMPLETE")
+        family = row["page_family"]
+        if family in matrix_by_family:
+            raise ValueError("REPRESENTATIVE_PAGE_COVERAGE_MATRIX_DUPLICATE")
+        if PAGE_FAMILY_CONTRACTS.get(family) != row["contract_id"]:
+            raise ValueError(f"REPRESENTATIVE_PAGE_COVERAGE_MATRIX_CONTRACT_MISMATCH: {family}")
+        matrix_by_family[family] = row
 
     page_by_id = {page.get("page_id"): page for page in pages if isinstance(page, dict)}
     if len(page_by_id) != len(pages):
@@ -85,10 +113,15 @@ def validate(selection_path: Path, page_detail_path: Path) -> None:
             raise ValueError(f"REPRESENTATIVE_PAGE_SELECTION_INCOMPLETE: {page_id}")
         selected_ids.add(page_id)
         covered_families.add(page.get("page_family"))
+        matrix = matrix_by_family.get(page.get("page_family"))
+        if matrix is None or matrix.get("representative_id") != entry.get("representative_id"):
+            raise ValueError(f"REPRESENTATIVE_PAGE_COVERAGE_MATRIX_MISMATCH: {page_id}")
 
     missing = sorted(set(required_families) - covered_families)
     if missing:
         raise ValueError(f"REPRESENTATIVE_PAGE_FAMILY_COVERAGE_INCOMPLETE: {','.join(missing)}")
+    if set(matrix_by_family) != set(required_families):
+        raise ValueError("REPRESENTATIVE_PAGE_COVERAGE_MATRIX_FAMILY_DRIFT")
 
 
 def main() -> int:
