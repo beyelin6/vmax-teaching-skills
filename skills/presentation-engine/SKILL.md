@@ -70,7 +70,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 ## Representative Construction
 
-代表頁需實際驗證物件位置、閱讀動線、角色交疊與 protected zones。有課文語詞標記時至少實測一次正確 anchor 與 reflow 重算；有成語頁時至少實測一次：成語語意、例句自然度、例句情境圖三者一致。
+代表頁只能從已核准 `PAGE_DETAIL_CONFIRMATION` 的 `pages` 挑選，不得另開一份只寫 prompt 的代表頁規畫。每個代表頁必須帶 `representative_id`、`page_detail_page_id`、PAGE_DETAIL 檔案 hash、該頁 `page_spec_sha256` 與 `verification_scope`；先執行 `validate_representative_selection.py`，通過後才可渲染。代表頁需實際驗證物件位置、閱讀動線、角色交疊與 protected zones。有課文語詞標記時至少實測一次正確 anchor 與 reflow 重算；有成語頁時至少實測一次：成語語意、例句自然度、例句情境圖三者一致。代表頁若需要任何內容或版面修改，先回寫 PAGE_DETAIL_CONFIRMATION、更新 hash 並重新取得教師確認。
 
 ## SLIDE_SCRIPT / Render Request
 
@@ -88,7 +88,7 @@ Render Request 有語詞標記時必須帶入六項 Vocabulary checks；成語�
 
 ## 代表頁與批次
 
-代表頁覆蓋實際 page families。教師核准後才進小批次 Renderer；任何 anchor、文字、成語語意／例句／情境不一致、Object Composition blocker 立即停批。
+代表頁選擇檔必須覆蓋實際 page families。教師核准後才進小批次 Renderer；任何 anchor、文字、成語語意／例句／情境不一致、Object Composition blocker 或代表頁與 PAGE_DETAIL 不一致，立即停批。
 
 ## 核心金句
 

@@ -105,6 +105,14 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" --slide-sc
 
 ## Representative / Batch
 
+代表頁製作前必須執行：
+
+```bash
+python "<Renderer 技能絕對路徑>/scripts/validate_representative_selection.py" --selection "<Representative Page Selection Profile 絕對路徑>" --page-detail "<PAGE_DETAIL_CONFIRMATION 絕對路徑>"
+```
+
+代表頁只能使用選擇檔中的 `page_detail_page_id`，並回指相同的 PAGE_DETAIL 檔案 hash 與 `page_spec_sha256`。不得在代表頁 prompt、Render Request 或圖片中自行補寫 PAGE_DETAIL 沒有的學生文字、角色、物件、動作或版面規則；需變更時先回寫母檔並重新確認。驗證非零退出碼時標記 `REPRESENTATIVE_PAGE_SELECTION_FAIL`，不得啟動代表頁 Renderer。
+
 全量採 5–8 頁小批次；每批開始前重新執行 `validate_batch_lock.py`，每批結束後回讀 page_id、sequence、文字層、Object Composition、角色、來源、風格與產物 hash。發現 `PAGE_DETAIL_HASH_MISMATCH`、`PAGE_SPEC_HASH_MISMATCH`、`PAGE_ORDER_DRIFT`、`PAGE_FAMILY_DRIFT`、`STYLE_DRIFT`、`LAYOUT_SPEC_DRIFT`、`RENDER_REQUEST_UNBOUND` 或角色／風格漂移，立即停止整批，不得先完成全套再回頭修。
 
 有語詞標記時，代表頁必須實測至少一次 reflow（例如字級／欄寬變動）後 anchor 自動失效並重新計算。代表頁通過不代表其他頁通過；每頁仍需依自己的 locked page detail 與產物 QA 驗證。

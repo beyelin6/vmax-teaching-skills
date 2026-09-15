@@ -81,6 +81,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 → HOLD｜教師選擇主風格與頁型混搭規則
 → 鎖定 Style Selection Profile／Style Matrix
 → 頁數估算／頁數帳本
+→ 代表頁選擇檔驗證（只從 PAGE_DETAIL_CONFIRMATION 挑選）
 → 代表頁驗證
 → 全量 Renderer
 → Quality Gate
@@ -268,6 +269,8 @@ STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執�
 
 - `core/renderer/image-first-hybrid-renderer.md`
 - `skills/vmax-image-renderer/SKILL.md`
+
+代表頁不是重新發想頁面；必須先依 `schemas/representative-page-selection-profile.md` 建立選擇檔，從已核准 `PAGE_DETAIL_CONFIRMATION.pages` 以 `page_detail_page_id` 挑選，並保存 PAGE_DETAIL 檔案 hash 與每頁 `page_spec_sha256`。代表頁製作前執行 `validate_representative_selection.py`；缺欄、hash 不一致、未涵蓋實際頁型或出現 PAGE_DETAIL 沒有的內容時，標記 `REPRESENTATIVE_PAGE_SOURCE_CONFLICT`／`REPRESENTATIVE_PAGE_FAMILY_COVERAGE_INCOMPLETE`，不得施工。
 
 Full Renderer 的前置條件不是「看過一張樣張」，而是跨頁型代表頁組均已核准：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。教師的「可以」只核准本次實際展示的頁型；未展示頁型不得自動通過。
 
