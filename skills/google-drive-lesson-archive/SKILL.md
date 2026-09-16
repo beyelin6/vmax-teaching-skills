@@ -172,6 +172,10 @@ lesson_folder_versioning:
 
 ## F. 建立流程
 
+### F0. 中途確認快照
+
+教師每次確認、代表頁核准／退回、批次產生檢查頁或批次停止後，先依 `core/governance/cloud-checkpoint-policy.md` 把當下確認檔、頁面、hash、原生圖像回條與 Runtime 狀態上傳至同一課版本的既有六類資料夾。這是可接續快照，不是另建一套資料夾；每次上傳後都要 list/search 回讀驗證並保存 `checkpoint_manifest.json`。未驗證成功時標記 `CLOUD_CHECKPOINT_UNVERIFIED`，不得宣告可接續。
+
 正式歸檔時執行：
 
 ```text

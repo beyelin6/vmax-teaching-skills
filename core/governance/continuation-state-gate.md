@@ -118,6 +118,8 @@ state_sync:
 - 下一個合法 stage 或 HOLD
 - 是否需要教師再次確認
 
+上述事件同時必須依 `core/governance/cloud-checkpoint-policy.md` 建立雲端 checkpoint。確認檔、已確認頁面、代表頁／批次預覽與其 hash 不得只留在本機或聊天附件；Drive 上傳後必須 list/search 回讀驗證，並把 `checkpoint_id`、雲端 file ID 與 manifest hash 寫回 Runtime State。
+
 若 Drive 回寫失敗，標記 `RUNTIME_WRITE_BLOCKED`，不得宣告狀態已保存，也不得繼續高風險製作。
 
 ## 失敗碼
@@ -128,6 +130,7 @@ state_sync:
 - `HOLD_POSITION_UNKNOWN`
 - `TEACHER_DECISION_NOT_PERSISTED`
 - `RUNTIME_WRITE_BLOCKED`
+- `CLOUD_CHECKPOINT_UNVERIFIED`
 - `WORK_BLOCKED_BEFORE_RENDER`
 - `CANDIDATE_VERSION_MIXED`
 - `CANVAS_SPEC_BLOCKED`

@@ -45,6 +45,7 @@ The teacher-facing workflow remains Phase／STEP／HOLD based; schemas do not re
 - `core/visual/lesson-visual-map.md`
 
 ### Delivery
+- `core/governance/cloud-checkpoint-policy.md`
 - `skills/presentation-engine/SKILL.md`
 - `core/presentation/page-family-construction-contracts.md`
 - `core/presentation/classroom-image-slide-policy.md`
@@ -283,7 +284,7 @@ Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護�
 
 完整重做先讀 Drive，再建立下一版本 `_01 / _02...`。
 
-只有檔案實際上傳後再次 list/search 驗證成功，才可 Archive PASS。
+每次教師確認或批次產生可供檢查的頁面後，先依 `core/governance/cloud-checkpoint-policy.md` 上傳確認快照並回讀驗證；`CLOUD_CHECKPOINT_UNVERIFIED` 時不得宣告可接續或進入下一個高風險施工階段。只有檔案實際上傳後再次 list/search 驗證成功，才可 Archive PASS。
 
 ---
 

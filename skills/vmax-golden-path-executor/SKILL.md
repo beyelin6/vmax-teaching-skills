@@ -291,7 +291,7 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 完整重做不覆蓋舊版，依 Drive 實際現況建立 `_01 / _02 / _03...`。
 
-只有實際上傳後再次 list/search 驗證成功，才可宣告 Archive PASS。
+每次教師確認、代表頁核准／退回、批次產生檢查頁或批次停止後，必須依 `core/governance/cloud-checkpoint-policy.md` 立即上傳確認快照；快照包含確認檔、頁面、hash、原生圖像回條與目前狀態。上傳後必須再次 list/search 驗證並回寫 Runtime State；`CLOUD_CHECKPOINT_UNVERIFIED` 或 `RUNTIME_WRITE_BLOCKED` 時不得宣告可接續，也不得進行下一個高風險施工階段。只有實際上傳後再次 list/search 驗證成功，才可宣告 Archive PASS。
 
 ---
 
