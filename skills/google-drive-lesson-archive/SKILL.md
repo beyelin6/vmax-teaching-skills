@@ -5,7 +5,7 @@ description: 將已完成並核准的 V-MAX 單課教材包依正式六類結構
 
 # V-MAX Google Drive Lesson Archive Skill
 
-版本：1.0
+版本：1.1
 
 ## 目的
 

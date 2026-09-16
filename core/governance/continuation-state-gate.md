@@ -1,4 +1,4 @@
-# V-MAX Continuation State Gate 1.0
+# V-MAX Continuation State Gate 1.1
 
 ## 定位
 
