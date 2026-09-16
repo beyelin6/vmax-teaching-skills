@@ -5,7 +5,7 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.1
+版本：2.2
 
 ## Request Contract Gate
 

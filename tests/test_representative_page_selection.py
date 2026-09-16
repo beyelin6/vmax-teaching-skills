@@ -25,7 +25,9 @@ class RepresentativePageSelectionTests(unittest.TestCase):
             "layout_spec": {"layout_id": "L1"},
         }
         page["page_spec_sha256"] = MODULE.page_spec_hash(page)
-        page_detail = {"page_detail_confirmation": {"status": "approved", "pages": [page]}}
+        page_number_system = {"system_id": "PN-001", "system_sha256": "pn-hash"}
+        section_marker_system = {"system_id": "SM-001", "system_sha256": "sm-hash"}
+        page_detail = {"page_detail_confirmation": {"status": "approved", "page_number_system": page_number_system, "section_marker_system": section_marker_system, "pages": [page]}}
         page_detail_path = root / "page-detail.json"
         page_detail_path.write_text(json.dumps(page_detail, ensure_ascii=False), encoding="utf-8")
         selection = {
@@ -35,6 +37,11 @@ class RepresentativePageSelectionTests(unittest.TestCase):
             "selection_policy": "FROM_APPROVED_PAGE_DETAIL_ONLY",
             "page_detail_confirmation_ref": page_detail_path.name,
             "page_detail_confirmation_sha256": MODULE.file_hash(page_detail_path),
+            "navigation_system_confirmation": {
+                "status": "CONFIRMED",
+                "page_number_system_sha256": "pn-hash",
+                "section_marker_system_sha256": "sm-hash",
+            },
             "required_page_families": ["IDIOM"],
             "coverage_matrix": [{
                 "page_family": "IDIOM",

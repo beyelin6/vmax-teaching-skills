@@ -79,6 +79,18 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
         fail("PAGE_DETAIL_CONFIRMATION status must be approved")
     if page_detail.get("batch_lock_mode") != "EXACT_PAGE_DETAIL":
         fail("PAGE_DETAIL_CONFIRMATION batch_lock_mode must be EXACT_PAGE_DETAIL")
+    page_number_system = page_detail.get("page_number_system")
+    section_marker_system = page_detail.get("section_marker_system")
+    for system, label in ((page_number_system, "PAGE_NUMBER_SYSTEM"), (section_marker_system, "SECTION_MARKER_SYSTEM")):
+        if not isinstance(system, dict) or system.get("status") not in {"CONFIRMED", "LOCKED"}:
+            fail(f"{label}_UNCONFIRMED")
+        for field in ("system_id", "format", "position", "font_role", "color_role", "visibility_policy"):
+            if not isinstance(system.get(field), str) or not system[field].strip():
+                fail(f"{label}_INCOMPLETE")
+        supplied_hash = system.get("system_sha256")
+        expected_hash = canonical_hash({k: v for k, v in system.items() if k != "system_sha256"})
+        if supplied_hash != expected_hash:
+            fail(f"{label}_HASH_MISMATCH")
     if style_selection.get("status") != "CONFIRMED" or style_selection.get("teacher_confirmation_status") != "CONFIRMED":
         fail("STYLE_SELECTION_REQUIRED: Style Selection Profile must be CONFIRMED")
     style_core = style_selection.get("style_core")
@@ -145,6 +157,12 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
         fail("STYLE_DRIFT: selected_style_id does not match confirmed Style Selection Profile")
     if not batch_lock.get("page_detail_confirmation_ref") or not batch_lock.get("style_selection_ref"):
         fail("batch_lock source references are required")
+    page_number_hash = canonical_hash({k: v for k, v in page_number_system.items() if k != "system_sha256"})
+    section_marker_hash = canonical_hash({k: v for k, v in section_marker_system.items() if k != "system_sha256"})
+    if batch_lock.get("page_number_system_sha256") != page_number_hash or batch_lock.get("section_marker_system_sha256") != section_marker_hash:
+        fail("PAGE_NAVIGATION_SYSTEM_HASH_MISMATCH")
+    if slide_script.get("page_number_system") != page_number_system or slide_script.get("section_marker_system") != section_marker_system:
+        fail("PAGE_NAVIGATION_SYSTEM_DRIFT")
 
     pages = page_detail.get("pages")
     slides = slide_script.get("slides")
@@ -172,6 +190,17 @@ def validate(slide_script_path: Path, page_detail_path: Path, style_selection_pa
         page = page_by_id.get(page_id)
         if page is None or page.get("sequence_index") != expected_sequence:
             fail(f"PAGE_ORDER_DRIFT at {page_id}")
+        navigation_marker = page.get("navigation_marker")
+        if not isinstance(navigation_marker, dict):
+            fail(f"PAGE_SEQUENCE_MARKER_MISSING at {slide_id}")
+        if navigation_marker.get("page_number_system_sha256") != page_number_hash or navigation_marker.get("section_marker_system_sha256") != section_marker_hash:
+            fail(f"PAGE_NAVIGATION_SYSTEM_DRIFT at {slide_id}")
+        page_token = navigation_marker.get("page_number_token")
+        expected_token = f"P{expected_sequence:02d}" if page_number_system["format"] == "P##" else f"{expected_sequence:02d}"
+        if page_token != expected_token or navigation_marker.get("page_number_position") != page_number_system["position"]:
+            fail(f"PAGE_NAVIGATION_SYSTEM_DRIFT at {slide_id}")
+        if section_marker_system["visibility_policy"] == "ALL_PAGES" and not navigation_marker.get("section_marker_token"):
+            fail(f"SECTION_MARKER_MISSING at {slide_id}")
         actual_page_hash = page_spec_hash(page)
         if page.get("page_spec_sha256") != actual_page_hash or lock_entry.get("page_spec_sha256") != actual_page_hash:
             fail(f"PAGE_SPEC_HASH_MISMATCH at {slide_id}")

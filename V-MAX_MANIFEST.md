@@ -25,9 +25,9 @@ slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contrac
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.3 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.0 }
-presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: 0.10.12 }
-image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: 2.1 }
-quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.2 }
+presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: 0.10.13 }
+image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: 2.2 }
+quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.3 }
 ```
 
 ## Object Composition

@@ -5,7 +5,7 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 # Presentation Engine
 
-版本：0.10.12
+版本：0.10.13
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
@@ -17,7 +17,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 ## PAGE_PLAN
 
-每頁至少包含 page purpose、student visible text、source refs、page family/style、`page_family_contract_id`、`page_specific_plan`、`style_variant_id`、`layout_id`、`layout_contract_sha256`、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`；`page_family = IDIOM` 時另含 `IDIOM_APPLICATION_PLAN`。頁型契約以 `core/presentation/page-family-construction-contracts.md` 為唯一登錄表；不得以通用模板或上一頁內容補齊缺少的頁型細節。
+每頁至少包含 page purpose、student visible text、source refs、page family/style、`page_family_contract_id`、`page_specific_plan`、`style_variant_id`、`layout_id`、`layout_contract_sha256`、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`；`page_family = IDIOM` 時另含 `IDIOM_APPLICATION_PLAN`。整課另須鎖定 `page_number_system`、`section_marker_system` 與各自 hash；每頁只引用同一套課級系統，不得自行換位置、格式、字體或色彩。頁型契約以 `core/presentation/page-family-construction-contracts.md` 為唯一登錄表；不得以通用模板或上一頁內容補齊缺少的頁型細節。
 
 正式 Slide Script 只能由已核准的 `PAGE_DETAIL_CONFIRMATION` 產生。每頁必須逐項帶入核准的學生可見文字、來源、圖片目的與細節、人物／物件／動作、禁止誤畫、閱讀順序、文字區、圖片區、留白與 protected zones。若有角色，還必須逐頁帶入相同的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；姿勢、表情、鏡位與道具只能使用母檔列出的允許變化。若頁面資料與母檔不一致，或角色識別資料缺失，標記 `PAGE_DETAIL_SOURCE_CONFLICT` 或 `CHARACTER_ANCHOR_MISSING`，不得送 Renderer。
 
@@ -70,7 +70,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 ## Representative Construction
 
-代表頁只能從已核准 `PAGE_DETAIL_CONFIRMATION` 的 `pages` 挑選，不得另開一份只寫 prompt 的代表頁規畫。每個代表頁必須帶 `representative_id`、`page_detail_page_id`、PAGE_DETAIL 檔案 hash、該頁 `page_spec_sha256` 與 `verification_scope`；先執行 `validate_representative_selection.py`，通過後才可渲染。代表頁需實際驗證物件位置、閱讀動線、角色交疊與 protected zones。有課文語詞標記時至少實測一次正確 anchor 與 reflow 重算；有成語頁時至少實測一次：成語語意、例句自然度、例句情境圖三者一致。代表頁若需要任何內容或版面修改，先回寫 PAGE_DETAIL_CONFIRMATION、更新 hash 並重新取得教師確認。
+代表頁只能從已核准 `PAGE_DETAIL_CONFIRMATION` 的 `pages` 挑選，不得另開一份只寫 prompt 的代表頁規畫。每個代表頁必須帶 `representative_id`、`page_detail_page_id`、PAGE_DETAIL 檔案 hash、該頁 `page_spec_sha256` 與 `verification_scope`；先執行 `validate_representative_selection.py`，通過後才可渲染。代表頁必須先實測並確認全課 `page_number_system` 與 `section_marker_system` 的位置、格式、字體、色彩、裝飾符號與特殊頁 visibility；教師確認後才鎖定系統 hash，後續所有頁只能沿用。有課文語詞標記時至少實測一次正確 anchor 與 reflow 重算；有成語頁時至少實測一次：成語語意、例句自然度、例句情境圖三者一致。代表頁若需要任何內容或版面修改，先回寫 PAGE_DETAIL_CONFIRMATION、更新 hash 並重新取得教師確認。
 
 代表頁與批次頁提供教師檢查時，必須優先以 ChatGPT 原生圖像生成／影像編輯方式直接顯示在工作區，保留「編輯」入口與最新核准圖片引用；不得只輸出 PNG 卡片、下載連結或路徑。原生入口不可用時，明確回報 `NATIVE_IMAGE_REVIEW_UNAVAILABLE`，並提供可直接預覽的替代物。
 

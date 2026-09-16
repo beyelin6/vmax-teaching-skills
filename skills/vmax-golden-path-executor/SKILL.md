@@ -92,7 +92,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ### PAGE_DETAIL_CONFIRMATION
 
-`Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix` 完成後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
+`Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix` 完成後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔必須先建立全課唯一的 `page_number_system` 與 `section_marker_system`，由代表頁實測、教師確認後鎖定各自 hash；後續頁面只能沿用，不得每頁重新決定。母檔另必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
 
 風格 HOLD 必須先完成：依課文提出 3–5 組風格庫候選／混搭方案，顯示主風格、頁型變體與限制，等待教師選擇。`selected_style_id` 未被教師確認前保持空值；不得由 Executor、Presentation Engine、Renderer 或平台預設直接選風格。風格選定後，建立風格 hash 與 `BATCH_CONSTRUCTION_LOCK`，後續頁面只能沿用該主風格及已核准頁型變體。
 
@@ -270,7 +270,7 @@ STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執�
 - `core/renderer/image-first-hybrid-renderer.md`
 - `skills/vmax-image-renderer/SKILL.md`
 
-代表頁不是重新發想頁面；必須先依 `schemas/representative-page-selection-profile.md` 建立選擇檔，從已核准 `PAGE_DETAIL_CONFIRMATION.pages` 以 `page_detail_page_id` 挑選，並保存 PAGE_DETAIL 檔案 hash 與每頁 `page_spec_sha256`。代表頁製作前執行 `validate_representative_selection.py`；缺欄、hash 不一致、未涵蓋實際頁型或出現 PAGE_DETAIL 沒有的內容時，標記 `REPRESENTATIVE_PAGE_SOURCE_CONFLICT`／`REPRESENTATIVE_PAGE_FAMILY_COVERAGE_INCOMPLETE`，不得施工。
+代表頁不是重新發想頁面；必須先依 `schemas/representative-page-selection-profile.md` 建立選擇檔，從已核准 `PAGE_DETAIL_CONFIRMATION.pages` 以 `page_detail_page_id` 挑選，並保存 PAGE_DETAIL 檔案 hash 與每頁 `page_spec_sha256`。代表頁製作前執行 `validate_representative_selection.py`，並把課級頁碼／區段標籤的實測結果與系統 hash 納入代表頁確認；教師確認後才可把該系統沿用到全量頁。缺欄、hash 不一致、未涵蓋實際頁型或出現 PAGE_DETAIL 沒有的內容時，標記 `REPRESENTATIVE_PAGE_SOURCE_CONFLICT`／`REPRESENTATIVE_PAGE_FAMILY_COVERAGE_INCOMPLETE`，不得施工。
 
 代表頁與批次頁交付教師檢查時，優先使用 ChatGPT 原生圖像生成／影像編輯工具直接顯示在工作區，保留「編輯」入口與最新核准圖片引用；不得只交付 PNG 卡片、下載連結或檔案路徑。若當下平台無法提供原生入口，標記 `NATIVE_IMAGE_REVIEW_UNAVAILABLE` 並說明限制，再提供可直接預覽的替代結果。
 

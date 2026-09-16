@@ -66,6 +66,15 @@ def validate(selection_path: Path, page_detail_path: Path) -> None:
         raise ValueError("REPRESENTATIVE_PAGE_SOURCE_CONFLICT: selection policy is not locked")
     if selection.get("page_detail_confirmation_sha256") != file_hash(page_detail_path):
         raise ValueError("REPRESENTATIVE_PAGE_DETAIL_HASH_MISMATCH")
+    page_number_system = page_detail.get("page_number_system")
+    section_marker_system = page_detail.get("section_marker_system")
+    navigation_confirmation = selection.get("navigation_system_confirmation")
+    if not isinstance(page_number_system, dict) or not isinstance(section_marker_system, dict) or not isinstance(navigation_confirmation, dict) or navigation_confirmation.get("status") != "CONFIRMED":
+        raise ValueError("PAGE_NAVIGATION_SYSTEM_UNCONFIRMED")
+    page_number_hash = page_number_system.get("system_sha256")
+    section_marker_hash = section_marker_system.get("system_sha256")
+    if navigation_confirmation.get("page_number_system_sha256") != page_number_hash or navigation_confirmation.get("section_marker_system_sha256") != section_marker_hash:
+        raise ValueError("PAGE_NAVIGATION_SYSTEM_HASH_MISMATCH")
 
     pages = page_detail.get("pages")
     selected = selection.get("selected_pages")

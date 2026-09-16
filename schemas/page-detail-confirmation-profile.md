@@ -14,17 +14,27 @@ page_detail_confirmation:
   canvas_lock_ref: ""
   style_matrix_ref: ""
   page_number_system:
-    status: pending
-    format: "01"
+    status: CONFIRMED
+    system_id: ""
+    format: "P##"
+    position: BOTTOM_RIGHT_CORNER
     numeral_style: ""
     decorative_symbol: ""
+    font_role: ""
+    color_role: ""
     visibility_policy: ""
+    system_sha256: ""
   section_marker_system:
-    status: pending
+    status: CONFIRMED
+    system_id: ""
     format: "01"
+    position: TOP_LEFT_OR_SECTION_BAND
     marker_style: ""
     decorative_symbol: ""
+    font_role: ""
+    color_role: ""
     visibility_policy: ""
+    system_sha256: ""
   pages:
     - page_id: S001
       sequence_index: 1
@@ -34,6 +44,8 @@ page_detail_confirmation:
         page_number_token: ""
         page_number_position: BOTTOM_RIGHT_CORNER
         section_marker_token: ""
+        page_number_system_sha256: ""
+        section_marker_system_sha256: ""
         source_sequence_index: 1
         source_section_id: ""
       source_refs: []

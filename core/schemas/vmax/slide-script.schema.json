@@ -51,6 +51,24 @@
     "canvas_lock": {
       "$ref": "#/$defs/canvasLock"
     },
+    "page_number_system": {
+      "type": "object",
+      "required": ["status", "system_id", "format", "position", "font_role", "color_role", "visibility_policy", "system_sha256"],
+      "properties": {
+        "status": {"enum": ["CONFIRMED", "LOCKED"]},
+        "system_id": {"type": "string", "minLength": 1},
+        "format": {"type": "string", "minLength": 1},
+        "position": {"type": "string", "minLength": 1},
+        "font_role": {"type": "string", "minLength": 1},
+        "color_role": {"type": "string", "minLength": 1},
+        "visibility_policy": {"type": "string", "minLength": 1},
+        "system_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": true
+    },
+    "section_marker_system": {
+      "$ref": "#/properties/page_number_system"
+    },
     "batch_lock": {
       "$ref": "#/$defs/batchLock"
     },
@@ -1431,6 +1449,8 @@
         "selected_style_id",
         "role_selection_ref",
         "role_selection_sha256",
+        "page_number_system_sha256",
+        "section_marker_system_sha256",
         "pages"
       ],
       "properties": {
@@ -1465,6 +1485,14 @@
           "minLength": 1
         },
         "role_selection_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "page_number_system_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "section_marker_system_sha256": {
           "type": "string",
           "pattern": "^[a-f0-9]{64}$"
         },

@@ -26,6 +26,18 @@ class BatchConstructionLockTests(unittest.TestCase):
             "typography_roles": ["BODY"],
         }
         layout_contract_sha256 = MODULE.canonical_hash(layout_contract)
+        page_number_system = {
+            "status": "CONFIRMED", "system_id": "PN-001", "format": "P##",
+            "position": "BOTTOM_RIGHT_CORNER", "font_role": "PAGE_NUMBER",
+            "color_role": "NAVIGATION", "visibility_policy": "ALL_PAGES",
+        }
+        page_number_system["system_sha256"] = MODULE.canonical_hash(page_number_system)
+        section_marker_system = {
+            "status": "CONFIRMED", "system_id": "SM-001", "format": "S##",
+            "position": "TOP_LEFT_OR_SECTION_BAND", "font_role": "SECTION_MARKER",
+            "color_role": "SECTION", "visibility_policy": "ALL_PAGES",
+        }
+        section_marker_system["system_sha256"] = MODULE.canonical_hash(section_marker_system)
         page = {
             "page_id": "S001",
             "sequence_index": 1,
@@ -42,6 +54,11 @@ class BatchConstructionLockTests(unittest.TestCase):
                 "example_scene_action": "互相幫忙",
                 "semantic_relation": "引申義",
             },
+            "navigation_marker": {
+                "page_number_token": "P01", "page_number_position": "BOTTOM_RIGHT_CORNER",
+                "section_marker_token": "S01", "page_number_system_sha256": page_number_system["system_sha256"],
+                "section_marker_system_sha256": section_marker_system["system_sha256"],
+            },
             "source_refs": ["LKB:S001"],
             "layout_spec": {
                 "composition": "SCENE",
@@ -56,6 +73,8 @@ class BatchConstructionLockTests(unittest.TestCase):
             "page_detail_confirmation": {
                 "status": "approved",
                 "batch_lock_mode": "EXACT_PAGE_DETAIL",
+                "page_number_system": page_number_system,
+                "section_marker_system": section_marker_system,
                 "pages": [page],
             }
         }
@@ -122,6 +141,8 @@ class BatchConstructionLockTests(unittest.TestCase):
             },
         }
         slide_script = {
+            "page_number_system": page_number_system,
+            "section_marker_system": section_marker_system,
             "batch_lock": {
                 "status": "LOCKED",
                 "mode": "EXACT_PAGE_DETAIL",
@@ -132,6 +153,8 @@ class BatchConstructionLockTests(unittest.TestCase):
                 "selected_style_id": "STYLE-WARM-001",
                 "role_selection_ref": "role-selection.json",
                 "role_selection_sha256": role_hash,
+                "page_number_system_sha256": page_number_system["system_sha256"],
+                "section_marker_system_sha256": section_marker_system["system_sha256"],
                 "pages": [{"slide_id": "S001", "page_detail_page_id": "S001", "page_spec_sha256": page_hash}],
             },
             "slides": [slide],
@@ -168,6 +191,11 @@ class BatchConstructionLockTests(unittest.TestCase):
         })
         page["image_spec"] = {"text_in_image": False}
         page["navigation_marker"] = {"page_number_token": "P01", "page_number_position": "BOTTOM_RIGHT_CORNER"}
+        page["navigation_marker"].update({
+            "section_marker_token": "S01",
+            "page_number_system_sha256": page_detail["page_detail_confirmation"]["page_number_system"]["system_sha256"],
+            "section_marker_system_sha256": page_detail["page_detail_confirmation"]["section_marker_system"]["system_sha256"],
+        })
         page["student_visible_text"] = {"body": ["這是一段完整課文。"]}
         page["text_coverage"] = {
             "source_unit_type": "NATURAL_PARAGRAPH",

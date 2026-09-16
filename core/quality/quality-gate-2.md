@@ -1,4 +1,4 @@
-# V-MAX Quality Gate 3.2
+# V-MAX Quality Gate 3.3
 
 ## 定位
 正式簡報交付前檢查教材真值、Object Composition、文字／注音、語詞標記、成語應用情境、角色與教師後製負擔。
@@ -81,7 +81,7 @@
 7. 課文閱讀頁的 `text_coverage` 顯示完整原文，且 `vocabulary_coverage.placement` 為相鄰版位；語詞解釋不得脫離課文另成清單頁。
 8. 新角色的 Role Selection Profile 已完成 Registry writeback，`reuse_level` 至少為 `LESSON_ONLY`，並有可回讀的 registry hash；不得自動升級為跨課可重用角色。
 9. 課文正文與段落語詞通過教室投影等效字級檢查：正文目標 36–40 pt、硬下限 32 pt；語詞目標 30–34 pt、硬下限 28 pt，且有最終文字層實測證據。
-10. `page_number_system` 與 `section_marker_system` 已鎖定；每頁的設計感數字符號仍可回指正式頁序與 `section_id`，不得以裝飾記號取代機讀序號。
+10. `page_number_system` 與 `section_marker_system` 已由代表頁實測、教師確認並鎖定，且 PAGE_DETAIL、Slide Script、BATCH_CONSTRUCTION_LOCK 的系統 hash 一致；每頁的設計感數字符號仍可回指正式頁序與 `section_id`，不得以裝飾記號取代機讀序號。任何頁面自行換角落、格式、字體或色彩標記 `PAGE_NAVIGATION_SYSTEM_DRIFT`。
 11. 課文頁通過文字物件檢查：原文未烘焙在圖片，`image_spec.text_in_image=false`；語詞以淡色筆刷對齊原文 occurrence，解釋保持「詞語：解釋」且與段落相鄰。
 12. 課文頁插圖通過最高原則檢查：每個視覺物件都能回指當頁課文理解功能；無法說明對應段落、句子、關鍵詞或推論作用時，移除該插圖。
 13. 若 `presentation_mode=COMIC_PANELS`，每格都有課文對應、理解功能與明確閱讀順序；分格數不因模板或裝飾任意增加，且不得壓縮正文、語詞或投影安全區。
