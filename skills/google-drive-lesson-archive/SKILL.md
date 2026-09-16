@@ -160,6 +160,7 @@ lesson_folder_versioning:
 - Image-first Slide PDF
 - Google Slides（若建立）
 - 最終可投影簡報成品
+- `00_審核快照/`：尚待教師檢查的代表頁、批次預覽、原生圖像檢查回條；不得將此子資料夾內容當成正式完成品
 
 ### E6. `06_延伸教材`
 放置：
@@ -174,7 +175,7 @@ lesson_folder_versioning:
 
 ### F0. 中途確認快照
 
-教師每次確認、代表頁核准／退回、批次產生檢查頁或批次停止後，先依 `core/governance/cloud-checkpoint-policy.md` 把當下確認檔、頁面、hash、原生圖像回條與 Runtime 狀態上傳至同一課版本的既有六類資料夾。這是可接續快照，不是另建一套資料夾；每次上傳後都要 list/search 回讀驗證並保存 `checkpoint_manifest.json`。未驗證成功時標記 `CLOUD_CHECKPOINT_UNVERIFIED`，不得宣告可接續。
+教師每次確認、代表頁核准／退回、批次產生檢查頁或批次停止後，先依 `core/governance/cloud-checkpoint-policy.md` 把當下確認檔、頁面、hash、原生圖像回條與 Runtime 狀態上傳至同一課版本的既有六類資料夾。審核中的圖片放在 `05_簡報成品/00_審核快照/`，正式成品才放在 `05_簡報成品/` 根層。這是可接續快照，不是另建一套資料夾；每次上傳後都要 list/search 回讀驗證並保存 `checkpoint_manifest.json`。未驗證成功時標記 `CLOUD_CHECKPOINT_UNVERIFIED`，不得宣告可接續。
 
 正式歸檔時執行：
 

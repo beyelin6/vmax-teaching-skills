@@ -16,7 +16,7 @@
 
 ## 快照內容
 
-每次 checkpoint 必須保存：
+每次 checkpoint 必須依 `core/schemas/vmax/cloud-checkpoint.schema.json` 保存：
 
 - `checkpoint_id`、時間、課程版本與目前 stage／HOLD
 - 觸發教師原話或決定、前一狀態與新狀態
@@ -34,10 +34,10 @@
 | Source Master、LKB、確認紀錄 | `01_教材整理/` |
 | PAGE_DETAIL、Style、Role、Slide Script、代表頁矩陣、Runtime 施工快照 | `02_逐頁腳本/` |
 | 角色核准圖與 Registry 資產 | `04_角色視覺/` |
-| 原生預覽、代表頁、批次檢查圖與回條 | `05_簡報成品/` |
+| 原生預覽、代表頁、批次檢查圖與回條 | `05_簡報成品/00_審核快照/` |
 | 預習單、短文單與其他延伸檔 | `06_延伸教材/` |
 
-`00_Runtime_State` 只保存執行狀態索引；一般教材檔仍放入上述六類。局部修正以新 revision／patch 保存，不覆蓋已確認快照。
+`00_Runtime_State` 只保存執行狀態索引；一般教材檔仍放入上述六類。`05_簡報成品/` 根層只放已 `RENDER_VERIFIED` 的正式成品，`00_審核快照/` 才放尚待教師檢查的代表頁／批次頁。局部修正以新 revision／patch 保存，不覆蓋已確認快照。
 
 ## 狀態與阻擋
 

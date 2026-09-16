@@ -9,6 +9,7 @@ runtime_contract: runtime/lesson-state.md
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.3 }
 chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: 1.4 }
 main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: 2.7 }
+cloud_checkpoint_policy: { path: core/governance/cloud-checkpoint-policy.md, current_version: 1.0 }
 executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.0 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.6 }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.5 }
