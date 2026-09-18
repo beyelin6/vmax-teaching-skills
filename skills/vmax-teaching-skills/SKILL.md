@@ -5,7 +5,7 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。先載入版本�
 
 # V-MAX Teaching Skills Front Door
 
-版本：1.3
+版本：1.4
 
 Before starting any presentation task, initialize or read the lesson's `00_施工中_接續區` and follow `core/governance/working-handoff-area-policy.md`. Conversation memory is never the sole handoff source.
 
@@ -79,3 +79,7 @@ Golden Path／完整建課／重新開始 → `vmax-golden-path-executor`；專�
 Front Door 必須確認 load receipt、canonical files、runtime、teacher review contract、continuation state、cross-AI schema 與唯一合法 next stage 全部通過。
 
 > 沒有載入回條，不算載入 V-MAX；簡報鏈少讀一個必要 canonical，也不算完成載入。
+
+## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。

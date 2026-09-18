@@ -1,5 +1,7 @@
 # Page Detail Confirmation Profile
 
+版本：1.1
+
 這是正式製作前的逐頁確認母檔。它把已鎖定的教學架構轉成可批次施工的頁面規格；教師確認後，Renderer 只能依此製作，不得自行補內容或改排版意圖。
 
 ```yaml
@@ -13,6 +15,12 @@ page_detail_confirmation:
   slide_architecture_lock_ref: ""
   canvas_lock_ref: ""
   style_matrix_ref: ""
+  role_lock_ref: ""
+  confirmed_page_ledger_ref: ""
+  vocabulary_idiom_coverage_ref: ""
+  idiom_tracks:
+    text_existing: []
+    character_extension: []
   page_number_system:
     status: CONFIRMED
     system_id: ""
@@ -66,6 +74,14 @@ page_detail_confirmation:
         required_objects: []
         prohibited_elements: []
         text_in_image: false
+      character_presence:
+        appears: false
+        purpose: ""
+        position: ""
+      keyword_mark_plan:
+        enabled: false
+        term_refs: []
+        mark_mode: NONE
       character_refs:
         - base_character_id: ""
           core_dna_ref: ""
@@ -152,3 +168,7 @@ page_detail_confirmation:
 教師確認前的狀態是 `draft` 或 `pending`，不得建立正式 Slide Script、代表頁或啟動 Renderer。教師確認後狀態才可變為 `approved`；之後只允許依頁局部修正，且需回寫受影響頁的 revision 與來源。
 
 這份 Profile 是製作規格，不取代 Source Master、LKB 或 Teacher Intent Lock。它不能新增未經核准的教材事實，也不能把圖片 prompt 當成正式教材文字來源。
+
+## 施工前與覆蓋檢核
+
+依 `core/governance/presentation-preconstruction-policy.md` 先核對最新 Runtime、Source Master、角色／風格／畫布鎖與已確認頁數帳本，才填寫此 Profile。`idiom_tracks` 分列課文既有與生字延伸；覆蓋表每個保留／合併項目必須回指確切 page_id，不適合者保留理由。角色是否出場、目的及位置、關鍵詞筆刷／底線計畫不可省略。完成稿必為 `pending` 並停等教師確認；不得把欄位齊備或 QA 通過當成教師核准。

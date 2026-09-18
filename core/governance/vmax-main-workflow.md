@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.8
+# V-MAX Main Workflow 2.9
 
 ## 定位
 
@@ -84,14 +84,17 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Character Topology / Cast
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
-→ 逐頁版面配置與文字說明初稿（未鎖定，不可直接施工）
+→ 頁型與教學功能草案（不展開逐頁施工細節）
 → 風格庫 3–5 組候選／主風格＋頁型混搭方案
 → HOLD｜教師選擇主風格與頁型混搭規則
 → 鎖定 Style Selection Profile／Style Matrix
-→ 頁數估算／頁數帳本
+→ 鎖定角色與畫布
+→ 頁數估算／頁數帳本確認 HOLD
+→ PAGE_DETAIL_CONFIRMATION｜逐頁可施工細節稿
+→ HOLD｜等待教師確認逐頁施工稿
 → 代表頁選擇檔驗證（只從 PAGE_DETAIL_CONFIRMATION 挑選）
-→ 代表頁驗證
-→ 全量 Renderer
+→ 代表頁驗證／逐類教師確認 HOLD
+→ 全量 Renderer（小批次，每批教師確認 HOLD）
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery Gate
@@ -254,11 +257,11 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 規則分為 `LESSON_LOCAL`、`REUSABLE_PATTERN` 與 `GLOBAL_SKILL_RULE`；單課施工決策不得直接污染全域技能，只有跨課驗證後才可 promotion。
 
-完成 Slide Architecture 後，必須先產生 `working/slide-page-layout-brief.md`，逐頁說明頁面目的、學生可見文字、教材證據、頁型、構圖、文字區、留白區與插圖需求。接著由 Style Recommender 產生 `working/style-recommendation.md`、`working/style-selection-profile.md` 與 `working/page-family-style-matrix.md`。
+完成 Slide Architecture 後，先建立頁型與教學功能草案供風格推薦，尚不展開逐頁施工細節。接著由 Style Recommender 產生 `working/style-recommendation.md`、`working/style-selection-profile.md` 與 `working/page-family-style-matrix.md`。
 
 Style Recommender 必須依本課課文、教學策略、角色與頁面家族提出 3–5 組風格庫候選，也可提出主風格＋頁型混搭方案；這一步是教師選擇 HOLD，不是自動決策。`selected_style_id`、主風格、混搭頁型與限制未經教師確認前，不得建立 PAGE_DETAIL_CONFIRMATION、代表頁、正式 Slide Script 或啟動 Renderer。
 
-上述文件共同組成 `PAGE_DETAIL_CONFIRMATION`。每頁還必須明列：頁碼與區段、`page_family_contract_id`、完整 `page_specific_plan`、學生可見的每一段文字、來源回指、圖片目的／場景／人物／動作／必要物件／禁止誤畫、閱讀順序、文字區、圖片區、留白、protected zones、字體角色與互動方式。不得只寫抽象主題或一句圖片 prompt。
+風格、角色、畫布與頁數帳本確認後，才產生 `working/slide-page-layout-brief.md` 的逐頁可施工細節；與上述核准文件共同組成 `PAGE_DETAIL_CONFIRMATION`。每頁還必須明列：頁碼與區段、`page_family_contract_id`、完整 `page_specific_plan`、學生可見的每一段文字、來源回指、圖片目的／場景／人物／動作／必要物件／禁止誤畫、閱讀順序、文字區、圖片區、留白、protected zones、字體角色與互動方式。不得只寫抽象主題或一句圖片 prompt。
 
 風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材。水彩、漫畫或其他畫風僅為示意，實際媒材、版型與構圖應依教材、教學功能與教師偏好推薦，不得硬編成固定答案。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
 
@@ -274,7 +277,7 @@ Style Recommender 必須依本課課文、教學策略、角色與頁面家族�
 
 代表頁驗證前，必須先建立並通過 `schemas/representative-page-selection-profile.md` 定義的選擇檔。選擇檔只能引用已核准 `PAGE_DETAIL_CONFIRMATION.pages`，不得另寫一份獨立 prompt 或自行補內容；每個選取頁都要保存 `page_detail_page_id`、PAGE_DETAIL 檔案 hash 與 `page_spec_sha256`。代表頁驗證必須覆蓋課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類逐一核准，未展示頁型不得因教師對另一張說「可以」而連帶通過。代表頁與批次頁交付檢查時，優先使用 ChatGPT 原生圖像生成／影像編輯直接顯示於工作區並保留可續編原圖；原生入口不可用時標記 `NATIVE_IMAGE_REVIEW_UNAVAILABLE`。
 
-除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；精準文字可控排字後扁平化，不得退化成背景圖＋文字框、卡片牆、逐行打字或大量半透明框。代表頁組全數通過後才可進全量 Renderer；全量以 5–8 頁小批次推進並逐批檢查 Visual Drift、Canvas Drift 與 Text Layer Drift。
+除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；精準文字可控排字後扁平化，不得退化成背景圖＋文字框、卡片牆、逐行打字或大量半透明框。代表頁組全數通過後才可進全量 Renderer；全量以 4–8 頁小批次推進並逐批檢查 Visual Drift、Canvas Drift 與 Text Layer Drift。
 
 Lesson Package 交付依 `skills/lesson-package-delivery/SKILL.md`。
 Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護第二套。
@@ -320,3 +323,7 @@ Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護�
 > 先把教材讀對，再讓 AI 做有理由的推薦；老師只改例外，最後才變成簡報。
 
 > 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
+
+## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。

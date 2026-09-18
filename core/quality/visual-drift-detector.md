@@ -1,4 +1,4 @@
-# V-MAX Visual Drift Detector 1.1
+# V-MAX Visual Drift Detector 1.2
 
 ## 定位
 
@@ -79,7 +79,7 @@ Baseline 是一致性參考，不是固定版型。
 全量生成時至少在：
 - 代表頁後
 - 每一 Session 或生成批次結束
-- 每 5–8 頁小批次結束；發現 `IMAGE_COMPOSITION_REGRESSION` 立即停批
+- 每批最多 8 頁的小批次結束（依施工前確認政策設定 4–8 頁上限，尾批／修正批可更少）；檢查後停等教師確認，發現 `IMAGE_COMPOSITION_REGRESSION` 立即停批
 - 最終 Quality Gate 前
 
 執行 Drift Check。

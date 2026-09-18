@@ -1,6 +1,6 @@
 # Lesson Presentation Execution Rules
 
-版本：1.6
+版本：1.7
 
 本檔是每課簡報製作期間，教師追加並確認的具體視覺、版面、角色、素材再利用與違規處理決策主檔。教材真值仍以官方 Source Master／LKB 為準。
 
@@ -10,7 +10,7 @@
 
 本檔的執行期必要欄位不得因下游舊版清單較短而省略。核准的場景交疊不得因相切自動判錯。
 
-逐頁規劃的完整順序為：`Visual Grammar / Slide Architecture → 版面配置與文字說明初稿 → 風格候選與教師選擇 HOLD → 已確認 Style Selection Profile／Style Matrix → 正式 PAGE_DETAIL_CONFIRMATION → 教師確認 → 頁數帳本 → 代表頁 → Renderer`。本檔下方的 Object Composition 與 PAGE_PLAN 是執行細節，不得省略上游的風格鎖、版型契約或正式逐頁母檔。未啟用的 Baseline 章節可依教材需求或教師確認省略，但已啟用章節不得重排。
+逐頁規劃的完整順序為：`Visual Grammar / Slide Architecture → 頁型與教學功能草案 → 風格候選與教師選擇 HOLD → 已確認 Style Selection Profile／Style Matrix、角色與畫布 → 頁數帳本確認 → 正式 PAGE_DETAIL_CONFIRMATION → 教師確認 HOLD → 代表頁逐類確認 HOLD → 小批次 Renderer／逐批確認 HOLD`。本檔下方的 Object Composition 與 PAGE_PLAN 是執行細節，不得省略上游的風格鎖、版型契約或正式逐頁母檔。未啟用的 Baseline 章節可依教材需求或教師確認省略，但已啟用章節不得重排。
 
 ## Object-based Scene Composition
 
@@ -108,3 +108,7 @@ Render Request 前檢查 Object Composition、Character、Key Line、適用時 V
 ## PAGE_PLAN
 
 每頁至少包含頁面目的、學生可見文字、教材證據、頁型、構圖、文字區、留白區、插圖需求、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`；有語詞標記另含 `VOCAB_MARK_PLAN`。
+
+## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。

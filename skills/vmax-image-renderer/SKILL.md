@@ -5,7 +5,7 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.2
+版本：2.3
 
 ## Request Contract Gate
 
@@ -119,7 +119,7 @@ python "<Renderer 技能絕對路徑>/scripts/validate_representative_selection.
 
 代表頁只能使用選擇檔中的 `page_detail_page_id`，並回指相同的 PAGE_DETAIL 檔案 hash 與 `page_spec_sha256`。不得在代表頁 prompt、Render Request 或圖片中自行補寫 PAGE_DETAIL 沒有的學生文字、角色、物件、動作或版面規則；需變更時先回寫母檔並重新確認。驗證非零退出碼時標記 `REPRESENTATIVE_PAGE_SELECTION_FAIL`，不得啟動代表頁 Renderer。
 
-全量採 5–8 頁小批次；每批開始前重新執行 `validate_batch_lock.py`，每批結束後回讀 page_id、sequence、文字層、Object Composition、角色、來源、風格與產物 hash。發現 `PAGE_DETAIL_HASH_MISMATCH`、`PAGE_SPEC_HASH_MISMATCH`、`PAGE_ORDER_DRIFT`、`PAGE_FAMILY_DRIFT`、`STYLE_DRIFT`、`LAYOUT_SPEC_DRIFT`、`RENDER_REQUEST_UNBOUND` 或角色／風格漂移，立即停止整批，不得先完成全套再回頭修。
+全量採 4–8 頁小批次；每批開始前重新執行 `validate_batch_lock.py`，每批結束後回讀 page_id、sequence、文字層、Object Composition、角色、來源、風格與產物 hash。發現 `PAGE_DETAIL_HASH_MISMATCH`、`PAGE_SPEC_HASH_MISMATCH`、`PAGE_ORDER_DRIFT`、`PAGE_FAMILY_DRIFT`、`STYLE_DRIFT`、`LAYOUT_SPEC_DRIFT`、`RENDER_REQUEST_UNBOUND` 或角色／風格漂移，立即停止整批，不得先完成全套再回頭修。
 
 有語詞標記時，代表頁必須實測至少一次 reflow（例如字級／欄寬變動）後 anchor 自動失效並重新計算。代表頁通過不代表其他頁通過；每頁仍需依自己的 locked page detail 與產物 QA 驗證。
 
@@ -132,3 +132,7 @@ python "<Renderer 技能絕對路徑>/scripts/validate_representative_selection.
 > 食宿的底線只能從「食宿」兩字的最終字框算出來，不能因為它原本大概在第二行就畫在第二行某個位置。
 
 > 字改了，anchor 就失效；重新算線，不搬字。
+
+## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。

@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.2
+# V-MAX Runtime State Contract 2.3
 
 ## 定位
 
@@ -41,7 +41,7 @@ V-MAX_State_{冊別}_{課次}_{課名}
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.2
+runtime_schema_version: 2.3
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
@@ -149,7 +149,7 @@ HOLD_2_5 confirmed
 4. 讀取並通過 `core/governance/continuation-state-gate.md` 的 State Sync；未通過時不得執行下一階段或開始製作。
 5. 只執行合法下一階段。
 6. 每次 HOLD 確認或正式 stage 完成後，先回寫該課 Google Drive State，再允許派生下游。
-7. 必要時同步更新 Runtime Index 的 active lesson 與狀態摘要。
+7. 每完成 stage、建立 HOLD 或完成 HOLD 決策，都非破壞性更新 Runtime Index 的該課狀態摘要與 State revision 引用；active lesson 僅在教師指定切換課程時更新。
 
 若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得以 GitHub 範例狀態、模型記憶或舊對話猜測目前進度。
 
@@ -162,3 +162,9 @@ HOLD_2_5 confirmed
 > 三、四年級生字深教聚焦可以寫進課程 State，但不能讓未聚焦的教材正式生字消失。
 
 > 課程狀態會一直變，不應讓 GitHub commit history 變成課堂操作日誌。
+
+## 簡報施工確認接續欄位
+
+依 `core/governance/presentation-preconstruction-policy.md`，在該課 State 保存 `presentation_confirmation`：`source_master_ref`、`page_ledger_ref`、`style_matrix_ref`、`role_lock_ref`、`canvas_lock_ref`、`page_rules_ref`、`vocabulary_idiom_coverage_ref`、`page_detail_ref`／revision／status、`representative_family_approvals`、`current_batch`（id、page_ids、limit、status、approval_ref）、`previous_revision_ref`。引用須帶版本／hash；不存在的核准不得填 true。
+
+`next_allowed_stage` 雖為陣列，每次可執行值只能有一個；阻塞時為空。逐頁稿 pending、代表頁待逐類確認或批次待確認時，不得執行下游。每個 stage／HOLD 的候選與核准記錄分開保存，更新 State 與 Index 後回讀驗證；未驗證不可宣稱完成同步。

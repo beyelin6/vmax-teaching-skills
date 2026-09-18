@@ -1,4 +1,4 @@
-# V-MAX Idiom Expression & Visualization Policy 1.0
+# V-MAX Idiom Expression & Visualization Policy 1.1
 
 ## Runtime presentation rule: idiom pages
 
@@ -206,3 +206,7 @@ Style Recipe 只能改媒材與美術語言，不得把 `BEFORE_AFTER` 改成單
 > 一圖還是漫畫，不看熱鬧程度，看語意關係。
 
 > 成語插圖畫句意，不預設畫典故。
+
+## 雙軌覆蓋前置條件
+
+必讀 `core/governance/presentation-preconstruction-policy.md` 的成語雙軌規則。STEP 2.6 同時承接課文既有成語／四字詞與已核准生字延伸補充成語，保留兩份清單及每字覆蓋回指；任一正式生字尚未判讀即 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`，不得向下施工。此增補不允許把補充例句或成語冒充教材原文；生字補充成語頁仍須有短解釋、自然例句及對應情境小圖。

@@ -115,3 +115,7 @@ Windows / Codex 環境使用：
 - 技能保存方法，資源庫保存可重用元件，課程專案保存當課資料。
 - 工作檔與未確認輸出只能寫入目前課程專案；正式成果依 Google Drive Archive Skill 歸檔與驗證，不得覆蓋既有版本。
 - 逐頁 `Slide Script` 是簡報內容唯一主檔；NotebookLM、Google Slides、Canva、PPTX、PNG／PDF 都只能由它單向派生，不得回寫上游。
+
+## 成語雙軌覆蓋增補
+
+教師已明確將「逐字檢查生字延伸補充成語」指定為 GLOBAL_SKILL_RULE，依 `core/governance/presentation-preconstruction-policy.md` 執行。上方成語忠實規則繼續約束 Official Knowledge 與未核准學生輸出；不阻止 STEP 2.5 分層提出延伸候選。每個正式生字都須判讀、提供適齡理由或不適合理由，經教師確認後才納入正式選教。不得以「教材未列」直接跳過整份生字延伸覆蓋表。

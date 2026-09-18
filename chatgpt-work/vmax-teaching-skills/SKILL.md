@@ -5,7 +5,7 @@ description: ChatGPT Work 專用的 V-MAX 唯一啟動技能。用於重新開�
 
 # V-MAX ChatGPT Work Launcher
 
-版本：1.4
+版本：1.5
 
 ## 安裝模型
 
@@ -90,3 +90,7 @@ WORK 模式的簡報預設交付為高畫質圖片化投影片（PNG）與 PDF�
 此 Launcher 本身只有 GitHub URL 與不可繞過的啟動規則；V-MAX 實際版本與模組每次從 GitHub `main` 讀取，所以一般 repository 更新不需要重新保存 25 個個人技能。只有 Launcher 本身規則改變時才需重新安裝這一個技能。
 
 > ChatGPT Work 只安裝一個 Launcher；V-MAX 模組按需從 GitHub 載入。
+
+## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。

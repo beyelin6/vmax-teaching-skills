@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.1
+版本：2.2
 
 ## 目的
 
@@ -76,14 +76,17 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Character Topology / Cast
 → Knowledge Lab 正式編排
 → Visual Grammar / Slide Architecture
-→ 逐頁版面配置與文字說明初稿（未鎖定，不可直接施工）
+→ 頁型與教學功能草案（不展開逐頁施工細節）
 → 風格庫 3–5 組候選／主風格＋頁型混搭方案
 → HOLD｜教師選擇主風格與頁型混搭規則
 → 鎖定 Style Selection Profile／Style Matrix
-→ 頁數估算／頁數帳本
+→ 鎖定角色與畫布
+→ 頁數估算／頁數帳本確認 HOLD
+→ PAGE_DETAIL_CONFIRMATION｜逐頁可施工細節稿
+→ HOLD｜等待教師確認逐頁施工稿
 → 代表頁選擇檔驗證（只從 PAGE_DETAIL_CONFIRMATION 挑選）
-→ 代表頁驗證
-→ 全量 Renderer
+→ 代表頁驗證／逐類教師確認 HOLD
+→ 全量 Renderer（小批次，每批教師確認 HOLD）
 → Quality Gate
 → Lesson Learning
 → Lesson Package Delivery Gate
@@ -92,7 +95,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ### PAGE_DETAIL_CONFIRMATION
 
-`Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix` 完成後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔必須先建立全課唯一的 `page_number_system` 與 `section_marker_system`，由代表頁實測、教師確認後鎖定各自 hash；後續頁面只能沿用，不得每頁重新決定。母檔另必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
+`Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix`、角色、畫布與頁數帳本鎖定後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔必須先建立全課唯一的 `page_number_system` 與 `section_marker_system`，由代表頁實測、教師確認後鎖定各自 hash；後續頁面只能沿用，不得每頁重新決定。母檔另必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可挑選代表頁；各實際啟用頁型均經教師確認後，才可小批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
 
 風格 HOLD 必須先完成：依課文提出 3–5 組風格庫候選／混搭方案，顯示主風格、頁型變體與限制，等待教師選擇。`selected_style_id` 未被教師確認前保持空值；不得由 Executor、Presentation Engine、Renderer 或平台預設直接選風格。風格選定後，建立風格 hash 與 `BATCH_CONSTRUCTION_LOCK`，後續頁面只能沿用該主風格及已核准頁型變體。
 
@@ -276,7 +279,7 @@ STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執�
 
 Full Renderer 的前置條件不是「看過一張樣張」，而是跨頁型代表頁組均已核准：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。教師的「可以」只核准本次實際展示的頁型；未展示頁型不得自動通過。
 
-簡報畫布必須先詢問教師選擇 `4:3` 或 `16:9`，再建立並鎖定 `canvas_lock`；不得由 Renderer、平台預設或舊對話自行選邊。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。Full Renderer 前必須完成代表頁組：課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語、總結遷移等實際啟用頁型；每類均需教師確認，且每頁先載入當課角色定錨。全量必須以 5–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION`、`TYPED_TEXT_LAYOUT_FAIL`、`TEXT_OBJECT_DETACHED` 或角色／風格漂移即停止，不得做完整套後才回頭驗收。
+簡報畫布必須先詢問教師選擇 `4:3` 或 `16:9`，再建立並鎖定 `canvas_lock`；不得由 Renderer、平台預設或舊對話自行選邊。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。Full Renderer 前必須完成代表頁組：課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語、總結遷移等實際啟用頁型；每類均需教師確認，且每頁先載入當課角色定錨。全量必須以 4–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION`、`TYPED_TEXT_LAYOUT_FAIL`、`TEXT_OBJECT_DETACHED` 或角色／風格漂移即停止，不得做完整套後才回頭驗收。
 
 對每個必要圖片建立 Render Request，探測當前平台實際工具並執行。prompt、Renderer Script、Visual YAML 或 `IMAGE_HANDOFF_READY` 不等於圖片完成；只有實際資產通過重檢並標記 `RENDER_VERIFIED` 才能進入 Quality Gate。工具不可用時保留 handoff 並回報阻塞，不得跳過圖片需求。
 
@@ -322,3 +325,7 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 > 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
 
 > 規格寫了不算載入；Executor 必須真的把當前 canonical policy 帶進實跑。
+
+## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。

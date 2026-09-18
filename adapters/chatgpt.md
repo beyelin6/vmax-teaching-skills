@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.5
+# V-MAX Adapter｜ChatGPT 1.6
 
 ## Lesson Artifact Registry
 
@@ -77,3 +77,7 @@ ChatGPT 可負責：
 ## 核心金句
 
 > ChatGPT 是 V-MAX 的一個執行器，不是 V-MAX 本身。
+
+## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
