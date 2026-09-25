@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.4
+版本：2.5
 
 ## 目的
 
@@ -121,7 +121,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 1. 驗證本次確認的對象、範圍與版本；階段完成條件通過才關閉對應階段 HOLD。缺口未解或回覆無法指向唯一選項時保持原 stage。
 2. 先回寫教師決定與 State revision。
 3. 重新同步 Runtime State 與主流程，取得唯一合法下一步。
-4. 只執行該下一步。
+4. 只執行該下一步；若只是解決 STEP 1 缺口，留在目前 stage 完成其餘擷取，next_allowed_stage 空值不禁止此工作。
 5. 若下一步有 HOLD，完成後立即停住。
 6. 不得順便執行再下一步。
 

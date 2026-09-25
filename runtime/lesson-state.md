@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.3
+# V-MAX Runtime State Contract 2.4
 
 ## 定位
 
@@ -41,7 +41,7 @@ V-MAX_State_{冊別}_{課次}_{課名}
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.3
+runtime_schema_version: 2.4
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
@@ -147,7 +147,7 @@ HOLD_2_5 confirmed
 2. 依教師指定課次找到對應 State；若教師說「繼續目前這課」，才使用 Index 的 active lesson。
 3. 讀取該課 `current_stage / next_allowed_stage / locked_decisions / language_focus`。
 4. 讀取並通過 `core/governance/continuation-state-gate.md` 的 State Sync；未通過時不得執行下一階段或開始製作。
-5. 只執行合法下一階段。
+5. 目前階段尚未完成時，繼續其已授權工作；跨階段時才使用唯一 next_allowed_stage。
 6. 每次 HOLD 確認或正式 stage 完成後，先回寫該課 Google Drive State，再允許派生下游。
 7. 每完成 stage、建立 HOLD 或完成 HOLD 決策，都非破壞性更新 Runtime Index 的該課狀態摘要與 State revision 引用；active lesson 僅在教師指定切換課程時更新。
 
@@ -167,4 +167,4 @@ HOLD_2_5 confirmed
 
 依 `core/governance/presentation-preconstruction-policy.md`，在該課 State 保存 `presentation_confirmation`：`source_master_ref`、`page_ledger_ref`、`style_matrix_ref`、`role_lock_ref`、`canvas_lock_ref`、`page_rules_ref`、`vocabulary_idiom_coverage_ref`、`page_detail_ref`／revision／status、`representative_family_approvals`、`current_batch`（id、page_ids、limit、status、approval_ref）、`previous_revision_ref`。引用須帶版本／hash；不存在的核准不得填 true。
 
-`next_allowed_stage` 雖為陣列，每次可執行值只能有一個；阻塞時為空。逐頁稿 pending、代表頁待逐類確認或批次待確認時，不得執行下游。每個 stage／HOLD 的候選與核准記錄分開保存，更新 State 與 Index 後回讀驗證；未驗證不可宣稱完成同步。
+`next_allowed_stage` 只控制跨階段，每次最多一個值；尚未允許跨階段時為空。空值不禁止目前 stage 的已授權工作：STEP1_INCOMPLETE 且來源可讀時繼續擷取。只有實際缺來源、未決裁定或工具失敗阻擋剩餘工作時才停，不能從空值推導停工。逐頁稿 pending、代表頁待逐類確認或批次待確認時，不得執行下游。每個 stage／HOLD 的候選與核准記錄分開保存，更新 State 與 Index 後回讀驗證；未驗證不可宣稱完成同步。

@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.11
+# V-MAX Workflow HOLD Regression Cases 1.12
 
 ## 用途
 
@@ -286,3 +286,9 @@ workflow_hold_regression:
 - UNCERTAIN 全有名稱但仍未解：保持 NEEDS_REVIEW，不得因已登錄就 EXTRACTION_VERIFIED。
 - 多選項沒有唯一推薦，教師回覆「是」：保持原 stage，釐清該決定；不得自動選第一項或關閉整體 HOLD。
 - 新來源重整分支只歷史引用舊 P01：缺圖不阻擋來源整理；若本次明確沿用 P01，則依有效輸入檢核阻擋，不能用重製豁免。
+
+## STEP 1 持續執行驗收
+
+- State Sync 通過、STEP1_INCOMPLETE、next_allowed_stage 為空，PDF 可讀且尚有五頁：持續擷取五頁，不等教師再次說繼續；不進 STEP 2。
+- 原頁可回看、頁碼與 region_ref 明確、crop_ref 為 null：允許完整性驗收，不為補裁切檔阻塞；必要影像辨識仍要實做。
+- 影像工具失敗但文字層與其他頁仍可處理：先完成獨立工作，最後集中列出工具錯誤與需協助項目，不假稱已核對影像或承諾背景完成。

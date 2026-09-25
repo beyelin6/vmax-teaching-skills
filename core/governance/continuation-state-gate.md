@@ -1,4 +1,4 @@
-# V-MAX Continuation State Gate 1.3
+# V-MAX Continuation State Gate 1.4
 
 ## 定位
 
@@ -66,7 +66,7 @@ state_sync:
 
 ## 續作 Gate
 
-只有以下條件全部成立，才可執行下一個合法 stage 或產出：
+State Sync 通過後，依 `current_stage` 完成該階段已授權工作；`next_allowed_stage` 空值不阻擋目前 STEP 1 的擷取。以下條件限制跨階段或正式下游產出，不把未完成的擷取當成狀態同步失敗：
 
 - `state_sync.status: PASS`。
 - `current_stage`、`last_completed_stage` 與 `next_allowed_stage` 互相一致。

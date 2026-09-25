@@ -5,7 +5,7 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 
 # Chinese Textbook Transcriber
 
-版本：0.4.2
+版本：0.4.3
 
 ## 核心定位
 
@@ -87,7 +87,7 @@ For cross-AI records, also write the canonical `source_layer` value from `core/s
 - `pdf_page`
 - `printed_page`
 - `region_ref`
-- `crop_ref`
+- `crop_ref`（無需獨立裁切時填 null；原頁＋區域描述可定位即足夠）
 - `file_fingerprint`／`page_fingerprints`／`crop_fingerprints`（可取得時）
 
 課文原文、教材列出的字詞與版面小字區必須在本次整理資料中保存完整文字內容，不只保存 PDF 路徑或摘要。後續 LKB、候選清單與輸出技能應優先讀取已保存的 Source Master／文字片段；只有證據衝突、OCR 不確定或教師要求重查時，才重新開啟原始 PDF。
@@ -143,4 +143,4 @@ teacher_confirmation_status: NOT_REVIEWED | WAITING_TEACHER | CONFIRMED | CHANGE
 
 ## STEP 1 完整擷取契約
 
-開始、重跑或補漏時必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節，連續完成既定清單。多音字旁欄／補充框的教材讀音、詞義、例詞、例句與提醒均屬擷取範圍。來源缺口集中回報；必要缺口未解不能 EXTRACTION_VERIFIED 或請求核准全文。後段視覺與選教條件不阻擋來源擷取。
+來源可讀且仍有未完成項目時，在同一回合連續處理；存檔、STEP1_INCOMPLETE 或 next_allowed_stage 空值不構成停點。停止條件依下述政策，不要求逐區建立裁切檔。開始、重跑或補漏時必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節，連續完成既定清單。多音字旁欄／補充框的教材讀音、詞義、例詞、例句與提醒均屬擷取範圍。來源缺口集中回報；必要缺口未解不能 EXTRACTION_VERIFIED 或請求核准全文。後段視覺與選教條件不阻擋來源擷取。
