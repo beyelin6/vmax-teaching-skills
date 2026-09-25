@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.6.1
+# V-MAX Bootstrap 1.6.2
 
 ## 目的
 
@@ -75,8 +75,8 @@ Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_K
 ### Skill-specific dynamic loading
 
 - 任務需要某個 V-MAX Skill 時，從 GitHub 讀取該 Skill 當前 `SKILL.md`；需要 progressive loading 時，再讀取其 registry、reference、policy 或 script 說明。
-- 若任務涉及程式合成的繁體中文學生可見文字、PNG/PDF/PPTX、學習單、手冊、生字、形近字或注音，必須載入 `skills/traditional-chinese-font-safety/SKILL.md` 並完成 font preflight。
-- 若任務涉及圖片生成或修改，必須載入 `skills/vmax-image-renderer/SKILL.md` 並依當前平台實際工具能力執行。
+- 若目前階段實際進行程式合成的繁體中文學生可見文字、PNG/PDF/PPTX、學習單、手冊、生字、形近字或注音，必須載入 `skills/traditional-chinese-font-safety/SKILL.md` 並完成 font preflight。
+- 若目前階段實際進行圖片生成或修改，必須載入 `skills/vmax-image-renderer/SKILL.md` 並依當前平台實際工具能力執行。
 - ChatGPT 不需要把 V-MAX Skill 複製或安裝到 Codex 本機 skills 目錄；ChatGPT 與 Codex 採不同載入策略，但共同以 GitHub 為 Source of Truth。
 
 ---
@@ -101,7 +101,7 @@ Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_K
 
 ## 高優先語文教學摘要
 
-當任務涉及課文語詞、句型或修辭時，必須載入：
+當目前階段進行課文語詞、句型或修辭的教學設計時（來源擷取不適用），必須載入：
 
 - `skills/text-embedded-language-teaching/SKILL.md`
 - 完整規格：`core/pedagogy/text-embedded-language-teaching-policy.md`
@@ -145,7 +145,7 @@ Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_K
 - `forbidden_next`
 - `locked_decisions`
 
-若 `next_allowed_stage` 與模型準備執行的階段不同，必須停止並回報：
+目前 stage 尚未完成時，允許依其規則持續搜尋、擷取、校對與存檔；`next_allowed_stage` 為空不阻擋這些階段內工作。只有準備跨階段，且目標不符合唯一 `next_allowed_stage` 或尚未取得對應 HOLD 核准時，才停止並回報：
 
 `RUNTIME_STAGE_CONFLICT`
 
@@ -172,13 +172,13 @@ V-MAX Core 不依賴：
 所有需要教師閱讀、確認或修正的 stage／HOLD，必須載入 `core/ui/teacher-review-view-contract.md`。完整 JSON／YAML 保存為 Machine Payload；對話預設先顯示人類可讀的結論、教材證據、知識層、缺口、這次唯一決定與唯一下一步。
 
 - 不得以 raw schema dump 取代教師確認卡。
-- STEP 1 必要來源未核對完成時顯示 `STEP1_INCOMPLETE`，只要求補來源，不開放核准。
+- STEP 1 必要來源未核對完成時顯示 `STEP1_INCOMPLETE`，持續完成可自行查明的來源；真正無法解決的缺口集中詢問，不開放全文核准。
 - `[教材明載] / [教師補充] / [AI 延伸] / [待核對]` 不得混層。
 - `STEP 2.75` 不在 Golden Path，出現即視為 `LEGACY_STAGE_ALIAS`。
 
 ## 圖片能力與降級
 
-當任務要求產生或修改圖片時，必須載入 `skills/vmax-image-renderer/SKILL.md`，並依本次工作階段實際可用工具探測 `generate_image / edit_image / inspect_image / compose_verified_text / export_asset`。不得只因平台叫 ChatGPT、Codex、Gemini 或 Canva 就假設具備圖片能力。
+當目前 Runtime 階段允許且實際要產生或修改圖片時，必須載入 `skills/vmax-image-renderer/SKILL.md`，並依本次工作階段實際可用工具探測 `generate_image / edit_image / inspect_image / compose_verified_text / export_asset`。不得只因平台叫 ChatGPT、Codex、Gemini 或 Canva 就假設具備圖片能力。
 
 - 有可用圖片工具：實際生成／修改、重新檢查成品，再回報 `RENDER_VERIFIED`。
 - 沒有圖片工具：輸出 Render Request 與 handoff bundle，回報 `IMAGE_HANDOFF_READY` 或 `IMAGE_TOOL_BLOCKED`。
@@ -187,7 +187,7 @@ V-MAX Core 不依賴：
 
 ## Lesson Master Preflight
 
-任何平台在製作預習單、短文單、簡報、教案、評量、活動或圖片前，都必須執行 `core/governance/lesson-master-preflight.md`，並依 `core/governance/task-knowledge-requirement-registry.md` 做任務 Coverage Diff。
+SOURCE 0／STEP 1 的來源擷取不以 LKB 或本 Preflight 為前置條件。任何平台實際進入下游製作預習單、短文單、簡報、教案、評量、活動或圖片前，都必須執行 `core/governance/lesson-master-preflight.md`，並依 `core/governance/task-knowledge-requirement-registry.md` 做任務 Coverage Diff。
 
 - 有效且足夠的核准 LKB：直接重用。
 - 母檔不足：只補缺少節點，教師核准 Patch 後合併新版。

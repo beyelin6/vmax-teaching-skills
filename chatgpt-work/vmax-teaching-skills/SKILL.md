@@ -1,100 +1,52 @@
 ---
 name: vmax-teaching-skills-chatgpt-work
-description: ChatGPT Work 專用的 V-MAX 唯一啟動技能。用於重新開始、繼續或完整建立臺灣國小國語課程；執行時從 GitHub 讀取最新版 V-MAX Manifest、Golden Path、Runtime 與教師審核契約。不得批次安裝 repository 內其他技能。
+description: ChatGPT Work 專用的 V-MAX 啟動技能；製作或續作國語教材時，從 GitHub 載入共用規格、同步當課 Drive Runtime，再按目前階段載入模組。
 ---
 
 # V-MAX ChatGPT Work Launcher
 
-版本：1.6
+版本：1.7
 
-## 安裝模型
+## 安裝與來源
 
-這是 ChatGPT Work 唯一需要永久保存的個人技能。不要將 GitHub repository 中 `skills/` 下的其他模組逐一轉存為個人技能。
+這是 ChatGPT Work 唯一需要永久保存的 V-MAX 個人技能。不要將 GitHub repository 中 `skills/` 下的其他模組逐一轉存為個人技能。
 
-GitHub Source of Truth：
+規格來源：`https://github.com/beyelin6/vmax-teaching-skills` 的 `main`。GitHub 管共用規則；單課教材、教師決定與進度保存在 Drive。一般共用規則更新不需重裝；Launcher 本身改版才替換此檔。
 
-`https://github.com/beyelin6/vmax-teaching-skills`
+## 啟動與續作
 
-## 每次啟動
+1. 以可用 GitHub 工具讀取 `VERSION`、`V-MAX_MANIFEST.md` 與 main commit。瀏覽器失敗不代表 GitHub connector 不可用；先檢查並實際嘗試可用讀取工具，不能猜測網路受限。
+2. 依 Manifest 載入 `skills/vmax-teaching-skills/SKILL.md`、`V-MAX_BOOTSTRAP.md`、Runtime contract、Continuation State Gate、current main workflow、executor、HOLD policy、Teacher Review View 與 `adapters/chatgpt.md`。這些檔案的條件式要求僅於適用 stage 執行。
+3. 讀最新 Drive Runtime Index 與教師指定課次的 State，依 Continuation State Gate 核對來源、已保存擷取紀錄、教師決定和目前階段已應存在的產物。沿用現有重製 Runtime；未指定重建時不另開版本。別課 active index、尚未進入階段的產物或舊 P01 不得阻擋來源整理。
+4. 確定 `current_stage` 後，才載入下表對應規則。續作先讀最新 Drive revision；同一已驗證 GitHub commit 的規格依 Bootstrap freshness／selective reload 重用，不逐頁重讀整套技能。
 
-收到 V-MAX、重新開始、繼續、完整建課、分析教冊或製作一課的請求時：
+GitHub 暫時無法更新時依 Bootstrap 使用可核對 commit、版本與完整原文的 `LAST_KNOWN_GOOD`，標示 `GITHUB_REFRESH_PENDING`；沒有可信規格才 `BOOTSTRAP_BLOCKED`。記憶或舊對話不算 LKG。Drive 無法讀取或當前階段有實質狀態衝突，依 State Gate 回報具體阻礙，不宣稱已同步。
 
-1. 透過 GitHub 讀取預設分支 `main` 的 `VERSION`。
-2. 讀 `V-MAX_MANIFEST.md`。
-3. 依 Manifest 讀取：
-   - `skills/vmax-teaching-skills/SKILL.md`
-   - `V-MAX_BOOTSTRAP.md`
-   - `runtime/lesson-state.md`
-   - `core/governance/continuation-state-gate.md`
-   - current main workflow
-   - current executor
-   - hold policy
-   - teacher review view
-   - `adapters/chatgpt.md`
-   - `core/visual/visual-reference-library.md`
-   - `core/visual/visual-text-dna.md`
-   - `core/governance/lesson-presentation-execution-rules.md`
-   - `skills/presentation-engine/SKILL.md`
-   - `skills/presentation-engine/references/classroom-language-page-rules.md`
-   - `core/presentation/canvas-lock-policy.md`
-   - `core/presentation/paragraph-text-page-policy.md`
-   - `core/presentation/text-layer-construction-policy.md`
-   - `skills/vmax-image-renderer/references/render-request-schema.md`
-   - `core/schemas/vmax/slide-script.schema.json`
-4. 再按當前 stage 讀取需要的 policy／skill；不要一次下載或安裝全部技能。
-   課文閱讀頁的語詞 placement 必須沿用既有 Slide Script 與 PAGE_DETAIL_CONFIRMATION；同頁是預設，獨立語詞頁必須有拆頁理由、核准回指與 Render Request 欄位一致性。
-5. GitHub refresh 失敗時，先依 Bootstrap 的 Graceful Fallback 尋找可信 `LAST_KNOWN_GOOD`。必要 canonical 原文可讀且 commit／revision、版本與成功載入記錄可核對時，以 LKG 繼續並標記 `GITHUB_REFRESH_PENDING`；沒有完整可信 LKG 才 `BOOTSTRAP_BLOCKED`。模型記憶與舊對話摘要不算 LKG。此分流只處理規格載入，不豁免 Drive Runtime、教師核准與 State Sync。
+## 按目前階段載入
 
-## 每次續作的 State Sync Gate
+| Runtime 目前階段 | 本階段工作與規則 |
+| --- | --- |
+| SOURCE 0／STEP 1／來源補漏 | 依 `core/governance/step1-source-anchor-policy.md`，尤其第 G 節，載入 `skills/chinese-textbook-transcriber/SKILL.md` 及其來源庫、認讀字與擷取契約。讀回已存資料，只補必要缺口。 |
+| STEP 2／STEP 2.5／STEP 2.6 | 依 main workflow 與 executor 載入該階段模組；到 STEP 2.5 才載入 `core/governance/presentation-preconstruction-policy.md` 的成語雙軌覆蓋規則。 |
+| 教學架構、角色、風格、畫布等後段階段 | 依 main workflow 載入當前模組，在各自階段完成決定與鎖定。 |
+| 簡報規劃、逐頁施工、代表頁、渲染、批次與 QA | 載入 Front Door 的簡報／視覺強制鏈、`core/governance/presentation-preconstruction-policy.md` 與 adapter 的圖片式產物要求；保留逐頁確認、代表頁逐類確認、小批次逐批確認與文字層局部修正。 |
 
-ChatGPT Work 不得把「繼續／下一步／確認／沿用」直接當成可以製作的指令。每次都必須先讀取最新 Drive Runtime revision，核對目前 stage、唯一 `next_allowed_stage`、教師最新決定、當前 stage 已應存在的 Source Master／LKB／Slide Script 版本與適用視覺基準；未到階段者依 State Gate 記錄 not_yet_produced。
+「我要製作簡報」是最終目標，不代表 Runtime 已到視覺階段。SOURCE 0／STEP 1 不預載渲染、字型、角色、風格或畫布規則，也不要求 LKB、頁數、延伸成語選教或代表頁先核准。Course Orchestrator 不取代 executor 的 stage machine。
 
-若 State Sync 無法通過，回報 `CONTINUATION_STATE_BLOCKED`，只列出缺少或衝突項目與受影響下游，不能生成候選教材、圖片、腳本或批次成果。上下文整理、換平台或對話中斷後，必須重新執行完整同步，不得沿用聊天記憶。
+## 來源擷取的完成方式
 
-## 強制回條
+依既定教材清單連續處理本課正文、相關頁面、側欄與補充框，包括多音字讀音、詞義、例詞、例句與辨析提醒。已核准的教師裁定須保留；來源原字與教學採用字分開記錄，不反覆請教師裁定同一問題。
+
+`next_allowed_stage` 為空代表尚未允許跨階段，不阻止完成 `current_stage` 內的搜尋、擷取、校對與存檔。不要每查完一頁、補一欄或存一次檔就停下要求「繼續」。可自行查明的項目持續完成，真正無法解決的必要缺口集中提出；必要資料完整後交付一份整合教材審核稿，停在 HOLD 1。未完整時如實標記 `STEP1_INCOMPLETE`，不請求全文核准，也不開始教學規劃或生圖。
+
+教師確認只授權對應 HOLD 的下一個合法 stage；局部來源裁定不等於全文或下游核准。每完成 stage／HOLD，非破壞性更新並讀回驗證 Drive State 與 Index；候選不得覆蓋確認稿。不得自行新增 stage 或使用 `STEP 2.75`。
+
+## 回條與教師畫面
 
 第一個實質回應第一行：
 
 `V-MAX LOAD｜Plugin {VERSION}｜Manifest {manifest_version}｜Executor {executor_version}｜Stage {runtime_stage}｜UI {teacher_review_view_version}`
 
-版本從實際讀取的 canonical 或可信 LKG 取得。使用 LKG 時顯示 `Manifest {manifest_version} (LKG)｜GitHub refresh pending`，保留其他已驗證版本，不得一律改成 UNKNOWN。真正缺少的欄位才填 UNKNOWN 並依對應 Gate 處理；Runtime stage 不能由規格 LKG 推定。沒有回條，視為 `LOAD_RECEIPT_MISSING`。
+Plugin 取自 repository `VERSION`，不是本 Launcher 的 1.7。各欄填實際讀取或可信 LKG 的版本；僅真正缺失者填 UNKNOWN，Runtime 不能由規格推定。使用 LKG 附註 `GITHUB_REFRESH_PENDING`。缺少回條為 `LOAD_RECEIPT_MISSING`。
 
-## 不可被舊對話覆蓋的規則
-
-- GitHub `main` 現行 Manifest 高於舊對話、舊技能與模型記憶。
-- Course Orchestrator 只管理專案，不是教材 stage machine。
-- STEP 1 不顯示 raw JSON／YAML，不包含 Mode、AI 教學主軸、固定段落迴圈、角色 Bone／Skin、visual recommendation、情境、畫風或頁數。
-- 保留角色的要求只記為 deferred input，直到角色階段才呈現。
-- STEP 1 來源未完整時回報 `STEP1_INCOMPLETE`，不得要求核准。
-- 一次確認只執行下一個合法 stage，然後停在下一個 HOLD。
-- `STEP 2.75` 與自行新增的 stage 非法。
-
-## 教師畫面
-
-圖片式簡報與文件預設使用可用的 ChatGPT 原生圖像生成／影像編輯工具，直接顯示原生圖片結果，保留平台提供的編輯入口與原圖引用；不得只輸出 PNG 檔案卡片。依教師指定範圍引用原圖續編，另附下載檔供保存。文字／來源 QA 仍須執行；合成後圖片也須直接預覽。若平台不支援原生編輯，明確說明，不能把一般圖片預覽宣稱為有「編輯」功能。
-
-使用中文標題、精簡表格與條列。完整 Machine Payload 可另存，但對話不顯示 raw schema、內部欄位或空白程式碼框。每項來源顯示教材、教育部辭典、AI 建議或待核對狀態。
-
-製作簡報時，必須先讀取正向視覺範例、Visual Text DNA、Canvas Lock Policy 與 Text Layer Construction Policy。若尚無鎖定畫布，只能先詢問教師選擇 `4:3` 或 `16:9`；選定後續跑不得切換。逐頁腳本、圖片底圖、正式文字層、角色／風格檢查與 PPTX／PNG 輸出必須分階段完成；不得從抽象教學主題直接套用通用簡報模板。正式中文只能由可驗證文字層渲染，文字感覺或圖文關係不像正向範例時標記 `VISUAL_TEXT_DNA_FAIL`，停等修正，不得量產。
-
-每課先建立並鎖定 `Lesson Architecture Profile`：開頭導入 → 課文總說 → 圖像式心智圖 → 各段（課文／語詞解釋／修辭或句型／文意理解）→ 形近字 → 成語 → 教材語文活動 → 總結與學習遷移。完成 Baseline 確認後，才詢問是否加入平板操作、四學公開課、議題融入或教師自訂外加模板。外加模板可以重新設計教學活動、互動、媒介與時間配置，但必須逐項回指 Baseline 的學習結果；不得靜默刪除教師指定內容，也不得把變體誤當成新的 Official Knowledge。
-
-若目前 WORK 模式的插圖視覺已符合教師期待，視覺資產視為 `illustration_status: LOCKED`。之後文字表達、字體、斷行、位置或顯示失敗，只能重建文字層與排版，不得重新生成插圖或角色。
-
-每個圖片／腳本候選都必須保留版本與教師狀態；未確認候選不得覆蓋確認稿、改寫 Runtime 或觸發其他頁面重算。代表頁未確認前，不得批次製作。
-
-WORK 模式的簡報預設交付為高畫質圖片化投影片（PNG）與 PDF。不得自行生成可編輯文字框的 PPTX；只有教師明確要求 PPTX 時，才另行派生。
-
-## 更新方式
-
-此 Launcher 本身只有 GitHub URL 與不可繞過的啟動規則；V-MAX 實際版本與模組每次從 GitHub `main` 讀取，所以一般 repository 更新不需要重新保存 25 個個人技能。只有 Launcher 本身規則改變時才需重新安裝這一個技能。
-
-> ChatGPT Work 只安裝一個 Launcher；V-MAX 模組按需從 GitHub 載入。
-
-## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
-
-語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
-
-## STEP 1 整合擷取
-
-SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，完整後才交付一份審核稿並停在 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
+依 Teacher Review View 使用中文結論、來源證據與精簡表格；不顯示 raw JSON／YAML。STEP 1 只呈現教材內容與必要缺口，角色偏好先保存為 deferred input，不詢問視覺設定。正式教材與 AI 延伸分層，不以摘要冒充完整來源。

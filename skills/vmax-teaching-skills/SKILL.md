@@ -5,7 +5,7 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。先載入版本�
 
 # V-MAX Teaching Skills Front Door
 
-版本：1.5
+版本：1.6
 
 Before starting any presentation task, initialize or read the lesson's `00_施工中_接續區` and follow `core/governance/working-handoff-area-policy.md`. Conversation memory is never the sole handoff source.
 
@@ -36,7 +36,7 @@ Before starting any presentation task, initialize or read the lesson's `00_施�
 
 ## 簡報／視覺 Stage 強制載入鏈
 
-一旦進入簡報規劃、代表頁、Render Request、圖片施工、批次或成品 QA，不得只依賴「當前 stage skill」的模糊解讀；必須實際載入 Manifest 指向的最新版本：
+以下以 Runtime 實際階段為準；來源擷取不因最終目標為簡報而提前載入。進入簡報規劃、代表頁、Render Request、圖片施工、批次或成品 QA，不得只依賴「當前 stage skill」的模糊解讀；必須實際載入 Manifest 指向的最新版本：
 
 1. `core/governance/lesson-presentation-execution-rules.md`
 2. `skills/presentation-engine/SKILL.md`
@@ -64,7 +64,7 @@ GitHub refresh 暫時失敗時，先查本工作階段的可信 `LAST_KNOWN_GOOD
 
 ## 啟動後第一個 Gate
 
-讀 Google Drive Lesson Master Index 與本課 Runtime State，執行 State Sync Receipt、Lesson Master Preflight 與來源完整性檢查。只有 Runtime 唯一合法 stage 可執行。繼續／下一步／確認／沿用而 State Sync 未通過 → `CONTINUATION_STATE_BLOCKED`。
+讀 Google Drive Lesson Master Index 與本課 Runtime State，執行 State Sync Receipt 與當前階段適用的來源完整性檢查；Lesson Master Preflight 到下游教材製作才執行，不以尚未建立的 LKB 阻擋來源擷取。只有 Runtime 唯一合法 stage 可執行。繼續／下一步／確認／沿用而 State Sync 未通過 → `CONTINUATION_STATE_BLOCKED`。
 
 ## 對話硬限制
 
@@ -76,13 +76,13 @@ Golden Path／完整建課／重新開始 → `vmax-golden-path-executor`；專�
 
 ## 完成條件
 
-Front Door 必須確認 load receipt、canonical files、runtime、teacher review contract、continuation state、cross-AI schema 與唯一合法 next stage 全部通過。
+Front Door 必須確認 load receipt、canonical files、runtime、teacher review contract、continuation state、cross-AI schema 與目前 stage 的合法續作條件全部通過；跨階段時才驗證唯一 next_allowed_stage。
 
 > 沒有載入回條，不算載入 V-MAX；簡報鏈少讀一個必要 canonical，也不算完成載入。
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含這些階段的續作／下一步／確認）時，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
 
 ## STEP 1 整合擷取
 
