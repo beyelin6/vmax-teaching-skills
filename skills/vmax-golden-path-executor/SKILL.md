@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.3
+版本：2.4
 
 ## 目的
 
@@ -115,12 +115,10 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ## C. Confirmation Transition Guard
 
-教師只輸入「確認／好／可以／OK／沿用」時，只等於：
-
-`confirm_current_hold = true`
+教師只輸入「確認／好／可以／OK／沿用」時，先依 `core/governance/hold-teacher-interface-policy.md` 的「確認範圍」核對目前展示的決策、版本與完成條件；只有對象唯一且為可核准的階段審核，才設 `confirm_current_hold = true`。來源缺口裁決只更新該缺口並回到同一 STEP 1，不關閉整體教材審核、不解鎖 STEP 2。
 
 執行器必須：
-1. 關閉當前 HOLD。
+1. 驗證本次確認的對象、範圍與版本；階段完成條件通過才關閉對應階段 HOLD。缺口未解或回覆無法指向唯一選項時保持原 stage。
 2. 先回寫教師決定與 State revision。
 3. 重新同步 Runtime State 與主流程，取得唯一合法下一步。
 4. 只執行該下一步。
@@ -153,9 +151,9 @@ STEP 1 必須載入：
 規則：
 - 無方格只能是版面線索，不等於認讀字。
 - 認讀字必須由教材生字系統明確區分。
-- 兩處不一致 → `SOURCE_CONFLICT`，進 HOLD 1，不得靜默選一邊。
+- 兩處不一致 → `SOURCE_CONFLICT`，建立 STEP 1 內的來源裁決 HOLD；不得當成完整教材核准或靜默選一邊。
 - 來源未列 → `N/A_SOURCE_NOT_PRESENT`。
-- 未建立 `SOURCE_INGESTION_RECORD`、必要區塊未完成覆蓋記錄，或存在未命名 `UNCERTAIN` → `STEP1_INCOMPLETE`；不得直接組裝 Source Master。
+- 未建立 `SOURCE_INGESTION_RECORD`、必要區塊未完成覆蓋記錄，或存在未解決的必要 `UNCERTAIN` → `STEP1_INCOMPLETE`；不得直接組裝 Source Master。
 - 完整正式生字、認讀字雙來源、教材詞語聯集、課文結構或 provenance 任一必要項未完成 → `STEP1_INCOMPLETE`；先完成可自行核對項目，再集中要求必要補來源；不開放完整 STEP 1 核准。
 - STEP 1 不得鎖 Mode、教學主軸、固定詩節／段落迴圈、Scenario、角色、視覺或頁數。
 

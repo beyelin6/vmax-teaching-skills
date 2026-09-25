@@ -1,4 +1,4 @@
-# V-MAX Continuation State Gate 1.2
+# V-MAX Continuation State Gate 1.3
 
 ## 定位
 
@@ -24,7 +24,7 @@
 - 先由 Index 與 Runtime 判定新課或續作，以及目前唯一合法 stage，再決定本階段必要文件；不能先要求所有下游成品存在。
 - 新課尚無 State 時，依 Orchestrator 的新課初始化流程建立實際 Runtime State，再執行 State Sync；不得以範例 State 或聊天記憶替代。Drive 不可用時仍須阻擋。
 - SOURCE 0／STEP 1 尚未產生的 Source Master、LKB、Learning Modules、Teaching Strategy 等，記錄「本階段尚未產生」與理由，不視為遺失、不要求補造，也不得標為已載入或已核准。
-- 已完成階段的必要輸出、Runtime 已引用的核准版本，以及當前 stage 明定的必要輸入，都必須實際讀取；不能利用「尚未產生」豁免。缺少或版本不符即 BLOCKED／CONFLICT。
+- 本次分支沿用的已完成階段必要輸出、Runtime 的有效輸入引用，以及當前 stage 明定的必要輸入，都必須實際讀取；不能利用「尚未產生」豁免。缺少或版本不符即 BLOCKED／CONFLICT。
 - 視覺階段同樣依工作項目判定：建立角色或代表頁時，不要求該項尚未產生的成品先存在；全量渲染則必須已具備核准代表頁與所有既定前置條件。
 - State Sync Receipt 的尚未適用欄位保留 null，另以 `not_yet_produced` 列出文件、預期產生階段與理由；不能把 null 當成 PASS 證據。
 
@@ -144,3 +144,7 @@ state_sync:
 教師明確要求重新製作時，建立非破壞性新 revision／重製分支並記錄新起點與沿用範圍；舊版確認稿保留。從來源重整的分支不要求舊 P01、頁數或視覺成果先補齊；若是續做既有視覺階段，其已核准資產仍須核對。已確認來源可依 STEP 1 政策核驗後引用，不因重製而自動失效。
 
 STEP 1 按 `core/governance/step1-source-anchor-policy.md` 第 G 節連續擷取；內部查找、翻頁與 checkpoint 不屬於跨 stage，無需各自建立教師 HOLD。只有目前 stage 已應存在的必要輸入缺失才阻塞；LKB、成語選教覆蓋及施工鎖在未到其階段時列 not_yet_produced，不得因最終產品是簡報就提前索取。
+
+### 重製分支的有效輸入
+
+建立重製 revision 時分開記錄「本次沿用的有效輸入」與「僅供追溯的舊版引用」。State Sync 只對前者及目前階段必需項目執行存在性／版本檢核；舊版 P01 若只是歷史引用，缺失不阻擋來源重整。若教師要求沿用該圖，它就是有效輸入，仍須找回並核驗。重製起點依教師明確範圍及可核驗來源決定，不能把所有「重新製作」都當成強制重跑 STEP 1。

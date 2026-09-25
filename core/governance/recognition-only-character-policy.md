@@ -1,4 +1,4 @@
-# V-MAX Recognition-only Character Policy 1.1
+# V-MAX Recognition-only Character Policy 1.2
 
 ## 定位
 
@@ -223,3 +223,7 @@ HOLD 1 教師可讀卡需有一列：
 > 課文下方小字與課後生字表都要看，兩邊核對後才定身分。
 
 > 「沒有」也要留下已檢查的證據；N/A 不是漏掉。
+
+## 來源裁決與整體核准
+
+本政策因來源衝突要求的 HOLD 1 屬於 STEP 1 內來源裁決，依 `core/governance/hold-teacher-interface-policy.md` 的確認範圍執行。先完成其他獨立可查項目，再集中詢問；裁決後補齊並重驗 STEP 1，展示完整教材稿後另取整體核准，不能以一次單字裁決跳到 STEP 2。

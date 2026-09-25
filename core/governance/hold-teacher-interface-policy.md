@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.4
+# V-MAX HOLD Teacher Interface Policy 1.5
 
 ## 定位
 
@@ -139,7 +139,7 @@ STEP 2.5 的 Teacher Confirmation Card 只包含形近字、多音字、教材�
 
 ## G. HOLD 不得跨階段｜Single-stage Advance
 
-教師在某個 HOLD 說「確認／好／可以」時，只代表**當前決策被確認**，且只解鎖主流程中**緊接的一個正式階段**。
+教師在某個 HOLD 說「確認／好／可以」時，只代表**當前決策被確認**，只有通過該階段完成條件的整體審核，才解鎖主流程中**緊接的一個正式階段**；階段內的來源裁決確認只回到同一階段補齊與重驗。
 
 ### 必守鏈條
 
@@ -175,7 +175,7 @@ HOLD 1
 
 例如：
 
-- HOLD 1 下一步只能是 `STEP 2 AI 教學價值判讀`。
+- 完整教材定錨的 HOLD 1 核准後，下一步才是 `STEP 2 AI 教學價值判讀`；STEP 1 內的來源裁決 HOLD 解決後仍回 STEP 1。
 - HOLD 2 下一步只能是 `STEP 2.5 語文輻射分析與教師選擇`。
 - HOLD 2.5 下一步只能是 `STEP 2.6 成語表達與視覺化確認`。
 - HOLD 2.6 下一步只能是 `Teacher Intent Lock`。
@@ -277,3 +277,14 @@ The machine record must preserve:
 The schema is a downstream contract. The teacher-facing confirmation card remains the required interface described above.
 
 > 教師確認的是方向與例外，不是替 AI 補完整套教學設計。
+
+## 確認範圍
+
+處理「確認／是／好」前，先核對最後展示的唯一決策對象、artifact revision、教師回覆的具體選項與 stage 完成條件。若多個選項並列且無唯一推薦，「是」不能自行選一項；只集中釐清未能判定的決策。
+
+STEP 1 的兩類審核必須分開：
+
+- 來源裁決：使用既有 HOLD_EVENT 的 `hold_type: SOURCE_CONFLICT`，以 teacher_decision_required 寫明待裁決項目，downstream_impact 記錄仍阻擋 STEP 2。教師決定後保存事件、補齊／重驗 STEP 1；即使這次解決最後一個缺口，也要展示完整整合稿，另待整體核准。
+- 教材整體核准：必要擷取完整且來源衝突已解，展示目前完整版本後才開放 HOLD 1；確認只核准該版本並依 Runtime 前進一站。
+
+來源政策中的「進 HOLD 1」若是針對來源衝突，只表示 STEP 1 內待裁決，不代表已達整體核准門檻。缺口裁決不是新增 stage，也不解除其他未解缺口。

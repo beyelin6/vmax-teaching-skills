@@ -5,7 +5,7 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 
 # Chinese Textbook Transcriber
 
-版本：0.4.1
+版本：0.4.2
 
 ## 核心定位
 
@@ -139,7 +139,7 @@ teacher_confirmation_status: NOT_REVIEWED | WAITING_TEACHER | CONFIRMED | CHANGE
 
 三份標準輸出均存在，課文、生字、認讀字、全部核心詞語、官方成語、官方修辭句型、語文活動及教材答案均已完成防漏核對，且沒有教師補充、系統延伸或教學設計混入官方知識檔。
 
-另須確認：`source-ingestion-record.json` 存在、所有必要區塊均有 `FOUND`／`NOT_FOUND`／`NOT_APPLICABLE` 結果，所有 `UNCERTAIN` 與衝突均已列出且未被 Agent 自行解決。
+另須確認：`source-ingestion-record.json` 存在、所有必要區塊均有 `FOUND`／`NOT_FOUND`／`NOT_APPLICABLE` 結果，所有歷史 `UNCERTAIN` 與衝突均保留證據與處理記錄，必要未解項目為零；清楚原圖可用於修正 OCR，原始來源間的真實衝突須有教師裁決事件。只有列出缺口仍為 NEEDS_REVIEW，不算完成。
 
 ## STEP 1 完整擷取契約
 

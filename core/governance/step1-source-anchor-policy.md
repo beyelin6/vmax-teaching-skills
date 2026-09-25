@@ -1,4 +1,4 @@
-# V-MAX STEP 1 Source Anchor Policy 1.5
+# V-MAX STEP 1 Source Anchor Policy 1.6
 
 ## 定位
 
@@ -77,7 +77,7 @@ recognition_only_characters:
 - 教材明確列為識讀、但非正式書寫生字時，才判定為認讀字。
 - 課文中一般字、形近補充字、比較字、偏旁識字示例，不得因此被判為認讀字。
 - 兩處來源一致：正常定錨。
-- 兩處來源不一致：標記 `SOURCE_CONFLICT`，完整列出差異，進 HOLD 1。
+- 兩處來源不一致：標記 `SOURCE_CONFLICT`，完整列出差異，建立 STEP 1 內的來源裁決 HOLD，依 HOLD policy 的確認範圍處理；裁決後回 STEP 1 重驗，不直接進 STEP 2。
 - 來源沒有：明確顯示 `N/A_SOURCE_NOT_PRESENT`，不得整欄消失。
 - 不得以年級經驗取代來源判定。
 
@@ -163,7 +163,7 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 
 ## F. 完成條件
 
-只有下列條件成立才算 STEP 1 PASS：
+下列條件全部成立才算擷取完整、可進 HOLD 1 審核；STEP 1 正式完成另須教師核准此完整版本：
 
 - source_data_complete_or_gaps_named: true（只表示已建缺口記錄，不單獨構成 PASS）
 - required_extraction_complete: true

@@ -1,4 +1,4 @@
-# V-MAX Workflow HOLD Regression Cases 1.10
+# V-MAX Workflow HOLD Regression Cases 1.11
 
 ## 用途
 
@@ -279,3 +279,10 @@ workflow_hold_regression:
 | 明確重製且舊 P01 缺失，已核准來源可驗證 | 新 revision 保留舊成果，核驗並引用來源，從記錄的新起點執行 | 為來源重整索取舊 P01，或把所有核准來源丟棄 |
 | 教師只針對一字回答是 | 只記該字裁定，完成其他核對後才請求來源整體核准 | 擴張成其他改字或整份 STEP 1 已核准 |
 | 擷取全部完成但尚未教師核准 | 一份整合審核入口停在 HOLD 1，保存 State／Index | 直接進 STEP 2，或只給多張零散檔案卡片 |
+
+## 確認範圍與重製引用補充驗收
+
+- 兩份原始字表衝突，教師裁定其中一字：只 resolve 該 SOURCE_CONFLICT，回 STEP 1 重驗；即使最後一個缺口解決，也須展示整體版本後另取 HOLD 1 核准。
+- UNCERTAIN 全有名稱但仍未解：保持 NEEDS_REVIEW，不得因已登錄就 EXTRACTION_VERIFIED。
+- 多選項沒有唯一推薦，教師回覆「是」：保持原 stage，釐清該決定；不得自動選第一項或關閉整體 HOLD。
+- 新來源重整分支只歷史引用舊 P01：缺圖不阻擋來源整理；若本次明確沿用 P01，則依有效輸入檢核阻擋，不能用重製豁免。
