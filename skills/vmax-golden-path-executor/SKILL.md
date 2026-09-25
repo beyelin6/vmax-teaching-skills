@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.5
+版本：2.6
 
 ## 目的
 
@@ -51,7 +51,7 @@ Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selec
 
 在合法序列之前，必須先依 `core/governance/continuation-state-gate.md` 完成 State Sync Receipt。未確認 Runtime revision、目前 HOLD、教師最新決定、當前 stage 已應存在的上游版本與適用視覺基準、當前工作項目前，不得執行任何分析、設計、渲染或批次。
 
-若「聊天記憶／本地候選／Drive Runtime／GitHub Manifest」出現差異，標記 `CONTINUATION_STATE_BLOCKED`，列出差異與下游影響，等待教師決定；不得自行選邊。
+若出現差異，先依 Continuation State Gate 區分待寫入的明確教師決定、可追溯的舊版引用與實質衝突。舊聊天／候選不同於已核准版本不自動構成衝突；可由現有來源與決策紀錄查明者自行對齊。只有有效輸入或核准範圍仍有無法解決的矛盾，才標記 `CONTINUATION_STATE_BLOCKED`，集中列出證據與受影響範圍。
 
 ---
 
@@ -122,7 +122,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 2. 先回寫教師決定與 State revision。
 3. 重新同步 Runtime State 與主流程，取得唯一合法下一步。
 4. 只執行該下一步；若只是解決 STEP 1 缺口，留在目前 stage 完成其餘擷取，next_allowed_stage 空值不禁止此工作。
-5. 若下一步有 HOLD，完成後立即停住。
+5. 存檔、State／Index 同步與回讀是同回合附帶操作，不是下一個正式 stage 或新增 HOLD；成功後繼續完成已授權的那一個 stage，交付其審核稿才停。工具實際阻塞或教師要求停止時除外。
 6. 不得順便執行再下一步。
 
 違反：`FLYING_TRAIN / SKIPPED_DECISION_LAYER`。
@@ -151,7 +151,7 @@ STEP 1 必須載入：
 規則：
 - 無方格只能是版面線索，不等於認讀字。
 - 認讀字必須由教材生字系統明確區分。
-- 兩處不一致 → `SOURCE_CONFLICT`，建立 STEP 1 內的來源裁決 HOLD；不得當成完整教材核准或靜默選一邊。
+- 先依 Recognition-only policy 區分正式字表與形近／多音字活動；只有同一教材身分的明確要求不一致才 → `SOURCE_CONFLICT`，建立 STEP 1 內的來源裁決 HOLD；不得當成完整教材核准或靜默選一邊。
 - 來源未列 → `N/A_SOURCE_NOT_PRESENT`。
 - 未建立 `SOURCE_INGESTION_RECORD`、必要區塊未完成覆蓋記錄，或存在未解決的必要 `UNCERTAIN` → `STEP1_INCOMPLETE`；不得直接組裝 Source Master。
 - 完整正式生字、認讀字雙來源、教材詞語聯集、課文結構或 provenance 任一必要項未完成 → `STEP1_INCOMPLETE`；先完成可自行核對項目，再集中要求必要補來源；不開放完整 STEP 1 核准。
@@ -326,8 +326,12 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含這些階段的續作／下一步／確認）時，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
 
 ## STEP 1 整合擷取
 
 SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，完整後才交付一份審核稿並停在 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
+
+## 已審來源的續作
+
+STEP 1 的重用、局部修補與完成判定依 Source Anchor Policy「已審來源續作與局部修補」。來源擷取完整性由執行器在整合稿前核對，不把正文、正式字表、內部 coverage 與來源索引各拆成一個教師 HOLD。既有局部核准按原範圍保留，不擴大成整體核准，也不清空重跑。

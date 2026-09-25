@@ -1,16 +1,16 @@
-# V-MAX Manifest 3.8.18
+# V-MAX Manifest 3.8.19
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.18
+vmax_manifest_version: 3.8.19
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_contract_version: 2.4
 working_handoff_area_policy: { path: core/governance/working-handoff-area-policy.md, current_version: 1.2 }
-hold_teacher_interface_policy: { path: core/governance/hold-teacher-interface-policy.md, current_version: 1.5 }
-recognition_only_character_policy: { path: core/governance/recognition-only-character-policy.md, current_version: 1.2 }
-step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.md, current_version: 1.8 }
+hold_teacher_interface_policy: { path: core/governance/hold-teacher-interface-policy.md, current_version: 1.6 }
+recognition_only_character_policy: { path: core/governance/recognition-only-character-policy.md, current_version: 1.3 }
+step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.md, current_version: 1.9 }
 chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: 0.4.4 }
 presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: 1.1 }
 idiom_expression_policy: { path: core/director/idiom-expression-visualization-policy.md, current_version: 1.1 }
@@ -19,8 +19,8 @@ front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.6 }
 chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: 1.7 }
 main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "2.10" }
 cloud_checkpoint_policy: { path: core/governance/cloud-checkpoint-policy.md, current_version: 1.1 }
-executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.5 }
-continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: 1.4 }
+executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.6 }
+continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: 1.5 }
 google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md, current_version: 1.1 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.7 }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.5 }
@@ -81,8 +81,12 @@ GitHub 保存規格；每課即時 Runtime State 以 Google Drive 為權威。�
 
 ## STEP 1 完整擷取與階段邊界
 
-Source Anchor Policy 1.8 是完整擷取與集中審核的 canonical：同 stage 的搜尋、逐頁／旁欄查核和存檔連續完成；必要缺口未解不得請求全文核准。Continuation State Gate 1.4 依目前階段套用前置條件，明確指定課次不被別課 active index 阻擋。教材多音字補充在 STEP 1 擷取，延伸選教與視覺鎖定依後段流程處理。
+Source Anchor Policy 1.9 是完整擷取與集中審核的 canonical：同 stage 的搜尋、逐頁／旁欄查核和存檔連續完成；必要缺口未解不得請求全文核准。Continuation State Gate 1.5 依目前階段套用前置條件，明確指定課次不被別課 active index 阻擋。教材多音字補充在 STEP 1 擷取，延伸選教與視覺鎖定依後段流程處理。
 
 ## ChatGPT Launcher 階段載入
 
 Launcher 1.7 / Bootstrap 1.6.2 / ChatGPT Adapter 1.8：先同步當課 Runtime，再載入目前階段模組。SOURCE 0／STEP 1 不預載視覺施工規則；空的 next_allowed_stage 不阻擋階段內擷取。視覺呈現與局部修訂要求保留在 adapter，依 Runtime 階段執行。Plugin 版本取自 VERSION，不以 Launcher 版本代填。
+
+## 來源續作與核准保留
+
+Executor 2.6 / Source Anchor 1.9 / Recognition-only 1.3 / HOLD Interface 1.6 / Continuation State Gate 1.5：同步不另設 HOLD；正式認讀字與比較／多音字活動先分類再比對；核准來源僅因具體新證據修補受影響項目，不反覆重跑未變內容。Launcher 維持 1.7，從 main 按需載入本次修正。
