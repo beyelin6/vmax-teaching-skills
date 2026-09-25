@@ -1,13 +1,13 @@
 # 國語簡報施工前確認流程
 
-版本：1.0
+版本：1.1
 規則範圍：`GLOBAL_SKILL_RULE`
 
 適用於 V-MAX 國語整課簡報的語文規劃、逐頁施工稿、代表頁、批次製作及續作修正。這是既有來源忠實、教師選教、State Sync、版型與文字層契約的增補，不取代它們；不強制 standalone 文件啟動整課流程。
 
 ## 1. 每次續作先同步
 
-收到「繼續／下一步／確認／沿用」或開始新的施工階段時，先讀最新 Drive Runtime Index 與該課 Runtime State，取得 revision、目前 HOLD、教師決定及唯一 `next_allowed_stage`。同時核對課文主檔、已確認頁數帳本、Style Matrix、角色鎖定檔、畫布比例與像素尺寸、既有逐頁規則及其版本／hash。不得以聊天記憶代替。缺漏或衝突依 State Sync Gate 停住；不得自行推進。
+收到「繼續／下一步／確認／沿用」或開始新的施工階段時，先讀最新 Drive Runtime Index 與該課 Runtime State，取得 revision、目前 HOLD、教師決定及唯一 `next_allowed_stage`。進入逐頁施工及後續視覺 stage 時，同時核對課文主檔、已確認頁數帳本、Style Matrix、角色鎖定檔、畫布比例與像素尺寸、既有逐頁規則及其版本／hash。不得以聊天記憶代替。缺漏或衝突依 State Sync Gate 停住；不得自行推進。
 
 ## 2. 成語必做雙軌覆蓋檢核
 
@@ -65,3 +65,7 @@ STEP 2.5 的教材確認表與後續 PAGE_DETAIL_CONFIRMATION 必須分列兩份
 每完成 stage、建立 HOLD、HOLD 決策或批次停止，都非破壞性建立／更新該課 Drive Runtime State 與 Runtime Index，保留 revision、前版引用、候選／核准狀態、待確認項目、唯一 next_allowed_stage 與 forbidden_next。候選可登記為候選，但不得覆蓋已確認稿或冒充核准進度。完成回讀驗證後才宣告可接續；無法讀寫依 Runtime／Cloud Checkpoint policy 阻塞，不假稱同步。
 
 GitHub 只保存共用規則與 schema；單課頁面內容、覆蓋表、教師決定與施工檔只存該課 Drive Runtime／施工區。教師明確要求的此類共用流程更新可登記為 GLOBAL_SKILL_RULE，不需以單課內容取代或刪除既有規則。
+
+## 階段適用性與完整擷取
+
+本政策的成語延伸覆蓋門檻自 STEP 2.5 起檢核，風格／角色／畫布／頁數鎖自逐頁施工前檢核。SOURCE 0／STEP 1 依 `core/governance/step1-source-anchor-policy.md` 第 G 節完整擷取教材；當前尚未產生的後段物件按 Continuation State Gate 記錄，不阻擋來源整理。一次只走一個 stage，不等於該 stage 內只讀一頁或只查一項。

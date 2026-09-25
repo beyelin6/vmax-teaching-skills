@@ -1,21 +1,23 @@
-# V-MAX Manifest 3.8.13
+# V-MAX Manifest 3.8.14
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.13
+vmax_manifest_version: 3.8.14
 bootstrap: V-MAX_BOOTSTRAP.md
 runtime_contract: runtime/lesson-state.md
 runtime_contract_version: 2.3
-presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: 1.0 }
+step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.md, current_version: 1.5 }
+chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: 0.4.1 }
+presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: 1.1 }
 idiom_expression_policy: { path: core/director/idiom-expression-visualization-policy.md, current_version: 1.1 }
-chatgpt_adapter: { path: adapters/chatgpt.md, current_version: 1.6 }
-front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.4 }
-chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: 1.5 }
-main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: 2.9 }
+chatgpt_adapter: { path: adapters/chatgpt.md, current_version: 1.7 }
+front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.5 }
+chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: 1.6 }
+main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "2.10" }
 cloud_checkpoint_policy: { path: core/governance/cloud-checkpoint-policy.md, current_version: 1.0 }
-executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.2 }
-continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: 1.1 }
+executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.3 }
+continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: 1.2 }
 google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md, current_version: 1.1 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.7 }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.5 }
@@ -52,10 +54,10 @@ visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_ve
 Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_READY` 可進正式 Renderer。資料尚未量測或 page-family required plan 缺失，不得假裝 ready。施工前不要求成品視覺 PASS；成品交付須驗證綁定 request／asset SHA-256 的 QA 回條。
 
 ## Presentation Load Chain
-Front Door 1.4 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Paragraph Text Page、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
+Front Door 1.5 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Paragraph Text Page、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
 
 ## Downstream Alignment
-Execution Rules 1.7 / Presentation Engine 0.10.14 / Renderer Contract 2.0 / Image Renderer 2.3 / Quality Gate 3.4 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.9 / Front Door 1.4 / ChatGPT Work Launcher 1.5。
+Execution Rules 1.7 / Presentation Engine 0.10.14 / Renderer Contract 2.0 / Image Renderer 2.3 / Quality Gate 3.4 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.10 / Front Door 1.5 / ChatGPT Work Launcher 1.6。
 
 ## Lesson Architecture and Variants
 
@@ -72,4 +74,8 @@ GitHub 保存規格；每課即時 Runtime State 以 Google Drive 為權威。�
 
 ## 國語簡報施工前確認與成語雙軌
 
-共用規則版本 1.0：`core/governance/presentation-preconstruction-policy.md`。語文規劃與每次施工續作強制載入；「逐頁施工稿 → 停等確認 → 代表頁逐類驗證 → 小批次／逐批確認」不可跳過。每個正式生字的延伸成語判讀未完成即 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`，不得施工。課文既有成語與生字補充成語為兩份必查清單；單課結果只存 Drive。
+共用規則版本 1.1：`core/governance/presentation-preconstruction-policy.md`。語文規劃與每次施工續作強制載入；「逐頁施工稿 → 停等確認 → 代表頁逐類驗證 → 小批次／逐批確認」不可跳過。每個正式生字的延伸成語判讀未完成即 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`，不得施工。課文既有成語與生字補充成語為兩份必查清單；單課結果只存 Drive。
+
+## STEP 1 完整擷取與階段邊界
+
+Source Anchor Policy 1.5 是完整擷取與集中審核的 canonical：同 stage 的搜尋、逐頁／旁欄查核和存檔連續完成；必要缺口未解不得請求全文核准。Continuation State Gate 1.2 依目前階段套用前置條件，明確指定課次不被別課 active index 阻擋。教材多音字補充在 STEP 1 擷取，延伸選教與視覺鎖定依後段流程處理。

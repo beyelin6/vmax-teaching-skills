@@ -5,7 +5,7 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 
 # Chinese Textbook Transcriber
 
-版本：0.4.0
+版本：0.4.1
 
 ## 核心定位
 
@@ -113,8 +113,8 @@ For cross-AI records, also write the canonical `source_layer` value from `core/s
 6. 認讀字與習寫生字必須分流。
 7. 官方成語名稱、詞義與例句必須逐項核對。
 8. 直排、分欄、表格或圖像內容若解析順序不可靠，必須以頁面圖像核對。
-9. 若任何必要區塊為 `UNCERTAIN`，列出缺口與受影響下游，建立 HOLD，不得繼續組裝正式教學資料。
-10. 完成 `official-knowledge-validation.md` 後停止等待教師確認；轉錄完成狀態與教師確認狀態分開保存。
+9. 必要區塊為 `UNCERTAIN` 時先記錄疑點，完成其餘獨立可查來源及影像核對，再集中提出剩餘缺口；依 `core/governance/step1-source-anchor-policy.md` 第 G 節執行。不得把局部疑點變成逐項停問，也不得組裝已核准正式教學資料。
+10. 必要擷取與防漏檢查全部通過並完成 `official-knowledge-validation.md` 後，以一份整合審核入口停止等待教師確認；轉錄完成狀態與教師確認狀態分開保存。
 
 Do not convert a complete extraction into a teaching decision. Candidate discovery and teacher selection are separate downstream objects: `CANDIDATE_INVENTORY` and `APPROVED_TEACHING_SELECTION`.
 
@@ -140,3 +140,7 @@ teacher_confirmation_status: NOT_REVIEWED | WAITING_TEACHER | CONFIRMED | CHANGE
 三份標準輸出均存在，課文、生字、認讀字、全部核心詞語、官方成語、官方修辭句型、語文活動及教材答案均已完成防漏核對，且沒有教師補充、系統延伸或教學設計混入官方知識檔。
 
 另須確認：`source-ingestion-record.json` 存在、所有必要區塊均有 `FOUND`／`NOT_FOUND`／`NOT_APPLICABLE` 結果，所有 `UNCERTAIN` 與衝突均已列出且未被 Agent 自行解決。
+
+## STEP 1 完整擷取契約
+
+開始、重跑或補漏時必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節，連續完成既定清單。多音字旁欄／補充框的教材讀音、詞義、例詞、例句與提醒均屬擷取範圍。來源缺口集中回報；必要缺口未解不能 EXTRACTION_VERIFIED 或請求核准全文。後段視覺與選教條件不阻擋來源擷取。

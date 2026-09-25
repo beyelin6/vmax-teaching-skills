@@ -5,7 +5,7 @@ description: ChatGPT Work 專用的 V-MAX 唯一啟動技能。用於重新開�
 
 # V-MAX ChatGPT Work Launcher
 
-版本：1.5
+版本：1.6
 
 ## 安裝模型
 
@@ -47,7 +47,7 @@ GitHub Source of Truth：
 
 ## 每次續作的 State Sync Gate
 
-ChatGPT Work 不得把「繼續／下一步／確認／沿用」直接當成可以製作的指令。每次都必須先讀取最新 Drive Runtime revision，核對目前 stage、唯一 `next_allowed_stage`、教師最新決定、Source Master／LKB／Slide Script 版本與視覺基準。
+ChatGPT Work 不得把「繼續／下一步／確認／沿用」直接當成可以製作的指令。每次都必須先讀取最新 Drive Runtime revision，核對目前 stage、唯一 `next_allowed_stage`、教師最新決定、當前 stage 已應存在的 Source Master／LKB／Slide Script 版本與適用視覺基準；未到階段者依 State Gate 記錄 not_yet_produced。
 
 若 State Sync 無法通過，回報 `CONTINUATION_STATE_BLOCKED`，只列出缺少或衝突項目與受影響下游，不能生成候選教材、圖片、腳本或批次成果。上下文整理、換平台或對話中斷後，必須重新執行完整同步，不得沿用聊天記憶。
 
@@ -93,4 +93,8 @@ WORK 模式的簡報預設交付為高畫質圖片化投影片（PNG）與 PDF�
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+
+## STEP 1 整合擷取
+
+SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，完整後才交付一份審核稿並停在 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。

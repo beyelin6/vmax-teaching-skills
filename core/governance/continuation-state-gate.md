@@ -1,4 +1,4 @@
-# V-MAX Continuation State Gate 1.1
+# V-MAX Continuation State Gate 1.2
 
 ## 定位
 
@@ -16,8 +16,8 @@
 2. Google Drive `V-MAX_Runtime_Index`。
 3. 教師指定課次的最新 Runtime State 與 revision。
 4. Runtime State 指向且當前階段已應存在的 Source Master、LKB、Learning Modules、Teaching Strategy 與教師確認紀錄；依下述階段適用性規則讀取。
-5. 若任務涉及簡報或視覺：目前 `SLIDE_SCRIPT`、Approved Visual Benchmark、Visual Text DNA、角色定錨、Style Recipe 與上一個代表頁狀態。
-6. 若任務涉及簡報或視覺：`output_profile.canvas_profile`、教師選定比例、實際像素、方向、安全邊界與素材 fit mode；畫布未鎖定時不得建立代表頁。
+5. 若目前已進入需引用既有視覺成果的 stage：目前 `SLIDE_SCRIPT`、Approved Visual Benchmark、Visual Text DNA、角色定錨、Style Recipe 與上一個代表頁狀態。
+6. 若目前已進入畫布鎖定或渲染 stage：`output_profile.canvas_profile`、教師選定比例、實際像素、方向、安全邊界與素材 fit mode；畫布未鎖定時不得建立代表頁。
 
 ### 階段適用性
 
@@ -136,3 +136,11 @@ state_sync:
 - `CANVAS_SPEC_BLOCKED`
 - `CANVAS_DRIFT`
 - `OUTPUT_PROFILE_MISMATCH`
+
+## 指定課次、重製與階段內續作
+
+教師明確指定課次時，先依該課 lesson_id 解析其 Index 記錄與 State。Index 的 active lesson 指向別課僅表示前次活動課程，不能單憑此項判為來源／版本衝突；完成指定課次身分核對後記錄切換事件、更新 Index 並回讀。同課 State 指向不明、多份最新 revision 或來源身分矛盾仍須阻塞。
+
+教師明確要求重新製作時，建立非破壞性新 revision／重製分支並記錄新起點與沿用範圍；舊版確認稿保留。從來源重整的分支不要求舊 P01、頁數或視覺成果先補齊；若是續做既有視覺階段，其已核准資產仍須核對。已確認來源可依 STEP 1 政策核驗後引用，不因重製而自動失效。
+
+STEP 1 按 `core/governance/step1-source-anchor-policy.md` 第 G 節連續擷取；內部查找、翻頁與 checkpoint 不屬於跨 stage，無需各自建立教師 HOLD。只有目前 stage 已應存在的必要輸入缺失才阻塞；LKB、成語選教覆蓋及施工鎖在未到其階段時列 not_yet_produced，不得因最終產品是簡報就提前索取。
