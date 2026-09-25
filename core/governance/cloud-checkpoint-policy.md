@@ -1,6 +1,6 @@
 # V-MAX Confirmed Cloud Checkpoint Policy
 
-版本：1.0
+版本：1.1
 
 本政策處理「製作途中已確認的檔案與頁面」，與完成後的 Lesson Package 歸檔不同。教師每次確認後，立即建立不可混淆的雲端快照，讓換平台、換對話或中斷後可以從最新確認版本接續。
 
@@ -52,3 +52,7 @@ cloud_checkpoint:
 只有 `status: VERIFIED`、`uploaded_files_verified: PASS`，並且 Drive list/search 能重新查到所有檔案，才算可接續。上傳失敗、權限不足或回讀不到時標記 `RUNTIME_WRITE_BLOCKED`／`CLOUD_CHECKPOINT_UNVERIFIED`，不得用本機檔案、聊天記憶或「應該已上傳」繼續高風險製作。
 
 正式完成時仍須依 Lesson Package Delivery 進行完整六類歸檔；checkpoint 不取代最終歸檔，只確保中途確認成果不遺失。
+
+## 來源擷取中的保存頻率
+
+讀一頁 PDF、補一段轉錄不是已確認成果事件，不觸發完整確認快照。STEP 1 可合併一段連續擷取成果保存；到 stage／HOLD、教師決策、實際阻塞或交接才同步相應文件並驗證。原有教師確認與批次成果的即時 checkpoint 要求不變。只上傳本次有變動的檔案，未變動核准資產沿用已驗證 file ID／revision／hash；不為存一次文字重傳整課素材。

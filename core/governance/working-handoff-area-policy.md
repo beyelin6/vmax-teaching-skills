@@ -1,6 +1,6 @@
 # Working Handoff Area Policy
 
-Version: 1.1
+Version: 1.2
 
 ## Purpose
 
@@ -99,3 +99,7 @@ When the lesson package is approved, publish final artifacts into the existing s
 ```
 
 The Artifact Registry links final artifacts to their working records through `derived_from` and `source_artifact_refs`. A new semester or course uses a new lesson-specific folder and its own current pointer.
+
+## Source extraction handoff
+
+During SOURCE 0 / STEP 1, load only the current pointer, applicable source records, and teacher decisions. Layout briefs, style matrices, and visual assets are not required before their stages. Follow the scoped extraction and reuse rules in `core/governance/step1-source-anchor-policy.md`. Save accumulated source changes at meaningful checkpoints and stage/HOLD boundaries; reading each page does not require rewriting every artifact or re-listing the entire Drive. Preserve verified references to unchanged artifacts.

@@ -5,7 +5,7 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 
 # Chinese Textbook Transcriber
 
-版本：0.4.3
+版本：0.4.4
 
 ## 核心定位
 
@@ -39,9 +39,9 @@ The label `Official Knowledge` is an output grouping, not a single authority tha
 
 如課程專案中存在舊檔，應先標記為 legacy，再依遷移規則轉換。
 
-## 允許收錄的內容
+## 可收錄類別（不等於每次全文轉錄）
 
-只要來源教材明確提供，均屬 Official Knowledge，包括：
+以下是來源分類目錄；本次必抓範圍依 `core/governance/step1-source-anchor-policy.md` 的擷取效率規則與教師既定清單，不把所有教師欄小字自動變成必做全文轉錄。教材明確提供的內容歸於適當來源層，包括：
 
 1. 基本資訊：課次、課名、作者、年級、冊別、單元與出版社資訊。
 2. 課文原文：完整標題、自然段、標點與順序。
@@ -90,7 +90,7 @@ For cross-AI records, also write the canonical `source_layer` value from `core/s
 - `crop_ref`（無需獨立裁切時填 null；原頁＋區域描述可定位即足夠）
 - `file_fingerprint`／`page_fingerprints`／`crop_fingerprints`（可取得時）
 
-課文原文、教材列出的字詞與版面小字區必須在本次整理資料中保存完整文字內容，不只保存 PDF 路徑或摘要。後續 LKB、候選清單與輸出技能應優先讀取已保存的 Source Master／文字片段；只有證據衝突、OCR 不確定或教師要求重查時，才重新開啟原始 PDF。
+課文原文、教材列出的字詞及小字區中屬於擷取清單的內容必須在本次整理資料中保存完整文字內容，不只保存 PDF 路徑或摘要。後續 LKB、候選清單與輸出技能應優先讀取已保存的 Source Master／文字片段；只有證據衝突、OCR 不確定或教師要求重查時，才重新開啟原始 PDF。
 
 並盡可能記錄：
 
@@ -105,7 +105,7 @@ For cross-AI records, also write the canonical `source_layer` value from `core/s
 
 ## 防漏工作流
 
-1. 建立來源清單與頁碼範圍。
+1. 沿用教師既定擷取清單與已知來源，核對版本與已驗證紀錄，確認本次只需補哪些項目。
 2. 建立 `SOURCE_INGESTION_RECORD`，逐頁登錄區塊覆蓋與證據定位。
 3. 依頁面順序掃描正文、底欄、側欄、圖表與活動區。
 4. 再依類別核對課文、生字、認讀字、詞語、成語、修辭、句型、活動與答案。
@@ -137,7 +137,7 @@ teacher_confirmation_status: NOT_REVIEWED | WAITING_TEACHER | CONFIRMED | CHANGE
 
 ## 完成條件
 
-三份標準輸出均存在，課文、生字、認讀字、全部核心詞語、官方成語、官方修辭句型、語文活動及教材答案均已完成防漏核對，且沒有教師補充、系統延伸或教學設計混入官方知識檔。
+三份內容輸出與來源擷取紀錄均存在，課文、生字、認讀字、全部核心詞語、官方成語、官方修辭句型、語文活動及教材答案均已完成防漏核對，且沒有教師補充、系統延伸或教學設計混入官方知識檔。
 
 另須確認：`source-ingestion-record.json` 存在、所有必要區塊均有 `FOUND`／`NOT_FOUND`／`NOT_APPLICABLE` 結果，所有歷史 `UNCERTAIN` 與衝突均保留證據與處理記錄，必要未解項目為零；清楚原圖可用於修正 OCR，原始來源間的真實衝突須有教師裁決事件。只有列出缺口仍為 NEEDS_REVIEW，不算完成。
 
