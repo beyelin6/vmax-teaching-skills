@@ -1,4 +1,4 @@
-# V-MAX Batch Construction Lock 1.2
+# V-MAX Batch Construction Lock 1.3
 
 本規格把「已確認的逐頁細節」變成批次施工時可驗證的輸入契約。目的不是再增加一份說明文件，而是讓批次 Renderer 沒有自行補頁、換版型、改文字或套用上一頁資料的空間。
 
@@ -105,4 +105,4 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" \
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-語文規劃、簡報施工或每次續作／下一步／確認前，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+僅在 Runtime 已到 STEP 2.5 語文規劃或後續簡報施工階段（含該階段續作）時，載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。

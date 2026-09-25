@@ -1,8 +1,8 @@
-# V-MAX Lesson Master Preflight 1.0
+# V-MAX Lesson Master Preflight 1.1
 
 ## 目的
 
-所有平台執行預習單、短文單、簡報、教案、評量、活動或圖片前，都先確認本課已有可追溯且足以支持該任務的核准 Lesson Knowledge Book（LKB）母檔。此規則屬於 Core，不只適用於 Gemini。
+此 Preflight 只適用於 Runtime 實際進入下游教材製作；SOURCE 0／STEP 1 的擷取、校對與整合審核不以 LKB 存在或核准為前置條件。沒有母檔時依主流程先完成來源工作，不把缺少 LKB 當作來源阻塞。所有平台實際製作預習單、短文單、簡報、教案、評量、活動或圖片前，都先確認本課已有可追溯且足以支持該任務的核准 Lesson Knowledge Book（LKB）母檔。此規則屬於 Core，不只適用於 Gemini。
 
 ## 固定流程
 

@@ -122,26 +122,42 @@ def validate_manifest_paths() -> None:
             continue
         if not (ROOT / value).exists():
             fail(f"manifest path does not exist: {value}")
+    for value in re.findall(r"\bpath:\s*([^,}\n]+)", text):
+        value = value.strip().strip('\"\'')
+        if not (ROOT / value).is_file():
+            fail(f"manifest path does not exist: {value}")
 
 
 def validate_manifest_module_versions() -> None:
     text = (ROOT / "V-MAX_MANIFEST.md").read_text(encoding="utf-8")
-    entries = re.finditer(
+    entries = re.findall(
         r"(?m)^([a-z0-9_]+):\s*\n\s+path:\s*([^\n]+)\n\s+current_version:\s*([^\n]+)",
         text,
     )
-    for entry in entries:
-        module, raw_path, expected = entry.groups()
-        path = ROOT / raw_path.strip()
+    entries += re.findall(
+        r"(?m)^([a-z0-9_]+):\s*\{\s*path:\s*([^,}]+),\s*current_version:\s*([^,}]+)\s*\}",
+        text,
+    )
+    if not entries:
+        fail("manifest contains no versioned module entries")
+    for module, raw_path, expected in entries:
+        path = ROOT / raw_path.strip().strip('\"\'')
         if not path.is_file():
+            fail(f"manifest module file missing: {raw_path.strip()}")
             continue
         content = path.read_text(encoding="utf-8")
-        found = re.search(r"(?m)^(?:版本：|# .*? v)(\d+(?:\.\d+)+)\s*$", content)
-        if found and found.group(1) != expected.strip():
+        found = re.search(r"(?m)^(?:版本[：:]\s*|Version:\s*|# .*?\s+v?)(\d+(?:\.\d+)+)\s*$", content)
+        if not found:
+            fail(f"manifest module has no declared version: {raw_path.strip()}")
+        elif found.group(1) != expected.strip().strip('\"\''):
             fail(
                 f"manifest version mismatch for {module}: "
                 f"{expected.strip()} != {found.group(1)} in {path.relative_to(ROOT)}"
             )
+    heading = re.search(r"(?m)^# V-MAX Manifest (\S+)", text)
+    field = re.search(r"(?m)^vmax_manifest_version:\s*(\S+)", text)
+    if not heading or not field or heading.group(1) != field.group(1):
+        fail("manifest heading and vmax_manifest_version must match")
 
 
 def validate_drive_id_locations() -> None:
@@ -157,7 +173,7 @@ def validate_drive_id_locations() -> None:
         "1d1vCEw-BzFiR_DyGYDM1f3" + "aovrKODIaA",
     )
     for path in ROOT.rglob("*"):
-        if not path.is_file() or ".git" in path.parts:
+        if not path.is_file() or ".git" in path.parts or "__pycache__" in path.parts:
             continue
         relative = path.relative_to(ROOT)
         if relative in allowed:

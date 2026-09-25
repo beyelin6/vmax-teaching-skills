@@ -1,5 +1,7 @@
 # Lesson Architecture Profile
 
+版本：1.0
+
 這份 Profile 是每課共用的教學骨架。它固定教師要教的學習內容與主要順序，但不把每一頁或每一分鐘寫死。
 
 ## Baseline 教學順序
