@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.8
+# V-MAX Adapter｜ChatGPT 1.9
 
 ## Lesson Artifact Registry
 
@@ -96,7 +96,7 @@ SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/ste
 
 目前 Runtime 已進入簡報／視覺 stage 時，必須先讀取正向視覺範例、Visual Text DNA、Canvas Lock Policy 與 Text Layer Construction Policy。到畫布鎖定階段若尚無鎖定畫布，詢問教師選擇 `4:3` 或 `16:9`；選定後續跑不得切換。逐頁腳本、圖片底圖、正式文字層、角色／風格檢查與 PPTX／PNG 輸出必須分階段完成；不得從抽象教學主題直接套用通用簡報模板。正式中文只能由可驗證文字層渲染，文字感覺或圖文關係不像正向範例時標記 `VISUAL_TEXT_DNA_FAIL`，停等修正，不得量產。
 
-每課先建立並鎖定 `Lesson Architecture Profile`：開頭導入 → 課文總說 → 圖像式心智圖 → 各段（課文／語詞解釋／修辭或句型／文意理解）→ 形近字 → 成語 → 教材語文活動 → 總結與學習遷移。完成 Baseline 確認後，才詢問是否加入平板操作、四學公開課、議題融入或教師自訂外加模板。外加模板可以重新設計教學活動、互動、媒介與時間配置，但必須逐項回指 Baseline 的學習結果；不得靜默刪除教師指定內容，也不得把變體誤當成新的 Official Knowledge。
+每課先建立並鎖定 `Lesson Architecture Profile`：依 `schemas/lesson-architecture-profile.md` 的十項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 生字延伸成語 → 統整遷移；教材語文活動嵌入相關區段並檢查完整覆蓋。完成 Baseline 確認後，才詢問是否加入平板操作、四學公開課、議題融入或教師自訂外加模板。外加模板可以重新設計教學活動、互動、媒介與時間配置，但必須逐項回指 Baseline 的學習結果；不得靜默刪除教師指定內容，也不得把變體誤當成新的 Official Knowledge。
 
 若目前 WORK 模式的插圖視覺已符合教師期待，視覺資產視為 `illustration_status: LOCKED`。之後文字表達、字體、斷行、位置或顯示失敗，只能重建文字層與排版，不得重新生成插圖或角色。
 

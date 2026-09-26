@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.12
+# V-MAX Main Workflow 2.13
 
 ## 定位
 
@@ -197,7 +197,7 @@ STEP 2.5 結束前必須輸出 `LANGUAGE_CANDIDATE_COVERAGE`：列出各聯集�
 
 ## Lesson Architecture Baseline 與外加變體
 
-每課先建立並鎖定 `schemas/lesson-architecture-profile.md`：開頭導入 → 課文總說 → 圖像式心智圖 → 各段（課文／語詞解釋／修辭或句型／文意理解）→ 形近字 → 成語 → 教材語文活動 → 總結與學習遷移。
+每課先建立並鎖定 `schemas/lesson-architecture-profile.md`：依 `schemas/lesson-architecture-profile.md` 的十項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 生字延伸成語 → 統整遷移；教材語文活動嵌入相關區段並檢查完整覆蓋。
 
 平板操作、四學公開課、議題融入與教師自訂模板都是 Baseline 的呈現變體。變體可以重組活動、媒介、互動、時間配置與頁面組織，但必須以 `architecture_mapping` 回指每一個 Baseline 學習結果，標記 `preserved`、`transformed`、`extended` 或經教師確認的 `omitted`。不得未標示地改寫 Official Knowledge，也不得靜默刪除教師指定的學習重點。
 

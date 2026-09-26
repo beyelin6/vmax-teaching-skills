@@ -5,15 +5,15 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 # Presentation Engine
 
-版本：0.10.15
+版本：0.10.16
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
 ## SLIDE_ARCHITECTURE_LOCK
 
-Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapping`。Baseline 順序固定為：開頭導入 → 課文總說 → 圖像式心智圖 → 各段（課文／語詞解釋／修辭或句型／文意理解）→ 形近字 → 成語 → 教材語文活動 → 總結與學習遷移。頁數上限、模板或 Renderer 不得自行重排；外加變體只能透過明確 mapping 改變教學呈現。
+Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapping`。Baseline 順序固定為：依 `schemas/lesson-architecture-profile.md` 的十項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 生字延伸成語 → 統整遷移；教材語文活動嵌入相關區段並檢查完整覆蓋。頁數上限、模板或 Renderer 不得自行重排；外加變體只能透過明確 mapping 改變教學呈現。
 
-驗證必須拒絕：缺少任一必修區段、段內順序錯誤、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。
+驗證必須拒絕：缺少任一必修區段、未核准的區段重排或內容遺漏（段內依適用焦點彈性安排，不強制每段同一套活動）、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。
 
 ## PAGE_PLAN
 

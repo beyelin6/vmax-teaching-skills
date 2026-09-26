@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.7
+版本：2.8
 
 ## 目的
 
@@ -107,9 +107,11 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ### SLIDE_ARCHITECTURE_LOCK
 
-進入 `Visual Grammar / Slide Architecture` 前，Executor 必須建立並寫入 Slide Script 的 `SLIDE_ARCHITECTURE_LOCK`。預設順序為：
+進入 `Visual Grammar / Slide Architecture` 時，Executor 先依 `schemas/lesson-architecture-profile.md` 建立內容骨架與覆蓋；逐頁稿核准後才將 `SLIDE_ARCHITECTURE_LOCK` 寫入正式 Slide Script。預設順序為：
 
-`opening → overview → visual_mind_map → paragraph_learning(text_and_context → vocabulary_explanation → rhetoric_or_sentence_pattern → meaning_comprehension) → character_comparison → idiom_learning → textbook_language_activity → summary_transfer`
+`cover → reading_prompt → visual_mind_map → paragraph_learning（閱讀與隨文教學交錯）→ character_overview → character_comparison → polyphonic_learning → idiom_learning（生字延伸）→ summary_transfer`
+
+區段適用性、教材活動嵌入與既有核准稿遷移以該 Profile 為準；不得強制每段同一套教學活動，也不得漏掉正式生字總覽或用課文成語取代生字延伸檢核。
 
 頁數、模板或外加變體不得靜默重排此順序。若教師確認了變體，必須另存 `architecture_mapping`，逐項標記 `preserved`、`transformed`、`extended` 或 `omitted` 及理由；變體可以改變教學呈現，但不得遺失任何教師指定的學習結果。
 

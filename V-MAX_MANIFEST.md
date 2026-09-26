@@ -1,9 +1,9 @@
-# V-MAX Manifest 3.8.21
+# V-MAX Manifest 3.8.22
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.21
+vmax_manifest_version: 3.8.22
 bootstrap: V-MAX_BOOTSTRAP.md
 session_director: { path: core/director/session-director.md, current_version: 1.3 }
 contextual_enrichment_policy: { path: core/director/contextual-enrichment-policy.md, current_version: 1.1 }
@@ -19,18 +19,18 @@ step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.m
 chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: 0.4.4 }
 presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: 1.1 }
 idiom_expression_policy: { path: core/director/idiom-expression-visualization-policy.md, current_version: 1.1 }
-chatgpt_adapter: { path: adapters/chatgpt.md, current_version: 1.8 }
+chatgpt_adapter: { path: adapters/chatgpt.md, current_version: 1.9 }
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.6 }
 chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: 1.7 }
-main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "2.12" }
+main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "2.13" }
 cloud_checkpoint_policy: { path: core/governance/cloud-checkpoint-policy.md, current_version: 1.1 }
-executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.7 }
+executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.8 }
 continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: 1.5 }
 google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md, current_version: 1.1 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.8 }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.5 }
 classroom_language_page_rules: { path: skills/presentation-engine/references/classroom-language-page-rules.md, current_version: 1.7 }
-lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.0 }
+lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.1 }
 page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profile.md, current_version: 1.1 }
 batch_construction_lock: { path: core/governance/batch-construction-lock.md, current_version: 1.3 }
 paragraph_text_page_policy: { path: core/presentation/paragraph-text-page-policy.md, current_version: 1.0 }
@@ -39,9 +39,9 @@ slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contrac
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.3 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.0 }
-presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: 0.10.15 }
+presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: 0.10.16 }
 image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: 2.4 }
-quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.4 }
+quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.5 }
 visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_version: 1.2 }
 ```
 
@@ -65,7 +65,7 @@ Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_REA
 Front Door 1.6 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Paragraph Text Page、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
 
 ## Downstream Alignment
-Execution Rules 1.8 / Presentation Engine 0.10.15 / Renderer Contract 2.0 / Image Renderer 2.4 / Quality Gate 3.4 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.12 / Front Door 1.6 / ChatGPT Work Launcher 1.7。
+Execution Rules 1.8 / Presentation Engine 0.10.16 / Renderer Contract 2.0 / Image Renderer 2.4 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.13 / Front Door 1.6 / ChatGPT Work Launcher 1.7。
 
 ## Lesson Architecture and Variants
 
@@ -90,8 +90,8 @@ Source Anchor Policy 1.9 是完整擷取與集中審核的 canonical：同 stage
 
 ## ChatGPT Launcher 階段載入
 
-Launcher 1.7 / Bootstrap 1.6.2 / ChatGPT Adapter 1.8：先同步當課 Runtime，再載入目前階段模組。SOURCE 0／STEP 1 不預載視覺施工規則；空的 next_allowed_stage 不阻擋階段內擷取。視覺呈現與局部修訂要求保留在 adapter，依 Runtime 階段執行。Plugin 版本取自 VERSION，不以 Launcher 版本代填。
+Launcher 1.7 / Bootstrap 1.6.2 / ChatGPT Adapter 1.9：先同步當課 Runtime，再載入目前階段模組。SOURCE 0／STEP 1 不預載視覺施工規則；空的 next_allowed_stage 不阻擋階段內擷取。視覺呈現與局部修訂要求保留在 adapter，依 Runtime 階段執行。Plugin 版本取自 VERSION，不以 Launcher 版本代填。
 
 ## 來源續作與核准保留
 
-Executor 2.7 / Source Anchor 1.9 / Recognition-only 1.3 / HOLD Interface 1.7 / Continuation State Gate 1.5：同步不另設 HOLD；正式認讀字與比較／多音字活動先分類再比對；核准來源僅因具體新證據修補受影響項目，不反覆重跑未變內容。Launcher 維持 1.7，從 main 按需載入本次修正。
+Executor 2.8 / Source Anchor 1.9 / Recognition-only 1.3 / HOLD Interface 1.7 / Continuation State Gate 1.5：同步不另設 HOLD；正式認讀字與比較／多音字活動先分類再比對；核准來源僅因具體新證據修補受影響項目，不反覆重跑未變內容。Launcher 維持 1.7，從 main 按需載入本次修正。
