@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.8
+版本：2.9
 
 ## 目的
 
@@ -341,3 +341,7 @@ SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/ste
 ## 已審來源的續作
 
 STEP 1 的重用、局部修補與完成判定依 Source Anchor Policy「已審來源續作與局部修補」。來源擷取完整性由執行器在整合稿前核對，不把正文、正式字表、內部 coverage 與來源索引各拆成一個教師 HOLD。既有局部核准按原範圍保留，不擴大成整體核准，也不清空重跑。
+
+## 視覺授權不得由內容確認推定
+
+實際呼叫圖像生成／編輯前，必讀並執行 `core/governance/presentation-preconstruction-policy.md` 第 7 節，區分角色／風格候選探索、逐頁稿、代表頁與批次的授權。內容骨架或一般「繼續」不能替代當課風格、引導角色、課文角色及畫布的核准證據。完整代表頁須有核准文字與完整版面；背景素材不能算代表頁通過。直接使用原生圖像工具也受同一檢查，不因未經 Renderer CLI 而豁免。缺證據時保持候選、回到最早未完成的適用確認點，不重跑未受影響來源。

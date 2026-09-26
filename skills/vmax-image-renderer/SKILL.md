@@ -5,7 +5,7 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.4
+版本：2.5
 
 ## Request Contract Gate
 
@@ -136,3 +136,7 @@ python "<Renderer 技能絕對路徑>/scripts/validate_representative_selection.
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
 僅在 Runtime 已到 STEP 2.5 語文規劃或後續簡報施工階段（含該階段續作）時，載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+
+## 視覺授權不得由內容確認推定
+
+實際呼叫圖像生成／編輯前，必讀並執行 `core/governance/presentation-preconstruction-policy.md` 第 7 節，區分角色／風格候選探索、逐頁稿、代表頁與批次的授權。內容骨架或一般「繼續」不能替代當課風格、引導角色、課文角色及畫布的核准證據。完整代表頁須有核准文字與完整版面；背景素材不能算代表頁通過。直接使用原生圖像工具也受同一檢查，不因未經 Renderer CLI 而豁免。缺證據時保持候選、回到最早未完成的適用確認點，不重跑未受影響來源。

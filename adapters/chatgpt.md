@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.9
+# V-MAX Adapter｜ChatGPT 1.10
 
 ## Lesson Artifact Registry
 
@@ -103,3 +103,7 @@ SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/ste
 每個圖片／腳本候選都必須保留版本與教師狀態；未確認候選不得覆蓋確認稿、改寫 Runtime 或觸發其他頁面重算。代表頁未確認前，不得批次製作。
 
 WORK 模式的簡報預設交付為高畫質圖片化投影片（PNG）與 PDF。不得自行生成可編輯文字框的 PPTX；只有教師明確要求 PPTX 時，才另行派生。
+
+## 視覺授權不得由內容確認推定
+
+實際呼叫圖像生成／編輯前，必讀並執行 `core/governance/presentation-preconstruction-policy.md` 第 7 節，區分角色／風格候選探索、逐頁稿、代表頁與批次的授權。內容骨架或一般「繼續」不能替代當課風格、引導角色、課文角色及畫布的核准證據。完整代表頁須有核准文字與完整版面；背景素材不能算代表頁通過。直接使用原生圖像工具也受同一檢查，不因未經 Renderer CLI 而豁免。缺證據時保持候選、回到最早未完成的適用確認點，不重跑未受影響來源。

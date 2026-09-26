@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.7
+# V-MAX HOLD Teacher Interface Policy 1.8
 
 ## 定位
 
@@ -294,3 +294,7 @@ STEP 1 的兩類審核必須分開：
 教師核准一個完整 stage 後，保存決策、同步 State／Index 與回讀驗證，接著在同回合執行唯一獲准的下一 stage，直到該 stage 的審核輸出。不得只交付「已同步，請下一步」；若實際工具失敗，明列失敗操作與恢復點。
 
 STEP 1 的來源正文、字表、擷取覆蓋與索引應由 AI 先整合檢查，再以一份稿進 HOLD 1；不把內部資料驗證變成教師逐項批准。已存在的局部核准繼續有效但不擴大範圍，依 Source Anchor Policy 補齊；已整體核准後發現的真實錯誤走局部 revision／patch，不使無關核准失效。
+
+## 視覺授權不得由內容確認推定
+
+實際呼叫圖像生成／編輯前，必讀並執行 `core/governance/presentation-preconstruction-policy.md` 第 7 節，區分角色／風格候選探索、逐頁稿、代表頁與批次的授權。內容骨架或一般「繼續」不能替代當課風格、引導角色、課文角色及畫布的核准證據。完整代表頁須有核准文字與完整版面；背景素材不能算代表頁通過。直接使用原生圖像工具也受同一檢查，不因未經 Renderer CLI 而豁免。缺證據時保持候選、回到最早未完成的適用確認點，不重跑未受影響來源。
