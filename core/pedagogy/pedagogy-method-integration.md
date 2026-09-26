@@ -1,4 +1,4 @@
-# V-MAX Pedagogy Method Integration 1.0
+# V-MAX Pedagogy Method Integration 1.1
 
 ## 定位
 
@@ -140,7 +140,7 @@ PBL 可跨一課、多課甚至跨領域，因此不必強迫塞進單一 Lesson
 
 ## F. 與 Session Director 的關係
 
-啟用教學法後，Session Director 必須重新檢查：
+啟用教學法或閱讀 Overlay 不代表要求課時規劃。CONTENT_COVERAGE 只檢查原核准內容是否完整、呈現順序與位置是否需要調整；不得因此增加堂數或要求時間確認。只有教師已要求 TIMEBOXED_SESSIONS，Session Director 才檢查：
 - 堂數是否需要增加
 - 哪一堂需要蒐集／討論／產出
 - natural_stop_point 是否改變

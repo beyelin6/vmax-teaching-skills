@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.11
+# V-MAX Main Workflow 2.12
 
 ## 定位
 
@@ -220,7 +220,7 @@ STEP 2.5 結束前必須輸出 `LANGUAGE_CANDIDATE_COVERAGE`：列出各聯集�
 
 Teacher Intent 採 `PROPOSED → CONFIRMED → LOCKED`。
 
-Lesson Map 先建立整課理解旅程；Session Map 依內容密度自然切堂；不得固定段落頁數或固定每段五件套。
+Lesson Map 先建立整課理解旅程；Session Map 必讀 `core/director/session-director.md`，預設 CONTENT_COVERAGE，只核對指定內容的完整覆蓋、呈現順序與位置；不安排堂數或時間。僅教師明確要求課時規劃才用 TIMEBOXED_SESSIONS 自然切堂。內容模式覆蓋完整且不改既有核准時記錄驗證即可，不另問相同內容；有實質變更才 HOLD。不得固定段落頁數或固定每段五件套。
 
 補充內容／框架可選，不強迫。
 

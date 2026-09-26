@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.6
+# V-MAX HOLD Teacher Interface Policy 1.7
 
 ## 定位
 
@@ -26,7 +26,7 @@
 - Teacher Intent Lock
 - Lesson Map
 - 補充內容／學習框架候選
-- Session Map
+- Session Map：TIMEBOXED_SESSIONS 審課時；CONTENT_COVERAGE 僅實質內容／順序變更需 HOLD，無變更的完整覆蓋由 AI 驗證
 - Lesson Visual Map Strategy
 - Scenario Wrapper
 - Character Topology / Cast

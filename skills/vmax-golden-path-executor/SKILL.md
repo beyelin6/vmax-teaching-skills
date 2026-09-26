@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.6
+版本：2.7
 
 ## 目的
 
@@ -92,6 +92,10 @@ SOURCE 0｜Google Drive Source Library 尋源
 → Lesson Package Delivery Gate
 → Google Drive 歸檔與驗證
 ```
+
+### Session Map 執行分流
+
+到 Session Map 必讀 `core/director/session-director.md`。完整教材製作預設 CONTENT_COVERAGE；保留已核准內容並檢查呈現順序，不自行估堂數。只有教師明確要求課時規劃才啟用 TIMEBOXED_SESSIONS。內容模式沿用原 stage ID，依 policy 驗證完成或只對實質變更保留 HOLD；不得製造堂數確認點。完成後保存並同步，停在下一合法階段的入口，不自動連做視覺方案。教師要求取消既有切堂時只修正該 artifact，不重做来源與已核准 Lesson Map／Overlay。
 
 ### PAGE_DETAIL_CONFIRMATION
 

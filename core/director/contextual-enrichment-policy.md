@@ -1,4 +1,4 @@
-# V-MAX Contextual Enrichment Policy 1.0
+# V-MAX Contextual Enrichment Policy 1.1
 
 ## 定位
 
@@ -183,7 +183,7 @@ enrichment:
 → Slide Architecture
 ```
 
-補充候選應在 Session Map 前出現，因為它可能改變堂數、節奏與課堂停點。
+補充候選應在 Session Map 前出現，以核對新增內容的覆蓋與呈現位置；只有已啟用 TIMEBOXED_SESSIONS 時才評估堂數、節奏與課堂停點。
 
 ---
 

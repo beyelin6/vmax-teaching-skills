@@ -1,16 +1,19 @@
-# V-MAX Manifest 3.8.20
+# V-MAX Manifest 3.8.21
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.20
+vmax_manifest_version: 3.8.21
 bootstrap: V-MAX_BOOTSTRAP.md
+session_director: { path: core/director/session-director.md, current_version: 1.3 }
+contextual_enrichment_policy: { path: core/director/contextual-enrichment-policy.md, current_version: 1.1 }
+pedagogy_method_integration: { path: core/pedagogy/pedagogy-method-integration.md, current_version: 1.1 }
 bootstrap_policy: { path: V-MAX_BOOTSTRAP.md, current_version: 1.6.2 }
 lesson_master_preflight: { path: core/governance/lesson-master-preflight.md, current_version: 1.1 }
 runtime_contract: runtime/lesson-state.md
 runtime_contract_version: 2.4
 working_handoff_area_policy: { path: core/governance/working-handoff-area-policy.md, current_version: 1.2 }
-hold_teacher_interface_policy: { path: core/governance/hold-teacher-interface-policy.md, current_version: 1.6 }
+hold_teacher_interface_policy: { path: core/governance/hold-teacher-interface-policy.md, current_version: 1.7 }
 recognition_only_character_policy: { path: core/governance/recognition-only-character-policy.md, current_version: 1.3 }
 step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.md, current_version: 1.9 }
 chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: 0.4.4 }
@@ -19,9 +22,9 @@ idiom_expression_policy: { path: core/director/idiom-expression-visualization-po
 chatgpt_adapter: { path: adapters/chatgpt.md, current_version: 1.8 }
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: 1.6 }
 chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: 1.7 }
-main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "2.11" }
+main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "2.12" }
 cloud_checkpoint_policy: { path: core/governance/cloud-checkpoint-policy.md, current_version: 1.1 }
-executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.6 }
+executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: 2.7 }
 continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: 1.5 }
 google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md, current_version: 1.1 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: 1.8 }
@@ -62,7 +65,7 @@ Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_REA
 Front Door 1.6 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Paragraph Text Page、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
 
 ## Downstream Alignment
-Execution Rules 1.8 / Presentation Engine 0.10.15 / Renderer Contract 2.0 / Image Renderer 2.4 / Quality Gate 3.4 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.11 / Front Door 1.6 / ChatGPT Work Launcher 1.7。
+Execution Rules 1.8 / Presentation Engine 0.10.15 / Renderer Contract 2.0 / Image Renderer 2.4 / Quality Gate 3.4 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.0 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.12 / Front Door 1.6 / ChatGPT Work Launcher 1.7。
 
 ## Lesson Architecture and Variants
 
@@ -91,4 +94,4 @@ Launcher 1.7 / Bootstrap 1.6.2 / ChatGPT Adapter 1.8：先同步當課 Runtime�
 
 ## 來源續作與核准保留
 
-Executor 2.6 / Source Anchor 1.9 / Recognition-only 1.3 / HOLD Interface 1.6 / Continuation State Gate 1.5：同步不另設 HOLD；正式認讀字與比較／多音字活動先分類再比對；核准來源僅因具體新證據修補受影響項目，不反覆重跑未變內容。Launcher 維持 1.7，從 main 按需載入本次修正。
+Executor 2.7 / Source Anchor 1.9 / Recognition-only 1.3 / HOLD Interface 1.7 / Continuation State Gate 1.5：同步不另設 HOLD；正式認讀字與比較／多音字活動先分類再比對；核准來源僅因具體新證據修補受影響項目，不反覆重跑未變內容。Launcher 維持 1.7，從 main 按需載入本次修正。
