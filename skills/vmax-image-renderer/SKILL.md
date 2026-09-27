@@ -5,7 +5,7 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.5
+版本：2.6
 
 ## Request Contract Gate
 
@@ -140,3 +140,7 @@ python "<Renderer 技能絕對路徑>/scripts/validate_representative_selection.
 ## 視覺授權不得由內容確認推定
 
 實際呼叫圖像生成／編輯前，必讀並執行 `core/governance/presentation-preconstruction-policy.md` 第 7 節，區分角色／風格候選探索、逐頁稿、代表頁與批次的授權。內容骨架或一般「繼續」不能替代當課風格、引導角色、課文角色及畫布的核准證據。完整代表頁須有核准文字與完整版面；背景素材不能算代表頁通過。直接使用原生圖像工具也受同一檢查，不因未經 Renderer CLI 而豁免。缺證據時保持候選、回到最早未完成的適用確認點，不重跑未受影響來源。
+
+## 每頁遵稿交接
+
+每次代表頁、批次或修圖呼叫前，執行 `core/governance/presentation-preconstruction-policy.md` 第 8 節。實際讀回已核准完整 PAGE_DETAIL 的該頁，將文字、插圖、角色、版面與頁碼帶入工具輸入；Runtime 衝突未解或只取得核准摘要時不得施工。圖像完成後對照原頁規格，不一致先修；不得把相同 hash 或工具成功當作視覺符合證據。所有學生投影片皆有可辨識頁碼；课文頁另逐項完成 `core/presentation/paragraph-text-page-policy.md` 的送審清單。

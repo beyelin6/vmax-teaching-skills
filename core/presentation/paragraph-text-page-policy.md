@@ -1,4 +1,4 @@
-# Paragraph Text Page Policy 1.0
+# Paragraph Text Page Policy 1.1
 
 這是課文閱讀頁與段落語詞頁的硬性施工規則，優先於頁數、模板、圖片模型與批次方便性。
 
@@ -47,3 +47,9 @@ Failure codes：`PARAGRAPH_TEXT_INCOMPLETE / PARAGRAPH_TEXT_REWRITTEN / PARAGRAP
 缺少 placement、拆頁理由或核准回指 → `PARAGRAPH_LANGUAGE_PLACEMENT_MISSING` / `UNAPPROVED_LANGUAGE_SPLIT` → FAIL。
 
 > 語詞隨段落；同頁是預設，拆頁需要證據。
+
+## 課文頁送審清單
+
+施工前把本頁完整原文、來源段落、全部核准語詞及短解釋、原文筆刷 occurrence、插圖功能、適用角色資產、文字與圖片區／禁遮區及實際投影片頁碼逐項讀回；以核准 PAGE_DETAIL 為唯一頁面施工依據。
+
+送審時直接呈現已配置正式文字與圖像的完整課文頁，核對：原文與標點無遺漏；語詞解釋相鄰且筆刷不遮字；正文與詞義達投影字級；插圖能說明該段；角色一致；文字不溢位、圖片不誤裁；每頁有清楚頁碼（可有圖案設計）。只有留白底圖不能算課文代表頁。課文頁不自行塞入標題、答案或教師講解；需另教的文意／句型頁仍按核准稿安排。

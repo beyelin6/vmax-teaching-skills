@@ -1,6 +1,6 @@
 # Page Detail Confirmation Profile
 
-版本：1.1
+版本：1.2
 
 這是正式製作前的逐頁確認母檔。它把已鎖定的教學架構轉成可批次施工的頁面規格；教師確認後，Renderer 只能依此製作，不得自行補內容或改排版意圖。
 
@@ -172,3 +172,9 @@ page_detail_confirmation:
 ## 施工前與覆蓋檢核
 
 依 `core/governance/presentation-preconstruction-policy.md` 先核對最新 Runtime、Source Master、角色／風格／畫布鎖與已確認頁數帳本，才填寫此 Profile。`idiom_tracks` 分列課文既有與生字延伸；覆蓋表每個保留／合併項目必須回指確切 page_id，不適合者保留理由。角色是否出場、目的及位置、關鍵詞筆刷／底線計畫不可省略。完成稿必為 `pending` 並停等教師確認；不得把欄位齊備或 QA 通過當成教師核准。
+
+## 施工交接
+
+完整已核准母檔必須可持續讀取，核准摘要或代表頁選擇清單不能代替 pages 內文。每次實作依 `core/governance/presentation-preconstruction-policy.md` 第 8 節讀回該頁，帶入實際工具輸入並對照成品；缺少原頁規格不可自行補構圖。
+
+page_number_system.visibility_policy 固定要求所有學生投影片顯示頁碼，navigation_marker.page_number_token 為該頁實際序號。decorative_symbol 可設計但不能取代數字；來源頁碼另存，不冒充投影片頁碼。既有已核准稿缺頁碼時只建立頁碼局部修訂，保留圖像與其他內容。
