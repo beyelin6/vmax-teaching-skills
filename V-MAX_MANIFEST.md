@@ -1,9 +1,9 @@
-# V-MAX Manifest 3.8.26
+# V-MAX Manifest 3.8.27
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.8.26
+vmax_manifest_version: 3.8.27
 bootstrap: V-MAX_BOOTSTRAP.md
 representative_page_selection: { path: schemas/representative-page-selection-profile.md, current_version: 1.1 }
 session_director: { path: core/director/session-director.md, current_version: 1.4 }
@@ -41,7 +41,7 @@ render_request_schema: { path: skills/vmax-image-renderer/references/render-requ
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.0 }
 presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: 0.10.16 }
-image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: 2.7 }
+image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: 2.8 }
 quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.5 }
 visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_version: 1.2 }
 ```
@@ -66,7 +66,7 @@ Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_REA
 Front Door 1.7 在簡報／視覺 stage 強制載入 Execution Rules、Presentation Engine、Classroom Language Rules、Paragraph Text Page、Canvas、Text Layer、Font Safety、Renderer Contract、Image Renderer、Render Request Schema、Quality Gate 與 Slide Script Schema，避免跨 AI 漏讀 canonical。GitHub refresh 暫時失敗時，可信 LKG 以實際版本載入並標記 `GITHUB_REFRESH_PENDING`；沒有 LKG 才 `BOOTSTRAP_BLOCKED`。
 
 ## Downstream Alignment
-Execution Rules 1.8 / Presentation Engine 0.10.16 / Renderer Contract 2.0 / Image Renderer 2.7 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.1 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.13 / Front Door 1.7 / ChatGPT Work Launcher 1.8。
+Execution Rules 1.8 / Presentation Engine 0.10.16 / Renderer Contract 2.0 / Image Renderer 2.8 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.5 / Classroom Language 1.7 / Paragraph Text Page 1.1 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 2.13 / Front Door 1.7 / ChatGPT Work Launcher 1.8。
 
 ## Lesson Architecture and Variants
 

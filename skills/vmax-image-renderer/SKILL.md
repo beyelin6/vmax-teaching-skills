@@ -5,7 +5,7 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.7
+版本：2.8
 
 ## Request Contract Gate
 
@@ -21,7 +21,7 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 python "<目前 Renderer 技能絕對路徑>/scripts/validate_presentation.py" "<request.json 絕對路徑>" --kind render-request --require-ready
 ```
 
-收到完整 Slide Script 時以預設 kind 驗證並加 `--require-ready`，同時檢查上下游 Plan 相等。執行環境須有 jsonschema；驗證器無法執行或非零退出碼 → `PRE_RENDER_RULE_BLOCKED`，不得宣稱通過。PRE_LAYOUT 只可進排版準備。
+收到完整 Slide Script 時以預設 kind 驗證並加 `--require-ready`，同時檢查上下游 Plan 相等。腳本可執行時必須執行，非零退出碼即 `PRE_RENDER_RULE_BLOCKED`，不得施工。只有腳本因環境限制無法執行時，才依 `core/governance/presentation-preconstruction-policy.md` 第 9 節完成等價檢查，標記 `MANUAL_EQUIVALENT_CHECK` 並列出證據；不得宣稱自動驗證通過。等價檢查也無法完成時，標記具體 blocker 並停在原 stage。PRE_LAYOUT 只可進排版準備。
 
 批次製作另必須先執行 `scripts/validate_batch_lock.py`，同時提供 Slide Script、已核准 PAGE_DETAIL_CONFIRMATION 與已確認 Style Selection Profile：
 
