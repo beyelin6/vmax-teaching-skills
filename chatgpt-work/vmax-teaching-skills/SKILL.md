@@ -5,7 +5,7 @@ description: ChatGPT Work 專用的 V-MAX 啟動技能；製作或續作國語�
 
 # V-MAX ChatGPT Work Launcher
 
-版本：1.7
+版本：1.8
 
 ## 安裝與來源
 
@@ -15,9 +15,9 @@ description: ChatGPT Work 專用的 V-MAX 啟動技能；製作或續作國語�
 
 ## 啟動與續作
 
-1. 以可用 GitHub 工具讀取 `VERSION`、`V-MAX_MANIFEST.md` 與 main commit。瀏覽器失敗不代表 GitHub connector 不可用；先檢查並實際嘗試可用讀取工具，不能猜測網路受限。
+1. 以可用 GitHub 工具先取得 main commit，再以同一 commit ref 讀取 `VERSION`、`V-MAX_MANIFEST.md` 與本次必要規則。瀏覽器失敗不代表 GitHub connector 不可用；先檢查並實際嘗試可用讀取工具，不能猜測網路受限。版本回條須對應該 commit 實際讀到的檔案內容。
 2. 依 Manifest 載入 `skills/vmax-teaching-skills/SKILL.md`、`V-MAX_BOOTSTRAP.md`、Runtime contract、Continuation State Gate、current main workflow、executor、HOLD policy、Teacher Review View 與 `adapters/chatgpt.md`。這些檔案的條件式要求僅於適用 stage 執行。
-3. 讀最新 Drive Runtime Index 與教師指定課次的 State，依 Continuation State Gate 核對來源、已保存擷取紀錄、教師決定和目前階段已應存在的產物。沿用現有重製 Runtime；未指定重建時不另開版本。別課 active index、尚未進入階段的產物或舊 P01 不得阻擋來源整理。
+3. 在任何實質教材分析或製作前，讀最新 Drive Runtime Index 與教師指定課次的 State，依 Continuation State Gate 核對 revision、目前 stage、教師決定及必要產物。版本回條須在這些前置讀取後顯示，並以實際 Drive stage 為準。沿用現有重製 Runtime；未指定重建時不另開版本。別課 active index、尚未進入階段的產物或舊 P01 不得阻擋來源整理。
 4. 確定 `current_stage` 後，才載入下表對應規則。續作先讀最新 Drive revision；同一已驗證 GitHub commit 的規格依 Bootstrap freshness／selective reload 重用，不逐頁重讀整套技能。
 
 GitHub 暫時無法更新時依 Bootstrap 使用可核對 commit、版本與完整原文的 `LAST_KNOWN_GOOD`，標示 `GITHUB_REFRESH_PENDING`；沒有可信規格才 `BOOTSTRAP_BLOCKED`。記憶或舊對話不算 LKG。Drive 無法讀取或當前階段有實質狀態衝突，依 State Gate 回報具體阻礙，不宣稱已同步。
@@ -39,7 +39,7 @@ GitHub 暫時無法更新時依 Bootstrap 使用可核對 commit、版本與完�
 
 `next_allowed_stage` 為空代表尚未允許跨階段，不阻止完成 `current_stage` 內的搜尋、擷取、校對與存檔。不要每查完一頁、補一欄或存一次檔就停下要求「繼續」。可自行查明的項目持續完成，真正無法解決的必要缺口集中提出；必要資料完整後交付一份整合教材審核稿，停在 HOLD 1。未完整時如實標記 `STEP1_INCOMPLETE`，不請求全文核准，也不開始教學規劃或生圖。
 
-教師確認只授權對應 HOLD 的下一個合法 stage；局部來源裁定不等於全文或下游核准。每完成 stage／HOLD，非破壞性更新並讀回驗證 Drive State 與 Index；候選不得覆蓋確認稿。不得自行新增 stage 或使用 `STEP 2.75`。
+教師確認只授權對應 HOLD 的下一個合法 stage；局部來源裁定不等於全文或下游核准。從目前未完成 stage 接續，已核准來源、頁面、角色、風格與決定均直接沿用；只有教師要求修改或新證據指出特定錯誤時，才修補受影響項目，不重跑未受影響階段。每完成 stage／HOLD，非破壞性更新並讀回驗證 Drive State 與 Index；候選不得覆蓋確認稿。不得自行新增 stage 或使用 `STEP 2.75`。
 
 ## 回條與教師畫面
 
@@ -47,6 +47,6 @@ GitHub 暫時無法更新時依 Bootstrap 使用可核對 commit、版本與完�
 
 `V-MAX LOAD｜Plugin {VERSION}｜Manifest {manifest_version}｜Executor {executor_version}｜Stage {runtime_stage}｜UI {teacher_review_view_version}`
 
-Plugin 取自 repository `VERSION`，不是本 Launcher 的 1.7。各欄填實際讀取或可信 LKG 的版本；僅真正缺失者填 UNKNOWN，Runtime 不能由規格推定。使用 LKG 附註 `GITHUB_REFRESH_PENDING`。缺少回條為 `LOAD_RECEIPT_MISSING`。
+Plugin 取自 repository `VERSION`，不是本 Launcher 的版本。各欄填同一已驗證 GitHub commit 的實際讀取或可信 LKG 版本；Runtime stage 必須來自本次 Drive 讀取，不能由規格推定。使用 LKG 附註 `GITHUB_REFRESH_PENDING`。缺少回條為 `LOAD_RECEIPT_MISSING`。
 
 依 Teacher Review View 使用中文結論、來源證據與精簡表格；不顯示 raw JSON／YAML。STEP 1 只呈現教材內容與必要缺口，角色偏好先保存為 deferred input，不詢問視覺設定。正式教材與 AI 延伸分層，不以摘要冒充完整來源。

@@ -5,7 +5,7 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。先載入版本�
 
 # V-MAX Teaching Skills Front Door
 
-版本：1.6
+版本：1.7
 
 Before starting any presentation task, initialize or read the lesson's `00_施工中_接續區` and follow `core/governance/working-handoff-area-policy.md`. Conversation memory is never the sole handoff source.
 
@@ -30,7 +30,7 @@ Before starting any presentation task, initialize or read the lesson's `00_施�
 
 進入批次簡報製作時另必讀 `core/governance/batch-construction-lock.md`，並實際執行其 page／style hash 驗證；只讀規格而未驗證 hash 不算載入完成。
 
-若本課使用新角色，另必讀 `core/character/character-library-writeback-policy.md`，確認角色已回存 Registry；未完成 writeback 不得進入批次渲染。
+簡報施工與續作必須載入 Manifest 指定的 `core/governance/presentation-preconstruction-policy.md`；該檔是施工前確認、核准沿用、批次大小、局部修正及平台中立成品要求的詳細規則唯一來源。其他文件只說明階段入口並引用它，不重複整套流程。若本課使用新角色，另必讀 `core/character/character-library-writeback-policy.md`，確認角色已回存 Registry；未完成 writeback 不得進入批次渲染。
 
 進入課文閱讀頁規劃時另必讀 `core/presentation/paragraph-text-page-policy.md`；未完成完整段落與該段語詞覆蓋驗證，不得進入批次製作。
 
@@ -57,14 +57,14 @@ GitHub refresh 暫時失敗時，先查本工作階段的可信 `LAST_KNOWN_GOOD
 
 ## 強制載入回條
 
-第一個實質回應最上方顯示：
+完成 Bootstrap 所需 GitHub 同 commit 與 Drive Runtime 前置讀取後，第一個實質回應最上方顯示：
 `V-MAX LOAD｜Plugin {VERSION}｜Manifest {manifest_version}｜Executor {executor_version}｜Stage {runtime_stage}｜UI {teacher_review_view_version}`
 
 版本值必須來自本次實際讀取或可信 LKG。使用 LKG 時不得顯示 UNKNOWN，必須明確附註 `GITHUB_REFRESH_PENDING`；只有沒有可信 LKG 時才顯示 UNKNOWN 並停止。未顯示 → `LOAD_RECEIPT_MISSING`。
 
 ## 啟動後第一個 Gate
 
-讀 Google Drive Lesson Master Index 與本課 Runtime State，執行 State Sync Receipt 與當前階段適用的來源完整性檢查；Lesson Master Preflight 到下游教材製作才執行，不以尚未建立的 LKB 阻擋來源擷取。只有 Runtime 唯一合法 stage 可執行。繼續／下一步／確認／沿用而 State Sync 未通過 → `CONTINUATION_STATE_BLOCKED`。
+在第一個實質回覆前讀 Google Drive Lesson Master Index 與本課 Runtime State，執行 State Sync Receipt 與當前階段適用的來源完整性檢查；Lesson Master Preflight 到下游教材製作才執行，不以尚未建立的 LKB 阻擋來源擷取。只有 Runtime 唯一合法 stage 可執行。繼續／下一步／確認／沿用而 State Sync 未通過 → `CONTINUATION_STATE_BLOCKED`。
 
 ## 對話硬限制
 

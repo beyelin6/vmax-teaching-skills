@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.10
+版本：2.11
 
 ## 目的
 
@@ -50,6 +50,8 @@ Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selec
 教師討論結果必須依 `LESSON_LOCAL`、`REUSABLE_PATTERN`、`GLOBAL_SKILL_RULE` 分層保存。單課規則只更新當課 Execution Rules；只有跨課驗證後才可 promotion 到共用技能，並同步版本與 Manifest，不得因單課施工決策直接改寫全域規則。
 
 在設計或施工前依 `core/governance/continuation-state-gate.md` 完成 State Sync。查明引用、核對教師事件與修復可證明的狀態差異屬同步本身，可以先做；未通過時不得生成頁面或推進下游。已有有效核准者沿用，不因規則更新回到來源起點。
+
+簡報施工及續作中的核准保留、受影響範圍與 patch 規則以 `core/governance/presentation-preconstruction-policy.md` 為唯一詳細來源；不得在 Executor 或 Renderer 複製另一套批次／核准續作流程。
 
 若出現差異，先依 Continuation State Gate 區分待寫入的明確教師決定、可追溯的舊版引用與實質衝突。舊聊天／候選不同於已核准版本不自動構成衝突；可由現有來源與決策紀錄查明者自行對齊。只有有效輸入或核准範圍仍有無法解決的矛盾，才標記 `CONTINUATION_STATE_BLOCKED`，集中列出證據與受影響範圍。
 
@@ -283,7 +285,7 @@ STEP 2.5 不得把「教材成語清單」當成唯一語文候選來源。執�
 
 Full Renderer 的前置條件不是「看過一張樣張」，而是跨頁型代表頁組均已核准：課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。教師的「可以」只核准本次實際展示的頁型；未展示頁型不得自動通過。
 
-簡報畫布必須先詢問教師選擇 `4:3` 或 `16:9`，再建立並鎖定 `canvas_lock`；不得由 Renderer、平台預設或舊對話自行選邊。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。Full Renderer 前必須完成代表頁組：課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語、總結遷移等實際啟用頁型；每類均需教師確認，且每頁先載入當課角色定錨。全量必須以 4–8 頁小批次推進並逐批檢查；任一批發生 `COMPOSITION_REGRESSION`、`TYPED_TEXT_LAYOUT_FAIL`、`TEXT_OBJECT_DETACHED` 或角色／風格漂移即停止，不得做完整套後才回頭驗收。
+簡報畫布必須先詢問教師選擇 `4:3` 或 `16:9`，再建立並鎖定 `canvas_lock`；不得由 Renderer、平台預設或舊對話自行選邊。除課文閱讀頁外，學生可見頁預設為整頁圖片式合成，正式文字採 `VERIFIED_RASTER_TEXT_LAYERS`。禁止背景圖＋文字框、卡片牆、大量半透明框或純文字骨架。Full Renderer 前必須完成代表頁組：課文欣賞、難詞、句型／修辭、文意理解、形近字、多音字、成語／四字詞語、總結遷移等實際啟用頁型；每類均需教師確認，且每頁先載入當課角色定錨。批次大小與例外依 `core/governance/presentation-preconstruction-policy.md`；每批最多 8 頁，通常 4–8 頁，尾批／修正批／教師指定可少於 4 頁。每批逐一檢查；任一批發生 `COMPOSITION_REGRESSION`、`TYPED_TEXT_LAYOUT_FAIL`、`TEXT_OBJECT_DETACHED` 或角色／風格漂移即停止，不得做完整套後才回頭驗收。
 
 對每個必要圖片建立 Render Request，探測當前平台實際工具並執行。prompt、Renderer Script、Visual YAML 或 `IMAGE_HANDOFF_READY` 不等於圖片完成；只有實際資產通過重檢並標記 `RENDER_VERIFIED` 才能進入 Quality Gate。工具不可用時保留 handoff 並回報阻塞，不得跳過圖片需求。
 

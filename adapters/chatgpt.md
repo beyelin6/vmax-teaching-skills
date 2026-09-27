@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.10
+# V-MAX Adapter｜ChatGPT 1.11
 
 ## Lesson Artifact Registry
 
@@ -9,6 +9,8 @@
 本檔只處理 ChatGPT 如何載入、執行與回寫 V-MAX；不得改寫 V-MAX Core。
 
 ## 啟動契約
+
+啟動先完成 Bootstrap 定義的 GitHub 同 commit 讀取及 Drive Runtime 同步，再顯示 LOAD 回條；不得先用舊對話或記憶開始教材分析。平台前置讀取可在回條之前完成，回條仍是第一個實質回覆。
 
 每個新的 V-MAX 任務開始時，ChatGPT 應先：
 
@@ -78,9 +80,9 @@ Runtime 實際進入簡報／視覺階段時，ChatGPT 必須實際載入 `skill
 
 > ChatGPT 是 V-MAX 的一個執行器，不是 V-MAX 本身。
 
-## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+## 國語簡報施工前確認（平台路由）
 
-Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含這些階段的續作／下一步／確認）時，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含續作）時，載入 Manifest 指定版本的 `core/governance/presentation-preconstruction-policy.md`，並以該檔為施工前流程、續作、核准保留、批次及修正規則的唯一詳細來源。本 Adapter 僅定義 ChatGPT 平台能力與互動方式，不複製 Core 流程。
 
 ## STEP 1 整合擷取
 
@@ -90,7 +92,7 @@ SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/ste
 
 以下要求於 Runtime 進入對應教學架構或視覺製作階段才執行；不作為 SOURCE 0／STEP 1 的載入或完成條件。
 
-圖片式簡報與文件預設使用可用的 ChatGPT 原生圖像生成／影像編輯工具，直接顯示原生圖片結果，保留平台提供的編輯入口與原圖引用；不得只輸出 PNG 檔案卡片。依教師指定範圍引用原圖續編，另附下載檔供保存。文字／來源 QA 仍須執行；合成後圖片也須直接預覽。若平台不支援原生編輯，明確說明，不能把一般圖片預覽宣稱為有「編輯」功能。
+圖片式簡報與文件預設使用可用的 ChatGPT 原生圖像生成／影像編輯工具，直接顯示原生圖像結果並保留平台實際提供的編輯入口與原圖引用；不得只輸出 PNG 檔案卡片。依教師指定範圍引用最新核准原圖續編。文字／來源 QA 仍須執行；合成後圖片也須直接預覽。若平台不支援原生編輯入口，明確標記 `NATIVE_IMAGE_REVIEW_UNAVAILABLE` 並說明限制，以內嵌預覽與原圖續編引用作替代；不得把一般預覽說成原生編輯能力。Core 的平台中立成品與追溯要求仍適用。
 
 使用中文標題、精簡表格與條列。完整 Machine Payload 可另存，但對話不顯示 raw schema、內部欄位或空白程式碼框。每項來源顯示教材、教育部辭典、AI 建議或待核對狀態。
 

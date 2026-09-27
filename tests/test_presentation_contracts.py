@@ -1,3 +1,5 @@
+"""Schema, hash, and validator behavior tests; these do not assert visual quality."""
+
 import copy
 import hashlib
 import subprocess

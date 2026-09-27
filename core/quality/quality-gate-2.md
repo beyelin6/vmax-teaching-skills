@@ -76,7 +76,7 @@
 2. 每個 page detail page object 都有 `page_spec_sha256`，並與 Slide Script、Render Request 的 page hash 相同。
 3. 頁面數量、`page_id`、sequence、page family、來源回指與角色錨點一對一相符。
 4. 沒有未宣告頁、靜默補頁、刪頁、重排、換模板或沿用上一頁資料。
-5. 每批以 4–8 頁為上限範圍（不得超過 8 頁，尾批／修正批可更少），開始前重新驗證，結束後完成逐頁回讀與 drift check，保存 Runtime State／Index 並停等教師確認；QA 通過不代表可自行開始下一批。依 `core/governance/presentation-preconstruction-policy.md` 執行。
+5. 每批最多 8 頁，通常 4–8 頁，尾批／修正批／教師指定可更少；開始前依 `core/governance/presentation-preconstruction-policy.md` 驗證批次大小與鎖定，結束後完成逐頁回讀與 drift check，保存 Runtime State／Index 並停等教師確認；QA 通過不代表可自行開始下一批。
 6. Style Selection Profile 已由教師確認，所有頁面與 Render Request 的 `style_core_id` 都等於選定主風格；頁型變體只能來自已核准的 `page_variants`。
 7. 課文閱讀頁的 `text_coverage` 顯示完整原文，且 `vocabulary_coverage.placement` 為相鄰版位；語詞解釋不得脫離課文另成清單頁。
 8. 新角色的 Role Selection Profile 已完成 Registry writeback，`reuse_level` 至少為 `LESSON_ONLY`，並有可回讀的 registry hash；不得自動升級為跨課可重用角色。

@@ -1,4 +1,4 @@
-# V-MAX Batch Construction Lock 1.3
+# V-MAX Batch Construction Lock 1.4
 
 本規格把「已確認的逐頁細節」變成批次施工時可驗證的輸入契約。目的不是再增加一份說明文件，而是讓批次 Renderer 沒有自行補頁、換版型、改文字或套用上一頁資料的空間。
 
@@ -84,7 +84,7 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" \
 
 ## 4. 批次執行與停批
 
-- 全量仍以 4–8 頁為一批，但小批次只是執行單位，不是放寬規格的理由。
+- 批次大小依 `core/governance/presentation-preconstruction-policy.md` 第 5 節：最多 8 頁，通常 4–8 頁；尾批、修正批或教師指定可少於 4 頁。開始每批前執行 `skills/vmax-image-renderer/scripts/validate_batch_size.py`，少於 4 頁須記錄批次類型與原因。
 - 每批開始前先驗證鎖；每批結束後重新回讀產物與 `page_id`、頁序、畫布、文字層、角色、物件、版面與來源。
 - 發現 `PAGE_DETAIL_SOURCE_CONFLICT`、`PAGE_DETAIL_HASH_MISMATCH`、`PAGE_ORDER_DRIFT`、`PAGE_FAMILY_DRIFT`、`LAYOUT_SPEC_DRIFT`、`CHARACTER_ANCHOR_MISSING`、`UNDECLARED_PAGE` 或任何內容自行補完，立即停止整批。
 - 只允許建立明確的 patch：指定受影響頁、修改欄位、新 hash、教師確認與重新驗證結果。不得在 Renderer 內直接修正並覆寫母檔。

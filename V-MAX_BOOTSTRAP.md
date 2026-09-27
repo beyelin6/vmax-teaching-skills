@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.6.3
+# V-MAX Bootstrap 1.6.4
 
 ## 目的
 
@@ -14,7 +14,7 @@
 
 ## Front Door 與載入回條
 
-平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。第一個實質回應顯示 `V-MAX LOAD` 回條，列出本次實際讀取的 Plugin、Manifest、Executor、Runtime stage 與 Teacher Review View 版本。首次載入時若從未成功取得任何可信 V-MAX 規格，缺少回條或任一必要版本為 UNKNOWN 才停止，不得產生 STEP 1。GitHub refresh 暫時失敗且有可信 LKG 時，回條必須顯示 LKG 實際版本與 `GITHUB_REFRESH_PENDING`，不得一律填 UNKNOWN。
+平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。顯示任何實質回覆、教材分析或製作內容之前，先完成本次必要的 GitHub 與 Drive 前置讀取：先取得 GitHub main commit，再以同一 commit ref 讀取 `VERSION`、Manifest、Executor、Teacher Review View 與當前 stage 必要規則；另讀 Drive Runtime Index 和指定課程 Runtime State。比對版本、commit 和 Runtime 同步狀態後，第一個實質回覆才顯示 `V-MAX LOAD` 回條，並在其後開始分析／製作。回條必須反映實際讀取的 commit 與 Drive stage；任何必讀來源未成功讀取，標記具體 `BOOTSTRAP_BLOCKED`／`RUNTIME_DRIVE_BLOCKED`，不得宣稱已載入或同步。首次載入時若從未成功取得任何可信 V-MAX 規格，缺少回條或任一必要版本為 UNKNOWN 才停止，不得產生 STEP 1。GitHub refresh 暫時失敗且有可信 LKG 時，回條必須顯示 LKG 實際版本與 `GITHUB_REFRESH_PENDING`，不得一律填 UNKNOWN。
 
 ## ChatGPT Live Skill Loading
 
