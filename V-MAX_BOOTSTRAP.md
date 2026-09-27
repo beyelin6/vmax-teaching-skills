@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.6.2
+# V-MAX Bootstrap 1.6.3
 
 ## 目的
 
@@ -24,7 +24,7 @@ ChatGPT 不使用 Codex 的 `~/.codex/skills` 本機副本作為 V-MAX 正式來
 
 1. ChatGPT 執行新的 V-MAX 工作階段時，先從 GitHub 讀取目前必要的 canonical files 與相關 `SKILL.md`。
 2. 不得只依賴模型記憶、舊對話摘要或未驗證的舊版 Skill。
-3. 成功載入後，記錄本次已驗證的 repository revision／commit SHA、Skill 版本與必要 canonical file 版本，作為本工作階段的 `LAST_KNOWN_GOOD`。
+3. 先取得 main commit，再以該 commit 作為 ref 讀取 VERSION、Manifest 與本次必要規格；不要將新 SHA 配上 main 網頁快取／搜尋摘要。版本不一致時重讀同一 ref，不更新 LKG、不聲稱最新。成功載入後記錄 commit、版本與原文引用，作為本工作階段的 `LAST_KNOWN_GOOD`。
 4. 若本工作階段從未成功載入任何可信 V-MAX 規格且 GitHub 無法存取，回報 `CHATGPT_GITHUB_SKILL_BLOCKED` 並停止需要 V-MAX 規格的實質製作。
 
 ### Freshness Check

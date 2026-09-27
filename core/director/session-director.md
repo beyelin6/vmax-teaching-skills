@@ -1,4 +1,4 @@
-# V-MAX Session Director 1.3
+# V-MAX Session Director 1.4
 
 ## 定位
 
@@ -94,7 +94,7 @@ AI 應先根據內容密度、朗讀、討論、練習、創作、知識量與�
 
 ## F. 正式確認點
 
-Session Map 是正式教師確認點，位置鎖定在：
+Session Map 的流程位置如下；是否需要教師確認依 A0 的模式與實質變更判定，不能只因 artifact 名稱就新增 HOLD：
 
 ```text
 教材定錨

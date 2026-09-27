@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.9
+版本：2.10
 
 ## 目的
 
@@ -23,7 +23,7 @@ The executor must create or resume the lesson's `00_施工中_接續區` at task
 
 ## A. 啟動必讀
 
-每次開始或續跑一課，依序讀：
+首次載入依序讀以下規格；續作依 Bootstrap 的 commit freshness 重用未變原文，再讀最新當課 Runtime 與目前工作所需內容，不每次重載整套：
 
 1. `V-MAX_BOOTSTRAP.md`
 2. `V-MAX_MANIFEST.md`
@@ -49,7 +49,7 @@ Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selec
 
 教師討論結果必須依 `LESSON_LOCAL`、`REUSABLE_PATTERN`、`GLOBAL_SKILL_RULE` 分層保存。單課規則只更新當課 Execution Rules；只有跨課驗證後才可 promotion 到共用技能，並同步版本與 Manifest，不得因單課施工決策直接改寫全域規則。
 
-在合法序列之前，必須先依 `core/governance/continuation-state-gate.md` 完成 State Sync Receipt。未確認 Runtime revision、目前 HOLD、教師最新決定、當前 stage 已應存在的上游版本與適用視覺基準、當前工作項目前，不得執行任何分析、設計、渲染或批次。
+在設計或施工前依 `core/governance/continuation-state-gate.md` 完成 State Sync。查明引用、核對教師事件與修復可證明的狀態差異屬同步本身，可以先做；未通過時不得生成頁面或推進下游。已有有效核准者沿用，不因規則更新回到來源起點。
 
 若出現差異，先依 Continuation State Gate 區分待寫入的明確教師決定、可追溯的舊版引用與實質衝突。舊聊天／候選不同於已核准版本不自動構成衝突；可由現有來源與決策紀錄查明者自行對齊。只有有效輸入或核准範圍仍有無法解決的矛盾，才標記 `CONTINUATION_STATE_BLOCKED`，集中列出證據與受影響範圍。
 
@@ -99,7 +99,7 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 ### PAGE_DETAIL_CONFIRMATION
 
-`Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix`、角色、畫布與頁數帳本鎖定後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔必須先建立全課唯一的 `page_number_system` 與 `section_marker_system`，由代表頁實測、教師確認後鎖定各自 hash；後續頁面只能沿用，不得每頁重新決定。母檔另必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可挑選代表頁；各實際啟用頁型均經教師確認後，才可小批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
+`Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix`、角色、畫布與頁數帳本鎖定後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔先建立並核准全課唯一的 `page_number_system` 與 `section_marker_system` 設計及其 hash；首次代表頁用來驗證成品效果，不要求尚未生成的實測結果先存在。若實測需改設計則局部修訂並更新 hash，後續頁面沿用確認結果。母檔另必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可挑選代表頁；各實際啟用頁型均經教師確認後，才可小批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
 
 風格 HOLD 必須先完成：依課文提出 3–5 組風格庫候選／混搭方案，顯示主風格、頁型變體與限制，等待教師選擇。`selected_style_id` 未被教師確認前保持空值；不得由 Executor、Presentation Engine、Renderer 或平台預設直接選風格。風格選定後，建立風格 hash 與 `BATCH_CONSTRUCTION_LOCK`，後續頁面只能沿用該主風格及已核准頁型變體。
 
@@ -330,18 +330,11 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 > 規格寫了不算載入；Executor 必須真的把當前 canonical policy 帶進實跑。
 
-## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
+## 階段規則的唯一來源
 
-Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含這些階段的續作／下一步／確認）時，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+- SOURCE 0／STEP 1：`core/governance/step1-source-anchor-policy.md` 第 G 節，定義擷取範圍、重用、局部修補及停點。
+- 續作與修復：`core/governance/continuation-state-gate.md`，定義有效引用、狀態修復與目前工作範圍。
+- 教師確認：`core/governance/hold-teacher-interface-policy.md`，定義確認範圍；存檔與同步不另設 HOLD。
+- STEP 2.5 起及視覺施工：`core/governance/presentation-preconstruction-policy.md`，定義成語雙軌、視覺授權、逐頁稿、代表頁與批次；第 7–8 節適用所有圖像工具入口。
 
-## STEP 1 整合擷取
-
-SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，完整後才交付一份審核稿並停在 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
-
-## 已審來源的續作
-
-STEP 1 的重用、局部修補與完成判定依 Source Anchor Policy「已審來源續作與局部修補」。來源擷取完整性由執行器在整合稿前核對，不把正文、正式字表、內部 coverage 與來源索引各拆成一個教師 HOLD。既有局部核准按原範圍保留，不擴大成整體核准，也不清空重跑。
-
-## 視覺授權不得由內容確認推定
-
-實際呼叫圖像生成／編輯前，必讀並執行 `core/governance/presentation-preconstruction-policy.md` 第 7 節，區分角色／風格候選探索、逐頁稿、代表頁與批次的授權。內容骨架或一般「繼續」不能替代當課風格、引導角色、課文角色及畫布的核准證據。完整代表頁須有核准文字與完整版面；背景素材不能算代表頁通過。直接使用原生圖像工具也受同一檢查，不因未經 Renderer CLI 而豁免。缺證據時保持候選、回到最早未完成的適用確認點，不重跑未受影響來源。
+續作以目前頁面／工作為單位。例如已到 P05，讀回 P05 完整核准稿與必要鎖定引用，沿用 P01–P04 核准，不重審全課。只有具體新證據影響舊頁時才建立局部差異；未變內容不重做。這不豁免 P05 自身的文字、頁碼、角色與版面驗證。

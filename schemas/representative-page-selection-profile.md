@@ -1,5 +1,7 @@
 # Representative Page Selection Profile
 
+版本：1.1
+
 代表頁選擇檔只負責「從已核准的 `PAGE_DETAIL_CONFIRMATION` 挑哪幾頁先做」，不重複保存學生文字、圖片 prompt 或版面內容。Renderer 必須以 `page_detail_page_id` 讀取原頁規畫，不能在代表頁選擇檔中自行補寫內容。
 
 ```json
@@ -45,6 +47,6 @@
 
 ## Gate
 
-`status` 與 `teacher_confirmation_status` 必須都是 `CONFIRMED`，`selection_policy` 必須是 `FROM_APPROVED_PAGE_DETAIL_ONLY`。`navigation_system_confirmation` 必須是 `CONFIRMED`，並與 PAGE_DETAIL 的頁碼／區段標籤系統 hash 相同；代表頁確認的是這套課級樣式，後續頁面只能沿用。`coverage_matrix` 必須逐一列出實際啟用的 `page_family`、契約 ID、已確認 `style_variant_id`、代表頁 ID 與教師檢查狀態；每一列都必須對應 `selected_pages`。每個 `page_detail_page_id` 必須存在於已核准 PAGE_DETAIL_CONFIRMATION，且 `page_spec_sha256` 必須等於該頁 canonical hash。每個實際啟用的 `page_family` 都至少要被選一次；選擇檔不能新增 PAGE_DETAIL 沒有的頁面、文字、角色、圖片或版面規則。
+`status` 與 `teacher_confirmation_status` 必須都是 `CONFIRMED`，`selection_policy` 必須是 `FROM_APPROVED_PAGE_DETAIL_ONLY`。`navigation_system_confirmation` 必須是 `CONFIRMED`，並與 PAGE_DETAIL 的頁碼／區段標籤系統 hash 相同；此 CONFIRMED 表示頁碼／區段的設計已在逐頁稿核准，不表示代表頁成品已通過。首次可依此設計生成，再由教師檢查成品效果；有修改才更新母檔與相關 hash。後續沿用有效確認，不要求成品先存在才允許製作。`coverage_matrix` 必須逐一列出實際啟用的 `page_family`、契約 ID、已確認 `style_variant_id`、代表頁 ID 與教師檢查狀態；每一列都必須對應 `selected_pages`。每個 `page_detail_page_id` 必須存在於已核准 PAGE_DETAIL_CONFIRMATION，且 `page_spec_sha256` 必須等於該頁 canonical hash。每個實際啟用的 `page_family` 都至少要被選一次；選擇檔不能新增 PAGE_DETAIL 沒有的頁面、文字、角色、圖片或版面規則。
 
 代表頁 Renderer 必須保留 `representative_id`、`page_detail_page_id`、PAGE_DETAIL 檔案 hash 與頁面 hash。任一欄缺失、不一致或代表頁資料直接出現 PAGE_DETAIL 沒有的內容，標記 `REPRESENTATIVE_PAGE_SOURCE_CONFLICT`，停止代表頁製作。

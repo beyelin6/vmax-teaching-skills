@@ -1,4 +1,4 @@
-# V-MAX Continuation State Gate 1.5
+# V-MAX Continuation State Gate 1.6
 
 ## 定位
 
@@ -10,9 +10,9 @@
 
 ## 每次啟動或續作必讀
 
-執行器必須實際讀取：
+每次續作讀最新 State／Index；以下必要原文首次須實際讀取。同一工作階段內，引用的 ID、revision／hash 未變且原文仍可存取時可重用，不重讀整課 PDF 或無關產物。上下文遺失、版本變更或有具體矛盾時才重取受影響原文：
 
-1. GitHub `main` 的 `V-MAX_MANIFEST.md`。
+1. 依 Bootstrap freshness 比較 GitHub revision；未變時重用本工作階段已驗證原文，變更時只讀受影響規格。版本與原文必須來自同一 commit。
 2. Google Drive `V-MAX_Runtime_Index`。
 3. 教師指定課次的最新 Runtime State 與 revision。
 4. Runtime State 指向且當前階段已應存在的 Source Master、LKB、Learning Modules、Teaching Strategy 與教師確認紀錄；依下述階段適用性規則讀取。
@@ -32,7 +32,7 @@
 
 ## State Sync Receipt
 
-在任何分析、設計、生成、改版或批次之前，必須建立本次同步結果，至少包含：
+在教材設計、圖像生成、改版或批次之前，必須建立本次同步結果。為建立此結果所需的讀取、比較、查明引用與修復可證明的狀態差異可以先執行，不得因此死鎖；這不授權生圖或推定教師核准。同步結果至少包含：
 
 ```yaml
 state_sync:
@@ -76,7 +76,7 @@ State Sync 通過後，依 `current_stage` 完成該階段已授權工作；`nex
 - 若要渲染，`canvas_lock` 必須已鎖定且與 Slide Script、Runtime State、Output Profile 一致；缺少或衝突時標記 `CANVAS_SPEC_BLOCKED`。
 - 尚未確認的候選輸出不會被當成鎖定版本。
 
-任一條件不成立，停止並顯示：目前狀態、缺少項目、衝突項目、受影響下游與唯一補救動作；不得先做部分製作。
+條件不成立時先自行完成可由既有來源／核准事件證明的同步修復並回讀；無法查明的必要缺口集中提出。只阻擋依賴該缺口的下游施工，不阻擋查找或其他獨立可做的來源整理；不得把未解狀態帶入生圖。
 
 ## 教師決定與候選版本
 
@@ -101,7 +101,7 @@ State Sync 通過後，依 `current_stage` 完成該階段已授權工作；`nex
 
 若發生上下文整理、對話中斷、換用 Codex／ChatGPT Work／Gemini／Spark，或使用者只說「繼續」：
 
-- 重新執行完整 State Sync，不沿用上一段對話中的未驗證摘要。
+- 重新核對最新 State 與有效輸入引用；必要原文仍在且 revision 未變可重用。只剩未驗證摘要時重取必要原文，不重做已核准分析。
 - 先讀最新 Runtime revision，再讀取該 revision 指向的母檔。
 - 若最新 revision 與本地候選輸出不同，候選輸出保留但不得自動採用。
 - 若無法判定上次停在哪一個 HOLD，標記 `HOLD_POSITION_UNKNOWN` 並停等教師。
