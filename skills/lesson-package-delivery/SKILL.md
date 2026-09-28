@@ -1,11 +1,11 @@
 ---
 name: lesson-package-delivery
-description: 組裝、檢查並交付 V-MAX 單課 Lesson Package，包括來源主檔、Renderer Script、Render Request、視覺設定、角色資產、實際圖片、PDF、PPTX 與學習單。適用於正式交付或歸檔前，不得將提示詞或未驗證圖片視為完成品。
+description: 組裝、檢查並交付單課 Lesson Package（來源主檔、Renderer Script、Render Request、視覺設定、角色資產、實際圖片、PDF、PPTX、學習單）。當要正式交付或歸檔前做整包檢查時使用。提示詞或未驗證的圖片不算完成品。
 ---
 
 # V-MAX Lesson Package Delivery
 
-版本：1.6
+版本：1.6.1
 
 ## 儲存後端
 

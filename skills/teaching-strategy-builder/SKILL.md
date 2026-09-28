@@ -1,11 +1,11 @@
 ---
 name: teaching-strategy-builder
-description: 讀取已核准的 Lesson Knowledge Book 與 Learning Module Profile，將教材知識與延伸學習模組安排成可執行的國語課堂流程。適用於決定課節、教學目標、引起動機、教師引導、學生任務、小組活動、差異化支援、形成性評量與 Exit Ticket。不得修改教材原文、官方知識或已核准的學習模組內容。
+description: 依已核准 LKB 與 Learning Module Profile，安排教學目標、引導提問、學生任務、活動、差異化支援與形成性評量。當需要設計課堂流程或教學步驟時使用；國語簡報的候選併 VP2 方案審核，以內容完整為準，不預設按堂數切分。不修改教材事實。
 ---
 
 # Teaching Strategy Builder
 
-版本：0.2.0
+版本：0.2.1
 
 ## 使命
 

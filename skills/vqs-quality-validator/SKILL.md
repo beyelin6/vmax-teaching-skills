@@ -1,11 +1,11 @@
 ---
 name: vqs-quality-validator
-description: 依 V-MAX Quality Standard（VQS）檢查 Baseline Lesson Package、Adaptive Patch 與 Classroom Variant。驗證教材忠實、知識追溯、教學流程、視覺可讀性、教師版與學生版分流、平板替代方案、NotebookLM 輸出及版本清單。發現阻斷問題時不得標記完成。
+description: 依 V-MAX Quality Standard（VQS）檢查 Baseline Lesson Package、Adaptive Patch 與 Classroom Variant：教材忠實、知識追溯、教學流程、視覺可讀性、教師版與學生版分流、平板替代方案、NotebookLM 輸出與版本清單。當教材包要在交付前做品質驗證時使用。發現阻斷問題時不得標記完成。
 ---
 
 # VQS Quality Validator
 
-版本：0.2.0
+版本：0.2.1
 
 ## 使命
 

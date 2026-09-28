@@ -1,11 +1,11 @@
 ---
 name: role-recommender
-description: 根據已核准的國語教材知識書、學習延伸模組、教學策略、年級與候選視覺方向，推薦適合本課的引導角色。必須提出 3 至 5 個候選角色、說明教材依據與教學功能，供教師確認；國語視覺簡報併整體視覺方案審核。可推薦或直接選用 Bee 老師，但不得在確認前生成角色基準圖或定稿簡報。
+description: 依已核准的知識書、學習延伸模組、教學策略、年級與候選視覺方向，推薦 3 至 5 個引導角色並說明教材依據與教學功能，供教師確認（可推薦或直接選用 Bee 老師）。當要為一課選擇引導角色時使用；國語視覺簡報併整體視覺方案審核。確認前不生成角色基準圖或定稿簡報。
 ---
 
 # Role Recommender
 
-版本：0.2.0
+版本：0.2.1
 
 Machine-readable role selections MUST conform to `core/schemas/vmax/role-selection-profile.schema.json`. A recommendation is not a confirmed role selection; core DNA and context variants become reusable only after teacher confirmation.
 

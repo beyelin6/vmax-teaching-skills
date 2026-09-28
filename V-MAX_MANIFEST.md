@@ -1,24 +1,24 @@
-# V-MAX Manifest 3.10.0
+# V-MAX Manifest 3.10.1
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.10.0
+vmax_manifest_version: 3.10.1
 bootstrap: V-MAX_BOOTSTRAP.md
-course_orchestrator: { path: skills/vmax-course-orchestrator/SKILL.md, current_version: "0.6.0" }
-character_group_comparison: { path: skills/character-group-visual-comparison/SKILL.md, current_version: "1.5" }
-font_safety: { path: skills/traditional-chinese-font-safety/SKILL.md, current_version: "1.2.2" }
-lesson_delivery: { path: skills/lesson-package-delivery/SKILL.md, current_version: "1.6" }
+course_orchestrator: { path: skills/vmax-course-orchestrator/SKILL.md, current_version: "0.6.1" }
+character_group_comparison: { path: skills/character-group-visual-comparison/SKILL.md, current_version: "1.5.1" }
+font_safety: { path: skills/traditional-chinese-font-safety/SKILL.md, current_version: "1.2.3" }
+lesson_delivery: { path: skills/lesson-package-delivery/SKILL.md, current_version: "1.6.1" }
 portable_runtime_policy: { path: core/governance/portable-runtime-policy.md, current_version: "1.0" }
 claude_adapter: { path: adapters/claude.md, current_version: "1.0" }
 knowledge_lab_ordering: { path: core/director/knowledge-lab-ordering-policy.md, current_version: "1.10" }
-lesson_knowledge_builder: { path: skills/chinese-lesson-knowledge-builder/SKILL.md, current_version: "0.3.4" }
-learning_module_builder: { path: skills/learning-module-builder/SKILL.md, current_version: "0.2.0" }
-teaching_strategy_builder: { path: skills/teaching-strategy-builder/SKILL.md, current_version: "0.2.0" }
-role_recommender: { path: skills/role-recommender/SKILL.md, current_version: "0.2.0" }
-style_recommender: { path: skills/style-recommender/SKILL.md, current_version: "0.2.0" }
-prestudy_worksheet: { path: skills/prestudy-worksheet/SKILL.md, current_version: "1.6" }
-short_writing_worksheet: { path: skills/postlesson-short-writing-worksheet/SKILL.md, current_version: "1.4" }
+lesson_knowledge_builder: { path: skills/chinese-lesson-knowledge-builder/SKILL.md, current_version: "0.3.5" }
+learning_module_builder: { path: skills/learning-module-builder/SKILL.md, current_version: "0.2.1" }
+teaching_strategy_builder: { path: skills/teaching-strategy-builder/SKILL.md, current_version: "0.2.1" }
+role_recommender: { path: skills/role-recommender/SKILL.md, current_version: "0.2.1" }
+style_recommender: { path: skills/style-recommender/SKILL.md, current_version: "0.2.1" }
+prestudy_worksheet: { path: skills/prestudy-worksheet/SKILL.md, current_version: "1.6.1" }
+short_writing_worksheet: { path: skills/postlesson-short-writing-worksheet/SKILL.md, current_version: "1.4.1" }
 chinese_visual_presentation_workflow: { path: core/governance/chinese-visual-presentation-workflow.md, current_version: "1.1" }
 teacher_review_view: { path: core/ui/teacher-review-view-contract.md, current_version: "1.3" }
 representative_page_selection: { path: schemas/representative-page-selection-profile.md, current_version: 1.1 }
@@ -33,17 +33,17 @@ working_handoff_area_policy: { path: core/governance/working-handoff-area-policy
 hold_teacher_interface_policy: { path: core/governance/hold-teacher-interface-policy.md, current_version: "2.0" }
 recognition_only_character_policy: { path: core/governance/recognition-only-character-policy.md, current_version: 1.3 }
 step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.md, current_version: "1.10" }
-chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: "0.4.5" }
+chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: "0.4.6" }
 presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: "1.5" }
 idiom_expression_policy: { path: core/director/idiom-expression-visualization-policy.md, current_version: "1.2" }
 chatgpt_adapter: { path: adapters/chatgpt.md, current_version: "1.14" }
-front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: "1.9" }
-chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: "2.0" }
+front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: "1.9.1" }
+chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: "2.0.1" }
 main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "3.2" }
 cloud_checkpoint_policy: { path: core/governance/cloud-checkpoint-policy.md, current_version: 1.2 }
-executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: "3.1" }
+executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: "3.1.1" }
 continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: "1.8" }
-google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md, current_version: 1.1 }
+google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md, current_version: 1.1.1 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: "1.9" }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.6 }
 classroom_language_page_rules: { path: skills/presentation-engine/references/classroom-language-page-rules.md, current_version: 1.9 }
@@ -56,8 +56,8 @@ slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contrac
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.3 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.1 }
-presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: "0.12.0" }
-image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: "2.10" }
+presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: "0.12.1" }
+image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: "2.10.1" }
 quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.5 }
 visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_version: 1.2 }
 ```
@@ -79,10 +79,10 @@ visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_ve
 Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_READY` 可進正式 Renderer。資料尚未量測或 page-family required plan 缺失，不得假裝 ready。施工前不要求成品視覺 PASS；成品交付須驗證綁定 request／asset SHA-256 的 QA 回條。
 
 ## Presentation Load Chain
-Front Door 1.9 依 Portable Runtime Policy 按階段載入；快照不變且原文仍在時重用。完整包支援 BUNDLED，完整 checkout 支援 REPOSITORY，輕量入口使用 REMOTE／可信 LKG。真正施工才載入適用 Renderer／QA／schema，VP1 不載視覺鏈，VP3 不提前要求 VP4 資產。
+Front Door 1.9.1 依 Portable Runtime Policy 按階段載入；快照不變且原文仍在時重用。完整包支援 BUNDLED，完整 checkout 支援 REPOSITORY，輕量入口使用 REMOTE／可信 LKG。真正施工才載入適用 Renderer／QA／schema，VP1 不載視覺鏈，VP3 不提前要求 VP4 資產。
 
 ## Downstream Alignment
-Execution Rules 1.9 / Presentation Engine 0.12.0 / Renderer Contract 2.1 / Image Renderer 2.10 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.6 / Classroom Language 1.9 / Paragraph Text Page 1.1 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 3.2 / Front Door 1.9 / ChatGPT Work Launcher 2.0。
+Execution Rules 1.9 / Presentation Engine 0.12.1 / Renderer Contract 2.1 / Image Renderer 2.10.1 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.6 / Classroom Language 1.9 / Paragraph Text Page 1.1 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 3.2 / Front Door 1.9.1 / ChatGPT Work Launcher 2.0.1。
 
 ## Lesson Architecture and Variants
 
@@ -124,4 +124,4 @@ Launcher 1.9 / Bootstrap 1.7.0 / ChatGPT Adapter 1.12：先按同一 GitHub comm
 
 ## 來源續作與核准保留
 
-Executor 3.0 / Source Anchor 1.10 / Recognition-only 1.3 / HOLD Interface 2.0 / Continuation State Gate 1.7：同步不另設 HOLD；正式認讀字與比較／多音字活動先分類再比對；續作沿用已核准來源、決定與頁面，只因教師要求或新證據修補受影響項目，不反覆重跑未變內容。ChatGPT Work Launcher 2.0 依 main 按需載入本次修正。
+Executor 3.0 / Source Anchor 1.10 / Recognition-only 1.3 / HOLD Interface 2.0 / Continuation State Gate 1.7：同步不另設 HOLD；正式認讀字與比較／多音字活動先分類再比對；續作沿用已核准來源、決定與頁面，只因教師要求或新證據修補受影響項目，不反覆重跑未變內容。ChatGPT Work Launcher 2.0.1 依 main 按需載入本次修正。

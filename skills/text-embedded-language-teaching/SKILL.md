@@ -1,11 +1,11 @@
 ---
 name: text-embedded-language-teaching
-description: 執行課文脈絡內的語文教學政策，將詞語、句型、修辭與理解任務嵌入課文教學流程；設計或檢查國語課文內嵌語文任務時使用。
+description: 執行課文脈絡內的語文教學政策：語詞隨段落、句型帶原文、修辭從文本發現，原文證據不消失。當設計或檢查國語課文內嵌的語詞、句型、修辭與理解任務時使用。
 ---
 
 # V-MAX Text-Embedded Language Teaching Skill
 
-版本：1.1
+版本：1.1.1
 
 ## 目的
 

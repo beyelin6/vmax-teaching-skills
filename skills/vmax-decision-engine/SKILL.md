@@ -1,11 +1,11 @@
 ---
 name: vmax-decision-engine
-description: 依核准的 Lesson Knowledge Book、Learning Modules、Teacher Profile、班級條件、可用時間與裝置環境，推薦 Learning Path、Teaching Flow、平板互動安排、角色與視覺需求。只提供可解釋的候選方案，必須停下等待教師確認；不得修改官方教材知識或自行生成最終簡報。
+description: 依核准的 LKB、Learning Modules、Teacher Profile、班級條件、可用時間與裝置環境，推薦 Learning Path、Teaching Flow、平板互動安排、角色與視覺需求。當教師要依班級與時間條件比較備課方案時使用。只提供可解釋的候選並等待教師確認，不改教材知識、不生成最終簡報。
 ---
 
 # V-MAX Decision Engine
 
-版本：0.1.0
+版本：0.1.1
 
 ## 使命
 

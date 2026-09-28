@@ -1,11 +1,11 @@
 ---
 name: teaching-memory-recorder
-description: 在實際授課後，以半結構化方式記錄單課教學成效、學生投入、時間配置、平板活動、常見迷思與下次修改建議，並在累積多次紀錄後更新 Lesson Evolution。適用於課後反思、版本改進與下一年度備課。不得修改 Official Knowledge，也不得記錄學生姓名或敏感個資。
+description: 在實際授課後，以半結構化方式記錄單課教學成效、學生投入、時間配置、平板活動、常見迷思與下次修改建議，累積多次後更新 Lesson Evolution。當教師要做課後反思、記錄教學紀錄，或為下次備課保存改進點時使用。不修改 Official Knowledge，不記錄學生姓名或敏感個資。
 ---
 
 # Teaching Memory Recorder
 
-版本：0.1.0
+版本：0.1.1
 
 ## 使命
 

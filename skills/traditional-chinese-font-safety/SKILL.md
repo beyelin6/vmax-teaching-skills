@@ -1,11 +1,11 @@
 ---
 name: traditional-chinese-font-safety
-description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手冊提供字型選用、實際載入、注音/缺字檢查與 fallback 規則。凡涉及程式合成繁中可見文字時，應在正式批次渲染前執行。
+description: 為繁體中文教材、PNG、PDF、PPTX、學習單與手冊提供字型選用、實際載入、注音與缺字檢查及 fallback 規則。凡由程式合成繁體中文學生可見文字，在正式輸出或批次渲染前使用。
 ---
 
 # Traditional Chinese Font Safety｜繁中文字型安全
 
-版本：1.2.2
+版本：1.2.3
 
 ## 使命
 

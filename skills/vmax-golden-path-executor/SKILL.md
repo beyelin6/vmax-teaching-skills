@@ -1,13 +1,13 @@
 ---
 name: vmax-golden-path-executor
-description: Execute the V-MAX canonical workflow and approval gates from locked lesson sources through rendering and delivery. Use when producing a complete lesson package by the standard golden path.
+description: 由 V-MAX 總入口委派，執行整課備課、國語簡報與續作的正式階段、教師核准及下一步。當需要依 Golden Path 推進或核對課程階段時使用；國語簡報採大階段整包審核，不另為內部小步驟增加確認。獨立學習單與美編不啟動此流程。
 ---
 
 # V-MAX Golden Path Executor
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：3.1
+版本：3.1.1
 
 ## 目的
 

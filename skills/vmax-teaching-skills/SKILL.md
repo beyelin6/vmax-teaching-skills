@@ -1,11 +1,11 @@
 ---
 name: vmax-teaching-skills
-description: 當教師要求製作、重製或續作臺灣國小國語整課教材、視覺簡報或 V-MAX 課程時使用。按當前階段路由來源分析、教學與施工；獨立學習單或純文件美編直接使用對應技能。
+description: V-MAX 國語整課教材與視覺簡報的總入口。當教師要求整課備課、製作或續作國語簡報、重製課程或沿用 Golden Path 時，載入共用規則並按目前階段路由。獨立預習單、短文單或純教育文件美編直接使用各自技能，不啟動整課流程。
 ---
 
 # V-MAX Teaching Skills Front Door
 
-版本：1.9
+版本：1.9.1
 
 Before starting any presentation task, initialize or read the lesson's `00_施工中_接續區` and follow `core/governance/working-handoff-area-policy.md`. Conversation memory is never the sole handoff source.
 

@@ -1,11 +1,11 @@
 ---
 name: style-recommender
-description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teaching Strategy、角色設定與年級，推薦適合當課教材的 3 至 5 種視覺風格方案。每個方案必須說明適用理由、視覺 DNA、配色、紙張材質、插圖語言、章節標籤、版型方向與限制，供教師確認；國語視覺簡報併整體視覺方案審核。不得固定套用上一課風格，也不得以風格壓過教材內容。
+description: 依已核准教材、年級與當課教學需求，提出 3 至 5 種視覺風格及混搭方案，說明理由、配色、插圖語言與適用頁型。當需要為一課選擇風格時使用；國語簡報併 VP2 整體方案審核，不以角色圖尚未定稿阻擋風格候選。不套用上一課內容。
 ---
 
 # Style Recommender
 
-版本：0.2.0
+版本：0.2.1
 
 Machine-readable style selections MUST conform to `core/schemas/vmax/style-selection-profile.schema.json`. `style_core` is the reusable locked visual system; `page_variants` may adjust page-family composition but may not silently replace the core palette, typography, ratio, safe boundary, or character rules.
 

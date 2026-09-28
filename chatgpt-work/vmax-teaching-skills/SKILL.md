@@ -1,11 +1,11 @@
 ---
 name: vmax-teaching-skills-chatgpt-work
-description: ChatGPT Work 專用的 V-MAX 啟動技能；製作或續作國語教材時，從 GitHub 載入共用規格、同步當課 Drive Runtime，再按目前階段載入模組。
+description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Work 要製作或續作國語教材時，從 GitHub 載入共用規則、核對當課既有 Runtime，再按任務與目前階段路由。獨立學習單不啟動整課流程；本入口不要求改裝離線通用包。
 ---
 
 # V-MAX ChatGPT Work Launcher
 
-版本：2.0
+版本：2.0.1
 
 ## 安裝與來源
 

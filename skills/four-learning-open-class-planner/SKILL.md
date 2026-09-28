@@ -1,11 +1,11 @@
 ---
 name: four-learning-open-class-planner
-description: 將既有 V-MAX Baseline 或 Classroom Variant 轉換為符合平板公開課需求的四學模式版本，整合學生自學、組內共學、組間互學、教師導學、五大學習平台候選、學習證據、觀課可視性與數位備案。可以重新設計教學呈現與活動，但必須回指並保留教師確認的 Lesson Architecture、教材忠實、Theme、Visual DNA 與引導者敘事。
+description: 將既有 Baseline 或 Classroom Variant 轉成符合平板公開課的四學模式版本（學生自學、組內共學、組間互學、教師導學），整合五大學習平台候選、學習證據、觀課可視性與數位備案。當要準備平板公開課或四學公開課時使用。可重新設計活動與呈現，但須回指並保留教師確認的 Lesson Architecture、教材忠實、Theme、Visual DNA 與引導者敘事。
 ---
 
 # V-MAX Four Learning Open Class Planner
 
-版本：0.1.0
+版本：0.1.1
 
 ## 使命
 

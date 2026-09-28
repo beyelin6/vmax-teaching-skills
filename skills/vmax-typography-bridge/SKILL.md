@@ -1,9 +1,9 @@
 ---
 name: vmax-typography-bridge
-description: V-MAX 共用字體橋接技能。依視覺風格與文字語意角色，自動選擇字形 DNA，生成 AI 圖像中文字體描述，並映射到 Canva 可編輯繁中字型。適用於簡報、預習單、課後短文單、作文單、A4 圖像教材與其他學生可見教材。
+description: 依視覺風格與文字語意角色選擇繁體中文字形 DNA，產生 AI 圖像的中文字體描述，並對應到 Canva 可編輯繁中字型。當製作簡報、預習單、課後短文單、作文單、A4 圖像教材等學生可見教材，需要決定字體風格時使用。
 ---
 
-# V-MAX Typography Bridge v1.3
+# V-MAX Typography Bridge v1.3.1
 
 ## 目的
 

@@ -1,11 +1,11 @@
 ---
 name: presentation-engine
-description: 將核准教材與教學策略轉換為 Slide Script 與 Render Request；採 Object Composition First，語詞標記以最終 Verified Text glyph anchor 精準對位，成語頁以例句應用情境驅動構圖。
+description: 將核准教材與教學策略轉成 Slide Script 與 Render Request：以場景物件優先構圖（Object Composition First），語詞標記對位最終 Verified Text 的 glyph anchor，成語頁由例句應用情境驅動構圖。當國語簡報進入頁面規劃、逐頁稿、代表頁或 Render Request 階段時使用。
 ---
 
 # Presentation Engine
 
-版本：0.12.0
+版本：0.12.1
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 

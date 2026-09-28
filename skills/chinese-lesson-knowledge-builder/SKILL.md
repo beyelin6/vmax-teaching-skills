@@ -1,11 +1,11 @@
 ---
 name: chinese-lesson-knowledge-builder
-description: 讀取已核准的 Official Knowledge、Teacher Knowledge 與來源索引，將分散教材內容去重、建立知識節點與來源關聯，組裝成 Lesson Knowledge Book（LKB）。本技能負責整合與建立關聯，不重新逐頁轉錄教材，也不自行產生 Learning Modules、Teaching Strategy、角色、風格或最終輸出。
+description: 將來源教材與來源索引去重、建立知識節點及關聯，組裝 Lesson Knowledge Book（LKB）。當需要整理課程知識書、教材母檔或補入已查明內容時使用。國語簡報 VP1 可先建立待審候選並併整包審核；正式母檔須有教師核准。不重新轉錄，也不產生最終簡報。
 ---
 
 # Chinese Lesson Knowledge Builder
 
-版本：0.3.4
+版本：0.3.5
 
 ## 核心定位
 

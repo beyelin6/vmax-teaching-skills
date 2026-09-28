@@ -1,6 +1,6 @@
 ---
 name: vmax-education-document-design
-description: Design, redesign, beautify, review, and produce elementary-school educational documents, worksheets, teaching materials, parent/class handbooks, and teaching slides. Use when the task requires teaching-aware information design, source fidelity, page planning, answer-space protection, controllable Traditional Chinese text, page-by-page production, teacher confirmation, or visual QA. This skill is standalone-capable and may also be delegated to by other V-MAX skills.
+description: Design, redesign, beautify, review, and produce elementary-school educational documents. 適用親師手冊、班級手冊、已有學習單或教材的美編、字級與作答空間、圖文融合、逐頁修改及版面 QA。可獨立使用或受其他技能委派；新建整課國語簡報使用 V-MAX 總入口，從課程內容新建預習單或短文單使用各自專門技能。
 ---
 
 # V-MAX Education Document Design

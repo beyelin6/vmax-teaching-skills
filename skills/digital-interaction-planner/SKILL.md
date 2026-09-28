@@ -1,11 +1,11 @@
 ---
 name: digital-interaction-planner
-description: 將已核准的 Learning Modules 與 Teaching Strategy 轉換為適合平板操作的互動活動規格。適用於每生一機、兩人共用或小組共用情境，可規畫點選、拖曳、標示、排序、錄音、短答、合作白板與 Exit Ticket；若為公開觀課，可進一步映射四學模式與五大學習平台候選。不得改寫官方教材內容，所有互動都必須追溯至 LKB 節點並提供離線替代方案。
+description: 將已核准的 Learning Modules 與 Teaching Strategy 轉成平板互動活動規格（點選、拖曳、標示、排序、錄音、短答、合作白板、Exit Ticket），適用每生一機、兩人共用或小組共用；公開觀課時可對應四學模式與五大學習平台候選。當要規畫平板課堂互動時使用。不改寫官方教材，互動須可追溯至 LKB 節點並附離線替代方案。
 ---
 
 # Digital Interaction Planner
 
-版本：0.2.0
+版本：0.2.1
 
 ## 前置條件
 

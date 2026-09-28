@@ -1,6 +1,6 @@
 ---
 name: strategy-recommender
-description: 依教材內容、學習目標、學生條件與教師意圖推薦可執行的教學策略，並說明選擇理由與限制；需要比較或決定教學策略時使用。
+description: 依教材內容、學習目標、學生條件與教師意圖，推薦可執行的教學策略並說明選擇理由與限制。當需要比較或決定教學策略時使用。
 ---
 
 # V-MAX Strategy Recommender

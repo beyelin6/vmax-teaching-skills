@@ -1,11 +1,11 @@
 ---
 name: vmax-image-renderer
-description: 將核准 Render Request 實際渲染為教學圖片；採 Object Composition First、Verified Text 與 glyph-anchored Vocabulary Marking。
+description: 將核准的 Render Request 實際渲染為教學圖片或成品：先偵測本次環境的圖片能力，採 Object Composition First、Verified Text 與 glyph-anchored 語詞標記；沒有圖片工具時輸出 handoff。當國語簡報或教材進入實際圖片生成、修改、合成與重檢階段時使用。
 ---
 
 # V-MAX Image Renderer
 
-版本：2.10
+版本：2.10.1
 
 ## Request Contract Gate
 

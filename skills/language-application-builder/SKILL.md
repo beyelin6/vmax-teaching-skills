@@ -1,11 +1,11 @@
 ---
 name: language-application-builder
-description: 依已核准的 Lesson Knowledge Book、Learning Modules 與語文應用輸出設定，分別產生短文創作單與其他可選語文應用任務。短文創作單為固定獨立成果，對話、新聞、圖文、口說、家庭與平板任務可單選、多選或全部產出；不得以其他任務取代短文創作單。
+description: 依核准的 LKB、Learning Modules 與語文應用設定，規劃整組短文、對話、新聞、圖文、口說、家庭或平板語文任務。當完整課程需要語文應用套組時使用；固定短文成果不被其他任務取代。單獨製作課後短文學習單，直接使用 postlesson-short-writing-worksheet。
 ---
 
 # Language Application Builder
 
-版本：0.1.0
+版本：0.1.1
 
 ## 核心定位
 
