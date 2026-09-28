@@ -5,7 +5,7 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 # Presentation Engine
 
-版本：0.10.16
+版本：0.11.0
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
@@ -16,6 +16,10 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 驗證必須拒絕：缺少任一必修區段、未核准的區段重排或內容遺漏（段內依適用焦點彈性安排，不強制每段同一套活動）、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。
 
 ## PAGE_PLAN
+
+國語簡報 VP3 只建立詳細 PAGE_DETAIL 候選及 content_approved 稿，可保留 planned_character_refs；不得因此派生正式 Slide Script。VP4 綁定真實核准資產後才使用下列正式施工契約。
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 每頁至少包含 page purpose、student visible text、source refs、page family/style、`page_family_contract_id`、`page_specific_plan`、`style_variant_id`、`layout_id`、`layout_contract_sha256`、character policy、`OBJECT_COMPOSITION_PLAN`、`CHARACTER_PLAN`、`KEY_LINE_PLAN`、canvas lock、density；有語詞標記時另含 `VOCAB_MARK_PLAN`；`page_family = IDIOM` 時另含 `IDIOM_APPLICATION_PLAN`。整課另須鎖定 `page_number_system`、`section_marker_system` 與各自 hash；每頁只引用同一套課級系統，不得自行換位置、格式、字體或色彩。頁型契約以 `core/presentation/page-family-construction-contracts.md` 為唯一登錄表；不得以通用模板或上一頁內容補齊缺少的頁型細節。
 
@@ -100,4 +104,4 @@ Render Request 有語詞標記時必須帶入六項 Vocabulary checks；成語�
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-僅在 Runtime 已到 STEP 2.5 語文規劃或後續簡報施工階段（含該階段續作）時，載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+國語簡報的階段與集中審核依 `core/governance/chinese-visual-presentation-workflow.md`；施工授權、成語雙軌、既有核准沿用、批次與局部修正依 `core/governance/presentation-preconstruction-policy.md`。按當前工作載入適用章節，不複製另一套流程。

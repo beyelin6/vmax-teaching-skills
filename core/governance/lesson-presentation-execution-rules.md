@@ -1,10 +1,12 @@
 # Lesson Presentation Execution Rules
 
-版本：1.8
+版本：1.9
 
 本檔是每課簡報製作期間，教師追加並確認的具體視覺、版面、角色、素材再利用與違規處理決策主檔。教材真值仍以官方 Source Master／LKB 為準。
 
 ## 載入與裁決
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 續作、修圖、生圖或重新渲染前：`Runtime State → Lesson Execution Rules → 最新 Slide/Page Layout Brief → Slide Script → 當頁 Source → Visual/Role assets`。
 
@@ -111,4 +113,4 @@ Render Request 前檢查 Object Composition、Character、Key Line、適用時 V
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-僅在 Runtime 已到 STEP 2.5 語文規劃或後續簡報施工階段（含該階段續作）時，載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+國語簡報的階段與集中審核依 `core/governance/chinese-visual-presentation-workflow.md`；施工授權、成語雙軌、既有核准沿用、批次與局部修正依 `core/governance/presentation-preconstruction-policy.md`。按當前工作載入適用章節，不複製另一套流程。

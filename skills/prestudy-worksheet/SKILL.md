@@ -5,7 +5,7 @@ description: 將教材鎖定主檔或已確認的預習題目製成國小國語�
 
 # V-MAX Pre-study Worksheet Skill
 
-版本：1.5
+版本：1.6
 
 ## 目的
 
@@ -16,6 +16,8 @@ description: 將教材鎖定主檔或已確認的預習題目製成國小國語�
 > 預習單不是縮小版講義，也不是小考；它是一張 A4 橫式的「課前探索單」，讓學生先看見本課的重要語文線索、進入文本、留下可供課堂再利用的理解痕跡，並可在學後作為複習材料。
 
 ## 必讀與前置閘門
+
+由國語簡報分支製作時依 `core/governance/chinese-visual-presentation-workflow.md`「預習單與短文單」節：課程內容已核准且教師已要求該產物，即可讀共享課程主檔／LKB 做本任務 Coverage Diff；不等待簡報逐頁稿、角色圖或代表頁。整份產物集中審核，引用 source_artifact_refs 並保存分支 resume_stage；不覆寫簡報進度。必要的課程調整尚未核准時，只等待依賴該變更的題目。
 
 1. 先執行 `core/governance/lesson-master-preflight.md`。
 2. 依 `core/governance/task-knowledge-requirement-registry.md` 的 Pre-study Worksheet 最低需求執行 Coverage Diff。

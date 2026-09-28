@@ -1,6 +1,6 @@
 # Working Handoff Area Policy
 
-Version: 1.2
+Version: 1.3
 
 ## Purpose
 
@@ -33,6 +33,8 @@ The six numbered folders remain the canonical output structure. The `00_施工�
 
 ## Current pointer and naming
 
+For CHINESE_VISUAL_PRESENTATION, follow `core/governance/chinese-visual-presentation-workflow.md`. Record the macro stage and internal work checklist; saving a subtask never creates an extra HOLD. A VP3 content-approved plan uses the filename status `CONTENT_APPROVED` and remains ineligible for rendering until VP4 asset binding. Product branches keep their own resume pointer and do not overwrite the slide workflow pointer.
+
 `00_CURRENT_目前進度.md` is the single current pointer. It records the active stage, latest teacher decision, latest file for each artifact type, blocked items, and next permitted action.
 
 Use:
@@ -41,7 +43,7 @@ Use:
 {lesson_id}__{artifact}__v{NN}__{STATUS}.{ext}
 ```
 
-Allowed statuses: `DRAFT`, `TEACHER_REVIEW`, `LOCKED`, `APPROVED`, `SUPERSEDED`. Superseded files stay in `99_歷史版本`; an old draft must never be the unlabelled current file.
+Allowed statuses: `DRAFT`, `TEACHER_REVIEW`, `CONTENT_APPROVED`, `LOCKED`, `APPROVED`, `SUPERSEDED`. Superseded files stay in `99_歷史版本`; an old draft must never be the unlabelled current file.
 
 ## Continuation read order
 

@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.11
+# V-MAX Adapter｜ChatGPT 1.12
 
 ## Lesson Artifact Registry
 
@@ -24,6 +24,8 @@
 先實際嘗試可用 GitHub 讀取工具；失敗依 Bootstrap 的可信 LKG fallback 處理，無可信規格才回報 `BOOTSTRAP_BLOCKED`，不得假裝已載入。
 
 ## Runtime 執行
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 - `runtime/lesson-state.md` 只提供 schema 與位置規則；以 Google Drive 該課 State 的 `current_stage` 為目前真實位置。
 - 使用者回覆「確認／好／可以／OK／沿用」時，依對應 HOLD 範圍執行下一個合法 stage；局部來源裁定只回到 current_stage 補齊來源，不推定全文核准。next_allowed_stage 為空不阻擋 current_stage 的合法未完成工作。
@@ -57,8 +59,8 @@ ChatGPT 不得以「使用者先前上傳過」取代 Source Library 尋源規�
 - 第一屏先顯示結論、證據、知識層、缺口與本次唯一決定；教師要求時才展開完整母檔。
 - STEP 1 必要來源未核對完成時回報 `STEP1_INCOMPLETE`，不得要求核准完整定錨。
 - 知識層使用 `[教材明載] / [教師補充] / [AI 延伸] / [待核對]`；來源狀態另顯示 `[教材已確認] / [教育部辭典已核對] / [AI 建議，待教師確認] / [尚待教材來源核對]`。外部字典不能證明某詞屬於教材。
-- STEP 2.5 只顯示形近字、多音字、教材詞語／成語審核表與待確認項目，然後停在 HOLD 2.5。
-- 嚴格遵守 `HOLD 1 → STEP 2 → HOLD 2 → STEP 2.5 → HOLD 2.5 → STEP 2.6 → HOLD 2.6`；不得產生 `STEP 2.75`。
+- DETAILED_LESSON 的 STEP 2.5 只顯示形近字、多音字、教材詞語／成語審核表與待確認項目，然後停在 HOLD 2.5。
+- DETAILED_LESSON 嚴格遵守 `HOLD 1 → STEP 2 → HOLD 2 → STEP 2.5 → HOLD 2.5 → STEP 2.6 → HOLD 2.6`；不得產生 `STEP 2.75`。
 
 ## 平台輸出
 
@@ -86,7 +88,7 @@ Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含續作）時�
 
 ## STEP 1 整合擷取
 
-SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，完整後才交付一份審核稿並停在 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
+SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，來源完整後，國語簡報在 VP1 完成候選分析再集中送審；DETAILED_LESSON 才單獨停 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
 
 ## 圖片式產物的呈現與修訂（簡報／視覺階段適用）
 

@@ -1,6 +1,8 @@
-# V-MAX Knowledge Lab Ordering Policy 1.9
+# V-MAX Knowledge Lab Ordering Policy 1.10
 
 ## 定位
+
+國語簡報 CHINESE_VISUAL_PRESENTATION 依 `core/governance/chinese-visual-presentation-workflow.md` 在 VP1 完整準備本政策的語文候選與覆蓋，與四層次閱讀一併送審；正式選教仍需教師事件。以下獨立 STEP 2.5 HOLD 僅適用 DETAILED_LESSON。
 
 本政策定義 `STEP 2.5 語文輻射` 與後段 Knowledge Lab 的分析、推薦、教師選擇與排序邏輯。
 

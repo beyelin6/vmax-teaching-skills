@@ -5,9 +5,11 @@ description: 將台灣國小國語課本、教師手冊、習作與出版社資�
 
 # Chinese Textbook Transcriber
 
-版本：0.4.4
+版本：0.4.5
 
 ## 核心定位
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 本技能是「忠實擷取器」，不是教材分析器，也不是 LKB 組裝器。它先建立 `SOURCE_INGESTION_RECORD`，再輸出可供 Source Master 使用的文字與證據；擷取記錄與教學判讀分開保存。
 

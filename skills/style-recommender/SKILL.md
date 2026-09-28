@@ -1,9 +1,11 @@
 ---
 name: style-recommender
-description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teaching Strategy、角色設定與年級，推薦適合當課教材的 3 至 5 種視覺風格方案。每個方案必須說明適用理由、視覺 DNA、配色、紙張材質、插圖語言、章節標籤、版型方向與限制，並在教師確認前停止。不得固定套用上一課風格，也不得以風格壓過教材內容。
+description: 根據已核准的 Lesson Knowledge Book、Learning Modules、Teaching Strategy、角色設定與年級，推薦適合當課教材的 3 至 5 種視覺風格方案。每個方案必須說明適用理由、視覺 DNA、配色、紙張材質、插圖語言、章節標籤、版型方向與限制，供教師確認；國語視覺簡報併整體視覺方案審核。不得固定套用上一課風格，也不得以風格壓過教材內容。
 ---
 
 # Style Recommender
+
+版本：0.2.0
 
 Machine-readable style selections MUST conform to `core/schemas/vmax/style-selection-profile.schema.json`. `style_core` is the reusable locked visual system; `page_variants` may adjust page-family composition but may not silently replace the core palette, typography, ratio, safe boundary, or character rules.
 
@@ -26,6 +28,8 @@ Machine-readable style selections MUST conform to `core/schemas/vmax/style-selec
 依每一課教材內容與教學需求，推薦最合適的視覺風格組合，並提供可供教師比較與確認的具體方案。
 
 ## 前置條件
+
+國語簡報依 `core/governance/chinese-visual-presentation-workflow.md` 的 VP2，風格、角色用途、心智圖與畫布整包提出並確認。依核准課程及同包候選 Teaching Strategy／Learning Modules 推薦，這些內部候選不需要提前另開 HOLD。畫布尚未選定時可對 4:3／16:9 提出條件式方案，清楚標示未鎖定；整包確認後才寫入 CONFIRMED Profile。以下缺 canvas 即停、推薦完成即獨立停等僅適用 DETAILED_LESSON；不允許未核准方案進正式施工。
 
 必須讀取：
 

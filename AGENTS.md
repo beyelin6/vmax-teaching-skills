@@ -92,6 +92,8 @@ Windows / Codex 環境使用：
 
 ## 工作流關卡
 
+國語視覺簡報預設依 `core/governance/chinese-visual-presentation-workflow.md` 的五大階段；以下逐步來源／藍圖 HOLD 僅適用 DETAILED_LESSON。保留所有專業細節，將來源、語文及四層次閱讀候選整合為一份審核包；AI 延伸 pending，教師整包核准後才成為正式選教。角色用途與實際角色資產分階段鎖定；單課資料仍只存 Drive。
+
 1. 先完成教材轉錄與防漏檢查。
 2. 轉錄結果經教師確認後，才建立教學藍圖。
 3. 教學藍圖經確認後，才產生 NotebookLM 指令與投影片腳本。

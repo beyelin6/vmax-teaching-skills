@@ -5,7 +5,7 @@ description: 讀取已核准的 Official Knowledge、Teacher Knowledge 與來源
 
 # Chinese Lesson Knowledge Builder
 
-版本：0.3.3
+版本：0.3.4
 
 ## 核心定位
 
@@ -20,6 +20,8 @@ When a portable Source Master is present, read it through `core/schemas/vmax/sou
 `lkb/{課次}_{課名}_lesson-knowledge-book.md`
 
 ## 前置條件
+
+國語簡報依 `core/governance/chinese-visual-presentation-workflow.md` 的 VP1 可先將來源已驗證內容整合成待審 LKB，保持 draft，不把來源驗證當成教師核准。整合審核包須涵蓋完整 LKB 與候選，教師整包核准後由同一事件回填來源及 LKB 的具體版本範圍，無需再問一次。以下 approved_official_knowledge 是正式核准 LKB／學生輸出的門檻；VP1 候選整合不受此時序限制。
 
 必須存在：
 

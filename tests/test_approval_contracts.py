@@ -1,5 +1,6 @@
-"""Behavioral regression tests for teacher approval and workflow gates."""
+"""Approval schema and workflow-document consistency checks, not live AI behavior."""
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -65,14 +66,17 @@ class ApprovalContracts(unittest.TestCase):
 
 
 class WorkflowContracts(unittest.TestCase):
-    def test_style_gate_order_matches_main_workflow(self):
+    def test_grouped_stage_order_matches_canonical_policy(self):
+        canonical = read("core/governance/chinese-visual-presentation-workflow.md")
+        expected = re.findall(r"^\| (VP\w+) \|", canonical, re.MULTILINE)
+        self.assertTrue(expected)
         def sequence(path):
             text = read(path)
-            start = text.index("→ Visual Grammar / Slide Architecture")
-            end = text.index("→ 代表頁驗證", start)
-            return text[start:end].strip()
-        self.assertEqual(sequence("core/governance/vmax-main-workflow.md"),
-                         sequence("skills/vmax-golden-path-executor/SKILL.md"))
+            return re.findall(r"^(?:→ )?(VP\w+)｜", text, re.MULTILINE)
+        for path in ("core/governance/vmax-main-workflow.md",
+                     "skills/vmax-golden-path-executor/SKILL.md", "V-MAX_MANIFEST.md"):
+            with self.subTest(path=path):
+                self.assertEqual(sequence(path), expected)
 
     def test_no_idiom_runtime_keeps_confirmation_gate(self):
         text = read("runtime/lesson-state.md")

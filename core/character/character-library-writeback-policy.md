@@ -1,10 +1,14 @@
-# V-MAX Character Library Writeback Policy 1.0
+# V-MAX Character Library Writeback Policy 1.1
 
 ## 目的
 
 教師確認的新角色不能只存在於當次對話、Render Request 或某張圖片中。確認後必須先回存 Character Registry，讓後續頁面與跨平台續跑有同一份身份來源。
 
 ## 觸發時點
+
+CHINESE_VISUAL_PRESENTATION 的角色用途在 VP2 確認、逐頁文字／配置在 VP3 審核、實際角色視覺在 VP4 核准及回存。下列提前於 Style Selection 的鏈只適用 DETAILED_LESSON；兩模式都必須在代表頁與批次前完成核准資產回存。
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 ```text
 角色候選／新角色方案

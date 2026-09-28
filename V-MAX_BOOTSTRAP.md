@@ -1,6 +1,8 @@
-# V-MAX Bootstrap 1.6.4
+# V-MAX Bootstrap 1.7.0
 
 ## 目的
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 本檔是任何 AI／Agent／Renderer 進入 V-MAX 時的第一讀取入口。
 

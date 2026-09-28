@@ -1,6 +1,8 @@
-# V-MAX STEP 1 Source Anchor Policy 1.9
+# V-MAX STEP 1 Source Anchor Policy 1.10
 
 ## 定位
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 STEP 1 是「教材定錨」，目的只有一個：先把教材真值、範圍與來源確認清楚，再進入教學判讀。
 
@@ -207,6 +209,8 @@ STEP 1 必須優先使用教材／結構化轉錄來源；不得用舊簡報、�
 > 原始教材放一次；之後 V-MAX 自己去來源庫找。
 
 ## G. 完整擷取、集中審核（GLOBAL_SKILL_RULE）
+
+CHINESE_VISUAL_PRESENTATION 將擷取視為 VP1 子任務：EXTRACTION_VERIFIED 表示 AI 已完成來源核對，仍不是教師核准；接著連續完成語文、成語及四層次閱讀候選，整包審核時才取得来源與選教各自的核准範圍。本節要求來源單独 HOLD 1 或禁止候選分析的時序只適用 DETAILED_LESSON；完整性、來源忠實與集中缺口規則兩模式共用。
 
 ### 階段內連續處理
 

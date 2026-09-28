@@ -1,4 +1,4 @@
-# V-MAX Teacher Review View Contract 1.2
+# V-MAX Teacher Review View Contract 1.3
 
 ## 定位
 
@@ -9,6 +9,8 @@
 > 先讓老師看懂結論、證據、缺口與這次唯一決定，再把完整結構化資料留給系統。
 
 ## A. 雙層輸出
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 每個正式 stage 可同時產生：
 
@@ -74,6 +76,8 @@ AI 建議與理由
 
 ## E. STEP 1 完整性阻擋
 
+本節禁止進入後續分析的限制適用 DETAILED_LESSON。國語簡報 VP1 未解必要來源缺口仍不能整包核准，但可以完成不依賴缺口的閱讀／語文候選分析；候選不得冒充教材真值或教師選教。
+
 若完整正式生字、認讀字雙來源、教材詞語聯集、課文結構或 provenance 等必要來源仍未核對：
 
 - 顯示 `STEP1_INCOMPLETE`。
@@ -84,6 +88,8 @@ AI 建議與理由
 STEP 1 不得出現 Mode、Scenario、角色、視覺、頁數、固定每段教學迴圈或已鎖定的教學主軸。
 
 ## F. 階段與下一步
+
+以下 F–G 的細分 HOLD 只適用 DETAILED_LESSON；國語簡報依整合工作流，UI 顯示大階段名稱與同包選項，內部子任務不再各自出卡。
 
 前段合法鏈固定為：
 
@@ -144,4 +150,4 @@ teacher_review_view:
 
 ## 核心金句
 
-> 母檔要完整；畫面要好讀；教師一次只決定一件事。
+> 母檔要完整；畫面要好讀；教師一次審核一份完整階段成果。

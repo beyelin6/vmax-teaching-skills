@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：2.11
+版本：3.0
 
 ## 目的
 
@@ -15,7 +15,7 @@ The executor must create or resume the lesson's `00_施工中_接續區` at task
 
 核心原則：
 
-> 一次確認，只前進一個合法階段。
+> 一次確認，完成下一個合法大階段；同階段內的工作連續做完。
 
 > 執行器必須載入當前階段所有已登記的必要政策，不能只讀舊的單一 Knowledge Lab 規則。
 
@@ -59,40 +59,16 @@ Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selec
 
 ## B. 合法前進序列
 
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
+
 ```text
-SOURCE 0｜Google Drive Source Library 尋源
-→ STEP 1｜教材定錨
-→ HOLD 1
-→ STEP 2｜AI 教學價值判讀／Teacher Intent 候選
-→ HOLD 2
-→ STEP 2.5｜語文輻射分析與教師選擇
-→ HOLD 2.5
-→ STEP 2.6｜成語表達與視覺化確認
-→ HOLD 2.6
-→ Teacher Intent Lock
-→ Lesson Map
-→ 補充內容／學習框架候選
-→ Session Map
-→ Lesson Visual Map Strategy
-→ Scenario Wrapper
-→ Character Topology / Cast
-→ Knowledge Lab 正式編排
-→ Visual Grammar / Slide Architecture
-→ 頁型與教學功能草案（不展開逐頁施工細節）
-→ 風格庫 3–5 組候選／主風格＋頁型混搭方案
-→ HOLD｜教師選擇主風格與頁型混搭規則
-→ 鎖定 Style Selection Profile／Style Matrix
-→ 鎖定角色與畫布
-→ 頁數估算／頁數帳本確認 HOLD
-→ PAGE_DETAIL_CONFIRMATION｜逐頁可施工細節稿
-→ HOLD｜等待教師確認逐頁施工稿
-→ 代表頁選擇檔驗證（只從 PAGE_DETAIL_CONFIRMATION 挑選）
-→ 代表頁驗證／逐類教師確認 HOLD
-→ 全量 Renderer（小批次，每批教師確認 HOLD）
-→ Quality Gate
-→ Lesson Learning
-→ Lesson Package Delivery Gate
-→ Google Drive 歸檔與驗證
+VP1_COURSE_REVIEW｜完整課程內容（來源＋語文＋四層次閱讀，集中審核）
+→ VP2_DESIGN_REVIEW｜課程調整與視覺方案（集中審核）
+→ VP3_PAGE_PLAN_REVIEW｜完整逐頁文字與配置（存 Drive，集中審核）
+→ VP4_CHARACTER_REVIEW｜角色視覺定稿／沿用與資產綁定
+→ VP5_REPRESENTATIVE_REVIEW｜代表頁組審核，逐類記錄
+→ VP5_BATCH_REVIEW｜一次一批製作與審核，核准後才下一批
+→ VP_COMPLETE｜品質、交付與歸檔
 ```
 
 ### Session Map 執行分流
@@ -100,6 +76,8 @@ SOURCE 0｜Google Drive Source Library 尋源
 到 Session Map 必讀 `core/director/session-director.md`。完整教材製作預設 CONTENT_COVERAGE；保留已核准內容並檢查呈現順序，不自行估堂數。只有教師明確要求課時規劃才啟用 TIMEBOXED_SESSIONS。內容模式沿用原 stage ID，依 policy 驗證完成或只對實質變更保留 HOLD；不得製造堂數確認點。完成後保存並同步，停在下一合法階段的入口，不自動連做視覺方案。教師要求取消既有切堂時只修正該 artifact，不重做来源與已核准 Lesson Map／Overlay。
 
 ### PAGE_DETAIL_CONFIRMATION
+
+CHINESE_VISUAL_PRESENTATION 必讀 `core/governance/chinese-visual-presentation-workflow.md` 的 VP3／VP4：先確認內容與配置，狀態 content_approved；角色資產綁定並驗證後才 approved。以下要求資產先於逐頁稿的順序只適用 DETAILED_LESSON；正式生圖所需欄位與品質檢查兩模式相同。
 
 `Slide Architecture`、教師選定的 `Style Selection Profile`／`Style Matrix`、角色、畫布與頁數帳本鎖定後，Executor 才能把前一步的版面配置初稿轉成正式 `PAGE_DETAIL_CONFIRMATION`（依 `schemas/page-detail-confirmation-profile.md`）。正式母檔先建立並核准全課唯一的 `page_number_system` 與 `section_marker_system` 設計及其 hash；首次代表頁用來驗證成品效果，不要求尚未生成的實測結果先存在。若實測需改設計則局部修訂並更新 hash，後續頁面沿用確認結果。母檔另必須列出學生可見文字、source refs、圖片細節、角色／物件／動作、禁止誤畫、閱讀順序、文字與圖片區、留白、protected zones、字體角色與互動，並逐頁帶入核准的 `style_variant_id`、`layout_id`、`layout_contract` 與 hash。每個出場角色必須帶入 `base_character_id`、`core_dna_ref`、`approved_asset_id`、`asset_version`、`allowed_variations` 與 `prohibited_drift`；角色未出場也要明確記錄。教師確認前標記 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或 Renderer；確認後才可挑選代表頁；各實際啟用頁型均經教師確認後，才可小批次製作。任何頁面變更都必須更新該頁 revision，不得只修改 prompt 或 Render Request。
 
@@ -117,11 +95,13 @@ SOURCE 0｜Google Drive Source Library 尋源
 
 頁數、模板或外加變體不得靜默重排此順序。若教師確認了變體，必須另存 `architecture_mapping`，逐項標記 `preserved`、`transformed`、`extended` 或 `omitted` 及理由；變體可以改變教學呈現，但不得遺失任何教師指定的學習結果。
 
-若本課無需處理成語，STEP 2.6 明確記錄 `N/A_NO_IDIOM`，仍須停在 HOLD 2.6；教師確認後才進 Teacher Intent Lock。
+DETAILED_LESSON 若本課無需處理成語，STEP 2.6 明確記錄 `N/A_NO_IDIOM`，仍須停在 HOLD 2.6；教師確認後才進 Teacher Intent Lock。
 
 ---
 
 ## C. Confirmation Transition Guard
+
+CHINESE_VISUAL_PRESENTATION 以大階段審核包及 item ID／revision 判定確認範圍；一個明確的整包確認可回填多個子物件的核准記錄。第 4–6 點的一站指下一大階段；來源局部裁定則回 VP1 補齊，不當作整包核准。
 
 教師只輸入「確認／好／可以／OK／沿用」時，先依 `core/governance/hold-teacher-interface-policy.md` 的「確認範圍」核對目前展示的決策、版本與完成條件；只有對象唯一且為可核准的階段審核，才設 `confirm_current_hold = true`。來源缺口裁決只更新該缺口並回到同一 STEP 1，不關閉整體教材審核、不解鎖 STEP 2。
 
@@ -146,6 +126,8 @@ SOURCE 0｜Google Drive Source Library 尋源
 若 UI 未通過，標記 `RAW_SCHEMA_DUMP / TEACHER_INTERFACE_OVERLOAD / KNOWLEDGE_LAYER_MIXED`，停在原 stage。
 
 ## E. STEP 1 專用 Guard｜教材身分先讀對
+
+以下 E–G 的小步 HOLD 與停止分析指令僅適用 DETAILED_LESSON。國語簡報在 VP1 連續完成可查內容、候選選教與四層次閱讀；來源／候選／正式選教仍分層，AI 不自行批准候選。
 
 STEP 1 必須載入：
 - `core/governance/step1-source-anchor-policy.md`
@@ -326,7 +308,7 @@ Google Drive 固定根目錄為 Manifest 指定的 `V-MAX 教材庫`。
 
 ## 核心金句
 
-> AI 做重判斷，老師只改例外；一次確認只走一站。
+> AI 完成一個大階段再集中送審，老師只改例外。
 
 > 生字表 ≠ 生字教學清單；AI 主動只教形近字與多音字，單字詳解由老師指定。
 

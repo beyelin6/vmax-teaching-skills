@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 2.13
+# V-MAX Main Workflow 3.0
 
 ## 定位
 
@@ -65,47 +65,27 @@ The teacher-facing workflow remains Phase／STEP／HOLD based; schemas do not re
 
 ## B. Golden Path
 
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
+
 ```text
-SOURCE 0｜Google Drive Source Library 尋源
-→ STEP 1｜教材定錨
-→ HOLD 1
-→ STEP 2｜AI 教學價值判讀／Teacher Intent 候選
-→ HOLD 2
-→ STEP 2.5｜語文輻射分析與教師選擇
-→ HOLD 2.5
-→ STEP 2.6｜成語表達與視覺化確認
-→ HOLD 2.6
-→ Teacher Intent Lock
-→ Lesson Map
-→ 補充內容／學習框架候選
-→ Session Map
-→ Lesson Visual Map Strategy
-→ Scenario Wrapper
-→ Character Topology / Cast
-→ Knowledge Lab 正式編排
-→ Visual Grammar / Slide Architecture
-→ 頁型與教學功能草案（不展開逐頁施工細節）
-→ 風格庫 3–5 組候選／主風格＋頁型混搭方案
-→ HOLD｜教師選擇主風格與頁型混搭規則
-→ 鎖定 Style Selection Profile／Style Matrix
-→ 鎖定角色與畫布
-→ 頁數估算／頁數帳本確認 HOLD
-→ PAGE_DETAIL_CONFIRMATION｜逐頁可施工細節稿
-→ HOLD｜等待教師確認逐頁施工稿
-→ 代表頁選擇檔驗證（只從 PAGE_DETAIL_CONFIRMATION 挑選）
-→ 代表頁驗證／逐類教師確認 HOLD
-→ 全量 Renderer（小批次，每批教師確認 HOLD）
-→ Quality Gate
-→ Lesson Learning
-→ Lesson Package Delivery Gate
-→ Google Drive 歸檔與驗證
+VP1_COURSE_REVIEW｜完整課程內容（來源＋語文＋四層次閱讀，集中審核）
+→ VP2_DESIGN_REVIEW｜課程調整與視覺方案（集中審核）
+→ VP3_PAGE_PLAN_REVIEW｜完整逐頁文字與配置（存 Drive，集中審核）
+→ VP4_CHARACTER_REVIEW｜角色視覺定稿／沿用與資產綁定
+→ VP5_REPRESENTATIVE_REVIEW｜代表頁組審核，逐類記錄
+→ VP5_BATCH_REVIEW｜一次一批製作與審核，核准後才下一批
+→ VP_COMPLETE｜品質、交付與歸檔
 ```
 
-若無需處理成語：STEP 2.6 明確記錄 `N/A_NO_IDIOM`，仍須停在 HOLD 2.6；教師確認後才進 Teacher Intent Lock，不得默默跳過。
+DETAILED_LESSON 若無需處理成語：STEP 2.6 明確記錄 `N/A_NO_IDIOM`，仍須停在 HOLD 2.6；教師確認後才進 Teacher Intent Lock，不得默默跳過。
 
 ---
 
 ## C. Single-stage Advance
+
+DETAILED_LESSON 的完整順序：SOURCE 0 → STEP 1／HOLD 1 → STEP 2／HOLD 2 → STEP 2.5／HOLD 2.5 → STEP 2.6／HOLD 2.6 → Teacher Intent Lock → Lesson Map → 補充候選 → Session Map → Visual Strategy → Cast → Knowledge Lab → Slide Architecture → Style HOLD → Character／Canvas Lock → Page Ledger HOLD → PAGE_DETAIL HOLD → Representative HOLD → Batch HOLD → Quality／Delivery／Archive。此分流不能被國語簡報子技能自動啟用。
+
+CHINESE_VISUAL_PRESENTATION 的一站是大階段；內部 SOURCE／分析／Coverage／Lesson Map 不另停。本節下列細分鏈只適用 DETAILED_LESSON，國語簡報依整合工作流的唯一下一步表。
 
 ```text
 HOLD 1 確認 → STEP 2 → HOLD 2
@@ -119,6 +99,8 @@ HOLD 2.6 確認 → Teacher Intent Lock
 ---
 
 ## D. STEP 1｜教材定錨
+
+以下 D–K 為專業子任務。國語簡報 VP1 可連續準備 SOURCE、STEP 2／2.5／2.6 與 Lesson Map 候選，未取得教師核准前保持 pending；完成後合併一次 VP1 審核。VP2 整合外加課程與視覺方案。以下「完成後 HOLD」僅為 DETAILED_LESSON 停點。
 
 只回答「教材裡有什麼」，不決定角色、畫風、頁數。
 
@@ -261,11 +243,11 @@ Visual Grammar / Slide Architecture 先認知關係再決定畫面。
 
 Style Recommender 必須依本課課文、教學策略、角色與頁面家族提出 3–5 組風格庫候選，也可提出主風格＋頁型混搭方案；這一步是教師選擇 HOLD，不是自動決策。`selected_style_id`、主風格、混搭頁型與限制未經教師確認前，不得建立 PAGE_DETAIL_CONFIRMATION、代表頁、正式 Slide Script 或啟動 Renderer。
 
-風格、角色、畫布與頁數帳本確認後，才產生 `working/slide-page-layout-brief.md` 的逐頁可施工細節；與上述核准文件共同組成 `PAGE_DETAIL_CONFIRMATION`。每頁還必須明列：頁碼與區段、`page_family_contract_id`、完整 `page_specific_plan`、學生可見的每一段文字、來源回指、圖片目的／場景／人物／動作／必要物件／禁止誤畫、閱讀順序、文字區、圖片區、留白、protected zones、字體角色與互動方式。不得只寫抽象主題或一句圖片 prompt。
+國語簡報 VP3 依整合工作流先鎖角色規劃，角色視覺資產於 VP4 綁定；頁數帳本併逐頁稿審核。DETAILED_LESSON 仍在風格、角色資產、畫布與頁數帳本確認後，才產生 `working/slide-page-layout-brief.md` 的逐頁可施工細節；與上述核准文件共同組成 `PAGE_DETAIL_CONFIRMATION`。每頁還必須明列：頁碼與區段、`page_family_contract_id`、完整 `page_specific_plan`、學生可見的每一段文字、來源回指、圖片目的／場景／人物／動作／必要物件／禁止誤畫、閱讀順序、文字區、圖片區、留白、protected zones、字體角色與互動方式。不得只寫抽象主題或一句圖片 prompt。
 
 風格可混搭，但只能以頁面類型為單位管理：同一頁型必須使用同一 `style_variant`；不同頁型才可使用不同媒材。水彩、漫畫或其他畫風僅為示意，實際媒材、版型與構圖應依教材、教學功能與教師偏好推薦，不得硬編成固定答案。整課共用的字體、畫布、角色 DNA、章節標籤、留白與文字規則仍必須一致。
 
-教師確認角色後，若是本課新角色，先完成 Character Registry writeback（預設 `LESSON_ONLY`）。教師確認主風格／頁型混搭規則後，才建立 Style Selection Profile 的 `CONFIRMED` 鎖；每個頁型變體同時鎖定 `layout_id`、`layout_contract` 與 hash。接著教師確認逐頁版面稿與頁型風格矩陣；在此之前狀態為 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或啟動 Renderer。確認後才建立 `PAGE_DETAIL_CONFIRMATION_APPROVED` 與 `BATCH_CONSTRUCTION_LOCK`；Renderer 必須依核准母檔批次製作，不能自行補抓教材內容、決定風格或改變頁面排版意圖。
+國語簡報的角色資產及 content_approved → approved 依整合工作流 VP4 執行；以下提前鎖角色與建批次鎖的時點僅適用 DETAILED_LESSON。教師確認角色後，若是本課新角色，先完成 Character Registry writeback（預設 `LESSON_ONLY`）。教師確認主風格／頁型混搭規則後，才建立 Style Selection Profile 的 `CONFIRMED` 鎖；每個頁型變體同時鎖定 `layout_id`、`layout_contract` 與 hash。接著教師確認逐頁版面稿與頁型風格矩陣；在此之前狀態為 `PAGE_DETAIL_CONFIRMATION_PENDING`，不得建立正式 Slide Script、代表頁或啟動 Renderer。確認後才建立 `PAGE_DETAIL_CONFIRMATION_APPROVED` 與 `BATCH_CONSTRUCTION_LOCK`；Renderer 必須依核准母檔批次製作，不能自行補抓教材內容、決定風格或改變頁面排版意圖。
 
 只有完成 Slide Architecture 後才可估頁數；頁數是結果，不是起點。
 
@@ -326,8 +308,8 @@ Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護�
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-僅在 Runtime 已到 STEP 2.5 語文規劃或後續簡報施工階段（含該階段續作）時，載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+國語簡報的階段與集中審核依 `core/governance/chinese-visual-presentation-workflow.md`；施工授權、成語雙軌、既有核准沿用、批次與局部修正依 `core/governance/presentation-preconstruction-policy.md`。按當前工作載入適用章節，不複製另一套流程。
 
 ## STEP 1 整合擷取
 
-SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，完整後才交付一份審核稿並停在 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
+SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，來源完整後在國語簡報 VP1 繼續分析，最後整包審核；DETAILED_LESSON 才單獨停 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。

@@ -5,7 +5,7 @@ description: 讀取已核准的 Lesson Knowledge Book 與 Learning Module Profil
 
 # Teaching Strategy Builder
 
-版本：0.1.0
+版本：0.2.0
 
 ## 使命
 
@@ -18,6 +18,8 @@ Machine-readable Teaching Strategy Profiles MUST conform to `core/schemas/vmax/t
 本技能負責「怎麼教」，不負責重新解讀教材，也不負責決定視覺風格或製作簡報。
 
 ## 前置條件
+
+國語視覺簡報依 `core/governance/chinese-visual-presentation-workflow.md`，VP2 可依核准課程和同包的 Learning Module 候選完成策略候選，保持 TEACHER_REVIEW；下列 Learning Module 先核准、完成即獨立停等只適用 DETAILED_LESSON。VP2 同一教師事件分別核准展示的 module／strategy 版本後，才供正式下游使用。預設 CONTENT_COVERAGE，不安排堂數、每堂分鐘或強制教學時間表；有明確課時要求才套用以下課節規則。
 
 執行前必須存在並讀取：
 

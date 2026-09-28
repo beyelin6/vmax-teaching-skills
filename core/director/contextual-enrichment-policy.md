@@ -1,6 +1,8 @@
-# V-MAX Contextual Enrichment Policy 1.1
+# V-MAX Contextual Enrichment Policy 1.2
 
 ## 定位
+
+國語簡報依 `core/governance/chinese-visual-presentation-workflow.md`：VP1 審核包附選配選項，VP2 完成已選補充與活動調整，併視覺方案審核；以下候選／Lesson Map／Session Map 的個別停等只適用 DETAILED_LESSON。未選補充不另問一輪，不改既有教材真值。
 
 Contextual Enrichment Layer 負責處理「教材原有語文活動之外，教師依課文內容、班級狀態、教學目標與時事脈絡所加入的補充」。
 

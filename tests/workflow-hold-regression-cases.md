@@ -1,5 +1,7 @@
 # V-MAX Workflow HOLD Regression Cases 1.13
 
+細分 STEP／HOLD 情境使用 DETAILED_LESSON。國語視覺簡報預設的整合審核情境另見 `tests/chinese-visual-workflow-regression-cases.md`；不能以舊小步期望值要求國語簡報逐項停等。
+
 ## 用途
 
 本檔用真實失敗案例檢查 V-MAX 在重跑時是否仍遵守：Teacher UI、STEP 1 邊界、認讀字雙來源核對、STEP 2 / 2.5 / 2.6、三四年級生字聚焦、多音字來源 Gate、文本嵌入、Lesson Visual Map 保留、單階段前進與頁數延後。

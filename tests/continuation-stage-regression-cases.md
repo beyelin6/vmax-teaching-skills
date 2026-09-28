@@ -1,5 +1,7 @@
 # Continuation Stage Regression Cases
 
+細分 STEP／HOLD 情境使用 DETAILED_LESSON。國語視覺簡報預設的整合審核情境另見 `tests/chinese-visual-workflow-regression-cases.md`；不能以舊小步期望值要求國語簡報逐項停等。
+
 以下為實跑驗收情境，不代表已操作 Drive。
 
 1. 新課 SOURCE 0：初始化真實 Runtime 後可同步；尚未建立的 LKB、策略與逐頁腳本列入 `not_yet_produced`，不要求先完成下游才能開始。

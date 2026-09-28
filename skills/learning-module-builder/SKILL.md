@@ -1,11 +1,11 @@
 ---
 name: learning-module-builder
-description: 讀取已核准的 Lesson Knowledge Book 與教師選定的能力目標，為成語、修辭、句型、生字詞與課文理解建立可選的學習延伸模組。教材知識不得被改寫；本技能只產生情境理解、易誤用辨識、近義反義比較、看圖判斷、造句、討論、遊戲、練習與 Exit Ticket 等教學延伸，並在完成後停下等待教師確認。
+description: 讀取已核准的 Lesson Knowledge Book 與教師選定的能力目標，為成語、修辭、句型、生字詞與課文理解建立可選的學習延伸模組。教材知識不得被改寫；本技能只產生情境理解、易誤用辨識、近義反義比較、看圖判斷、造句、討論、遊戲、練習與 Exit Ticket 等教學延伸，完成後供教師確認；國語視覺簡報併課程調整方案審核。
 ---
 
 # Learning Module Builder
 
-版本：0.1.0
+版本：0.2.0
 
 ## 使命
 
@@ -16,6 +16,8 @@ Machine-readable module records must preserve the upstream `APPROVED_TEACHING_SE
 Machine-readable Learning Module Profiles MUST conform to `core/schemas/vmax/learning-module-profile.schema.json`. The profile is an approved companion object, not a second Source Master.
 
 ## 前置條件
+
+國語視覺簡報依 `core/governance/chinese-visual-presentation-workflow.md`，VP2 使用 VP1 已核准課程／選教建立本包學習模組候選；config 可從已核准選項建立，不另要求教師先核准設定檔。本技能的個別停等併 VP2 整包審核；VP1 的閱讀與語文候選分析不必先建立正式 Learning Module。
 
 必須存在並讀取：
 

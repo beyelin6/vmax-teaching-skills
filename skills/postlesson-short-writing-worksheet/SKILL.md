@@ -5,7 +5,7 @@ description: 將已核准的課文知識、核心詞語、句型、修辭與學�
 
 # V-MAX Post-lesson Short Writing Worksheet Skill
 
-版本：1.3
+版本：1.4
 
 ## 目的
 
@@ -16,6 +16,8 @@ description: 將已核准的課文知識、核心詞語、句型、修辭與學�
 > 短文單不是傳統作文稿紙；它是一張 A4 橫式、圖像化、可直接啟動寫作的任務單。先幫學生找到畫面與素材，再提供可自由選用的語文 Bonus，最後留下足夠空間完成短文或童詩。
 
 ## 必讀與前置閘門
+
+由國語簡報分支製作時依 `core/governance/chinese-visual-presentation-workflow.md`「預習單與短文單」節：課程內容已核准且教師已要求該產物，即可讀共享課程主檔／LKB 做本任務 Coverage Diff；不等待簡報逐頁稿、角色圖或代表頁。整份產物集中審核，引用 source_artifact_refs 並保存分支 resume_stage；不覆寫簡報進度。必要的課程調整尚未核准時，只等待依賴該變更的題目。
 
 1. 先執行 `core/governance/lesson-master-preflight.md`。
 2. 依 `core/governance/task-knowledge-requirement-registry.md` 的 Post-lesson Writing Worksheet 最低需求執行 Coverage Diff。

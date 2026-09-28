@@ -1,4 +1,4 @@
-# V-MAX Session Director 1.4
+# V-MAX Session Director 1.5
 
 ## 定位
 
@@ -13,6 +13,10 @@ Session Director 預設檢查完整教材的內容覆蓋與呈現順序；只有
 ---
 
 ## A0. 先依教師需求選模式
+
+國語簡報的內容覆蓋與呈現順序是 VP1／VP2 審核包的內部成果；有實質變更也併入該包，不自行開 Session Map HOLD 或在無變更時停下要求「下一步」。以下單獨階段停點只適用 DETAILED_LESSON。
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 - `CONTENT_COVERAGE`（預設）：以指定內容完整呈現為完成目標，不安排堂數、分鐘數、每堂停點或下堂銜接。
 - `TIMEBOXED_SESSIONS`：只有教師明確要求課時規劃才啟用；沿用本檔的切堂、時間估算與課堂節奏規則。

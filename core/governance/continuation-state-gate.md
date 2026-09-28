@@ -1,6 +1,8 @@
-# V-MAX Continuation State Gate 1.6
+# V-MAX Continuation State Gate 1.7
 
 ## 定位
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 本政策防止 V-MAX 在長對話、上下文整理、平台切換或多個候選版本並存時遺失教師已確認的決定。任何「繼續／下一步／確認／沿用／重新開始／試跑」都必須先通過本 Gate。
 

@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.4
+# V-MAX Runtime State Contract 2.5
 
 ## 定位
 
@@ -41,10 +41,11 @@ V-MAX_State_{冊別}_{課次}_{課名}
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.4
+runtime_schema_version: 2.5
 storage: GOOGLE_DRIVE
 lesson_id:
 workflow_version:
+workflow_mode: CHINESE_VISUAL_PRESENTATION # 或 DETAILED_LESSON
 lesson:
   grade_volume:
   lesson_number:
@@ -54,7 +55,8 @@ source:
   source_status:
   source_file:
 state:
-  current_stage:
+  current_stage: # 國語簡報使用 VP1–VP5 stage ID，詳見整合工作流
+  stage_status: WORKING # WORKING | WAITING_REVIEW | BLOCKED | COMPLETE
   last_completed_stage:
   teacher_confirmation_status:
   next_allowed_stage: []
@@ -112,6 +114,13 @@ continuation:
   candidate_outputs: []
   conflicts: []
   downstream_impact: []
+review_package_ref: null
+review_package_revision: null
+approval_scope: [] # artifact ref、revision、item IDs、教師事件，不可用一個全域 true
+internal_work_items: [] # 同一大階段內待做／完成項；非額外 HOLD
+course_master_ref: null
+product_branches: {} # 各產物 source_artifact_refs、revision、status、review_ref、resume_stage
+migration_ref: null
 notes: []
 ```
 
@@ -120,6 +129,8 @@ notes: []
 ---
 
 ## 合法前段狀態鏈
+
+國語簡報 stage 使用 `core/governance/chinese-visual-presentation-workflow.md` 的 VP1–VP5 與 VP_COMPLETE 表。以下細分狀態鏈只適用 DETAILED_LESSON；小步結果保存在 internal_work_items。舊課依核准證據作非破壞性映射，不重置已確認頁面。
 
 ```text
 STEP_1 → HOLD_1
@@ -165,6 +176,6 @@ HOLD_2_5 confirmed
 
 ## 簡報施工確認接續欄位
 
-依 `core/governance/presentation-preconstruction-policy.md`，在該課 State 保存 `presentation_confirmation`：`source_master_ref`、`page_ledger_ref`、`style_matrix_ref`、`role_lock_ref`、`canvas_lock_ref`、`page_rules_ref`、`vocabulary_idiom_coverage_ref`、`page_detail_ref`／revision／status、`representative_family_approvals`、`current_batch`（id、page_ids、limit、status、approval_ref）、`previous_revision_ref`。引用須帶版本／hash；不存在的核准不得填 true。
+依 `core/governance/presentation-preconstruction-policy.md`，在該課 State 保存 `presentation_confirmation`：`source_master_ref`、`page_ledger_ref`、`style_matrix_ref`、`role_lock_ref`、`canvas_lock_ref`、`page_rules_ref`、`vocabulary_idiom_coverage_ref`、`page_detail_ref`／revision／status、`representative_family_approvals`、`current_batch`（id、page_ids、limit、batch_type、reason、status、approval_ref）、`previous_revision_ref`。引用須帶版本／hash；不存在的核准不得填 true。
 
 `next_allowed_stage` 只控制跨階段，每次最多一個值；尚未允許跨階段時為空。空值不禁止目前 stage 的已授權工作：STEP1_INCOMPLETE 且來源可讀時繼續擷取。只有實際缺來源、未決裁定或工具失敗阻擋剩餘工作時才停，不能從空值推導停工。逐頁稿 pending、代表頁待逐類確認或批次待確認時，不得執行下游。每個 stage／HOLD 的候選與核准記錄分開保存，更新 State 與 Index 後回讀驗證；未驗證不可宣稱完成同步。

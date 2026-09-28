@@ -1,4 +1,4 @@
-# V-MAX Idiom Expression & Visualization Policy 1.1
+# V-MAX Idiom Expression & Visualization Policy 1.2
 
 ## Runtime presentation rule: idiom pages
 
@@ -26,6 +26,8 @@ The page may use a narrative or visual composition appropriate to the idiom, but
 ---
 
 ## A. 正式流程位置
+
+國語簡報依 `core/governance/chinese-visual-presentation-workflow.md`，在 VP1 同時提出成語保留、解釋、例句及情境候選，整包確認前皆為 AI 建議；本檔細節保留。以下分成 HOLD 2.5／2.6 的先後只適用 DETAILED_LESSON。
 
 ```text
 STEP 2.5｜語文輻射分析與教師選擇

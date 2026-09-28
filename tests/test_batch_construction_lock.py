@@ -253,6 +253,17 @@ class BatchConstructionLockTests(unittest.TestCase):
             paths = self.make_fixture(Path(temp))
             MODULE.validate(*paths)
 
+    def test_content_approval_alone_cannot_start_batch(self) -> None:
+        """VP3 approval does not grant the VP4 asset/render authorization."""
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.make_fixture(Path(temp))
+            payload = json.loads(paths[1].read_text(encoding="utf-8"))
+            detail = payload["page_detail_confirmation"]
+            detail.update(status="content_approved", content_approval_ref="review:vp3:r1")
+            paths[1].write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "status must be approved"):
+                MODULE.validate(*paths)
+
     def test_unconfirmed_style_is_blocked(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             slide, page_detail, style, role = self.make_fixture(Path(temp))

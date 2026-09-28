@@ -1,13 +1,17 @@
 # Page Detail Confirmation Profile
 
-版本：1.2
+版本：1.3
 
 這是正式製作前的逐頁確認母檔。它把已鎖定的教學架構轉成可批次施工的頁面規格；教師確認後，Renderer 只能依此製作，不得自行補內容或改排版意圖。
 
 ```yaml
 page_detail_confirmation:
   id: ""
-  status: draft
+  status: draft # draft | pending | content_approved | approved
+  content_approval_ref: null
+  content_approved_file_sha256: null
+  asset_approval_refs: []
+  binding_record_ref: null
   revision: ""
   confirmation_sha256: ""
   batch_lock_mode: EXACT_PAGE_DETAIL
@@ -82,6 +86,7 @@ page_detail_confirmation:
         enabled: false
         term_refs: []
         mark_mode: NONE
+      planned_character_refs: [] # 角色規劃 ID／用途／位置／動作；VP3 尚缺資產時使用
       character_refs:
         - base_character_id: ""
           core_dna_ref: ""
@@ -153,6 +158,8 @@ page_detail_confirmation:
 
 ## 確認規則
 
+國語簡報分兩層核准，依 `core/governance/chinese-visual-presentation-workflow.md`：VP3 鎖文字／配置，status 為 content_approved，content_approval_ref 指向完整稿核准；角色規劃保存在 planned_character_refs，缺圖不得假填 asset ID。VP4 核准角色圖、完成 Registry 與綁定後，由 content_approval_ref、asset_approval_refs 與 binding_record_ref 支持 status: approved。純資產引用綁定不重審未變內容；內容／布局有變仍須受影響頁的核准。下列「每個角色已具核准資產」是 approved／正式施工的條件，不是 VP3 草稿的條件。
+
 每頁都必須有 `page_family_contract_id`、學生可見文字、來源、圖片細節與排版說明。文字要逐項列出，圖片要說明畫面目的、人物／物件／動作與禁止誤畫，排版要說明閱讀順序、文字區、圖像區、留白與 protected zones。每個出場角色都必須引用已確認的 `base_character_id`、`core_dna_ref`、`approved_asset_id` 與 `asset_version`；沒有角色時明確記錄 `character_refs: []`。
 
 若 `page_family` 為形近字、成語或其他有專屬契約的頁型，`page_specific_plan` 必須完整帶入該頁型規定的容量、文字、圖像與驗收欄位；不能只在代表頁或 Render Request 階段補寫。
@@ -165,13 +172,13 @@ page_detail_confirmation:
 
 頁面可增加或合併，但必須保留 `sequence_index`、`section_id` 與來源回指。任何頁面內容變更都要更新此 Profile 的 revision；不得只改 Render Request 或圖片 prompt。
 
-教師確認前的狀態是 `draft` 或 `pending`，不得建立正式 Slide Script、代表頁或啟動 Renderer。教師確認後狀態才可變為 `approved`；之後只允許依頁局部修正，且需回寫受影響頁的 revision 與來源。
+教師確認前的狀態是 `draft` 或 `pending`，不得建立正式 Slide Script、代表頁或啟動 Renderer。DETAILED_LESSON 教師確認後才可變為 `approved`；國語簡報 VP3 確認僅為 `content_approved`，完成 VP4 資產綁定與驗證才為 `approved`；之後只允許依頁局部修正，且需回寫受影響頁的 revision 與來源。
 
 這份 Profile 是製作規格，不取代 Source Master、LKB 或 Teacher Intent Lock。它不能新增未經核准的教材事實，也不能把圖片 prompt 當成正式教材文字來源。
 
 ## 施工前與覆蓋檢核
 
-依 `core/governance/presentation-preconstruction-policy.md` 先核對最新 Runtime、Source Master、角色／風格／畫布鎖與已確認頁數帳本，才填寫此 Profile。`idiom_tracks` 分列課文既有與生字延伸；覆蓋表每個保留／合併項目必須回指確切 page_id，不適合者保留理由。角色是否出場、目的及位置、關鍵詞筆刷／底線計畫不可省略。完成稿必為 `pending` 並停等教師確認；不得把欄位齊備或 QA 通過當成教師核准。
+依 `core/governance/presentation-preconstruction-policy.md` 核對最新 Runtime 與核准課程；國語簡報 VP3 使用角色規劃、風格／畫布鎖並同包確認頁數，VP4 再綁角色資產。DETAILED_LESSON 先核對全部角色資產／風格／畫布鎖與已確認頁數帳本再填寫。`idiom_tracks` 分列課文既有與生字延伸；覆蓋表每個保留／合併項目必須回指確切 page_id，不適合者保留理由。角色是否出場、目的及位置、關鍵詞筆刷／底線計畫不可省略。完成稿必為 `pending` 並停等教師確認；不得把欄位齊備或 QA 通過當成教師核准。
 
 ## 施工交接
 

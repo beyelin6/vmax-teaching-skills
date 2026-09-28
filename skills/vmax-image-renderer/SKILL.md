@@ -5,9 +5,13 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.8
+版本：2.9
 
 ## Request Contract Gate
+
+國語簡報 VP4 角色候選圖使用角色探索授權，不要求尚未完成的代表頁。VP3 的 content_approved 稿不能送入本技能生成投影片；代表頁／批次仍要求 status: approved、完整角色資產與全部既有驗證。代表頁可整組產出後一次送審，逐類保存結果。
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 ### 圖片式簡報／文件的原生預覽與續編
 
@@ -135,7 +139,7 @@ python "<Renderer 技能絕對路徑>/scripts/validate_representative_selection.
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-僅在 Runtime 已到 STEP 2.5 語文規劃或後續簡報施工階段（含該階段續作）時，載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime，完成成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+國語簡報的階段與集中審核依 `core/governance/chinese-visual-presentation-workflow.md`；施工授權、成語雙軌、既有核准沿用、批次與局部修正依 `core/governance/presentation-preconstruction-policy.md`。按當前工作載入適用章節，不複製另一套流程。
 
 ## 視覺授權不得由內容確認推定
 

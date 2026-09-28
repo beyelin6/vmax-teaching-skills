@@ -66,6 +66,21 @@ class RepresentativePageSelectionTests(unittest.TestCase):
             selection, page_detail = self.fixture(Path(temp))
             MODULE.validate(selection, page_detail)
 
+    def test_content_approval_alone_cannot_authorize_representatives(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            selection, page_detail = self.fixture(Path(temp))
+            payload = json.loads(page_detail.read_text(encoding="utf-8"))
+            payload["page_detail_confirmation"].update(
+                status="content_approved", content_approval_ref="review:vp3:r1"
+            )
+            page_detail.write_text(json.dumps(payload), encoding="utf-8")
+            # Even a selection re-bound to the current draft hash must be rejected.
+            receipt = json.loads(selection.read_text(encoding="utf-8"))
+            receipt["page_detail_confirmation_sha256"] = MODULE.file_hash(page_detail)
+            selection.write_text(json.dumps(receipt), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "status must be approved"):
+                MODULE.validate(selection, page_detail)
+
     def test_undeclared_page_is_blocked(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             selection, page_detail = self.fixture(Path(temp))

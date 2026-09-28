@@ -2,6 +2,8 @@
 
 ## 用途
 
+國語簡報的本 Profile 併 VP2 整體方案確認，依 `core/governance/chinese-visual-presentation-workflow.md`；候選提案可以等待同包畫布／角色用途決定，正式 CONFIRMED 才鎖定全部欄位，不另要求小步確認。
+
 記錄每課的風格推薦、教師選擇、角色搭配與動態適配規則。
 
 ```yaml

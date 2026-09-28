@@ -1,6 +1,8 @@
-# V-MAX Pedagogy Method Integration 1.1
+# V-MAX Pedagogy Method Integration 1.2
 
 ## 定位
+
+國語簡報依 `core/governance/chinese-visual-presentation-workflow.md`，四學、平板、AI 輔助及議題選項併 VP1，實際活動調整併 VP2 審核。閱讀四層次是基本課程分析，不等於選配 Overlay；不將相同閱讀內容重新作為可選模組審核。以下單獨框架／Session Map 停點只適用 DETAILED_LESSON。
 
 Pedagogy Method Integration 負責處理「教學法與載具如何改變一課的學習流程」。
 

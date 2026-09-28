@@ -1,4 +1,4 @@
-# V-MAX HOLD Teacher Interface Policy 1.8
+# V-MAX HOLD Teacher Interface Policy 2.0
 
 ## 定位
 
@@ -17,6 +17,8 @@
 ---
 
 ## A. 適用範圍
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 本規則適用所有需要教師確認的階段，包括但不限於：
 
@@ -128,6 +130,8 @@ AI 應先完整分析，再降低教師輸入成本。
 ---
 
 ## F. STEP 2.5 專用停等格式
+
+本節及 G–H 的細分停等鏈只適用 DETAILED_LESSON。國語簡報把來源、教學判讀、語文及閱讀問題合併 VP1；一份完整包可含多個明確選擇，不逐題確認。
 
 STEP 2.5 的 Teacher Confirmation Card 只包含形近字、多音字、教材詞語／成語審核表、待確認項目與 AI 推薦理由。每個項目須顯示 `[教材已確認] / [教育部辭典已核對] / [AI 建議，待教師確認] / [尚待教材來源核對]` 中適用的狀態。
 
@@ -279,6 +283,8 @@ The schema is a downstream contract. The teacher-facing confirmation card remain
 > 教師確認的是方向與例外，不是替 AI 補完整套教學設計。
 
 ## 確認範圍
+
+國語簡報以整合工作流的審核包界定範圍；下列來源裁決與全文核准的區分仍適用，但全文、語文與閱讀候選合併 VP1 審核，不額外開獨立 HOLD 1。
 
 處理「確認／是／好」前，先核對最後展示的唯一決策對象、artifact revision、教師回覆的具體選項與 stage 完成條件。若多個選項並列且無唯一推薦，「是」不能自行選一項；只集中釐清未能判定的決策。
 

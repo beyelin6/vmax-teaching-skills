@@ -5,11 +5,13 @@ description: V-MAX 臺灣國小國語教材的唯一總入口。先載入版本�
 
 # V-MAX Teaching Skills Front Door
 
-版本：1.7
+版本：1.8
 
 Before starting any presentation task, initialize or read the lesson's `00_施工中_接續區` and follow `core/governance/working-handoff-area-policy.md`. Conversation memory is never the sole handoff source.
 
 ## 唯一入口
+
+國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 收到重新開始、繼續、完整建課、沿用 Golden Path、分析教冊、製作一課或 V-MAX 任務時，先執行本技能。
 
@@ -82,8 +84,8 @@ Front Door 必須確認 load receipt、canonical files、runtime、teacher revie
 
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
-Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含這些階段的續作／下一步／確認）時，必須載入 `core/governance/presentation-preconstruction-policy.md`。先讀最新 Drive Runtime；到 STEP 2.5 才檢核成語雙軌與每個正式生字的延伸成語覆蓋；缺漏為 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`。風格、角色、畫布與頁數帳本鎖定後，建立逐頁施工稿並停等確認；核准後才選代表頁，逐類核准後才進每批最多 8 頁的小批次，每批完成必須停等教師確認。每個 stage／HOLD 都回寫並驗證 Runtime State 與 Runtime Index；不得以舊流程簡寫跳過這些關卡。
+國語簡報的階段與集中審核依 `core/governance/chinese-visual-presentation-workflow.md`；施工授權、成語雙軌、既有核准沿用、批次與局部修正依 `core/governance/presentation-preconstruction-policy.md`。按當前工作載入適用章節，不複製另一套流程。
 
 ## STEP 1 整合擷取
 
-SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，完整後才交付一份審核稿並停在 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
+SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/step1-source-anchor-policy.md` 第 G 節。依既定清單完成所有可查頁區與類別，包含多音字旁欄補充；階段內持續處理，剩餘缺口集中詢問，來源完整後，國語簡報在 VP1 完成候選分析再集中送審；DETAILED_LESSON 才單獨停 HOLD 1。LKB、成語延伸選教、風格、角色、頁數及代表頁不作為 STEP 1 前置條件。
