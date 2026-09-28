@@ -34,16 +34,26 @@ ChatGPT Work 不應把 `skills/` 下的所有模組逐一保存為個人技能�
 
 `chatgpt-work/vmax-teaching-skills/SKILL.md`
 
-直接安裝／更新可使用：[ChatGPT Work Launcher raw SKILL.md](https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/chatgpt-work/vmax-teaching-skills/SKILL.md)。這個檔案的資料夾名稱刻意與 Codex 的 `skills/vmax-teaching-skills/SKILL.md` 分開；後者是 canonical Front Door，不是 ChatGPT Work 個人 Launcher。兩者不可互相替代。
+直接安裝／更新可使用：[ChatGPT Work Launcher raw SKILL.md](https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/chatgpt-work/vmax-teaching-skills/SKILL.md)。此歷史來源路徑為保持既有安裝連結而保留；可攜包輸出名稱與 frontmatter 一致。`skills/vmax-teaching-skills/SKILL.md` 則是 canonical Front Door，不是 ChatGPT Work 個人 Launcher。兩者不可互相替代。
 
 這個 Launcher 每次執行時從 GitHub `main` 按需載入 Manifest、Golden Path 與當前 stage 規則，可避免跨資料夾引用在個人技能轉存時失效，也避免批次保存造成 HTTP 422。
+
+## 可攜安裝包（Plugin 0.5.0）
+
+可使用 `scripts/build_portable_bundle.py --output <repo外的新資料夾>` 產生 Claude、ChatGPT、Antigravity 與 Codex 的資料夾及 zip；不自動安裝或改動既有課程。每包根目錄為 `vmax-chinese-teaching`，只有一份 SKILL.md，內部技能改名 MODULE.md 並重寫本機引用。既有 GitHub 輕量 Launcher 路徑保留；輸出的入口資料夾與 name 一致。
+
+完整包從內附 VERSION／Manifest 執行，不依賴即時 GitHub。`bundle-manifest.json` 記錄來源 commit、修改狀態與每檔 hash；用 `scripts/verify_portable_bundle.py <包根目錄>` 檢查。保留被引用的 docs、schemas、scripts、資源與回歸案例，不一律排除 docs。不要在同一環境同時安裝完整包與舊同用途入口。
+
+Drive 仍為既有課程預設；LOCAL／HANDOFF 與待同步分支依 `core/governance/portable-runtime-policy.md`。完整包安裝不會遷移雲端進度。自動測試只證明包與資料契約；跨平台實跑案例見 `tests/portable-platform-scenarios.md`，未跑的環境不得宣稱通過。
 
 ## 平台安裝與能力
 
 | 平台 | 安裝／載入方式 | 圖片執行 |
 |---|---|---|
+| Claude / Claude Code | 使用 Claude 可攜包，網頁與 Code 分別依其實際安裝入口載入；見 adapters/claude.md | 實測圖片生成與局部編輯能力，缺少時 handoff |
+| Antigravity | 使用 Antigravity 可攜包，只註冊頂層入口；見 adapters/antigravity.md | 依當次可用圖片工具，無工具不宣稱成品 |
 | Codex | 將 repository clone 為 Codex 可發現的 plugin／skills 目錄；本 repo 含 `.codex-plugin/plugin.json` | 當工作階段有圖片工具時直接渲染；否則 handoff |
-| ChatGPT Work | 只安裝 `chatgpt-work/vmax-teaching-skills/SKILL.md`；由 Launcher 透過 GitHub 按需載入現行規則 | 只有目前 ChatGPT 工作階段提供圖片工具時直接渲染 |
+| ChatGPT Work | 只安裝 `chatgpt-work/vmax-teaching-skills/SKILL.md`；輕量 Launcher 從 GitHub 載入；完整 ChatGPT 可攜包從包內載入 | 只有目前 ChatGPT 工作階段提供圖片工具時直接渲染 |
 | Gemini / Gemini CLI | 將 `skills/` 暴露給 Gemini 的 skills／檔案工作區，並把 Bootstrap 設為入口；如用 API，另行配置圖片模型與憑證 | 有 image tool/API 才直接渲染，文字模型只有 prompt 不算完成 |
 | Canva | 以 `adapters/canva.md` 與 Render Request 作為橋接 | 需有實際建立／編輯、匯出與重檢能力 |
 

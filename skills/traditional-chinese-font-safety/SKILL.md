@@ -5,7 +5,7 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 
 # Traditional Chinese Font Safety｜繁中文字型安全
 
-版本：1.2.1
+版本：1.2.2
 
 ## 使命
 
@@ -89,7 +89,7 @@ description: 為 V-MAX 繁體中文教材、PNG、PDF、PPTX、學習單與手�
 6. 字型替換後不得破壞原核准的字級階層、行距、安全區與文字框位置。
 7. 學生可見文字輸出後要以最終 PNG/PDF 再檢查一次，不以程式執行成功視為 QA 通過。
 8. 16:9 image-first 教材字型 QA 預設使用 2560×1440 畫布。
-9. 正式繁體中文字不得依賴生成式圖片模型燒字；以可控文字渲染層為準。
+9. 依 `core/presentation/text-layer-construction-policy.md` 分流：課文頁獨立可控文字；非課文頁優先由圖片引擎忠實繪製核准文字，逐字校對，必要時局部文字修補。 本技能字型檔、glyph coverage 與 preflight 規定適用於程式排字；生成字形改記字形 DNA 與實際視覺校對，不虛報使用字型檔。
 10. 思源系列只允許已確認的 TW / Taiwan region-specific 版本進入正式學生教材。
 
 ## 字型檔管理

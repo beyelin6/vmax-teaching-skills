@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "V-MAX Portable Checkpoint",
+  "type": "object",
+  "required": ["lesson_id", "revision", "previous_revision", "backend", "status", "state", "approval_scope", "artifacts"],
+  "properties": {
+    "lesson_id": {"type": "string", "minLength": 1},
+    "revision": {"type": "string", "minLength": 1},
+    "previous_revision": {"type": ["string", "null"]},
+    "backend": {"enum": ["LOCAL", "HANDOFF"]},
+    "status": {"enum": ["VERIFIED", "EXPORTED_UNACKNOWLEDGED", "PENDING_SYNC", "CONFLICT"]},
+    "state": {"type": "object", "required": ["current_stage", "next_allowed_stage"], "properties": {
+      "current_stage": {"type": "string", "minLength": 1},
+      "next_allowed_stage": {"type": "array", "maxItems": 1, "items": {"type": "string", "minLength": 1}}
+    }},
+    "approval_scope": {"type": "array", "items": {"type": "object", "required": ["artifact_ref", "revision", "teacher_event_ref"], "properties": {
+      "artifact_ref": {"type": "string", "minLength": 1},
+      "revision": {"type": "string", "minLength": 1},
+      "teacher_event_ref": {"type": "string", "minLength": 1}
+    }}},
+    "artifacts": {"type": "array", "items": {"type": "object", "required": ["ref", "revision", "sha256"], "properties": {
+      "ref": {"type": "string", "minLength": 1},
+      "revision": {"type": "string", "minLength": 1},
+      "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+    }}},
+    "readback_evidence": {"type": "string", "minLength": 1}
+  },
+  "allOf": [{"if": {"properties": {"status": {"const": "VERIFIED"}}}, "then": {"required": ["readback_evidence"]}}],
+  "additionalProperties": true
+}

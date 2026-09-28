@@ -1,6 +1,6 @@
 # 國語圖片式語文頁規則
 
-版本：1.8
+版本：1.9
 
 本參考文件供 `presentation-engine` 與 `vmax-image-renderer` 製作國語圖片式簡報時使用。形近字與多音字的專門規則仍以 `skills/character-group-visual-comparison/SKILL.md` 為準。
 
@@ -142,7 +142,7 @@ idiom_application_plan:
 
 ## 11. 形近字頁分流
 
-沿用 `skills/character-group-visual-comparison/SKILL.md`；大字、注音、部件、詞語與情境必須形成可讀關係，不得用圖片模型生成正式國字。
+沿用 `skills/character-group-visual-comparison/SKILL.md`；大字、注音、部件、詞語與情境必須形成可讀關係，核准國字可依 Text Layer Construction Policy 由圖片引擎繪製，字形必須逐字核對，不可靠時局部替換。
 
 ### 11.1 形近字頁容量與版型契約
 

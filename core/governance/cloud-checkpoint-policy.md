@@ -1,8 +1,12 @@
 # V-MAX Confirmed Cloud Checkpoint Policy
 
-版本：1.1
+版本：1.2
 
 本政策處理「製作途中已確認的檔案與頁面」，與完成後的 Lesson Package 歸檔不同。教師每次確認後，立即建立不可混淆的雲端快照，讓換平台、換對話或中斷後可以從最新確認版本接續。
+
+## 後端適用性
+
+本檔的 Drive ID、上傳及 list/search 驗證只適用 GOOGLE_DRIVE。LOCAL／HANDOFF 必須依 `core/governance/portable-runtime-policy.md` 與 `schemas/portable-checkpoint.schema.json` 保存可回讀快照，不套用 Cloud Checkpoint schema、不填假 Drive ID。GOOGLE_DRIVE 斷線時依可攜政策保存待同步分支，不能把它當成雲端 VERIFIED。
 
 ## 觸發時機
 

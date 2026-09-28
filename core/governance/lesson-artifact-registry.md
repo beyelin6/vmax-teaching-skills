@@ -1,8 +1,11 @@
 # Lesson Artifact Registry
 
-版本：1.0
+版本：1.1
 
 本檔定義每課既有教材成品與下游簡報之間的連接方式。它不取代 Source Master，也不改寫教材內容；它只回答「哪一份已完成 artifact 可被哪個下游模組引用」。
+
+
+儲存後端依 `core/governance/portable-runtime-policy.md`；本文 Drive 位置為預設，LOCAL／HANDOFF 使用同樣資料分類與核准引用，不要求假的雲端 ID。
 
 ## 適用 artifact
 

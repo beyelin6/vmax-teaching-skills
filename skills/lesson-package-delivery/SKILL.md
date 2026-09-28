@@ -5,7 +5,11 @@ description: 組裝、檢查並交付 V-MAX 單課 Lesson Package，包括來源
 
 # V-MAX Lesson Package Delivery
 
-版本：1.5
+版本：1.6
+
+## 儲存後端
+
+依 `core/governance/portable-runtime-policy.md`，下文 Drive 歸檔條件只對 GOOGLE_DRIVE 或教師明確要求上雲的交付適用。LOCAL／HANDOFF 保留六類檔案、品質證據、核准與可回讀引用；本機交付不能稱為雲端歸檔完成。
 
 ## 目的
 

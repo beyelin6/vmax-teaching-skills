@@ -1,23 +1,14 @@
-# V-MAX Adapter｜Antigravity 1.0
+# V-MAX Adapter｜Antigravity 1.1
 
-## 定位
+## 定位與載入
 
-Antigravity 是 V-MAX 的執行器，不是另一套教材規則。必須以 GitHub `main` 的 Manifest、Core、Runtime Contract 與本課 Lesson Artifact Registry 為來源。
+Antigravity 讀完整可攜包的 BUNDLED 快照，或完整 repository 的固定快照，依 Bootstrap 與 `core/governance/portable-runtime-policy.md` 按階段讀取。只註冊頂層 vmax-chinese-teaching，MODULE.md 不作獨立技能；依目前產品支援方式放入工作區技能目錄，不同時裝多份同名入口。
 
-## 啟動讀取順序
+實際確認持久檔案、來源讀取、Drive 讀寫、生圖、編圖、原圖引用、預覽與匯出能力；不得由平台名稱推定工具存在。已有 Drive binding 不自動遷移；新課無 Drive 可用持久 LOCAL。只有 prompt 能力時 IMAGE_HANDOFF_READY，不宣稱圖片完成。
 
-每次開始或續作前，依序讀取：
+LOAD 使用包內五欄版本與正式 State。安裝／載入完成不等於已通過實際課程行為驗收。
 
-1. `V-MAX_BOOTSTRAP.md`
-2. `V-MAX_MANIFEST.md`
-3. `VERSION`
-4. `runtime/lesson-state.md` 與該課 Google Drive Runtime State
-5. `core/governance/lesson-artifact-registry.md`
-6. 該課 registry 與已登錄 artifact
-7. Manifest 指定的 current main workflow、executor、hold policy 與 teacher review view
-8. 當前 stage 所需的 adapter、policy 與 skill
 
-第一個回覆必須顯示 `V-MAX LOAD`，Plugin、Manifest、Executor、Runtime stage 與 UI 任一無法取得時，標記具體錯誤原因，不得以 UNKNOWN 假裝完成後繼續製作。
 
 ## Artifact 連接
 

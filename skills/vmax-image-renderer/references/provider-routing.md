@@ -8,13 +8,13 @@
 |---|---|---|
 | 可生成所需視覺物件、受控排字、合成、匯出及重檢 | 依 Object Composition 分工施工 | 全部適用 gates 通過後 `RENDER_VERIFIED` |
 | Canva 可建立／編輯、匯入受控文字元件、匯出及重檢 | Canva 合成；必要時搭配外部文字 renderer | 全部適用 gates 通過後 `RENDER_VERIFIED` |
-| 只能生圖，不能受控排字或合成正式文字 | 保留視覺資產，交接缺少能力 | `RENDERER_CAPABILITY_BLOCKED`；交接包另記 `IMAGE_HANDOFF_READY`，不算成品 |
+| 能忠實繪製核准文字及檢視、匯出，但不能受控排字 | 非課文頁依文字政策共同生成；課文頁或精準 anchor 仍需可控文字能力 | 非課文頁全部適用 QA 通過後可 RENDER_VERIFIED；缺必要能力的頁交 IMAGE_HANDOFF_READY |
 | 能產 prompt，但沒有所需圖片工具或可用資產 | 產生 handoff bundle | `IMAGE_HANDOFF_READY`，不算成品 |
 | 缺少教材來源或核准文字 | 不執行 | `RENDER_INPUT_BLOCKED` |
 
 ## 依頁型檢查能力
 
-- 所有含正式文字的頁面都必須有受控文字與字型 QA，不得以圖片模型產字取代。
+- 依 `core/presentation/text-layer-construction-policy.md` 分流：課文頁獨立可控文字；非課文頁優先由圖片引擎忠實繪製核准文字，逐字校對，必要時局部文字修補。
 - 只有當頁含語詞標記或其他精準文字 anchor，才要求最終 glyph bbox 量測與 reflow 後重算能力。缺少此能力 → `RENDERER_CAPABILITY_BLOCKED`；不得猜座標或刪除已核准標記。
 - 無精準文字 anchor 的頁面，不因缺少 glyph bbox API 而阻擋；仍需通過文字、構圖、畫布、角色等適用 QA。
 - 匯入已驗證的文字／標記合成資產，且目標平台只作保持比例的整體放置、未產生文字 reflow 時，可保留原 anchor 驗證紀錄，仍需重檢最終匯出。若改變字型、換行、文字位置或相對標記幾何，須回文字 renderer 重算，不能沿用舊紀錄。

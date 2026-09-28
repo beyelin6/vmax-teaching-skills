@@ -1,4 +1,7 @@
-# V-MAX Adapter｜Codex 1.2
+# V-MAX Adapter｜Codex 1.3
+
+
+所有來源載入、Drive／本機讀寫及離線分支依 `core/governance/portable-runtime-policy.md`；下文 Drive 為該後端的實作，不限制已綁定 LOCAL／HANDOFF 的課程。
 
 ## Lesson Artifact Registry
 
@@ -56,7 +59,7 @@ Codex 應直接讀取：
 
 ## Runtime 執行
 
-- `runtime/lesson-state.md` 是 schema；Google Drive 該課 Runtime State 才是續跑位置真相。
+- `runtime/lesson-state.md` 是 schema；該課正式綁定後端 State 才是續跑位置真相，依 `core/governance/portable-runtime-policy.md`。
 - 每次只執行 `next_allowed_stage`。
 - 每完成 stage / HOLD 決策後先更新 Runtime State。
 - 不得根據舊 commit、local cache 或記憶自動恢復 legacy stage。

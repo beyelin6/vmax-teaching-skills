@@ -1,4 +1,4 @@
-# V-MAX Runtime State Contract 2.5
+# V-MAX Runtime State Contract 2.6
 
 ## 定位
 
@@ -7,7 +7,7 @@
 V-MAX 的正式分工：
 
 - GitHub：保存 Runtime schema、欄位規格、讀寫規則與平台 Adapter。
-- Google Drive：保存每一課實際、持續變動的 Runtime State。
+- 每課綁定的正式後端：保存實際 Runtime；Drive 預設，LOCAL／HANDOFF 依 `core/governance/portable-runtime-policy.md`。
 
 不得把每次 HOLD、stage 前進、Teacher Intent 鎖定都當成 GitHub commit。
 
@@ -38,11 +38,15 @@ V-MAX_State_{冊別}_{課次}_{課名}
 
 ---
 
+## 可攜儲存欄位
+
+依 `core/governance/portable-runtime-policy.md` 保存 storage_binding 與 spec_snapshot；下列原欄位完整保留。舊 Drive State 可依核驗 ID／revision 補記 binding，不撤銷原核准。
+
 ## 最低欄位
 
 ```yaml
-runtime_schema_version: 2.5
-storage: GOOGLE_DRIVE
+runtime_schema_version: 2.6
+storage: GOOGLE_DRIVE # LOCAL | HANDOFF 依 portable-runtime-policy
 lesson_id:
 workflow_version:
 workflow_mode: CHINESE_VISUAL_PRESENTATION # 或 DETAILED_LESSON
@@ -154,15 +158,15 @@ HOLD_2_5 confirmed
 
 ## 啟動與續跑
 
-1. 先讀 `V-MAX_Runtime_Index`。
+1. 先依可攜政策讀取正式後端 Index；新課查無既有紀錄才初始化。
 2. 依教師指定課次找到對應 State；若教師說「繼續目前這課」，才使用 Index 的 active lesson。
 3. 讀取該課 `current_stage / next_allowed_stage / locked_decisions / language_focus`。
 4. 讀取並通過 `core/governance/continuation-state-gate.md` 的 State Sync；未通過時不得執行下一階段或開始製作。
 5. 目前階段尚未完成時，繼續其已授權工作；跨階段時才使用唯一 next_allowed_stage。
-6. 每次 HOLD 確認或正式 stage 完成後，先回寫該課 Google Drive State，再允許派生下游。
+6. 每次 HOLD 確認或正式 stage 完成後，先回寫該課正式後端 State，再允許派生下游。
 7. 每完成 stage、建立 HOLD 或完成 HOLD 決策，都非破壞性更新 Runtime Index 的該課狀態摘要與 State revision 引用；active lesson 僅在教師指定切換課程時更新。
 
-若 Drive Runtime 無法讀取，標記 `RUNTIME_DRIVE_BLOCKED`；不得以 GitHub 範例狀態、模型記憶或舊對話猜測目前進度。
+Drive 暫時不可讀時依可攜政策保存 pending branch，不換正式後端；LOCAL／HANDOFF 讀取其綁定版本。必要 State 真正不可取得才阻擋依賴它的續作，不以範例或記憶補值。
 
 ---
 

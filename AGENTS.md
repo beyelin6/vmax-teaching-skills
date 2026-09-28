@@ -90,6 +90,10 @@ Windows / Codex 環境使用：
 5. 同步完成後必須寫入 `~/.codex/skills/.vmax-managed-skills.json`，列出本次發現的 Skill、版本、來源與目的地。
 6. 若同步失敗，不得假裝本機已是最新版；應回報 sync error，並保留既有可用 Skill。
 
+## 可攜載入與儲存
+
+啟動、按階段讀取及後端讀寫依 `core/governance/portable-runtime-policy.md`。GitHub 是發布來源，完整安裝包可離線執行；Drive 為既有課程預設，LOCAL／HANDOFF 綁定後不得自動切換。本文 Drive 歸檔是 GOOGLE_DRIVE 的具體實作，其他後端不填假雲端 ID。
+
 ## 工作流關卡
 
 國語視覺簡報預設依 `core/governance/chinese-visual-presentation-workflow.md` 的五大階段；以下逐步來源／藍圖 HOLD 僅適用 DETAILED_LESSON。保留所有專業細節，將來源、語文及四層次閱讀候選整合為一份審核包；AI 延伸 pending，教師整包核准後才成為正式選教。角色用途與實際角色資產分階段鎖定；單課資料仍只存 Drive。

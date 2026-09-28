@@ -1,4 +1,4 @@
-# V-MAX Visual Grammar 2.0
+# V-MAX Visual Grammar 2.1
 
 ## 定位
 
@@ -413,7 +413,7 @@ Renderer：ChatGPT / NotebookLM / Gemini / Canva / 未來平台
 - 不得只因畫面漂亮而破壞作者的觀看順序。
 - 不得讓插圖和文字各講各的。
 - 不得用 Theme 世界觀遮蔽課文本身的空間、時間、情緒與語言證據。
-- 不得把正式中文字形、注音或關鍵教學文字交給圖片模型生成。
+- 依 `core/presentation/text-layer-construction-policy.md` 分流：課文頁獨立可控文字；非課文頁優先由圖片引擎忠實繪製核准文字，逐字校對，必要時局部文字修補。
 - 不得讓引導角色為了出場而占據主要視覺焦點。
 
 ---

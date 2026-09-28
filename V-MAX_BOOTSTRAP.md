@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.7.0
+# V-MAX Bootstrap 1.8.0
 
 ## 目的
 
@@ -10,96 +10,25 @@
 
 > GitHub Repository 是 V-MAX 的平台中立規格 Source of Truth；ChatGPT、Codex、Gemini、NotebookLM、Canva 或未來模型都只是執行器／轉譯器，不得以模型記憶或舊版對話覆蓋 Repository 的現行正式規格。
 
-> 每一課的即時 Runtime State 不放 GitHub；正式保存在教師指定的 Google Drive `V-MAX 教材庫/00_Runtime_State`。
+> 每一課的即時 Runtime State 不放 GitHub；預設保存在教師指定 Drive；LOCAL／HANDOFF 依可攜政策綁定唯一正式來源。
 
 ---
 
 ## Front Door 與載入回條
 
-平台必須先啟動 `skills/vmax-teaching-skills/SKILL.md`。顯示任何實質回覆、教材分析或製作內容之前，先完成本次必要的 GitHub 與 Drive 前置讀取：先取得 GitHub main commit，再以同一 commit ref 讀取 `VERSION`、Manifest、Executor、Teacher Review View 與當前 stage 必要規則；另讀 Drive Runtime Index 和指定課程 Runtime State。比對版本、commit 和 Runtime 同步狀態後，第一個實質回覆才顯示 `V-MAX LOAD` 回條，並在其後開始分析／製作。回條必須反映實際讀取的 commit 與 Drive stage；任何必讀來源未成功讀取，標記具體 `BOOTSTRAP_BLOCKED`／`RUNTIME_DRIVE_BLOCKED`，不得宣稱已載入或同步。首次載入時若從未成功取得任何可信 V-MAX 規格，缺少回條或任一必要版本為 UNKNOWN 才停止，不得產生 STEP 1。GitHub refresh 暫時失敗且有可信 LKG 時，回條必須顯示 LKG 實際版本與 `GITHUB_REFRESH_PENDING`，不得一律填 UNKNOWN。
+先依 `core/governance/portable-runtime-policy.md` 選 BUNDLED、REPOSITORY 或 REMOTE 規格快照。完整包／checkout 不需要即時 GitHub；輕量 Launcher 才從同一 commit 載入，已核驗 LAST_KNOWN_GOOD 可沿用。GitHub refresh 失敗不阻擋已有可信必要原文。
 
-## ChatGPT Live Skill Loading
+完整課程只先讀 VERSION、Manifest、本檔、可攜政策、Runtime 契約及 Executor 路由段。續作讀正式後端 State／Index 與必要核准證據；新課查無既有課程後初始化。再按當前 stage 讀模組，教師審核時讀 Teacher Review View。相同版本原文仍在時不重讀。獨立文件／學習單不啟動整課流程。
 
-ChatGPT 不使用 Codex 的 `~/.codex/skills` 本機副本作為 V-MAX 正式來源。當 GitHub Connector 可用時，ChatGPT 必須直接以 `beyelin6/vmax-teaching-skills` 的 default branch（目前為 `main`）作為 V-MAX Skill 的即時來源。
+第一個實質回覆顯示 `V-MAX LOAD｜Plugin {VERSION}｜Manifest {manifest_version}｜Executor {executor_version}｜Stage {runtime_stage}｜UI {teacher_review_view_version}`，可另註快照模式。版本從同一快照讀取，stage 從實際 State 或新課初始化紀錄讀取；缺回條仍為 LOAD_RECEIPT_MISSING。不得把離線版說成遠端最新版。
 
-### 初次載入
+## 更新與能力
 
-1. ChatGPT 執行新的 V-MAX 工作階段時，先從 GitHub 讀取目前必要的 canonical files 與相關 `SKILL.md`。
-2. 不得只依賴模型記憶、舊對話摘要或未驗證的舊版 Skill。
-3. 先取得 main commit，再以該 commit 作為 ref 讀取 VERSION、Manifest 與本次必要規格；不要將新 SHA 配上 main 網頁快取／搜尋摘要。版本不一致時重讀同一 ref，不更新 LKG、不聲稱最新。成功載入後記錄 commit、版本與原文引用，作為本工作階段的 `LAST_KNOWN_GOOD`。
-4. 若本工作階段從未成功載入任何可信 V-MAX 規格且 GitHub 無法存取，回報 `CHATGPT_GITHUB_SKILL_BLOCKED` 並停止需要 V-MAX 規格的實質製作。
+規格在啟動、教師要求更新或大階段邊界按需檢查，不逐頁查 GitHub。不混讀不同快照；更新影響分 NO_CURRENT_IMPACT、FORWARD_ONLY、RETROACTIVE_REVIEW，後者只審受影響項目，不撤銷未受影響的核准。
 
-### Freshness Check
+各模組從選定快照按需讀取。實際程式排字時才做 font preflight，生圖／編圖時讀 Image Renderer 並確認各項真實能力；不預先用字型、角色或生圖工具阻擋來源整理。
 
-V-MAX 長時間教材製作不得只在工作階段開始時檢查一次，也不得在每一頁都完整重新載入全部規格。
-
-在下列 checkpoint 執行輕量 freshness check：
-
-- 準備開始下一張投影片／下一個頁面時；
-- 準備開始下一批次時；
-- 教師完成一個 HOLD／確認點後；
-- 教師明確要求重新載入、更新、同步或檢查最新版時；
-- 即將執行可能受規格更新影響的輸出、合併、歸檔或批次生成前。
-
-Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_KNOWN_GOOD`，不要無條件重讀所有 Skill。
-
-### Selective Reload
-
-若 freshness check 顯示 GitHub 沒有更新：
-
-- 直接沿用 `LAST_KNOWN_GOOD`；
-- 不重新載入整套 V-MAX；
-- 不向教師重複顯示成功訊息。
-
-若 GitHub 已更新：
-
-1. 比較自 `LAST_KNOWN_GOOD` 之後的變更範圍。
-2. 只重新讀取與目前任務、目前 stage、目前頁面類型直接相關的 changed canonical files／Skills。
-3. 更新本工作階段的 `LAST_KNOWN_GOOD`。
-4. 將更新影響分為：
-   - `NO_CURRENT_IMPACT`：與目前教材工作無關，記錄後繼續。
-   - `FORWARD_ONLY`：只影響後續尚未製作內容，從下一頁／下一批次套用。
-   - `RETROACTIVE_REVIEW`：可能影響已完成或已確認頁面，建立 `UPDATE_IMPACT`，列出受影響頁面／產物與原因；不得自行推翻教師已確認成果或自動重做。
-5. 只有更新造成真正規格衝突、來源忠實問題、Runtime stage 衝突或會使繼續製作產生錯誤時，才建立 HOLD。
-
-### Graceful Fallback
-
-若 freshness check 暫時無法連到 GitHub，但本工作階段已有 `LAST_KNOWN_GOOD`：
-
-- 不得反覆顯示「目前無法讀取 GitHub 最新 V-MAX 設定」並阻塞逐頁製作；
-- 使用 `LAST_KNOWN_GOOD` 繼續目前工作；
-- 內部標記 `GITHUB_REFRESH_PENDING`；
-- 在下一個自然 checkpoint 再嘗試 freshness check；
-- 除非教師詢問版本狀態、更新可能影響安全／來源忠實／不可逆輸出，否則不需要每頁向教師顯示 refresh failure。
-
-若連續檢查失敗但仍有 `LAST_KNOWN_GOOD`，不得把狀態升級成 `CHATGPT_GITHUB_SKILL_BLOCKED`；只有「從未成功載入可信規格」才 BLOCK。
-
-### Skill-specific dynamic loading
-
-- 任務需要某個 V-MAX Skill 時，從 GitHub 讀取該 Skill 當前 `SKILL.md`；需要 progressive loading 時，再讀取其 registry、reference、policy 或 script 說明。
-- 若目前階段實際進行程式合成的繁體中文學生可見文字、PNG/PDF/PPTX、學習單、手冊、生字、形近字或注音，必須載入 `skills/traditional-chinese-font-safety/SKILL.md` 並完成 font preflight。
-- 若目前階段實際進行圖片生成或修改，必須載入 `skills/vmax-image-renderer/SKILL.md` 並依當前平台實際工具能力執行。
-- ChatGPT 不需要把 V-MAX Skill 複製或安裝到 Codex 本機 skills 目錄；ChatGPT 與 Codex 採不同載入策略，但共同以 GitHub 為 Source of Truth。
-
----
-
-## 啟動順序
-
-任何新的 V-MAX 教材任務，在開始實際教學設計前，先依序：
-
-1. 讀 `V-MAX_MANIFEST.md`。
-2. 讀 GitHub `runtime/lesson-state.md` 取得 Runtime schema 與 Drive 位置。
-3. 讀取 `core/governance/lesson-artifact-registry.md`，並在該課存在時讀取其 registry。
-4. 讀取 `core/governance/working-handoff-area-policy.md` 與該課 `00_施工中_接續區/00_CURRENT_目前進度.md`（若存在）。
-5. 到 Google Drive 讀 `V-MAX_Runtime_Index`。
-6. 依教師指定課次／active lesson 讀該課 `V-MAX_State_{冊別}_{課次}_{課名}`。
-7. 讀 Manifest 指定的 current main workflow。
-8. 讀 Manifest 指定的 current executor。
-9. 讀與當前 stage 直接相關的 policy / skill。
-
-首次載入若平台無法讀 GitHub且沒有 `LAST_KNOWN_GOOD`，標記 `BOOTSTRAP_BLOCKED`；若已有可信 `LAST_KNOWN_GOOD`，改標記 `GITHUB_REFRESH_PENDING` 並依 Graceful Fallback 繼續。若可讀 GitHub但無法讀 Drive Runtime，標記 `RUNTIME_DRIVE_BLOCKED`。不得假裝已載入未曾成功取得的現行狀態。使用 LKG 時，LOAD Receipt 的版本欄位填入 LKG 實際版本，不得改填 UNKNOWN。
-
----
+儲存／同步與離線分支唯一依可攜政策。Drive 預設保留；其他後端不能虛報雲端同步。必要規格不存在才 BOOTSTRAP_BLOCKED；缺來源或缺核准只限制依賴它的操作。
 
 ## 高優先語文教學摘要
 
@@ -125,7 +54,7 @@ Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_K
 發生衝突時採以下優先級：
 
 1. Teacher latest explicit decision
-2. Google Drive 該課 Runtime State 的已鎖定狀態
+2. 該課正式儲存後端 Runtime State 的已鎖定狀態
 3. `V-MAX_MANIFEST.md` 指定的 canonical files
 4. Current Main Workflow
 5. Current Executor
@@ -138,7 +67,7 @@ Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_K
 
 ## Runtime Gate
 
-開始或續跑一課前，必須從 Google Drive 對應課程 State 讀取：
+開始或續跑一課前，必須從該課綁定儲存後端的 State 讀取：
 
 - `current_stage`
 - `last_completed_stage`
@@ -153,7 +82,7 @@ Freshness check 優先只比較 GitHub current revision／commit SHA 與 `LAST_K
 
 不得自行跳階段、改名階段或推測教師已確認。
 
-每次 HOLD 確認或正式 stage 完成後，應回寫 Google Drive 該課 State，而不是建立 GitHub commit。
+每次 HOLD 確認或正式 stage 完成後，應依可攜政策回寫該課 State，而不是建立 GitHub commit。
 
 ---
 
@@ -185,7 +114,7 @@ V-MAX Core 不依賴：
 - 有可用圖片工具：實際生成／修改、重新檢查成品，再回報 `RENDER_VERIFIED`。
 - 沒有圖片工具：輸出 Render Request 與 handoff bundle，回報 `IMAGE_HANDOFF_READY` 或 `IMAGE_TOOL_BLOCKED`。
 - prompt、Renderer Script、Visual YAML 與 Render Request 都不是完成圖片。
-- 教學關鍵繁體中文預設採可控正式文字層，不交由圖片模型自由生成。
+- 課文頁獨立文字；非課文頁由圖片引擎忠實繪製核准文字，依 Text Layer Construction Policy 校對與局部修正。
 
 ## Lesson Master Preflight
 
@@ -202,6 +131,6 @@ SOURCE 0／STEP 1 的來源擷取不以 LKB 或本 Preflight 為前置條件。�
 
 > 先載入 V-MAX，再讀這一課現在跑到哪裡，才開始教學設計。
 
-> GitHub 管規格；Google Drive 管每一課的生命週期。
+> GitHub 發布規格；選定快照執行規則；每課綁定後端保存生命週期。
 
 > 語詞隨文理解；句型回到原句；修辭從文本發現。

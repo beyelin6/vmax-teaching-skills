@@ -1,4 +1,4 @@
-# V-MAX Continuation State Gate 1.7
+# V-MAX Continuation State Gate 1.8
 
 ## 定位
 
@@ -14,8 +14,8 @@
 
 每次續作讀最新 State／Index；以下必要原文首次須實際讀取。同一工作階段內，引用的 ID、revision／hash 未變且原文仍可存取時可重用，不重讀整課 PDF 或無關產物。上下文遺失、版本變更或有具體矛盾時才重取受影響原文：
 
-1. 依 Bootstrap freshness 比較 GitHub revision；未變時重用本工作階段已驗證原文，變更時只讀受影響規格。版本與原文必須來自同一 commit。
-2. Google Drive `V-MAX_Runtime_Index`。
+1. 依 Bootstrap／可攜政策使用同一規格快照；未變原文重用，不逐頁連線。
+2. 正式儲存後端的 Runtime Index。
 3. 教師指定課次的最新 Runtime State 與 revision。
 4. Runtime State 指向且當前階段已應存在的 Source Master、LKB、Learning Modules、Teaching Strategy 與教師確認紀錄；依下述階段適用性規則讀取。
 5. 若目前已進入需引用既有視覺成果的 stage：目前 `SLIDE_SCRIPT`、Approved Visual Benchmark、Visual Text DNA、角色定錨、Style Recipe 與上一個代表頁狀態。
@@ -24,13 +24,13 @@
 ### 階段適用性
 
 - 先由 Index 與 Runtime 判定新課或續作，以及目前唯一合法 stage，再決定本階段必要文件；不能先要求所有下游成品存在。
-- 新課尚無 State 時，依 Orchestrator 的新課初始化流程建立實際 Runtime State，再執行 State Sync；不得以範例 State 或聊天記憶替代。Drive 不可用時仍須阻擋。
+- 新課尚無 State 時，依 Orchestrator 的新課初始化流程建立實際 Runtime State，再執行 State Sync；不得以範例 State 或聊天記憶替代。新課無 Drive 時可依可攜政策初始化 LOCAL／HANDOFF；既有 Drive 課程不自動遷移。
 - SOURCE 0／STEP 1 尚未產生的 Source Master、LKB、Learning Modules、Teaching Strategy 等，記錄「本階段尚未產生」與理由，不視為遺失、不要求補造，也不得標為已載入或已核准。
 - 本次分支沿用的已完成階段必要輸出、Runtime 的有效輸入引用，以及當前 stage 明定的必要輸入，都必須實際讀取；不能利用「尚未產生」豁免。缺少或版本不符即 BLOCKED／CONFLICT。
 - 視覺階段同樣依工作項目判定：建立角色或代表頁時，不要求該項尚未產生的成品先存在；全量渲染則必須已具備核准代表頁與所有既定前置條件。
 - State Sync Receipt 的尚未適用欄位保留 null，另以 `not_yet_produced` 列出文件、預期產生階段與理由；不能把 null 當成 PASS 證據。
 
-必要檔案或 Drive State 無法實際讀取時，標記 `CONTINUATION_STATE_BLOCKED`，不得用舊對話、模型記憶、上一輪輸出或猜測值繼續。
+當前操作必要檔案或綁定後端 State 無法實際讀取時，標記 `CONTINUATION_STATE_BLOCKED`，不得用舊對話、模型記憶、上一輪輸出或猜測值繼續。
 
 ## State Sync Receipt
 
@@ -120,9 +120,9 @@ State Sync 通過後，依 `current_stage` 完成該階段已授權工作；`nex
 - 下一個合法 stage 或 HOLD
 - 是否需要教師再次確認
 
-上述事件同時必須依 `core/governance/cloud-checkpoint-policy.md` 建立雲端 checkpoint。確認檔、已確認頁面、代表頁／批次預覽與其 hash 不得只留在本機或聊天附件；Drive 上傳後必須 list/search 回讀驗證，並把 `checkpoint_id`、雲端 file ID 與 manifest hash 寫回 Runtime State。
+上述事件依 `core/governance/portable-runtime-policy.md` 保存 checkpoint。GOOGLE_DRIVE 適用 `core/governance/cloud-checkpoint-policy.md`；LOCAL／HANDOFF 使用 portable checkpoint。保存、核准資產及必要引用實際讀回後才允許依賴它的下游。
 
-若 Drive 回寫失敗，標記 `RUNTIME_WRITE_BLOCKED`，不得宣告狀態已保存，也不得繼續高風險製作。
+Drive 回寫失敗時保存 PENDING_SYNC 分支及教師事件，不宣稱同步完成，不開始依賴未持久化核准的施工；仍可完成獨立來源整理與當前草稿。其他後端不因缺 Drive 而失敗。
 
 ## 失敗碼
 

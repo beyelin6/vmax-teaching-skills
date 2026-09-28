@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 3.1
+# V-MAX Main Workflow 3.2
 
 ## 定位
 
@@ -7,7 +7,7 @@
 所有實跑必須遵循：
 - `skills/vmax-golden-path-executor/SKILL.md`
 - `V-MAX_MANIFEST.md`
-- Google Drive 該課 Runtime State
+- 依 `core/governance/portable-runtime-policy.md` 綁定的該課 Runtime State
 
 Machine-readable workflow objects use the portable contracts in `core/schemas/vmax/`.
 

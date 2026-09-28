@@ -5,7 +5,7 @@ description: 管理 V-MAX 單課教材專案的完整工作流、工作模式、
 
 # V-MAX Course Orchestrator
 
-版本：0.5.0
+版本：0.6.0
 
 ## Canonical Entry Gate
 
@@ -32,7 +32,7 @@ Orchestrator 不產生教材內容；只負責建立專案骨架、記錄狀態�
 
 `project/project-status.md`
 
-此檔是本機工作鏡像與 handoff，不是跨平台唯一權威。跨 ChatGPT、Codex、Gemini 續跑時，以 Manifest 指定的 Google Drive 該課 Runtime State 為準；讀取後同步到本機檔，完成 HOLD 或 stage 後先回寫 Drive。Drive 無法讀取時標記 `RUNTIME_DRIVE_BLOCKED`，不得用本機舊檔猜測進度。
+依 `core/governance/portable-runtime-policy.md` 的 storage_binding 判定正式 State；Google Drive 課程的此檔是鏡像，LOCAL 課程則使用固定 lesson root。斷線保存 pending branch，不自動切換後端。新課初始化與續作分開，不以缺 Drive 阻擋新課本機來源整理。
 
 ## 三種主要工作模式
 

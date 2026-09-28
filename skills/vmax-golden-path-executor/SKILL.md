@@ -7,7 +7,7 @@ description: Execute the V-MAX canonical workflow and approval gates from locked
 
 The executor must create or resume the lesson's `00_施工中_接續區` at task start. After every stage or HOLD, save the stage record in its designated subfolder and update `00_CURRENT_目前進度.md` before continuing. Follow `core/governance/working-handoff-area-policy.md`; no stage may exist only in chat.
 
-版本：3.0
+版本：3.1
 
 ## 目的
 
@@ -23,21 +23,11 @@ The executor must create or resume the lesson's `00_施工中_接續區` at task
 
 ## A. 啟動必讀
 
-首次載入依序讀以下規格；續作依 Bootstrap 的 commit freshness 重用未變原文，再讀最新當課 Runtime 與目前工作所需內容，不每次重載整套：
+按 Bootstrap 與 `core/governance/portable-runtime-policy.md` 的 stage 表 progressive loading。先讀快照 Manifest、Runtime、目前模式的工作流與當前階段規則；續作才讀 Continuation Gate，教師審核讀 Teacher Review View，正式施工才讀相應 schema／canvas／文字／Renderer。
 
-1. `V-MAX_BOOTSTRAP.md`
-2. `V-MAX_MANIFEST.md`
-3. Google Drive 對應課程 Runtime State
-4. `core/governance/vmax-main-workflow.md`
-5. `core/governance/hold-teacher-interface-policy.md`
-6. `core/governance/continuation-state-gate.md`
-7. `core/ui/teacher-review-view-contract.md`
-8. `core/schemas/vmax/README.md`
-9. `core/presentation/canvas-lock-policy.md`（進入簡報／視覺 stage 時）
-10. `core/presentation/text-layer-construction-policy.md`（進入簡報／視覺 stage 時）
-11. 當前 stage 的 canonical policies / skills
+同一快照原文仍在時沿用。Google Drive、LOCAL、HANDOFF 的 State、checkpoint 與交付依可攜政策分流；後文 Drive Guard 是 GOOGLE_DRIVE 的具體實作，其他後端保留同等來源、核准、六類歸檔及可回讀要求，不製造假的雲端 ID。
 
-若舊技能、舊腳本、舊對話與 Manifest 衝突，一律以 Manifest 最新 canonical files 與 Drive Runtime State 為準。
+
 
 Machine payloads for Source Master, Candidate Inventory, Approved Teaching Selection, HOLD, Revision, Status Transition, and Slide Script MUST conform to the matching schema in `core/schemas/vmax/`. Schema validation does not replace the teacher-facing confirmation card.
 

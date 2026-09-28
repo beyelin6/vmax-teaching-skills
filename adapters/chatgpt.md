@@ -1,4 +1,7 @@
-# V-MAX Adapter｜ChatGPT 1.13
+# V-MAX Adapter｜ChatGPT 1.14
+
+
+所有來源載入、Drive／本機讀寫及離線分支依 `core/governance/portable-runtime-policy.md`；下文 Drive 為該後端的實作，不限制已綁定 LOCAL／HANDOFF 的課程。
 
 ## Lesson Artifact Registry
 
@@ -10,7 +13,7 @@
 
 ## 啟動契約
 
-啟動先完成 Bootstrap 定義的 GitHub 同 commit 讀取及 Drive Runtime 同步，再顯示 LOAD 回條；不得先用舊對話或記憶開始教材分析。平台前置讀取可在回條之前完成，回條仍是第一個實質回覆。
+啟動先完成 Bootstrap 定義的規格快照讀取及正式後端 Runtime 核對，再顯示 LOAD 回條；不得先用舊對話或記憶開始教材分析。平台前置讀取可在回條之前完成，回條仍是第一個實質回覆。
 
 每個新的 V-MAX 任務開始時，ChatGPT 應先：
 
@@ -21,13 +24,13 @@
 5. 只載入當前 stage 直接需要的 policy / skill
 6. 任何教師審核或 HOLD 載入 `core/ui/teacher-review-view-contract.md`
 
-先實際嘗試可用 GitHub 讀取工具；失敗依 Bootstrap 的可信 LKG fallback 處理，無可信規格才回報 `BOOTSTRAP_BLOCKED`，不得假裝已載入。
+完整包使用 BUNDLED，只有輕量入口才使用 GitHub REMOTE；依可攜政策選定快照，無可信必要原文才 BOOTSTRAP_BLOCKED。
 
 ## Runtime 執行
 
 國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
-- `runtime/lesson-state.md` 只提供 schema 與位置規則；以 Google Drive 該課 State 的 `current_stage` 為目前真實位置。
+- `runtime/lesson-state.md` 只提供 schema 與位置規則；以正式後端該課 State 的 `current_stage` 為目前真實位置。
 - 使用者回覆「確認／好／可以／OK／沿用」時，依對應 HOLD 範圍執行下一個合法 stage；局部來源裁定只回到 current_stage 補齊來源，不推定全文核准。next_allowed_stage 為空不阻擋 current_stage 的合法未完成工作。
 - 不得以聊天記憶、舊對話、模型習慣自行補回舊版 STEP 3 / STEP 4。
 - 每完成正式 stage 或 HOLD 決策後，應更新 Runtime State，再繼續後續工作。
@@ -36,7 +39,7 @@
 ## GitHub / Drive 邊界
 
 - GitHub：V-MAX 規格、版本與 Runtime schema 的 Source of Truth。
-- Google Drive `00_Runtime_State`：每一課實際 Runtime State 的 Source of Truth。
+- 該課 storage_binding：正式 Runtime 的唯一來源；GOOGLE_DRIVE 預設使用 `00_Runtime_State`。
 - Google Drive Source Library：原始教師手冊／課本／習作來源。
 - Google Drive V-MAX 教材庫：完整 Lesson Package 歸檔。
 

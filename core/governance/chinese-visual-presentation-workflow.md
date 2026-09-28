@@ -1,6 +1,9 @@
 # 國語視覺簡報：整合審核工作流
 
-版本：1.0
+版本：1.1
+
+
+儲存後端依 `core/governance/portable-runtime-policy.md`；本文 Drive 位置為預設，LOCAL／HANDOFF 使用同樣資料分類與核准引用，不要求假的雲端 ID。
 
 ## 適用與規則權責
 
