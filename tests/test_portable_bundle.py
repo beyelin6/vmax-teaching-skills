@@ -1,5 +1,6 @@
 """Offline packaging and checkpoint contracts; does not simulate an LLM or platform UI."""
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -11,7 +12,7 @@ from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from build_portable_bundle import build, rewrite
+from build_portable_bundle import build, rewrite, source_inventory
 from verify_portable_bundle import verify
 
 
@@ -26,6 +27,7 @@ class PortableBundleTests(unittest.TestCase):
                     self.assertTrue(archive.is_file())
                     self.assertTrue((root / "docs/V-MAX_Quality_Standard.md").is_file())
                     self.assertTrue((root / "docs/TEACHING_DNA.md").is_file())
+                    self.assertTrue((root / "libraries").is_dir())
                     self.assertTrue((root / f"adapters/{target}.md").is_file())
                     self.assertEqual(len(list(root.rglob("SKILL.md"))), 1)
                     self.assertIn("skills/prestudy-worksheet/MODULE.md", (root / "SKILL.md").read_text(encoding="utf-8"))
@@ -37,6 +39,31 @@ class PortableBundleTests(unittest.TestCase):
                     subprocess.run([sys.executable, str(extracted / "scripts/verify_portable_bundle.py"), str(extracted)], cwd=unpack, check=True, capture_output=True)
                     with self.assertRaises(FileExistsError):
                         build(tmp, target)
+
+    def test_archive_without_git_matches_checkout_payload(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "extracted"
+            source.mkdir()
+            names, _, _, _ = source_inventory(ROOT)
+            for name in names + ["packaging/portable-entry.md"]:
+                dest = source / name
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(ROOT / name, dest)
+            (source / ".env").write_text("secret")
+            (source / "notes.txt").write_text("private")
+            cache = source / "scripts/__pycache__"
+            cache.mkdir()
+            (cache / "junk.pyc").write_bytes(b"cache")
+            before, _ = build(Path(tmp) / "git-output", "claude")
+            after, _ = build(Path(tmp) / "archive-output", "claude", source)
+            left, right = verify(before), verify(after)
+            self.assertEqual(right["source_commit"], "unknown")
+            self.assertIsNone(right["source_dirty"])
+            self.assertEqual(right["source_kind"], "archive")
+            self.assertEqual(left["files"], right["files"])
+            self.assertFalse((after / "docs/visual-validation").exists())
+            self.assertFalse(list((after / "tests").glob("*.py")))
+            self.assertTrue((after / "tests/workflow-hold-regression-cases.md").is_file())
 
     def test_tampered_source_is_detected(self):
         with tempfile.TemporaryDirectory() as tmp:

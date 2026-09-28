@@ -98,3 +98,7 @@ Repository 不保存：
 ## GitHub 輕量入口更新
 
 希望只更新 GitHub 就讓各平台讀取共用規則時，選輕量入口；完整可攜包僅供明確選擇離線快照的情境。Claude 與 Antigravity 入口位於 `launchers/`，ChatGPT 保留上列歷史來源路徑。安裝資料夾需與 frontmatter name 相同。一般共用規則更新不必重裝；入口本身變更才替換。實際讀取仍須有 GitHub 連線能力，不能保證未提供工具的平台自動同步。
+
+### 建包來源與精簡範圍
+
+建包支援 Git clone 與 GitHub Download ZIP 解壓資料夾。後者記錄 source_kind=archive、source_commit=unknown、source_dirty=null，不宣稱已核對遠端版本。只收錄發布用目錄；排除隱藏檔、快取、Python 測試及未被引用的 docs/visual-validation 圖片。保留 docs 規則與 tests/*.md 回歸案例，避免斷開現有引用。完整性驗證不代表平台實際行為驗收。

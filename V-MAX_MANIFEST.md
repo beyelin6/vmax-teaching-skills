@@ -1,9 +1,9 @@
-# V-MAX Manifest 3.10.2
+# V-MAX Manifest 3.10.3
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.10.2
+vmax_manifest_version: 3.10.3
 bootstrap: V-MAX_BOOTSTRAP.md
 claude_launcher: { path: launchers/vmax-teaching-skills-claude/SKILL.md, current_version: "1.0" }
 antigravity_launcher: { path: launchers/vmax-teaching-skills-antigravity/SKILL.md, current_version: "1.0" }
