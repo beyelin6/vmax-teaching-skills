@@ -5,7 +5,7 @@ description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Wo
 
 # V-MAX ChatGPT Work Launcher
 
-版本：2.0.1
+版本：2.1
 
 ## 安裝與來源
 
@@ -20,7 +20,7 @@ description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Wo
 1. 有完整可攜安裝包時使用 BUNDLED；只有本輕量入口時使用 REMOTE，取得 commit 後以同一 ref 讀 VERSION、Manifest、Bootstrap 與必要模組。無網路但有可信完整原文時可沿用，不能依記憶補規則。
 2. 按 `core/governance/portable-runtime-policy.md` 與 Bootstrap 的階段表載入，不預載所有模組。新課先搜尋既有 State，確定新課才初始化；續作沿用既有儲存 binding、revision、核准範圍與產物。
 3. 既有 Drive 課程仍以 Drive 為正式進度；斷線只存 PENDING_SYNC 副本，不改成本機正式版。新課無 Drive 可用持久 LOCAL 或 HANDOFF。回條如實標示快照及 State。
-4. 完成當前大階段全部可查工作再送整包審核；不逐頁查 GitHub，不重新核准已有效內容。
+4. REMOTE 在新任務、跨入下一個大階段或教師要求最新版時，先查 main commit；未變沿用，變更時依可攜政策評估影響並切換完整快照。同階段不逐頁查 GitHub。完成當前大階段全部可查工作再送整包審核，不重新核准已有效內容。
 
 ## 按目前階段載入
 

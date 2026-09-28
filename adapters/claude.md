@@ -1,6 +1,8 @@
-# V-MAX Adapter｜Claude 1.0
+# V-MAX Adapter｜Claude 1.1
 
-使用完整可攜包時，以包內 Bootstrap、Manifest 和 `core/governance/portable-runtime-policy.md` 為準。只安裝一個 `vmax-chinese-teaching` 入口；內層 MODULE.md 是按需閱讀文件，不是待安裝技能。
+優先使用 `launchers/vmax-teaching-skills-claude/SKILL.md` 的 REMOTE 輕量入口，從 GitHub 同一 commit 讀取共用規則；新任務、跨大階段及教師要求時檢查更新。
+
+明確使用完整可攜包時，以包內 Bootstrap、Manifest 和 `core/governance/portable-runtime-policy.md` 為準。只安裝一個 `vmax-chinese-teaching` 入口；內層 MODULE.md 是按需閱讀文件，不是待安裝技能。
 
 Claude 網頁的技能上傳與 Claude Code 的檔案系統安裝是不同入口；依當前產品實際提供的功能載入資料夾／zip，不把本機安裝視為已同步網頁。安裝來源與版本回讀後才宣稱成功。
 

@@ -1,4 +1,4 @@
-# V-MAX Continuation State Gate 1.8
+# V-MAX Continuation State Gate 1.9
 
 ## 定位
 
@@ -154,3 +154,9 @@ STEP 1 按 `core/governance/step1-source-anchor-policy.md` 第 G 節連續擷取
 ## 來源核准的有效範圍
 
 已核准來源不因 State Sync 或新回合自動失效。依 Source Anchor Policy 的局部修補規則，比對具體新證據與受影響範圍；未變內容保留核准，真正錯誤不得帶入依賴它的下游。State／Index 回寫與回讀驗證成功後繼續目前已授權工作，不新增「同步確認」HOLD。
+
+## 同檔多份 current／latest 紀錄
+
+遇到同一文件含多份 current_stage、next_action 或「最新」標題，不能只取第一個／最後一個字串，也不能把歷史 SOURCE0 當現行狀態。比對該課 Index revision、最新可追溯教師事件、確認範圍及對應施工稿版本。已證明被後續事件取代的紀錄列歷史；未能判定時只阻擋受影響施工，保留其他有效核准與來源，不要求整課重審。
+
+續作檢查分別回報「讀取成功」「核准／版本對齊」「可開始該頁施工」，三者不能互相代替。State 摘要記載已核准但被引用稿仍標待審時，核對可追溯核准事件後才對齊；不能憑文件排列猜核准。

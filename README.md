@@ -36,7 +36,7 @@ ChatGPT Work 不應把 `skills/` 下的所有模組逐一保存為個人技能�
 
 直接安裝／更新可使用：[ChatGPT Work Launcher raw SKILL.md](https://raw.githubusercontent.com/beyelin6/vmax-teaching-skills/main/chatgpt-work/vmax-teaching-skills/SKILL.md)。此歷史來源路徑為保持既有安裝連結而保留；可攜包輸出名稱與 frontmatter 一致。`skills/vmax-teaching-skills/SKILL.md` 則是 canonical Front Door，不是 ChatGPT Work 個人 Launcher。兩者不可互相替代。
 
-這個 Launcher 每次執行時從 GitHub `main` 按需載入 Manifest、Golden Path 與當前 stage 規則，可避免跨資料夾引用在個人技能轉存時失效，也避免批次保存造成 HTTP 422。
+這個 Launcher 在新任務、跨大階段或教師要求更新時檢查 GitHub `main`，同階段固定使用同一 commit，按需載入 Manifest、Golden Path 與當前 stage 規則，可避免跨資料夾引用在個人技能轉存時失效，也避免批次保存造成 HTTP 422。
 
 ## 可攜安裝包（Plugin 0.5.0）
 
@@ -50,8 +50,8 @@ Drive 仍為既有課程預設；LOCAL／HANDOFF 與待同步分支依 `core/gov
 
 | 平台 | 安裝／載入方式 | 圖片執行 |
 |---|---|---|
-| Claude / Claude Code | 使用 Claude 可攜包，網頁與 Code 分別依其實際安裝入口載入；見 adapters/claude.md | 實測圖片生成與局部編輯能力，缺少時 handoff |
-| Antigravity | 使用 Antigravity 可攜包，只註冊頂層入口；見 adapters/antigravity.md | 依當次可用圖片工具，無工具不宣稱成品 |
+| Claude / Claude Code | 優先安裝 `launchers/vmax-teaching-skills-claude/SKILL.md`，依實際平台安裝入口載入；見 adapters/claude.md | 實測圖片生成與局部編輯能力，缺少時 handoff |
+| Antigravity | 優先安裝 `launchers/vmax-teaching-skills-antigravity/SKILL.md`，只註冊此入口；見 adapters/antigravity.md | 依當次可用圖片工具，無工具不宣稱成品 |
 | Codex | 將 repository clone 為 Codex 可發現的 plugin／skills 目錄；本 repo 含 `.codex-plugin/plugin.json` | 當工作階段有圖片工具時直接渲染；否則 handoff |
 | ChatGPT Work | 只安裝 `chatgpt-work/vmax-teaching-skills/SKILL.md`；輕量 Launcher 從 GitHub 載入；完整 ChatGPT 可攜包從包內載入 | 只有目前 ChatGPT 工作階段提供圖片工具時直接渲染 |
 | Gemini / Gemini CLI | 將 `skills/` 暴露給 Gemini 的 skills／檔案工作區，並把 Bootstrap 設為入口；如用 API，另行配置圖片模型與憑證 | 有 image tool/API 才直接渲染，文字模型只有 prompt 不算完成 |
@@ -94,3 +94,7 @@ Repository 不保存：
 - `runtime/lessons/` 或其他單課即時狀態
 - `lessons/` 下的特定課程成品
 - `docs/legacy/`、migration audit 或 legacy resource
+
+## GitHub 輕量入口更新
+
+希望只更新 GitHub 就讓各平台讀取共用規則時，選輕量入口；完整可攜包僅供明確選擇離線快照的情境。Claude 與 Antigravity 入口位於 `launchers/`，ChatGPT 保留上列歷史來源路徑。安裝資料夾需與 frontmatter name 相同。一般共用規則更新不必重裝；入口本身變更才替換。實際讀取仍須有 GitHub 連線能力，不能保證未提供工具的平台自動同步。

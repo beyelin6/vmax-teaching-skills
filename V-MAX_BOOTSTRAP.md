@@ -1,4 +1,4 @@
-# V-MAX Bootstrap 1.8.0
+# V-MAX Bootstrap 1.8.1
 
 ## 目的
 
@@ -24,7 +24,7 @@
 
 ## 更新與能力
 
-規格在啟動、教師要求更新或大階段邊界按需檢查，不逐頁查 GitHub。不混讀不同快照；更新影響分 NO_CURRENT_IMPACT、FORWARD_ONLY、RETROACTIVE_REVIEW，後者只審受影響項目，不撤銷未受影響的核准。
+REMOTE 規格在新任務、教師要求更新及跨入下一個大階段時檢查；同階段不逐頁查 GitHub。其他快照依可攜政策。不混讀不同快照；更新影響分 NO_CURRENT_IMPACT、FORWARD_ONLY、RETROACTIVE_REVIEW，後者只審受影響項目，不撤銷未受影響的核准。
 
 各模組從選定快照按需讀取。實際程式排字時才做 font preflight，生圖／編圖時讀 Image Renderer 並確認各項真實能力；不預先用字型、角色或生圖工具阻擋來源整理。
 

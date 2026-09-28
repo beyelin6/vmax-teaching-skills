@@ -1,6 +1,6 @@
 # 可攜載入與進度保存政策
 
-版本：1.0
+版本：1.1
 
 ## 權責與適用範圍
 
@@ -11,7 +11,7 @@
 - `BUNDLED`：讀安裝包的 VERSION、Manifest、bundle-manifest.json 與當前必要文件。首次核驗包清單、相對路徑、內容 hash；可執行時用 `scripts/verify_portable_bundle.py`。無法執行時記錄 `MANUAL_REFERENCE_CHECK`，核對所用文件與版本、完整性可檢範圍，不虛報 hash 已驗證。必要文件遺失或不一致才阻擋受影響操作。
 - `REPOSITORY`：可直接讀完整 checkout；記錄 commit 與是否有本機修改，修改版另記實際內容 hash，不稱為遠端 main 最新版。
 - `REMOTE`：只有輕量 Launcher 時，取得 commit，從同一 ref 讀必要文件。可信 LAST_KNOWN_GOOD 可重用；無規格原文才 BOOTSTRAP_BLOCKED。
-- 一次工作使用同一套規格快照，不以遠端新檔零散拼接舊包。啟動或教師要求更新時可查新版；平常在大階段邊界按需檢查，不每頁連線。更新失敗不阻擋可用快照；已知實質錯誤只阻擋相關操作。更新不得清空教師核准。
+- 一次工作使用同一套規格快照，不以遠端新檔零散拼接舊包。REMOTE 模式在新任務、跨入下一個大階段及教師要求更新時必須實際檢查 main；同階段不逐頁連線。BUNDLED／REPOSITORY 只有採用遠端更新策略或教師要求時才查新版，不把固定快照自動切成 REMOTE。更新失敗不阻擋可用快照；已知實質錯誤只阻擋相關操作。更新不得清空教師核准。
 - LOAD 保留 Plugin、Manifest、Executor、Stage、UI，另註載入模式即可。版本取實際文件，不把 Launcher 版本當 Plugin；未知欄位如實說明，只限制依賴該缺失的工作。
 
 ## 按任務與階段讀取
