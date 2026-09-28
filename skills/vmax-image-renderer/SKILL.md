@@ -5,7 +5,7 @@ description: 將核准 Render Request 實際渲染為教學圖片；採 Object C
 
 # V-MAX Image Renderer
 
-版本：2.9
+版本：2.10
 
 ## Request Contract Gate
 
@@ -105,7 +105,7 @@ python "<Renderer 技能絕對路徑>/scripts/validate_batch_lock.py" --slide-sc
 
 ## Verified Text / Provider
 
-課文、注音、生字、形近字、多音字、成語、題目與正式定義不得由圖片模型自由生成。只有當頁含語詞標記或其他精準文字 anchor 時，才要求最終文字 glyph bbox 量測與安全重算能力；若缺少，標記 `RENDERER_CAPABILITY_BLOCKED`，不得以肉眼猜座標代替。無此類 anchor 的頁面不因缺少量測 API 而阻擋，仍須通過文字、字型與其他適用 QA。
+依 `core/presentation/text-layer-construction-policy.md` 第 2.0–2.1 節分流：課文閱讀頁保留獨立可控文字；非課文頁優先由圖片引擎依核准 exact_text 同時生成文字、插圖與版面，逐字校對後才可交付。不得新增、改寫或省略核准文字。只有當頁含語詞標記或其他精準文字 anchor 時，才要求最終文字 glyph bbox 量測與安全重算能力；若缺少，標記 `RENDERER_CAPABILITY_BLOCKED`，不得以肉眼猜座標代替。無此類 anchor 的頁面不因缺少量測 API 而阻擋，仍須通過文字、字型與其他適用 QA。
 
 每次選擇 provider 或施工正式文字前，必須載入 `references/provider-routing.md` 與 `references/verified-text-overlay.md`。圖片生成可與文字 renderer 分工；平台只匯入既有合成資產時，依 provider routing 的 reflow 規則保留或重算 anchor。
 
@@ -148,3 +148,5 @@ python "<Renderer 技能絕對路徑>/scripts/validate_representative_selection.
 ## 每頁遵稿交接
 
 每次代表頁、批次或修圖呼叫前，執行 `core/governance/presentation-preconstruction-policy.md` 第 8 節。實際讀回已核准完整 PAGE_DETAIL 的該頁，將文字、插圖、角色、版面與頁碼帶入工具輸入；Runtime 衝突未解或只取得核准摘要時不得施工。圖像完成後對照原頁規格，不一致先修；不得把相同 hash 或工具成功當作視覺符合證據。所有學生投影片皆有可辨識頁碼；课文頁另逐項完成 `core/presentation/paragraph-text-page-policy.md` 的送審清單。
+
+非課文頁的整頁圖文生成與局部修字依 Text Layer Construction Policy 2.1；不可僅因輸出是單張圖片就判定 MONOLITHIC_BACKGROUND_REGRESSION。

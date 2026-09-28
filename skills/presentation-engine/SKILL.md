@@ -5,7 +5,7 @@ description: 將核准教材與教學策略轉換為 Slide Script 與 Render Req
 
 # Presentation Engine
 
-版本：0.11.0
+版本：0.12.0
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
@@ -90,7 +90,7 @@ Render Request 有語詞標記時必須帶入六項 Vocabulary checks；成語�
 
 ## Verified Teaching Text
 
-課文、注音、生字、形近字、多音字、成語、題目與正式例句不得由圖片模型自由生成。文字是構圖物件，先排版再產生依附於它的標記與視覺關係。
+依 `core/presentation/text-layer-construction-policy.md` 第 2.0–2.1 節分流：課文閱讀頁保留獨立可控文字；非課文頁優先由圖片引擎依核准 exact_text 同時生成文字、插圖與版面，逐字校對後才可交付。不得新增、改寫或省略核准文字。文字是構圖物件，先排版再產生依附於它的標記與視覺關係。
 
 ## 代表頁與批次
 
@@ -105,3 +105,5 @@ Render Request 有語詞標記時必須帶入六項 Vocabulary checks；成語�
 ## 國語簡報施工前確認（GLOBAL_SKILL_RULE）
 
 國語簡報的階段與集中審核依 `core/governance/chinese-visual-presentation-workflow.md`；施工授權、成語雙軌、既有核准沿用、批次與局部修正依 `core/governance/presentation-preconstruction-policy.md`。按當前工作載入適用章節，不複製另一套流程。
+
+非課文頁的整頁圖文生成與局部修字依 Text Layer Construction Policy 2.1；不可僅因輸出是單張圖片就判定 MONOLITHIC_BACKGROUND_REGRESSION。

@@ -253,6 +253,38 @@ class BatchConstructionLockTests(unittest.TestCase):
             paths = self.make_fixture(Path(temp))
             MODULE.validate(*paths)
 
+    def set_image_text_and_rebind(self, paths, enabled):
+        slide_path, detail_path, _, _ = paths
+        detail = json.loads(detail_path.read_text(encoding="utf-8"))
+        page = detail["page_detail_confirmation"]["pages"][0]
+        page.setdefault("image_spec", {})["text_in_image"] = enabled
+        page_hash = MODULE.page_spec_hash(page)
+        page["page_spec_sha256"] = page_hash
+        detail_path.write_text(json.dumps(detail, ensure_ascii=False), encoding="utf-8")
+        detail_hash = MODULE.file_hash(detail_path)
+        script = json.loads(slide_path.read_text(encoding="utf-8"))
+        slide = script["slides"][0]
+        for item in (slide, slide["render_request"]):
+            item["page_detail_page_sha256"] = page_hash
+            item["page_detail_confirmation_sha256"] = detail_hash
+        script["batch_lock"]["page_detail_confirmation_sha256"] = detail_hash
+        script["batch_lock"]["pages"][0]["page_spec_sha256"] = page_hash
+        slide_path.write_text(json.dumps(script, ensure_ascii=False), encoding="utf-8")
+
+    def test_nonreading_page_allows_approved_image_text(self):
+        # This verifies the batch gate only, not visual correctness of rendered text.
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.make_fixture(Path(temp))
+            self.set_image_text_and_rebind(paths, True)
+            MODULE.validate(*paths)
+
+    def test_reading_page_rejects_baked_text(self):
+        with tempfile.TemporaryDirectory() as temp:
+            paths = self.make_text_fixture(Path(temp))
+            self.set_image_text_and_rebind(paths, True)
+            with self.assertRaisesRegex(ValueError, "TEXT_EMBEDDING_FAIL"):
+                MODULE.validate(*paths)
+
     def test_content_approval_alone_cannot_start_batch(self) -> None:
         """VP3 approval does not grant the VP4 asset/render authorization."""
         with tempfile.TemporaryDirectory() as temp:

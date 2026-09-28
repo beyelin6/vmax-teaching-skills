@@ -1,4 +1,4 @@
-# V-MAX Image-first Hybrid Renderer 2.0
+# V-MAX Image-first Hybrid Renderer 2.1
 
 ## 定位
 
@@ -12,7 +12,7 @@ V-MAX 圖片式簡報採 **Object Composition First + Verified Text**。背景�
 
 ## Verified Teaching Text
 
-課文、注音、生字、語詞、成語、題目等來自核准來源。圖片模型不得自由生成教學關鍵中文。`TEXT_READING_PAGE` 使用可控連續文字；其他圖片式頁使用 Verified Raster Text Components。
+依 `core/presentation/text-layer-construction-policy.md` 第 2.0–2.1 節分流：課文閱讀頁保留獨立可控文字；非課文頁優先由圖片引擎依核准 exact_text 同時生成文字、插圖與版面，逐字校對後才可交付。不得新增、改寫或省略核准文字。
 
 ## Vocabulary Marking Rendering Contract
 
@@ -73,4 +73,4 @@ Renderer **不得依肉眼或舊 x/y 座標猜底線位置**。固定流程：
 
 > 底線的位置是文字排版的函數，不是另一組手工座標。
 
-> 字一換行，底線就重新算；底線錯了，不能搬字來配合它。
+> 字一換行，底線就重新算；底線錯了，不能搬字來配合它。非課文頁的整頁圖文生成與局部修字依 Text Layer Construction Policy 2.1；不可僅因輸出是單張圖片就判定 MONOLITHIC_BACKGROUND_REGRESSION。

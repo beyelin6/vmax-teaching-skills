@@ -1,4 +1,4 @@
-# V-MAX Main Workflow 3.0
+# V-MAX Main Workflow 3.1
 
 ## 定位
 
@@ -259,7 +259,7 @@ Style Recommender 必須依本課課文、教學策略、角色與頁面家族�
 
 代表頁驗證前，必須先建立並通過 `schemas/representative-page-selection-profile.md` 定義的選擇檔。選擇檔只能引用已核准 `PAGE_DETAIL_CONFIRMATION.pages`，不得另寫一份獨立 prompt 或自行補內容；每個選取頁都要保存 `page_detail_page_id`、PAGE_DETAIL 檔案 hash 與 `page_spec_sha256`。代表頁驗證必須覆蓋課文閱讀頁、一般圖片合成頁、高風險語文頁，以及本課啟用時的 Lesson Visual Map。每類逐一核准，未展示頁型不得因教師對另一張說「可以」而連帶通過。代表頁與批次頁交付檢查時，優先使用 ChatGPT 原生圖像生成／影像編輯直接顯示於工作區並保留可續編原圖；原生入口不可用時標記 `NATIVE_IMAGE_REVIEW_UNAVAILABLE`。
 
-除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；精準文字可控排字後扁平化，不得退化成背景圖＋文字框、卡片牆、逐行打字或大量半透明框。代表頁組全數通過後才可進全量 Renderer；批次大小依 `core/governance/presentation-preconstruction-policy.md`，最多 8 頁、通常 4–8 頁，尾批／修正批／教師指定可少於 4 頁，並逐批檢查 Visual Drift、Canvas Drift 與 Text Layer Drift。
+除課文閱讀頁外，學生可見頁預設為整頁圖片式合成；非課文頁優先依 Text Layer Construction Policy 由圖片引擎忠實繪製核准文字並共同構圖，必要時局部可控排字修補，不得退化成背景圖＋文字框、卡片牆、逐行打字或大量半透明框。代表頁組全數通過後才可進全量 Renderer；批次大小依 `core/governance/presentation-preconstruction-policy.md`，最多 8 頁、通常 4–8 頁，尾批／修正批／教師指定可少於 4 頁，並逐批檢查 Visual Drift、Canvas Drift 與 Text Layer Drift。
 
 Lesson Package 交付依 `skills/lesson-package-delivery/SKILL.md`。
 Drive 結構依 `skills/google-drive-lesson-archive/SKILL.md`，不得另維護第二套。

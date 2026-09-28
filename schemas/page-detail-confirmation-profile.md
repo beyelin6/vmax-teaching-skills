@@ -77,7 +77,7 @@ page_detail_confirmation:
         actions: []
         required_objects: []
         prohibited_elements: []
-        text_in_image: false
+        text_in_image: false # 課文頁固定 false；非課文頁圖片引擎繪製核准文字時 true
       character_presence:
         appears: false
         purpose: ""

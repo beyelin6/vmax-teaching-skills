@@ -1,6 +1,6 @@
 # 國語圖片式語文頁規則
 
-版本：1.7
+版本：1.8
 
 本參考文件供 `presentation-engine` 與 `vmax-image-renderer` 製作國語圖片式簡報時使用。形近字與多音字的專門規則仍以 `skills/character-group-visual-comparison/SKILL.md` 為準。
 
@@ -14,9 +14,9 @@
 
 ## 2. 圖片與文字分工
 
-圖片模型負責人物、場景、動作、表情、物件、留白、視線與情境關係；不得承載課文、注音、形近字、成語、句型、修辭名稱、題目、部件拆解等關鍵文字。
+依 `core/presentation/text-layer-construction-policy.md` 第 2.0–2.1 節分流：課文閱讀頁保留獨立可控文字；非課文頁優先由圖片引擎依核准 exact_text 同時生成文字、插圖與版面，逐字校對後才可交付。不得新增、改寫或省略核准文字。
 
-受控文字層負責學生可見正式文字。文字須逐字可追溯來源，並與 Object Composition 共同構圖；禁止背景完成後再硬貼大量文字、卡片牆、大量白色矩形或文字框遮圖。
+課文頁與需要局部修字的元件使用受控文字層。文字須逐字可追溯來源，並與 Object Composition 共同構圖；禁止背景完成後再硬貼大量文字、卡片牆、大量白色矩形或文字框遮圖。
 
 ## 2.1 字型與 Font Safety
 
@@ -30,7 +30,7 @@
 
 ## 2.2 Verified Raster Text Components
 
-圖片式簡報正式文字由可控文字工具產生，逐元件校對，再與視覺物件合成。`TEXT_READING_PAGE` 可使用真正可控的連續文字層；其他圖片式頁使用 Verified Raster Text Components。
+依 `core/presentation/text-layer-construction-policy.md` 第 2.0–2.1 節分流：課文閱讀頁保留獨立可控文字；非課文頁優先由圖片引擎依核准 exact_text 同時生成文字、插圖與版面，逐字校對後才可交付。不得新增、改寫或省略核准文字。 本節字型檔與 font preflight 僅適用可控排字；圖片生成文字記錄字形 DNA 及視覺校對，不能虛報實際字型檔。
 
 ## 2.3 Vocabulary Marking System
 
@@ -177,3 +177,5 @@ idiom_application_plan:
 > 成語頁不是把成語、解釋、例句排進三個框；要讓學生從情境看懂這個成語怎麼用。
 
 > 圖要配合例句，例句要呈現成語真正的用法。
+
+非課文頁的整頁圖文生成與局部修字依 Text Layer Construction Policy 2.1；不可僅因輸出是單張圖片就判定 MONOLITHIC_BACKGROUND_REGRESSION。
