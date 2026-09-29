@@ -1,4 +1,5 @@
 """Offline packaging and checkpoint contracts; does not simulate an LLM or platform UI."""
+import hashlib
 import json
 import shutil
 import subprocess
@@ -64,6 +65,50 @@ class PortableBundleTests(unittest.TestCase):
             self.assertFalse((after / "docs/visual-validation").exists())
             self.assertFalse(list((after / "tests").glob("*.py")))
             self.assertTrue((after / "tests/workflow-hold-regression-cases.md").is_file())
+
+    def test_claude_budget_and_lossless_reference_relocation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, archive = build(tmp, "claude")
+            info = verify(root)
+            with zipfile.ZipFile(archive) as z:
+                self.assertLessEqual(len(z.infolist()), 190)
+                self.assertTrue(all(not item.is_dir() for item in z.infolist()))
+            names, _, _, _ = source_inventory(ROOT)
+            modules = {n: n[:-8] + "MODULE.md" for n in names if n.endswith("/SKILL.md")}
+            relocated = {n: v["destination"] for n, v in info["relocated_references"].items()}
+            # Every retained source exists intact after the documented path transformations.
+            for name in names:
+                if name.endswith("/agents/openai.yaml"):
+                    self.assertIn(name, info["excluded_files"])
+                    continue
+                data = (ROOT / name).read_bytes()
+                if Path(name).suffix in {".md", ".py", ".json", ".yaml", ".yml", ".txt", ".ps1"}:
+                    text = rewrite(data.decode("utf-8"), modules)
+                    if name.endswith(".md"):
+                        text = rewrite(text, relocated)
+                    data = text.replace("\r\n", "\n").encode("utf-8")
+                if name in relocated:
+                    self.assertEqual(hashlib.sha256(data).hexdigest(), info["relocated_references"][name]["content_sha256"])
+                else:
+                    self.assertEqual(data, (root / modules.get(name, name)).read_bytes(), name)
+            # Budget cannot be disabled by modifying the bundle's declared profile.
+            info["target_profile"]["build_budget"] = None
+            (root / "bundle-manifest.json").write_text(json.dumps(info), encoding="utf-8")
+            for index in range(201):
+                (root / f"extra-{index}.txt").write_text("extra")
+            with self.assertRaisesRegex(ValueError, "file budget exceeded"):
+                verify(root)
+
+    def test_other_targets_keep_all_source_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            names, _, _, _ = source_inventory(ROOT)
+            for target in ("chatgpt", "antigravity", "codex"):
+                root, _ = build(tmp, target)
+                info = verify(root)
+                self.assertEqual(info["relocated_references"], {})
+                self.assertEqual(info["excluded_files"], [])
+                expected = {n[:-8] + "MODULE.md" if n.endswith("/SKILL.md") else n for n in names}
+                self.assertEqual(set(info["files"]), expected | {"SKILL.md"})
 
     def test_tampered_source_is_detected(self):
         with tempfile.TemporaryDirectory() as tmp:

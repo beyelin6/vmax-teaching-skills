@@ -102,3 +102,9 @@ Repository 不保存：
 ### 建包來源與精簡範圍
 
 建包支援 Git clone 與 GitHub Download ZIP 解壓資料夾。後者記錄 source_kind=archive、source_commit=unknown、source_dirty=null，不宣稱已核對遠端版本。只收錄發布用目錄；排除隱藏檔、快取、Python 測試及未被引用的 docs/visual-validation 圖片。保留 docs 規則與 tests/*.md 回歸案例，避免斷開現有引用。完整性驗證不代表平台實際行為驗收。
+
+### Claude.ai 檔案數限制
+
+Claude 完整包依實測上傳拒絕訊息採 200 檔上限，建包預算為 190 檔（含 bundle-manifest.json），超過即失敗；ZIP 不加入目錄 entry。各平台設定集中在 scripts/verify_portable_bundle.py 的 TARGET_PROFILES，其他三平台不精簡內容。
+
+Claude 僅省略 agents/openai.yaml，將 schemas 及 core/governance、visual、director、pedagogy、presentation 的純 Markdown 合併為各目錄 BUNDLE_REFERENCE.md。全部原文保留，只重寫本機路徑為章節引用，逐節 hash 與原路徑對照寫入 manifest；JSON schema 與腳本原路徑不動。沒有停用四學、平板、決策或教學記憶。其他平台 adapter 與 launcher 保留作交接參考，不作 Claude 入口。品質 docs 和引用的 tests 文件保留。此為檔案及引用驗證，尚未證明 claude.ai 實際上傳或執行成功。

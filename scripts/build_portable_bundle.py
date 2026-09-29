@@ -7,7 +7,7 @@ import subprocess
 import zipfile
 from pathlib import Path
 
-from verify_portable_bundle import verify
+from verify_portable_bundle import verify, TARGET_PROFILES
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS = ("claude", "chatgpt", "antigravity", "codex")
@@ -71,9 +71,20 @@ def build(output, target, source=ROOT):
     if output == source or source in output.parents:
         raise ValueError("Build outside the source repository")
     names, commit, dirty, kind = source_inventory(source)
+    profile = TARGET_PROFILES[target]
+    excluded = [n for n in names if profile["compact_markdown"] and n.endswith("/agents/openai.yaml")]
+    names = [n for n in names if n not in excluded]
+    groups = {}
+    if profile["compact_markdown"]:
+        for folder in ("schemas", "core/governance", "core/visual", "core/director", "core/pedagogy", "core/presentation"):
+            members = [n for n in names if str(Path(n).parent).replace("\\", "/") == folder and n.endswith(".md")]
+            if members:
+                groups[folder + "/BUNDLE_REFERENCE.md"] = members
+    relocated = {n: dest + "#ref-" + Path(n).stem for dest, members in groups.items() for n in members}
     root = output / target / "vmax-chinese-teaching"
     root.mkdir(parents=True, exist_ok=False)
     modules = {n: n[:-8] + "MODULE.md" for n in names if n.endswith("/SKILL.md")}
+    sections = {}
     for name in names:
         path = source / name
         if path.is_symlink() or not path.resolve().is_relative_to(source):
@@ -84,14 +95,33 @@ def build(output, target, source=ROOT):
         if path.suffix in TEXT_EXT:
             text = content.decode("utf-8")
             text = rewrite(text, modules)
+            if path.suffix == ".md":
+                text = rewrite(text, relocated)
             content = text.replace("\r\n", "\n").encode("utf-8")
-        dest.write_bytes(content)
+        if name in relocated:
+            sections[name] = content.decode("utf-8")
+        else:
+            dest.write_bytes(content)
+    for destination, members in groups.items():
+        parts = ["# Claude bundle reference\n\n只按目前任務讀取指定章節；不要整份預載。#ref-… 是章節定位，不是檔名的一部分。\n"]
+        parts += [f"- [{Path(n).stem}](#ref-{Path(n).stem})" for n in members]
+        for n in members:
+            parts.append(f'\n<a id="ref-{Path(n).stem}"></a>\n<!-- BEGIN {n} -->\n' + sections[n] + f'\n<!-- END {n} -->\n')
+        dest = root / destination
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes("\n".join(parts).encode("utf-8"))
     entry = (source / "packaging/portable-entry.md").read_text(encoding="utf-8").replace("{target}", target)
     for old, new in modules.items():
         entry = entry.replace(old, new)
+    entry = rewrite(entry, relocated)
+    if profile["compact_markdown"]:
+        entry += "\n## Claude 上傳包範圍\n\n本包保留全部教學模組，包含四學、平板、決策與教學記憶；未停用任何教學功能。只移除 OpenAI 專用 agents/openai.yaml（不在 Claude 註冊 OpenAI 入口）。schemas 與部分 core 純 Markdown 文件合併至各目錄 BUNDLE_REFERENCE.md；引用中的 #ref-… 指章節，讀取檔名時先去掉 # 後段，再搜尋對應錨點／標記，只讀該節。原始路徑對照與逐節 hash 見 bundle-manifest.json 的 relocated_references。JSON schema 與執行脚本不搬移。\n\n其他平台 adapter、launcher 僅作共用規則引用／交接參考，不是本包安裝入口，不切換本包 BUNDLED 快照。保留品質文件及被引用的回歸案例。Windows 同步工具不在 Claude.ai 執行；需要外部平台能力時依實際工具交接，不假稱已執行。\n"
     (root / "SKILL.md").write_bytes(entry.encode("utf-8"))
     version = (root / "VERSION").read_text().strip()
     info = {
+        "target_profile": profile,
+        "excluded_files": excluded,
+        "relocated_references": {n: {"destination": dest, "content_sha256": hashlib.sha256(sections[n].encode("utf-8")).hexdigest()} for n, dest in relocated.items()},
         "format_version": 1, "target": target, "version": version,
         "source_commit": commit,
         "source_dirty": dirty,
