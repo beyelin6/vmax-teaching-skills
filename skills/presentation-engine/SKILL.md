@@ -5,19 +5,21 @@ description: 將核准教材與教學策略轉成 Slide Script 與 Render Reques
 
 # Presentation Engine
 
-版本：0.12.1
+版本：0.13.0
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
 ## SLIDE_ARCHITECTURE_LOCK
 
-Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapping`。Baseline 順序固定為：依 `schemas/lesson-architecture-profile.md` 的十項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 生字延伸成語 → 統整遷移；教材語文活動嵌入相關區段並檢查完整覆蓋。頁數上限、模板或 Renderer 不得自行重排；外加變體只能透過明確 mapping 改變教學呈現。
+Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapping`。Baseline 順序依 `schemas/lesson-architecture-profile.md` 的十一項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 成語教學頁 → 語文活動 → 統整遷移。語文活動須集中成獨立區段，排在最後一張成語教學頁之後、全課統整之前；活動內容可連結前段教學焦點，但活動頁不得插入前段。頁數上限、模板或 Renderer 不得自行重排；外加變體只能透過明確 mapping 改變教學呈現。
 
-驗證必須拒絕：缺少任一必修區段、未核准的區段重排或內容遺漏（段內依適用焦點彈性安排，不強制每段同一套活動）、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。
+驗證必須拒絕：缺少任一必修區段、未核准的區段重排或內容遺漏、活動頁早於最後一張成語教學頁或晚於統整區段、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。段內可依適用焦點彈性安排，不強制每段同一套活動。語文活動必須逐項回指 VP1 核准的 `activity_id`，並在簡報頁、課堂任務或經核准的省略理由中完成去向映射；不可只以某一個「語文活動頁」代表全課活動覆蓋。
 
 ## PAGE_PLAN
 
 國語簡報 VP3 只建立詳細 PAGE_DETAIL 候選及 content_approved 稿，可保留 planned_character_refs；不得因此派生正式 Slide Script。VP4 綁定真實核准資產後才使用下列正式施工契約。
+
+PAGE_DETAIL_CONFIRMATION 必須附 `language_activity_coverage`，逐項列出核准的 `activity_id`、活動來源、source／knowledge refs、VP1/VP2 核准路徑、最終 `page_ids`／`section_id`／task refs，或 `OMIT_WITH_REASON` 的理由與 approval ref。`DEDICATED_TEACHING_PAGE` 頁面須保留來源活動與可見學生任務；`INTEGRATED_FOCUS` 須說明活動如何支持核准的當課加強重點；`STUDENT_PRACTICE` 須標明課堂承載方式及投影片是否需要任務提示。AI 活動必須標示 `AI_RECOMMENDED`、連結已核准的本課焦點／知識節點並取得教師核准，不得混入教材原活動。活動清單有缺項、無來源／知識錨點、未核准 AI 建議或去向不明時，標記 `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE`，不得將 PAGE_DETAIL 標為 content_approved。
 
 國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 

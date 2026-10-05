@@ -1,6 +1,6 @@
 # Page Detail Confirmation Profile
 
-版本：1.3
+版本：1.5
 
 這是正式製作前的逐頁確認母檔。它把已鎖定的教學架構轉成可批次施工的頁面規格；教師確認後，Renderer 只能依此製作，不得自行補內容或改排版意圖。
 
@@ -15,13 +15,26 @@ page_detail_confirmation:
   revision: ""
   confirmation_sha256: ""
   batch_lock_mode: EXACT_PAGE_DETAIL
-  baseline_version: ""
+  baseline_version: "1.2"
   slide_architecture_lock_ref: ""
   canvas_lock_ref: ""
   style_matrix_ref: ""
   role_lock_ref: ""
   confirmed_page_ledger_ref: ""
   vocabulary_idiom_coverage_ref: ""
+  language_activity_coverage:
+    - activity_id: ""
+      activity_source: TEXTBOOK # TEXTBOOK | AI_RECOMMENDED
+      source_refs: []
+      knowledge_refs: []
+      approved_route: DEDICATED_TEACHING_PAGE # DEDICATED_TEACHING_PAGE | INTEGRATED_FOCUS | STUDENT_PRACTICE | OMIT_WITH_REASON
+      page_ids: []
+      section_ids: []
+      task_refs: []
+      focus_mapping: ""
+      recommendation_reason: null
+      omission_reason: null
+      approval_ref: ""
   idiom_tracks:
     text_existing: []
     character_extension: []
@@ -61,6 +74,7 @@ page_detail_confirmation:
         source_sequence_index: 1
         source_section_id: ""
       source_refs: []
+      language_activity_refs: []
       student_visible_text:
         title: ""
         body: []
@@ -157,6 +171,8 @@ page_detail_confirmation:
 ```
 
 ## 確認規則
+
+`language_activity_coverage` 必須完整承接 VP1 核准的教材活動，以及教師核准納入的 AI 活動；`activity_id` 穩定回指來源索引或 AI 候選。教材活動的 `activity_source` 為 `TEXTBOOK`，以 `source_refs` 保留教材證據；AI 候選必須標為 `AI_RECOMMENDED`，提供 `knowledge_refs`、`recommendation_reason` 與教師 `approval_ref`，不得混入 Official Knowledge。`approved_route` 記錄核准路徑。`DEDICATED_TEACHING_PAGE` 與 `INTEGRATED_FOCUS` 必須至少回指一個實際 `page_id`／`section_id`；所有活動頁的 section_id 必須是 `language_activity`，並且頁序在本課最後一張成語教學頁之後、統整頁之前。`STUDENT_PRACTICE` 必須回指課堂任務，並註明是否需要投影片提示；`OMIT_WITH_REASON` 必須有具體理由與 `approval_ref`。有頁面承載的活動亦須列在該頁 `language_activity_refs`。無來源／知識錨點、未核准路徑、區段順序錯誤或去向不明時不得核准此 Profile，並標記 `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE` 或 `LANGUAGE_ACTIVITY_ORDER_FAIL`。
 
 國語簡報分兩層核准，依 `core/governance/chinese-visual-presentation-workflow.md`：VP3 鎖文字／配置，status 為 content_approved，content_approval_ref 指向完整稿核准；角色規劃保存在 planned_character_refs，缺圖不得假填 asset ID。VP4 核准角色圖、完成 Registry 與綁定後，由 content_approval_ref、asset_approval_refs 與 binding_record_ref 支持 status: approved。純資產引用綁定不重審未變內容；內容／布局有變仍須受影響頁的核准。下列「每個角色已具核准資產」是 approved／正式施工的條件，不是 VP3 草稿的條件。
 
