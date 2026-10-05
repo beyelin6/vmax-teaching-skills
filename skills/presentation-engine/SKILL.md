@@ -11,9 +11,9 @@ description: 將核准教材與教學策略轉成 Slide Script 與 Render Reques
 
 ## SLIDE_ARCHITECTURE_LOCK
 
-Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapping`。Baseline 順序固定為：依 `schemas/lesson-architecture-profile.md` 的十項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 生字延伸成語 → 統整遷移；教材語文活動嵌入相關區段並檢查完整覆蓋。頁數上限、模板或 Renderer 不得自行重排；外加變體只能透過明確 mapping 改變教學呈現。
+Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapping`。Baseline 順序依 `schemas/lesson-architecture-profile.md` 的十一項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 成語教學頁 → 語文活動 → 統整遷移。語文活動須集中成獨立區段，排在最後一張成語教學頁之後、全課統整之前；活動內容可連結前段教學焦點，但活動頁不得插入前段。頁數上限、模板或 Renderer 不得自行重排；外加變體只能透過明確 mapping 改變教學呈現。
 
-驗證必須拒絕：缺少任一必修區段、未核准的區段重排或內容遺漏（段內依適用焦點彈性安排，不強制每段同一套活動）、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。語文活動必須逐項回指 VP1 核准的 `activity_id`，並在簡報頁、課堂任務或經核准的省略理由中完成去向映射；不可只以某一個「語文活動頁」代表全課活動覆蓋。
+驗證必須拒絕：缺少任一必修區段、未核准的區段重排或內容遺漏、活動頁早於最後一張成語教學頁或晚於統整區段、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。段內可依適用焦點彈性安排，不強制每段同一套活動。語文活動必須逐項回指 VP1 核准的 `activity_id`，並在簡報頁、課堂任務或經核准的省略理由中完成去向映射；不可只以某一個「語文活動頁」代表全課活動覆蓋。
 
 ## PAGE_PLAN
 

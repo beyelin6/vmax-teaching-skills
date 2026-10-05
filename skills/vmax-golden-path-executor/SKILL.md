@@ -79,9 +79,9 @@ CHINESE_VISUAL_PRESENTATION 必讀 `core/governance/chinese-visual-presentation-
 
 進入 `Visual Grammar / Slide Architecture` 時，Executor 先依 `schemas/lesson-architecture-profile.md` 建立內容骨架與覆蓋；逐頁稿核准後才將 `SLIDE_ARCHITECTURE_LOCK` 寫入正式 Slide Script。預設順序為：
 
-`cover → reading_prompt → visual_mind_map → paragraph_learning（閱讀與隨文教學交錯）→ character_overview → character_comparison → polyphonic_learning → idiom_learning（生字延伸）→ summary_transfer`
+`cover → reading_prompt → visual_mind_map → paragraph_learning（閱讀與隨文教學交錯）→ character_overview → character_comparison → polyphonic_learning → idiom_learning（成語教學）→ language_activity（成語頁之後的語文活動）→ summary_transfer`
 
-區段適用性、教材活動嵌入與既有核准稿遷移以該 Profile 為準；不得強制每段同一套教學活動，也不得漏掉正式生字總覽或用課文成語取代生字延伸檢核。
+區段適用性、語文活動來源覆蓋與既有核准稿遷移以該 Profile 為準；不得強制每段同一套教學活動，也不得漏掉正式生字總覽或用課文成語取代生字延伸檢核。任何語文活動頁都必須晚於最後一張成語教學頁、早於統整頁。
 
 頁數、模板或外加變體不得靜默重排此順序。若教師確認了變體，必須另存 `architecture_mapping`，逐項標記 `preserved`、`transformed`、`extended` 或 `omitted` 及理由；變體可以改變教學呈現，但不得遺失任何教師指定的學習結果。
 

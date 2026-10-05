@@ -49,12 +49,12 @@
 
 正式渲染前必須驗證 `SLIDE_ARCHITECTURE_LOCK`：
 
-1. 新版頁面區段符合 `schemas/lesson-architecture-profile.md` 1.1 的十項流程；依該檔檢查適用性及既有確認稿的核准變體，不默默重排舊稿。
-2. 完整原文與核准語詞有覆蓋，適用的句型／修辭、課文成語、提問及教材活動隨文或放在對應區段；教材語文活動須逐項對照 PAGE_DETAIL_CONFIRMATION 的 `language_activity_coverage`，確認來源、核准路徑及簡報頁／課堂任務去向，或具備教師核准的省略理由；不要求每段固定活動。正式生字總覽須覆蓋全部正式生字，多音字與生字延伸成語在最後統整之前。
+1. 新版頁面區段符合 `schemas/lesson-architecture-profile.md` 1.2 的十一項流程；依該檔檢查適用性及既有確認稿的核准變體，不默默重排舊稿。
+2. 完整原文與核准語詞有覆蓋，適用的句型／修辭、課文成語、提問及教材活動隨文或放在對應區段；教材語文活動須逐項對照 PAGE_DETAIL_CONFIRMATION 的 `language_activity_coverage`，確認來源、核准路徑及簡報頁／課堂任務去向，或具備教師核准的省略理由；所有活動頁須位於最後一張成語教學頁之後、統整區段之前；不要求每段固定活動。正式生字總覽須覆蓋全部正式生字，多音字與生字延伸成語在最後統整之前。
 3. 外加變體有完整 `architecture_mapping`，且不會把 transformed／extended 內容冒充 Baseline。
 4. `LANGUAGE_CANDIDATE_COVERAGE.character_related_idioms` 中每個 retained 項目都回指 `final_idiom_section_refs`。
 
-任何錯序、缺區段、語文活動覆蓋／來源／核准去向不完整或成語 provenance 斷裂標記 `SLIDE_ARCHITECTURE_ORDER_FAIL`、`LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE` 或 `IDIOM_CHARACTER_COVERAGE_INCOMPLETE`，不得進入 `RENDER_READY`。
+任何錯序、缺區段、語文活動順序錯誤標記 `LANGUAGE_ACTIVITY_ORDER_FAIL`；活動覆蓋／來源／核准去向不完整或成語 provenance 斷裂則標記 `SLIDE_ARCHITECTURE_ORDER_FAIL`、`LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE` 或 `IDIOM_CHARACTER_COVERAGE_INCOMPLETE`，不得進入 `RENDER_READY`。
 
 5. `PAGE_DETAIL_CONFIRMATION` 狀態為 `approved`，且每頁都有文字、來源、圖片細節與版面規格。
 6. Slide Script、Render Request 與頁面母檔的文字、source refs、頁型、圖片／版面 revision 一致。
