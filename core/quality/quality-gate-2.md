@@ -4,7 +4,7 @@
 正式簡報交付前檢查教材真值、Object Composition、文字／注音、語詞標記、成語應用情境、角色與教師後製負擔。
 
 ## Gate A｜Teaching Integrity
-教材與教師核准內容必須正確；一頁一主要焦點；學生頁不洩漏答案。教材真值錯誤 → FAIL。本課教材語文活動須逐項核對來源、教師核准路徑及最終承載位置（簡報頁、課堂任務或核准省略）；缺項、錯引、未核准省略或把 AI 教學支援冒充教材活動 → `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE` → FAIL。
+教材與教師核准內容必須正確；一頁一主要焦點；學生頁不洩漏答案。教材真值錯誤 → FAIL。本課教材語文活動須逐項核對來源、教師核准路徑及最終承載位置（簡報頁、課堂任務或核准省略）。AI 活動須另標 `AI_RECOMMENDED`、回指已核准的本課焦點／知識節點並有教師核准；缺項、錯引、未核准省略或把 AI 建議冒充教材活動 → `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE` → FAIL。
 
 ## Gate B｜Object Composition
 一般頁可追溯 Object/Character/Key Line plans；有語詞標記時可追溯 Vocabulary Mark Plan；成語頁可追溯 Idiom Application Plan。完整 AI 場景吃滿畫布、文字只能搬動、物件全烘焙 → `MONOLITHIC_BACKGROUND_REGRESSION` → FAIL。核准 overlap 不算碰撞。
@@ -50,7 +50,7 @@
 正式渲染前必須驗證 `SLIDE_ARCHITECTURE_LOCK`：
 
 1. 新版頁面區段符合 `schemas/lesson-architecture-profile.md` 1.2 的十一項流程；依該檔檢查適用性及既有確認稿的核准變體，不默默重排舊稿。
-2. 完整原文與核准語詞有覆蓋，適用的句型／修辭、課文成語、提問及教材活動隨文或放在對應區段；教材語文活動須逐項對照 PAGE_DETAIL_CONFIRMATION 的 `language_activity_coverage`，確認來源、核准路徑及簡報頁／課堂任務去向，或具備教師核准的省略理由；所有活動頁須位於最後一張成語教學頁之後、統整區段之前；不要求每段固定活動。正式生字總覽須覆蓋全部正式生字，多音字與生字延伸成語在最後統整之前。
+2. 完整原文與核准語詞有覆蓋；適用的句型／修辭、課文成語與提問按課文流程呈現。教材及教師核准的 AI 語文活動須逐項對照 PAGE_DETAIL_CONFIRMATION 的 `language_activity_coverage`，確認來源、核准路徑及簡報頁／課堂任務去向，或具備教師核准的省略理由；所有活動頁須位於最後一張成語教學頁之後、統整區段之前；不要求每段固定活動。正式生字總覽須覆蓋全部正式生字，多音字與生字延伸成語在最後統整之前。
 3. 外加變體有完整 `architecture_mapping`，且不會把 transformed／extended 內容冒充 Baseline。
 4. `LANGUAGE_CANDIDATE_COVERAGE.character_related_idioms` 中每個 retained 項目都回指 `final_idiom_section_refs`。
 

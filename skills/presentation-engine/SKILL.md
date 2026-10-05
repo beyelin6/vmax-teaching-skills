@@ -19,7 +19,7 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 
 國語簡報 VP3 只建立詳細 PAGE_DETAIL 候選及 content_approved 稿，可保留 planned_character_refs；不得因此派生正式 Slide Script。VP4 綁定真實核准資產後才使用下列正式施工契約。
 
-PAGE_DETAIL_CONFIRMATION 必須附 `language_activity_coverage`，逐項列出核准的 `activity_id`、source refs、VP1/VP2 核准路徑、最終 `page_ids`／`section_id`／task refs，或 `OMIT_WITH_REASON` 的理由與 approval ref。`DEDICATED_TEACHING_PAGE` 頁面須保留來源活動與可見學生任務；`INTEGRATED_FOCUS` 須說明活動如何支持核准的當課加強重點；`STUDENT_PRACTICE` 須標明課堂承載方式及投影片是否需要任務提示。不得把 AI 新編內容寫成教材原活動。活動清單有缺項、無來源錨點或去向不明時，標記 `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE`，不得將 PAGE_DETAIL 標為 content_approved。
+PAGE_DETAIL_CONFIRMATION 必須附 `language_activity_coverage`，逐項列出核准的 `activity_id`、活動來源、source／knowledge refs、VP1/VP2 核准路徑、最終 `page_ids`／`section_id`／task refs，或 `OMIT_WITH_REASON` 的理由與 approval ref。`DEDICATED_TEACHING_PAGE` 頁面須保留來源活動與可見學生任務；`INTEGRATED_FOCUS` 須說明活動如何支持核准的當課加強重點；`STUDENT_PRACTICE` 須標明課堂承載方式及投影片是否需要任務提示。AI 活動必須標示 `AI_RECOMMENDED`、連結已核准的本課焦點／知識節點並取得教師核准，不得混入教材原活動。活動清單有缺項、無來源／知識錨點、未核准 AI 建議或去向不明時，標記 `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE`，不得將 PAGE_DETAIL 標為 content_approved。
 
 國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 

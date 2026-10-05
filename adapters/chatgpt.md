@@ -103,7 +103,7 @@ SOURCE 0／STEP 1、重新製作或來源補漏時，必讀 `core/governance/ste
 
 目前 Runtime 已進入簡報／視覺 stage 時，必須先讀取正向視覺範例、Visual Text DNA、Canvas Lock Policy 與 Text Layer Construction Policy。到畫布鎖定階段若尚無鎖定畫布，詢問教師選擇 `4:3` 或 `16:9`；選定後續跑不得切換。逐頁腳本、圖片底圖、正式文字層、角色／風格檢查與 PPTX／PNG 輸出必須分階段完成；不得從抽象教學主題直接套用通用簡報模板。依 `core/presentation/text-layer-construction-policy.md` 第 2.0–2.1 節分流：課文閱讀頁保留獨立可控文字；非課文頁優先由圖片引擎依核准 exact_text 同時生成文字、插圖與版面，逐字校對後才可交付。不得新增、改寫或省略核准文字。 文字感覺或圖文關係不像正向範例時標記 `VISUAL_TEXT_DNA_FAIL`，停等修正，不得量產。
 
-每課先建立並鎖定 `Lesson Architecture Profile`：依 `schemas/lesson-architecture-profile.md` 的十項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 生字延伸成語 → 統整遷移；教材語文活動嵌入相關區段並檢查完整覆蓋。完成 Baseline 確認後，才詢問是否加入平板操作、四學公開課、議題融入或教師自訂外加模板。外加模板可以重新設計教學活動、互動、媒介與時間配置，但必須逐項回指 Baseline 的學習結果；不得靜默刪除教師指定內容，也不得把變體誤當成新的 Official Knowledge。
+每課先建立並鎖定 `Lesson Architecture Profile`：依 `schemas/lesson-architecture-profile.md` 的十一項流程：封面 → 讀前引導 → 學習地圖 → 課文閱讀與隨文教學交錯 → 正式生字總覽 → 形近字 → 多音字 → 成語教學頁 → 語文活動 → 統整遷移。語文活動集中在最後一張成語教學頁之後、統整之前，逐項追溯教材活動；另可依教師選定的本課加強重點提出標示清楚的 AI 活動候選，待教師核准後納入。完成 Baseline 確認後，才詢問是否加入平板操作、四學公開課、議題融入或教師自訂外加模板。外加模板可以重新設計教學活動、互動、媒介與時間配置，但必須逐項回指 Baseline 的學習結果；不得靜默刪除教師指定內容，也不得把變體誤當成新的 Official Knowledge。
 
 若目前 WORK 模式的插圖視覺已符合教師期待，視覺資產視為 `illustration_status: LOCKED`。之後文字表達、字體、斷行、位置或顯示失敗，依文字政策局部影像修字或重建受影響文字層與排版，不得重新生成插圖或角色。
 

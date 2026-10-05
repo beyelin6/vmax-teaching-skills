@@ -50,8 +50,8 @@ google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: "1.9" }
 text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.6 }
 classroom_language_page_rules: { path: skills/presentation-engine/references/classroom-language-page-rules.md, current_version: 1.9 }
-lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.1 }
-page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profile.md, current_version: "1.3" }
+lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.2 }
+page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profile.md, current_version: "1.5" }
 batch_construction_lock: { path: core/governance/batch-construction-lock.md, current_version: "1.5" }
 paragraph_text_page_policy: { path: core/presentation/paragraph-text-page-policy.md, current_version: 1.1 }
 character_library_writeback_policy: { path: core/character/character-library-writeback-policy.md, current_version: "1.1" }
