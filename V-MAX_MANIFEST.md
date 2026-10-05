@@ -22,7 +22,7 @@ role_recommender: { path: skills/role-recommender/SKILL.md, current_version: "0.
 style_recommender: { path: skills/style-recommender/SKILL.md, current_version: "0.2.1" }
 prestudy_worksheet: { path: skills/prestudy-worksheet/SKILL.md, current_version: "1.6.1" }
 short_writing_worksheet: { path: skills/postlesson-short-writing-worksheet/SKILL.md, current_version: "1.4.1" }
-chinese_visual_presentation_workflow: { path: core/governance/chinese-visual-presentation-workflow.md, current_version: "1.1" }
+chinese_visual_presentation_workflow: { path: core/governance/chinese-visual-presentation-workflow.md, current_version: "1.3" }
 teacher_review_view: { path: core/ui/teacher-review-view-contract.md, current_version: "1.3" }
 representative_page_selection: { path: schemas/representative-page-selection-profile.md, current_version: 1.1 }
 session_director: { path: core/director/session-director.md, current_version: "1.5" }
@@ -59,9 +59,9 @@ slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contrac
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.3 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.1 }
-presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: "0.12.1" }
+presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: "0.13.0" }
 image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: "2.10.1" }
-quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.5 }
+quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.6 }
 visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_version: 1.2 }
 ```
 
