@@ -1,6 +1,6 @@
 ---
 name: vmax-teaching-skills
-description: 執行與維護 V-MAX 臺灣國小國語教材工作流，包括教材忠實轉錄、Lesson Knowledge Book、學習模組、教學策略、平板互動、四學公開課、角色與視覺規劃、16:9 圖文資訊圖表 PDF、學習單、品質驗證、課後記錄及完整課程包交付。正式課堂視覺成品預設為圖文資訊圖表 PDF，PPTX 僅在教師明確要求時選配。當使用者提及 V-MAX、國語教材建課、延續既有 V-MAX 課程、依 runtime stage 推進，或要求檢查／修改 V-MAX repository 時使用。
+description: 執行與維護 V-MAX 臺灣國小國語教材工作流，包括教材忠實轉錄、Lesson Knowledge Book、學習模組、教學策略、平板互動、四學公開課、角色與視覺規劃、16:9 圖文資訊圖表 PDF、學習單、品質驗證、課後記錄及完整課程包交付。正式課堂視覺成品預設為圖文資訊圖表 PDF，PPTX 僅在教師明確要求時選配。當使用者提及 V-MAX、國語教材建課、延續既有 V-MAX 課程、依 runtime stage 推進，或要求檢查／修改 V-MAX repository 時使用。若使用者提供已完成的 Google Slides／PPTX，並要求製作圖片式教學簡報、圖片式文字組件、圖片引擎渲染文字、把這份 Slides/PPTX 做成圖片式教學簡報、視覺化既有投影片或同義需求，則啟動跨科共用的 `VISUAL_TEACHING_PRESENTATION` 視覺轉譯路由。
 ---
 
 # V-MAX Teaching Skills
@@ -18,14 +18,14 @@ description: 執行與維護 V-MAX 臺灣國小國語教材工作流，包括教
 ## 執行
 
 - 以教師最新明確決定為最高優先，其後依序採用 runtime state、Manifest canonical files、current workflow、current executor、module policy／skill。
-- 每次只執行 `next_allowed_stage`。若請求與它不一致，回報 `RUNTIME_STAGE_CONFLICT`，並說明目前階段與合法下一步。
+- 每次只執行當前工作流的 `next_allowed_stage`：一般課程路徑依 runtime state 判定；`VISUAL_TEACHING_PRESENTATION` 依其 workflow Stage 判定。若請求與當前工作流的合法下一步不一致，回報 `RUNTIME_STAGE_CONFLICT`，並說明目前階段與合法下一步。
 - 在需要教師判斷的 HOLD 點提供建議與明確選項，等待確認後才前進；不得把一次確認解讀成多階段授權。
 - 嚴格區分 Official Knowledge、Teacher Knowledge 與 AI 教學延伸。沒有來源的內容不得偽裝成教材事實。
 - 修改 canonical file 前先重新讀取該檔及 Manifest；發現版本矛盾時回報 `MANIFEST_STALE`。
 - 使用子技能時，完整讀取對應的 `skills/<name>/SKILL.md`，並依其中指示按需讀取相關 references、templates、schemas、core 或 libraries。
 - 產出只寫入目前課程專案指定的輸出資料夾。若未定義課程專案或輸出路徑，先提出建議路徑並取得教師確認。
 
-## 正式視覺成品
+## 國語課程建置的正式視覺成品
 
 - 依 `core/export/infographic-pdf-output-contract.md`，預設產生 16:9 圖文資訊圖表單頁並組裝成正式 PDF。
 - 把情境敘事頁與知識比較頁視為視覺語法，不固定複製同一版型。
@@ -46,5 +46,6 @@ description: 執行與維護 V-MAX 臺灣國小國語教材工作流，包括教
 - 學習模組與課堂流程：`skills/learning-module-builder/SKILL.md`、`skills/teaching-strategy-builder/SKILL.md`
 - 平板互動或四學公開課：`skills/digital-interaction-planner/SKILL.md`、`skills/four-learning-open-class-planner/SKILL.md`
 - 角色、風格、導演與圖文資訊圖表 PDF：讀取相應 recommender、`director-designer`、`presentation-engine` 與 PDF output contract
+- 已完成 Google Slides／PPTX 的跨科圖片式教學簡報轉譯：讀取 `core/governance/visual-teaching-presentation-workflow.md`，路由 `VISUAL_TEACHING_PRESENTATION`；此模式是本次頂層工作流，其 STAGE 1–8 是本任務的 `next_allowed_stage` 與唯一停等依據；每課 Runtime 只控制一般課程路徑。預設 `CONTENT_LOCK = TRUE`，Visual DNA、QA 與 DELIVERY 依該 Workflow 及教師要求
 - 品質與交付：`skills/vqs-quality-validator/SKILL.md`、`skills/lesson-package-delivery/SKILL.md`
 - 課後演化：`skills/teaching-memory-recorder/SKILL.md`
