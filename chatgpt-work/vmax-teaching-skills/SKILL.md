@@ -1,6 +1,6 @@
 ---
 name: vmax-teaching-skills-chatgpt-work
-description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Work 要製作或續作國語教材時，從 GitHub 載入共用規則、核對當課既有 Runtime，再按任務與目前階段路由。獨立學習單不啟動整課流程；本入口不要求改裝離線通用包。
+description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Work 要製作或續作國語教材時，從 GitHub 載入共用規則、核對當課既有 Runtime，再按任務與目前階段路由。教師提供已完成 Google Slides／PPTX 並要求圖片式教學簡報轉譯時，啟動跨科共用的 VISUAL_TEACHING_PRESENTATION。獨立學習單不啟動整課流程；本入口不要求改裝離線通用包。
 ---
 
 # V-MAX ChatGPT Work Launcher
@@ -14,6 +14,8 @@ description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Wo
 規格來源：`https://github.com/beyelin6/vmax-teaching-skills` 的 `main`。GitHub 管共用規則；單課教材、教師決定與進度保存在 Drive。一般共用規則更新不需重裝；Launcher 本身改版才替換此檔。
 
 ## 啟動與續作
+
+教師提供已完成 Google Slides／PPTX，並提出「圖片式教學簡報」「圖片式文字組件」「圖片引擎渲染文字」「把這份 Slides/PPTX 做成圖片式」或同義需求時，路由 `VISUAL_TEACHING_PRESENTATION`，讀取 `core/governance/visual-teaching-presentation-workflow.md`。此跨科轉譯模式以該 Workflow 的 Stage 控制本次進度；一般國語課程仍依當課 Runtime。
 
 國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
