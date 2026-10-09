@@ -1,6 +1,6 @@
 # V-MAX Visual Teaching Presentation Workflow
 
-Version: 1.1
+Version: 1.2
 Status: REVIEW
 Scope: Cross-subject
 Mode ID: VISUAL_TEACHING_PRESENTATION
@@ -354,7 +354,28 @@ SOURCE SLIDE
 
 # 6. Visual DNA｜預設視覺語言
 
-預設 Visual DNA：
+## 6.1 Sparse Source Style Gate｜來源風格不足時串接風格庫
+
+在 STAGE 2 — ANALYSIS 判定來源簡報的視覺系統：
+
+- `ESTABLISHED`：已有一致且可沿用的視覺語言。
+- `PARTIAL`：只有部分頁面或零散元素呈現視覺語言。
+- `SPARSE`：以純文字、簡單文字框或基本圖形為主，無法提供足夠的視覺方向。
+
+若為 `SPARSE`，來源簡報只作為內容與教學順序依據，不得把其簡單排版當成最終視覺方向。進入 STAGE 3 — CONSTRUCTION PLAN 前，必須：
+
+1. 依 `core/visual/visual-grammar.md` 先確定各頁的教學功能與學生觀看方式。
+2. 讀取 `core/visual/style-recipe-families.md`，依學科內容、年級、教學功能與情緒語氣，選出一個 Primary Family；只有特定頁面確有需要時才提出 Secondary Family。
+3. 若有適用且已核准的正向視覺參考，再讀取 `core/visual/visual-reference-library.md` 作為品質與視覺語言依據。該庫中的國語範例不得被誤當成其他學科的內容或固定頁型；沒有適用參考時，明確標示無跨科參考，不可假稱已比對。
+4. 將所選 Family、理由、視覺 DNA 與代表頁方向列入 Construction Plan，供教師在代表頁 STOP Gate 審核。
+
+若來源為 `ESTABLISHED`、教師已提供明確視覺方向，或教師已核准該課 Visual DNA，沿用該視覺語言，不因本 Gate 另行改選風格。若教師要求原樣匯出，依 Intent Gate，不啟動風格選擇。
+
+風格庫提供視覺家族與可調語彙，不提供固定版型；Visual Grammar 決定觀看方式，Style Family 決定視覺表現，頁面構圖仍須依教學功能設計。
+
+## 6.2 Default Visual DNA｜預設視覺語言
+
+以下只作為未指定風格且風格庫分析後適合時的可用視覺方向，不覆蓋教師指定、已核准 Visual DNA 或更合適的 Style Family：
 
 ## Fresh Textbook Watercolor
 
