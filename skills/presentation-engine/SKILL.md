@@ -5,7 +5,7 @@ description: 將核准教材與教學策略轉成 Slide Script 與 Render Reques
 
 # Presentation Engine
 
-版本：0.13.0
+版本：0.13.1
 
 `SLIDE_SCRIPT` 是逐頁簡報唯一內容主檔。教材、教學策略、角色與視覺只使用已核准來源。
 
@@ -16,6 +16,8 @@ Slide Script 頂層必須保存 `SLIDE_ARCHITECTURE_LOCK` 與 `architecture_mapp
 驗證必須拒絕：缺少任一必修區段、未核准的區段重排或內容遺漏、活動頁早於最後一張成語教學頁或晚於統整區段、`architecture_mapping` 未回指學習結果，或將外加模板內容冒充 Baseline。段內可依適用焦點彈性安排，不強制每段同一套活動。語文活動必須逐項回指 VP1 核准的 `activity_id`，並在簡報頁、課堂任務或經核准的省略理由中完成去向映射；不可只以某一個「語文活動頁」代表全課活動覆蓋。
 
 ## PAGE_PLAN
+
+組裝當頁施工輸入時，必須執行 `core/presentation/text-layer-construction-policy.md` 第 2.0a 節：自動帶入當課已核准要求，區分內容規劃核准與逐字施工文字核准；不要讓教師逐頁重述風格、角色及圖片式製作要求。
 
 國語簡報 VP3 只建立詳細 PAGE_DETAIL 候選及 content_approved 稿，可保留 planned_character_refs；不得因此派生正式 Slide Script。VP4 綁定真實核准資產後才使用下列正式施工契約。
 

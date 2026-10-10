@@ -5,7 +5,7 @@ description: 將核准的 Render Request 實際渲染為教學圖片或成品：
 
 # V-MAX Image Renderer
 
-版本：2.10.1
+版本：2.10.2
 
 ## Request Contract Gate
 
@@ -14,6 +14,8 @@ description: 將核准的 Render Request 實際渲染為教學圖片或成品：
 國語視覺簡報預設 `CHINESE_VISUAL_PRESENTATION`，必讀 `core/governance/chinese-visual-presentation-workflow.md`。本模式按五個大階段集中審核；本檔的細部內容檢查保留，小步 HOLD、先後與停等只適用 `DETAILED_LESSON`。內部分析與候選準備不等於正式選教核准。
 
 ### 圖片式簡報／文件的原生預覽與續編
+
+出圖前依 `core/presentation/text-layer-construction-policy.md` 第 2.0a 節自行核對當頁實際工具輸入；不能只有上游文件寫過規則，卻未將核准文字、角色原圖與構圖送入生成／編輯請求。
 
 在 ChatGPT／Codex 製作圖片式簡報或文件時，預設使用可用的 ChatGPT 原生圖像生成／影像編輯工具，直接呈現工具回傳的圖片，保留平台提供的原生編輯入口與後續影像引用。不得只交付 PNG 下載卡片或檔案路徑。修改時引用原圖／該頁最新核准版本，只修改指定範圍。PNG／PDF 可另作下載與歸檔。
 

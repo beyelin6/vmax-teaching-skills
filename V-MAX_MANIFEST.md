@@ -1,9 +1,9 @@
-# V-MAX Manifest 3.10.4
+# V-MAX Manifest 3.10.5
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.10.4
+vmax_manifest_version: 3.10.5
 bootstrap: V-MAX_BOOTSTRAP.md
 claude_launcher: { path: launchers/vmax-teaching-skills-claude/SKILL.md, current_version: "1.0" }
 antigravity_launcher: { path: launchers/vmax-teaching-skills-antigravity/SKILL.md, current_version: "1.0" }
@@ -39,7 +39,7 @@ step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.m
 chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: "0.4.6" }
 presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: "1.5" }
 idiom_expression_policy: { path: core/director/idiom-expression-visualization-policy.md, current_version: "1.2" }
-chatgpt_adapter: { path: adapters/chatgpt.md, current_version: "1.14" }
+chatgpt_adapter: { path: adapters/chatgpt.md, current_version: "1.15" }
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: "1.9.1" }
 chatgpt_work_launcher: { path: chatgpt-work/vmax-teaching-skills/SKILL.md, current_version: "2.1" }
 main_workflow: { path: core/governance/vmax-main-workflow.md, current_version: "3.2" }
@@ -48,7 +48,7 @@ executor: { path: skills/vmax-golden-path-executor/SKILL.md, current_version: "3
 continuation_state_gate: { path: core/governance/continuation-state-gate.md, current_version: "1.9" }
 google_drive_lesson_archive: { path: skills/google-drive-lesson-archive/SKILL.md, current_version: 1.1.1 }
 lesson_presentation_execution_rules: { path: core/governance/lesson-presentation-execution-rules.md, current_version: "1.9" }
-text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.6 }
+text_layer_construction_policy: { path: core/presentation/text-layer-construction-policy.md, current_version: 1.7 }
 classroom_language_page_rules: { path: skills/presentation-engine/references/classroom-language-page-rules.md, current_version: 1.9 }
 lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.2 }
 page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profile.md, current_version: "1.5" }
@@ -59,8 +59,8 @@ slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contrac
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.3 }
 render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json, contract_version: 1 }
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.1 }
-presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: "0.13.0" }
-image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: "2.10.1" }
+presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: "0.13.1" }
+image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: "2.10.2" }
 quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.6 }
 visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_version: 1.2 }
 ```
@@ -85,7 +85,7 @@ Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_REA
 Front Door 1.9.1 依 Portable Runtime Policy 按階段載入；快照不變且原文仍在時重用。完整包支援 BUNDLED，完整 checkout 支援 REPOSITORY，輕量入口使用 REMOTE／可信 LKG。真正施工才載入適用 Renderer／QA／schema，VP1 不載視覺鏈，VP3 不提前要求 VP4 資產。
 
 ## Downstream Alignment
-Execution Rules 1.9 / Presentation Engine 0.12.1 / Renderer Contract 2.1 / Image Renderer 2.10.1 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.6 / Classroom Language 1.9 / Paragraph Text Page 1.1 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 3.2 / Front Door 1.9.1 / ChatGPT Work Launcher 2.1。
+Execution Rules 1.9 / Presentation Engine 0.12.1 / Renderer Contract 2.1 / Image Renderer 2.10.2 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.7 / Classroom Language 1.9 / Paragraph Text Page 1.1 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 3.2 / Front Door 1.9.1 / ChatGPT Work Launcher 2.1。
 
 ## Lesson Architecture and Variants
 

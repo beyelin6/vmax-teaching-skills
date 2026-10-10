@@ -1,4 +1,4 @@
-# V-MAX Adapter｜ChatGPT 1.14
+# V-MAX Adapter｜ChatGPT 1.15
 
 
 所有來源載入、Drive／本機讀寫及離線分支依 `core/governance/portable-runtime-policy.md`；下文 Drive 為該後端的實作，不限制已綁定 LOCAL／HANDOFF 的課程。
@@ -77,7 +77,7 @@ ChatGPT 可負責：
 
 但所有輸出仍受 Core / Manifest / Runtime 約束。
 
-Runtime 實際進入簡報／視覺階段時，ChatGPT 必須實際載入 `skills/presentation-engine/SKILL.md`、`core/presentation/classroom-image-slide-policy.md`、`core/renderer/image-first-hybrid-renderer.md`、`skills/vmax-image-renderer/SKILL.md`、`core/quality/visual-drift-detector.md` 與 `core/quality/quality-gate-2.md`。除課文閱讀頁外，預設以整頁圖片式合成交付；高風險文字用可控排字合成後扁平化。不得把圖片模型連續錯字當作刪頁理由，也不得在跨頁型代表頁組全數核准前製作完整頁數。
+Runtime 實際進入簡報／視覺階段時，ChatGPT 必須實際載入 `skills/presentation-engine/SKILL.md`、`core/presentation/classroom-image-slide-policy.md`、`core/renderer/image-first-hybrid-renderer.md`、`skills/vmax-image-renderer/SKILL.md`、`core/quality/visual-drift-detector.md` 與 `core/quality/quality-gate-2.md`。除課文閱讀頁外，依 Text Layer Construction Policy 第 2.0–2.0a 節優先以圖片引擎共同生成核准文字與構圖；需要精準量測或局部文字修補時才使用可控排字，成品仍直接呈現圖片。不得把圖片模型連續錯字當作刪頁理由，也不得在跨頁型代表頁組全數核准前製作完整頁數。
 
 若 Google Drive 或對話中存在該課已核准的 Lesson Baseline／施工總表，ChatGPT 進入 slide_script、Render Request、修圖、生圖或排版前必讀。Baseline 的逐頁清單只約束該課；可抽象成全域規則的項目須先由教師明確要求更新技能。
 
@@ -114,3 +114,5 @@ WORK 模式的簡報預設交付為高畫質圖片化投影片（PNG）與 PDF�
 ## 視覺授權不得由內容確認推定
 
 實際呼叫圖像生成／編輯前，必讀並執行 `core/governance/presentation-preconstruction-policy.md` 第 7 節，區分角色／風格候選探索、逐頁稿、代表頁與批次的授權。內容骨架或一般「繼續」不能替代當課風格、引導角色、課文角色及畫布的核准證據。完整代表頁須有核准文字與完整版面；背景素材不能算代表頁通過。直接使用原生圖像工具也受同一檢查，不因未經 Renderer CLI 而豁免。缺證據時保持候選、回到最早未完成的適用確認點，不重跑未受影響來源。
+
+圖片式簡報施工按 `core/presentation/text-layer-construction-policy.md` 第 2.0a 節自動組裝核准輸入；來源可編輯與成品呈現分開判斷，不因「分層可移動」退回普通 PPT 排版，不讓教師反覆重述已確認要求。
