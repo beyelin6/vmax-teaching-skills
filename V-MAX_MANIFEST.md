@@ -1,10 +1,11 @@
-# V-MAX Manifest 3.10.5
+# V-MAX Manifest 3.10.6
 
 ## Current Canonical Files
 
 ```yaml
-vmax_manifest_version: 3.10.5
+vmax_manifest_version: 3.10.6
 bootstrap: V-MAX_BOOTSTRAP.md
+classroom_image_slide_policy: { path: core/presentation/classroom-image-slide-policy.md, current_version: "1.6" }
 claude_launcher: { path: launchers/vmax-teaching-skills-claude/SKILL.md, current_version: "1.0" }
 antigravity_launcher: { path: launchers/vmax-teaching-skills-antigravity/SKILL.md, current_version: "1.0" }
 antigravity_adapter: { path: adapters/antigravity.md, current_version: "1.2" }
@@ -37,7 +38,7 @@ hold_teacher_interface_policy: { path: core/governance/hold-teacher-interface-po
 recognition_only_character_policy: { path: core/governance/recognition-only-character-policy.md, current_version: 1.3 }
 step1_source_anchor_policy: { path: core/governance/step1-source-anchor-policy.md, current_version: "1.10" }
 chinese_textbook_transcriber: { path: skills/chinese-textbook-transcriber/SKILL.md, current_version: "0.4.6" }
-presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: "1.5" }
+presentation_preconstruction_policy: { path: core/governance/presentation-preconstruction-policy.md, current_version: "1.6" }
 idiom_expression_policy: { path: core/director/idiom-expression-visualization-policy.md, current_version: "1.2" }
 chatgpt_adapter: { path: adapters/chatgpt.md, current_version: "1.15" }
 front_door: { path: skills/vmax-teaching-skills/SKILL.md, current_version: "1.9.1" }
@@ -61,7 +62,7 @@ render_request_json_schema: { path: core/schemas/vmax/render-request.schema.json
 renderer_contract: { path: core/renderer/image-first-hybrid-renderer.md, current_version: 2.1 }
 presentation_engine: { path: skills/presentation-engine/SKILL.md, current_version: "0.13.1" }
 image_renderer: { path: skills/vmax-image-renderer/SKILL.md, current_version: "2.10.2" }
-quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.6 }
+quality_gate: { path: core/quality/quality-gate-2.md, current_version: 3.7 }
 visual_drift_detector: { path: core/quality/visual-drift-detector.md, current_version: 1.2 }
 ```
 
@@ -115,7 +116,7 @@ GitHub 保存規格；每課即時 Runtime State 以 Google Drive 為權威。�
 
 ## 國語簡報施工前確認與成語雙軌
 
-共用規則版本 1.5：`core/governance/presentation-preconstruction-policy.md` 是施工前確認、續作、已核准項目保留、批次大小及局部修正的詳細規則唯一來源。語文規劃與每次施工續作強制載入；「逐頁施工稿 → 停等確認 → 代表頁逐類驗證 → 小批次／逐批確認」不可跳過。每個正式生字的延伸成語判讀未完成即 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`，不得施工。課文既有成語與生字補充成語為兩份必查清單；單課結果只存 Drive。
+共用規則版本 1.6：`core/governance/presentation-preconstruction-policy.md` 是施工前確認、續作、已核准項目保留、批次大小及局部修正的詳細規則唯一來源。語文規劃與每次施工續作強制載入；「逐頁施工稿 → 停等確認 → 代表頁逐類驗證 → 小批次／逐批確認」不可跳過。每個正式生字的延伸成語判讀未完成即 `VOCABULARY_IDIOM_COVERAGE_INCOMPLETE`，不得施工。課文既有成語與生字補充成語為兩份必查清單；單課結果只存 Drive。
 
 ## STEP 1 完整擷取與階段邊界
 

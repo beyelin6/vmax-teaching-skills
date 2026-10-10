@@ -1,10 +1,10 @@
-# V-MAX Quality Gate 3.6
+# V-MAX Quality Gate 3.7
 
 ## 定位
 正式簡報交付前檢查教材真值、Object Composition、文字／注音、語詞標記、成語應用情境、角色與教師後製負擔。
 
 ## Gate A｜Teaching Integrity
-教材與教師核准內容必須正確；一頁一主要焦點；學生頁不洩漏答案。教材真值錯誤 → FAIL。本課教材語文活動須逐項核對來源、教師核准路徑及最終承載位置（簡報頁、課堂任務或核准省略）。AI 活動須另標 `AI_RECOMMENDED`、回指已核准的本課焦點／知識節點並有教師核准；缺項、錯引、未核准省略或把 AI 建議冒充教材活動 → `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE` → FAIL。
+教材與教師核准內容必須正確；一頁一主要焦點；依 Classroom Image Slide Policy 區分教學整理與學生練習：整理與示例可呈現完整內容，尚待作答區不預示正解；不得把所有教學內容誤判為答案而清空。教材真值錯誤 → FAIL。本課教材語文活動須逐項核對來源、教師核准路徑及最終承載位置（簡報頁、課堂任務或核准省略）。AI 活動須另標 `AI_RECOMMENDED`、回指已核准的本課焦點／知識節點並有教師核准；缺項、錯引、未核准省略或把 AI 建議冒充教材活動 → `LANGUAGE_ACTIVITY_COVERAGE_INCOMPLETE` → FAIL。
 
 ## Gate B｜Object Composition
 一般頁可追溯 Object/Character/Key Line plans；有語詞標記時可追溯 Vocabulary Mark Plan；成語頁可追溯 Idiom Application Plan。完整 AI 場景吃滿畫布、文字只能搬動、物件全烘焙 → `MONOLITHIC_BACKGROUND_REGRESSION` → FAIL。核准 overlap 不算碰撞。
