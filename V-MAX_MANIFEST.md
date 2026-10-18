@@ -54,7 +54,7 @@ classroom_language_page_rules: { path: skills/presentation-engine/references/cla
 lesson_architecture_profile: { path: schemas/lesson-architecture-profile.md, current_version: 1.2 }
 page_detail_confirmation_profile: { path: schemas/page-detail-confirmation-profile.md, current_version: "1.5" }
 batch_construction_lock: { path: core/governance/batch-construction-lock.md, current_version: "1.5" }
-paragraph_text_page_policy: { path: core/presentation/paragraph-text-page-policy.md, current_version: 1.2 }
+paragraph_text_page_policy: { path: core/presentation/paragraph-text-page-policy.md, current_version: 1.3 }
 character_library_writeback_policy: { path: core/character/character-library-writeback-policy.md, current_version: "1.1" }
 slide_script_schema: { path: core/schemas/vmax/slide-script.schema.json, contract_version: object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement }
 render_request_schema: { path: skills/vmax-image-renderer/references/render-request-schema.md, current_version: 2.3 }
@@ -86,7 +86,7 @@ Render Request 正式區分 `PRE_LAYOUT` 與 `RENDER_READY`。只有 `RENDER_REA
 Front Door 1.9.1 依 Portable Runtime Policy 按階段載入；快照不變且原文仍在時重用。完整包支援 BUNDLED，完整 checkout 支援 REPOSITORY，輕量入口使用 REMOTE／可信 LKG。真正施工才載入適用 Renderer／QA／schema，VP1 不載視覺鏈，VP3 不提前要求 VP4 資產。
 
 ## Downstream Alignment
-Execution Rules 1.9 / Presentation Engine 0.12.1 / Renderer Contract 2.1 / Image Renderer 2.10.2 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.7 / Classroom Language 1.9 / Paragraph Text Page 1.2 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 3.2 / Front Door 1.9.1 / ChatGPT Work Launcher 2.2。
+Execution Rules 1.9 / Presentation Engine 0.12.1 / Renderer Contract 2.1 / Image Renderer 2.10.2 / Quality Gate 3.5 / Visual Drift 1.2 / Text Layer 1.7 / Classroom Language 1.9 / Paragraph Text Page 1.3 / Render Request 2.3 / Slide Script object-composition-glyph-anchor-idiom-layout-v4-paragraph-placement / Main Workflow 3.2 / Front Door 1.9.1 / ChatGPT Work Launcher 2.2。
 
 ## Lesson Architecture and Variants
 
