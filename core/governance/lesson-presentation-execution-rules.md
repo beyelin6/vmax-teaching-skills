@@ -32,6 +32,8 @@
 
 ## Paragraph Vocabulary Placement
 
+課文區頁序與逐段完整性依 `core/presentation/paragraph-text-page-policy.md` 的「一段一循環」執行；施工前檢查段落循環表、題答頁及補充頁順序，不能只驗證原文與語詞便視為整段完成。
+
 課文閱讀頁的語詞預設與所屬自然段同頁，使用 `IN_PARAGRAPH` 或 `ADJACENT_ON_SAME_PAGE`。每個段落語詞項目須保留 `paragraph_ref`、`vocab_refs` 與 `language_placement`，並從 Slide Script 原樣傳入 Render Request。重跑、換模型、換 Renderer 或只修改圖片時沿用既有 placement；不得因版面習慣或重新規劃而自行拆出獨立語詞頁。
 
 只有完整自然段在核准畫布與投影字級下無法容納、教師明確要求獨立語文活動，或語詞活動已成為新的主要教學焦點時，才可使用 `SEPARATE_LANGUAGE_PAGE`，且必須同時附具體 `reason`、`approval_ref` 與教師核准的頁面確認。缺少 placement 或拆頁證據 → `PARAGRAPH_LANGUAGE_PLACEMENT_MISSING` / `UNAPPROVED_LANGUAGE_SPLIT`。

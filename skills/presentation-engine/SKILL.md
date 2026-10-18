@@ -35,7 +35,7 @@ PAGE_DETAIL_CONFIRMATION 必須附 `language_activity_coverage`，逐項列出�
 
 一般頁預設 `OBJECT_SCENE`，禁止簡化成文字區＋一張底圖。完整場景吃滿畫布、文字只能搬移 → `MONOLITHIC_BACKGROUND_REGRESSION`。
 
-課文閱讀頁另受 `core/presentation/paragraph-text-page-policy.md` 約束：預設一頁一個自然段＋緊跟在旁的該段語詞解釋；語詞解釋不得脫離課文另成清單頁。單段過長才可依完整句子拆成連續頁。PAGE_DETAIL_CONFIRMATION 必須帶 `text_coverage`，確認完整原文、段落來源、拆頁理由、相鄰語詞版位與該段全部核准語詞覆蓋；不能用代表句、摘要或改寫代替。
+課文區規劃、新製、重跑與續作必讀 `core/presentation/paragraph-text-page-policy.md`，依「一段一循環」逐段展開課文、理解題、答案講解及適用的核准語文／AI 補充，保存段落循環表並檢查完整性與頁序。預設一頁一個自然段＋緊跟在旁的該段語詞解釋；語詞解釋不得脫離課文另成清單頁。單段過長才可依完整句子拆成連續頁。PAGE_DETAIL_CONFIRMATION 必須帶 `text_coverage`，確認完整原文、段落來源、拆頁理由、相鄰語詞版位與該段全部核准語詞覆蓋；不能用代表句、摘要或改寫代替。
 
 每個含段落語詞的頁面還必須帶 `paragraph_ref`、`vocab_refs` 與 `language_placement`，並將三欄原樣傳入 Render Request。`IN_PARAGRAPH` 與 `ADJACENT_ON_SAME_PAGE` 是預設；重跑、換模型、換 Renderer 或只修改圖片時沿用已鎖定 placement，不得自行產生獨立語詞頁。拆頁必須有 `reason`、`approval_ref` 與 PAGE_DETAIL_CONFIRMATION 回指。
 

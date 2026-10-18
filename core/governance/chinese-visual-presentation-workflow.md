@@ -77,6 +77,8 @@ VP1 審核包須列出活動全集及逐項推薦路徑，教師可核准或調�
 
 ## VP3：文字與配置先完整保存
 
+課文區必讀 `core/presentation/paragraph-text-page-policy.md` 的「一段一循環」，先建立逐段循環表，再展開頁數帳本與全文配置。理解題及答案講解緊接所屬段落，適用且核准的修辭／句型與 AI 小補充完成後才進入下一段；將完整性與頁序檢查併入本階段審核。重跑亦同，舊稿補缺頁並保存局部差異，不重做未受影響內容。
+
 以核准課程及 VP2 方案建立 `PAGE_DETAIL_CONFIRMATION` 的 draft／pending 版本，依 `schemas/page-detail-confirmation-profile.md` 列齊所有頁面細節。頁數帳本與頁碼系統設計併在同包，不先另問頁數。不得以主題大綱、核准摘要或「詳見上一則」取代可讀取的完整母稿。
 
 角色尚無核准視覺時，使用獨立 `planned_character_refs` 表達角色規劃 ID、用途、位置、預期動作與必要外觀；`character_refs` 不填虛構 asset ID。角色規劃、風格與畫布已核准即可完成此稿，缺實際角色圖片不阻擋文字／配置規劃。教師核准後設 `status: content_approved`，保存 `content_approval_ref` 和該核准稿的實際檔案 hash；此狀態仍不能產生正式 Slide Script、代表頁或批次圖片。

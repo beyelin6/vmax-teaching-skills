@@ -87,6 +87,8 @@ Runtime 實際進入簡報／視覺階段時，ChatGPT 必須實際載入 `skill
 
 ## 國語簡報施工前確認（平台路由）
 
+課文區排頁、重跑或續作時，必讀 `core/presentation/paragraph-text-page-policy.md`，依「一段一循環」建立段落循環表、題答頁對應與順序檢查；不能只套用一段一頁的課文文字規則而漏掉後續教學頁。
+
 Runtime 到 STEP 2.5 語文規劃或後續簡報施工階段（含續作）時，載入 Manifest 指定版本的 `core/governance/presentation-preconstruction-policy.md`，並以該檔為施工前流程、續作、核准保留、批次及修正規則的唯一詳細來源。本 Adapter 僅定義 ChatGPT 平台能力與互動方式，不複製 Core 流程。
 
 ## STEP 1 整合擷取

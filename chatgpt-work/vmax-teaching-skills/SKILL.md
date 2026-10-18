@@ -5,7 +5,7 @@ description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Wo
 
 # V-MAX ChatGPT Work Launcher
 
-版本：2.1
+版本：2.2
 
 ## 安裝與來源
 
@@ -32,7 +32,7 @@ description: ChatGPT Work 的 V-MAX 輕量啟動技能。當教師在 ChatGPT Wo
 | --- | --- |
 | VP1_COURSE_REVIEW | 先載入來源政策與 Transcriber，再按需載入語文／成語與閱讀分析；候選集中 VP1 審核，不停在舊 HOLD 1／2／2.5／2.6。 |
 | VP2_DESIGN_REVIEW | 同包完成已選課程調整、角色用途、風格／混搭、心智圖及畫布方案。 |
-| VP3_PAGE_PLAN_REVIEW | 依 Page Detail Profile 建立全文／配置，角色資產可待 VP4；不載入正式生圖門檻阻擋規劃。 |
+| VP3_PAGE_PLAN_REVIEW | 依 Page Detail Profile 建立全文／配置；課文區必讀 `core/presentation/paragraph-text-page-policy.md`，依「一段一循環」保存段落循環表及題答頁對應，重跑亦同。角色資產可待 VP4；不載入正式生圖門檻阻擋規劃。 |
 | VP4_CHARACTER_REVIEW | 角色庫、角色視覺候選與 Registry writeback；完整綁定後才批准施工母稿。 |
 | VP5_REPRESENTATIVE_REVIEW／VP5_BATCH_REVIEW／VP_COMPLETE | 按整合工作流載入施工／QA／交付技能；代表頁整組審核、批次逐批審核。 |
 | SOURCE 0／STEP 1／來源補漏 | 依 `core/governance/step1-source-anchor-policy.md`，尤其第 G 節，載入 `skills/chinese-textbook-transcriber/SKILL.md` 及其來源庫、認讀字與擷取契約。讀回已存資料，只補必要缺口。 |
